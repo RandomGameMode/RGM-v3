@@ -41,7 +41,7 @@ namespace RGM.Modes
         {
             Server.FriendlyFire = true;
             Round.IsLocked = true;
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
 
             Exiled.Events.Handlers.Player.Died += OnDied;
 

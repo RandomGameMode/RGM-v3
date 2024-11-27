@@ -37,7 +37,7 @@ namespace RGM.Modes
 
         public override void OnEnabled()
         {
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
 
             Timing.RunCoroutine(OnModeStarted());
         }

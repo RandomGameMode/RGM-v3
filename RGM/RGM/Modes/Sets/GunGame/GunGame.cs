@@ -73,7 +73,7 @@ COM-15
         {
             Server.FriendlyFire = true;
             Round.IsLocked = true;
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
 
             Exiled.Events.Handlers.Player.Dying += OnDying;
             Exiled.Events.Handlers.Player.Left += OnLeft;

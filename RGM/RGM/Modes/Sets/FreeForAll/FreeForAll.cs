@@ -40,7 +40,7 @@ namespace RGM.Modes
         {
             Server.FriendlyFire = true;
             Round.IsLocked = true;
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
             Door.List.ToList().ForEach(x => x.Lock(1205, Exiled.API.Enums.DoorLockType.Lockdown079));
 
             Exiled.Events.Handlers.Player.Dying += OnDying;

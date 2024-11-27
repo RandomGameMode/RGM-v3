@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.JumpMap)]
+    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.JumpMap)]
     class JumpMap : Mode
     {
         public override string Name => "점프맵 라운지";
@@ -35,7 +35,7 @@ namespace RGM.Modes
         public override void OnEnabled()
         {
             Round.IsLocked = true;
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
 
             Timing.RunCoroutine(OnModeStarted());
 

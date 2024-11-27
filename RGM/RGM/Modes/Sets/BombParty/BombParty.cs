@@ -10,6 +10,7 @@ using InventorySystem.Items.Usables.Scp244;
 using MEC;
 using Mirror;
 using MultiBroadcast.API;
+using Respawning;
 using RGM.API.Features;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ namespace RGM.Modes
         public override void OnEnabled()
         {
             Round.IsLocked = true;
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
 
             Exiled.Events.Handlers.Player.Died += OnDied;
 

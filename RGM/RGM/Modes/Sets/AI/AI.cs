@@ -25,7 +25,7 @@ using Exiled.Events.EventArgs.Player;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.AI)]
+    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.AI)]
     class AI : Mode
     {
         public override string Name => "섬뜩한 힘";

@@ -39,7 +39,7 @@ namespace RGM.Modes
 
         public override void OnEnabled()
         {
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
             Server.ExecuteCommand($"/el l all");
             Server.ExecuteCommand($"/close **");
             Server.ExecuteCommand($"/lock **");

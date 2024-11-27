@@ -18,6 +18,8 @@ using MapEditorReborn.Commands.ModifyingCommands.Rotation;
 using RGM.API.Interfaces;
 
 using static RGM.Variables.ServerManagers;
+using InventorySystem.Items.Firearms.ShotEvents;
+using InventorySystem.Items.Firearms;
 
 namespace RGM.Donator
 {
@@ -31,7 +33,7 @@ namespace RGM.Donator
 
             if (PlayerData[4] == "영혼 가출")
             {
-                DamageHandlerBase DisruptorDamage = new DisruptorDamageHandler(Attacker.Footprint, -1);
+                DamageHandlerBase DisruptorDamage = new DisruptorDamageHandler(new DisruptorShotEvent(new Firearm(), InventorySystem.Items.Firearms.Modules.DisruptorActionModule.FiringState.None), Vector3.up, -1);
 
                 Ragdoll.CreateAndSpawn(Player.Role.Type, PlayerData[4], DisruptorDamage, Player.Position, Rotation);
             }

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.MiniGames)]
+    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.MiniGames)]
     class MiniGames : Mode
     {
         public override string Name => "미니게임";

@@ -79,7 +79,7 @@ namespace RGM.Modes
                     if (firearm.AmmoType != AmmoType.None)
                     {
                         for (int i = 0; i < 3; i++)
-                            player.AddAmmo(firearm.AmmoType, firearm.MaxAmmo);
+                            player.AddAmmo(firearm.AmmoType, (ushort)firearm.MaxAmmo);
                     }
                 }
             }

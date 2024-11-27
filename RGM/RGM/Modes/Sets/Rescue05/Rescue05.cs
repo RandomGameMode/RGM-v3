@@ -20,6 +20,7 @@ using RGM.API.Features;
 using static RGM.Variables.ServerManagers;
 using RGM.API.DataBases;
 using Respawning;
+using Respawning.Waves;
 
 namespace RGM.Modes
 {
@@ -159,7 +160,7 @@ namespace RGM.Modes
         public void OnRespawningTeam(Exiled.Events.EventArgs.Server.RespawningTeamEventArgs ev)
         {
             if (IsCHIEnabled)
-                ev.NextKnownTeam = SpawnableTeamType.ChaosInsurgency;
+                WaveManager.Spawn(new ChaosSpawnWave());
         }
     }
 }

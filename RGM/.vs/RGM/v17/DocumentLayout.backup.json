@@ -3,6 +3,62 @@
   "WorkspaceRootPath": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\rescue05\\rescue05.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\rescue05\\rescue05.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\bombparty\\bombparty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\bombparty\\bombparty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\deathrun\\deathrun.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\deathrun\\deathrun.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\hotpotato\\hotpotato.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\hotpotato\\hotpotato.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\hide\\hide.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\hide\\hide.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\hideandseek\\hideandseek.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\hideandseek\\hideandseek.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\jumpmap\\jumpmap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\jumpmap\\jumpmap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\api\\features\\tools.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:api\\features\\tools.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\sets\\witgame\\witgame.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\sets\\witgame\\witgame.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\pluses\\outlaw\\outlaw.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\pluses\\outlaw\\outlaw.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\pluses\\abattle\\abilities\\unique\\scientist\\seedsofmtf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\pluses\\abattle\\abilities\\unique\\scientist\\seedsofmtf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\pluses\\abattle\\abilities\\unique\\classd\\seedsofchi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\pluses\\abattle\\abilities\\unique\\classd\\seedsofchi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\donator\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:donator\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\rgm\\modes\\pluses\\abattle\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:rgm\\modes\\pluses\\abattle\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|d:\\goldenpig1205\\visual studio 2022\\rgm\\rgm\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}|RGM.csproj|solutionrelative:plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,7 +70,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 184,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,13 +78,195 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DeathRun.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\DeathRun\\DeathRun.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\DeathRun\\DeathRun.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\DeathRun\\DeathRun.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\DeathRun\\DeathRun.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAvwCEAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:25:44.976Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HotPotato.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\HotPotato\\HotPotato.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\HotPotato\\HotPotato.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\HotPotato\\HotPotato.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\HotPotato\\HotPotato.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAIA6wCsAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:25:12.583Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HIDE.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\HIDE\\HIDE.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\HIDE\\HIDE.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\HIDE\\HIDE.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\HIDE\\HIDE.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAnwCkAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:25:12.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HideAndSeek.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\HideAndSeek\\HideAndSeek.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\HideAndSeek\\HideAndSeek.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\HideAndSeek\\HideAndSeek.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\HideAndSeek\\HideAndSeek.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAADwvygAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:17:29.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Rescue05.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\Rescue05\\Rescue05.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\Rescue05\\Rescue05.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\Rescue05\\Rescue05.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\Rescue05\\Rescue05.cs",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAjwKEAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:15:20.314Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "JumpMap.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\JumpMap\\JumpMap.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\JumpMap\\JumpMap.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\JumpMap\\JumpMap.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\JumpMap\\JumpMap.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAnwCUAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:15:19.52Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WitGame.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\WitGame\\WitGame.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\WitGame\\WitGame.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\WitGame\\WitGame.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\WitGame\\WitGame.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAewC8AAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:14:42.953Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BombParty.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\BombParty\\BombParty.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Sets\\BombParty\\BombParty.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Sets\\BombParty\\BombParty.cs",
+              "RelativeToolTip": "RGM\\Modes\\Sets\\BombParty\\BombParty.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAjwC8AAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:02:01.88Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Outlaw.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\Outlaw\\Outlaw.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Pluses\\Outlaw\\Outlaw.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\Outlaw\\Outlaw.cs",
+              "RelativeToolTip": "RGM\\Modes\\Pluses\\Outlaw\\Outlaw.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAIA6wEsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:01:44.961Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SeedsOfMTF.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\Scientist\\SeedsOfMTF.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\Scientist\\SeedsOfMTF.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\Scientist\\SeedsOfMTF.cs",
+              "RelativeToolTip": "RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\Scientist\\SeedsOfMTF.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:01:32.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SeedsOfCHI.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\ClassD\\SeedsOfCHI.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\ClassD\\SeedsOfCHI.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\ClassD\\SeedsOfCHI.cs",
+              "RelativeToolTip": "RGM\\Modes\\Pluses\\ABattle\\Abilities\\Unique\\ClassD\\SeedsOfCHI.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T07:00:14.161Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Main.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\Donator\\Main.cs",
+              "RelativeDocumentMoniker": "Donator\\Main.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\Donator\\Main.cs",
+              "RelativeToolTip": "Donator\\Main.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAArwCUAAAB0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T06:56:23.551Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Ability.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\ABattle\\Ability.cs",
+              "RelativeDocumentMoniker": "RGM\\Modes\\Pluses\\ABattle\\Ability.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\RGM\\Modes\\Pluses\\ABattle\\Ability.cs",
+              "RelativeToolTip": "RGM\\Modes\\Pluses\\ABattle\\Ability.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAnwDAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T06:56:18.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Tools.cs",
+              "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\API\\Features\\Tools.cs",
+              "RelativeDocumentMoniker": "API\\Features\\Tools.cs",
+              "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\API\\Features\\Tools.cs",
+              "RelativeToolTip": "API\\Features\\Tools.cs",
+              "ViewState": "AgIAAJoAAAAAAAAAAAAlwLAAAADhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T06:52:03.367Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "Plugin.cs",
               "DocumentMoniker": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\Plugin.cs",
               "RelativeDocumentMoniker": "Plugin.cs",
               "ToolTip": "D:\\GoldenPig1205\\Visual Studio 2022\\RGM\\RGM\\Plugin.cs",
               "RelativeToolTip": "Plugin.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAADYAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAADYAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-08T09:58:13.652Z",
               "EditorCaption": ""

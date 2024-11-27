@@ -18,22 +18,8 @@ public class Researcher : Ability
 {
     public override void OnEnabled()
     {
-        List<ItemType> SCPItems = new List<ItemType>()
-        {
-            ItemType.SCP018,
-            ItemType.SCP1576,
-            ItemType.SCP1853,
-            ItemType.SCP207,
-            ItemType.SCP2176,
-            ItemType.SCP244a,
-            ItemType.SCP244b,
-            ItemType.SCP268,
-            ItemType.SCP330,
-            ItemType.SCP500,
-            ItemType.AntiSCP207
-        };
 
-        Item SCPItem = Owner.AddItem(Tools.GetRandomValue(SCPItems));
+        Item SCPItem = Owner.AddItem(Tools.GetRandomValue(Tools.EnumToList<ItemType>().Where(x => x.ToString().Contains("SCP")).ToList()));
     }
 
     public override void OnDisabled()

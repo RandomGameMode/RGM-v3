@@ -11,6 +11,8 @@ using MEC;
 using Mirror;
 using MultiBroadcast;
 using PlayerRoles;
+using Respawning;
+using Respawning.Waves;
 using RGM.API.Features;
 using UnityEngine;
 
@@ -36,7 +38,7 @@ namespace RGM.Modes
         public override void OnEnabled()
         {
             Round.IsLocked = true;
-            Respawn.TimeUntilNextPhase = 10000;
+            foreach (var spawn in Respawning.WaveManager.Waves) spawn.Destroy();
 
             Timing.RunCoroutine(OnModeStarted());
         }

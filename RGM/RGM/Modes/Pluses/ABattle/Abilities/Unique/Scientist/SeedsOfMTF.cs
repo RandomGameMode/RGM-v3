@@ -17,7 +17,7 @@ public class SeedsOfMTF : Ability
 {
     public override void OnEnabled()
     {
-        Respawn.NtfTickets += (int)(Player.List.Count() * 0.2);
+        Respawn.GrantTickets(PlayerRoles.Faction.FoundationStaff, (int)(Player.List.Count() * 0.2));
     }
 
     public override void OnDisabled()

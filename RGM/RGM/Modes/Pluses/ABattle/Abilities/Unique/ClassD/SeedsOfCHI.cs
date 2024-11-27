@@ -17,7 +17,7 @@ public class SeedsOfCHI : Ability
 {
     public override void OnEnabled()
     {
-        Respawn.ChaosTickets += (int)(Player.List.Count() * 0.2);
+        Respawn.GrantTickets(PlayerRoles.Faction.FoundationEnemy, (int)(Player.List.Count() * 0.2));
     }
 
     public override void OnDisabled()

@@ -174,7 +174,7 @@ RP: {uc[1]}
         {
             target = null;
 
-            if (Physics.Raycast(player.ReferenceHub.PlayerCameraReference.position + player.ReferenceHub.PlayerCameraReference.forward * 0.2f, player.ReferenceHub.PlayerCameraReference.forward, out RaycastHit hit, Distance, InventorySystem.Items.Firearms.Modules.StandardHitregBase.HitregMask) &&
+            if (Physics.Raycast(player.ReferenceHub.PlayerCameraReference.position + player.ReferenceHub.PlayerCameraReference.forward * 0.2f, player.ReferenceHub.PlayerCameraReference.forward, out RaycastHit hit, Distance, InventorySystem.Items.Firearms.Modules.BuckshotHitreg.HitregMask) &&
                     hit.collider.TryGetComponent<IDestructible>(out IDestructible destructible))
             {
                 if (Player.TryGet(hit.collider.GetComponentInParent<ReferenceHub>(), out Player t) && player != t)
