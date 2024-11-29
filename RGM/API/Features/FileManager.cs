@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Exiled.API.Features;
 
+using static RGM.Variables.ServerManagers;
+
 namespace RGM.API.Features
 {
     public static class FileManager
@@ -67,9 +69,12 @@ namespace RGM.API.Features
 
         public static void SaveUsers()
         {
-            var text = string.Join("\n", UsersCache.Select(x => $"{x.Key};{string.Join(";", x.Value)}"));
+            if (IsUsersFileLoaded)
+            {
+                var text = string.Join("\n", UsersCache.Select(x => $"{x.Key};{string.Join(";", x.Value)}"));
 
-            FileManager.WriteFile(UsersFileName, text);
+                FileManager.WriteFile(UsersFileName, text);
+            }
         }
 
         public static void LoadUsers()
@@ -90,6 +95,8 @@ namespace RGM.API.Features
 
                 UsersCache.Add(parts[0], parts.Skip(1).ToList());
             }
+
+            IsUsersFileLoaded = true;
         }
     }
 }
