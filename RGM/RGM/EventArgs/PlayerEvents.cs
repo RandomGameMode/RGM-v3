@@ -160,9 +160,8 @@ namespace RGM.EventArgs
 @alvar_noah - 서버 소유자
 @mercedes83 - 총괄 관리자 (베테랑)
 @normal._.person - 정규 관리자 (베테랑)
-@bluefox2322 - 수습 관리자
-@0735_ - 수습 관리자
-@leejihyuk - 수습 관리자
+@bluefox2322 - 정규 관리자 (신입)
+@0735_ - 정규 관리자 (신입)
 
 <b><size=35><color=#C8FE2E>개발진</color></size></b>
 @GoldenPig1205 - 메인 개발자

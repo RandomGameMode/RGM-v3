@@ -31,6 +31,9 @@ namespace RGM.EventArgs
 
             Round.IsLobbyLocked = true;
             GameObject.Find("StartRound").transform.localScale = Vector3.zero;
+
+            yield return Timing.WaitForSeconds(1f);
+
             Server.ExecuteCommand($"/mp load RGMLobby");
 
             var donator = new Donator.Main();
