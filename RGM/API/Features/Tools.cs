@@ -292,7 +292,7 @@ $"""
                     return 1;
                 }
 
-                foreach (var player in playerList.Where(x => x != null && x.IsConnected && !x.IsNonePlayer() && UsersManager.UsersCache.ContainsKey(x.UserId)))
+                foreach (var player in playerList.Where(x => !x.IsNonePlayer() && UsersManager.UsersCache.ContainsKey(x.UserId)))
                 {
                     UsersManager.UsersCache[player.UserId][0] = (int.Parse(UsersManager.UsersCache[player.UserId][0]) + amount).ToString();
                     UsersManager.UsersCache[player.UserId][1] = (int.Parse(UsersManager.UsersCache[player.UserId][1]) + amount * is게임칩사용자(player)).ToString();

@@ -52,8 +52,11 @@ namespace RGM.Modes
         public override void OnEnabled()
         {
             Round.IsLocked = true;
+            Respawn.PauseWaves();
 
             Exiled.Events.Handlers.Player.Died += OnDied;
+            Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
+            Exiled.Events.Handlers.Player.SearchingPickup += OnSearchingPickup;
             Exiled.Events.Handlers.Scp1509.Resurrecting += OnResurrecting;
             Exiled.Events.Handlers.Item.ChargingJailbird += OnChargingJailbird;
 
@@ -63,8 +66,11 @@ namespace RGM.Modes
         public override void OnDisabled()
         {
             Round.IsLocked = false;
+            Respawn.ResumeWaves();
 
             Exiled.Events.Handlers.Player.Died -= OnDied;
+            Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
+            Exiled.Events.Handlers.Player.SearchingPickup -= OnSearchingPickup;
             Exiled.Events.Handlers.Scp1509.Resurrecting -= OnResurrecting;
             Exiled.Events.Handlers.Item.ChargingJailbird -= OnChargingJailbird;
 
@@ -83,9 +89,9 @@ namespace RGM.Modes
             special = new();
             teamA = players.Take(halfCount).ToList();
             teamB = players.Skip(halfCount).ToList();
-            teamA.GetRandomValue();
+            kingA = teamA.GetRandomValue();
             special.Add(kingA);
-            teamB.GetRandomValue();
+            kingB = teamB.GetRandomValue();
             special.Add(kingB);
             queenA = null;
             queenB = null;
@@ -100,7 +106,7 @@ namespace RGM.Modes
 
             Tools.PlayGlobalAudio("RankCountdown", 1.5f);
 
-            void setupTeam(List<Player> team, RoleTypeId roleType, Vector3 pos, Player king, Player queen, List<Player> knights, List<Player> rooks, List<Player> bishops)
+            void setupTeam(List<Player> team, RoleTypeId roleType, string color, Vector3 pos, Player king, Player queen, List<Player> knights, List<Player> rooks, List<Player> bishops)
             {
                 foreach (var ply in team)
                 {
@@ -114,31 +120,44 @@ namespace RGM.Modes
 
                     if (ply == king) // 킹
                     {
+                        ply.RankName = "킹";
+                        ply.RankColor = color;
                         ply.AddBroadcast(20, "당신은 <b>킹</b>입니다. 죽으면 팀 전체가 패배합니다.");
+                        ply.AddItem(ItemType.SCP1344);
                     }
                     else if (ply == queen) // 퀸
                     {
+                        ply.RankName = "퀸";
+                        ply.RankColor = color;
                         ply.AddBroadcast(20, "당신은 <b>퀸</b>입니다. 룩과 비숍의 능력을 동시에 지닙니다.");
-                        ply.AddItem(ItemType.SCP1344);
+                        ply.AddItem(ItemType.SCP1509);
                         ply.AddEffect(EffectType.MovementBoost, 20);
                     }
                     else if (knights.Contains(ply)) // 나이트
                     {
+                        ply.RankName = "나이트";
+                        ply.RankColor = color;
                         ply.AddBroadcast(20, "당신은 <b>나이트</b>입니다. 점프력이 향상됩니다.");
                         ply.AddEffect(EffectType.Lightweight, 100);
                     }
                     else if (rooks.Contains(ply)) // 룩
                     {
+                        ply.RankName = "룩";
+                        ply.RankColor = color;
                         ply.AddBroadcast(20, "당신은 <b>룩</b>입니다. 칼을 소지합니다.");
-                        ply.AddItem(ItemType.SCP1344);
+                        ply.AddItem(ItemType.SCP1509);
                     }
                     else if (bishops.Contains(ply)) // 비숍
                     {
+                        ply.RankName = "비숍";
+                        ply.RankColor = color;
                         ply.AddBroadcast(20, "당신은 <b>비숍</b>입니다. 이동 속도가 빠릅니다.");
                         ply.AddEffect(EffectType.MovementBoost, 20);
                     }
                     else // 폰
                     {
+                        ply.RankName = "폰";
+                        ply.RankColor = color;
                         ply.AddBroadcast(20, "당신은 <b>폰</b>입니다. 왕을 지키세요.");
                     }
                 }
@@ -164,8 +183,8 @@ namespace RGM.Modes
                 special.AddRange(rookB);
             }
 
-            setupTeam(teamA, RoleTypeId.Scientist, new Vector3(34.60717f, 381.5809f, -30.17525f), kingA, queenA, knightA, rookA, bishopA); // A팀 (과학자)
-            setupTeam(teamB, RoleTypeId.ClassD, new Vector3(34.64063f, 381.5783f, -1.050781f), kingB, queenB, knightB, rookB, bishopB);    // B팀 (죄수)
+            setupTeam(teamA, RoleTypeId.Scientist, "red", new Vector3(34.60717f, 381.5809f, -30.17525f), kingA, queenA, knightA, rookA, bishopA); // A팀 (과학자)
+            setupTeam(teamB, RoleTypeId.ClassD, "cyan", new Vector3(34.64063f, 381.5783f, -1.050781f), kingB, queenB, knightB, rookB, bishopB);    // B팀 (죄수)
         }
 
         void OnDied(DiedEventArgs ev)
@@ -173,17 +192,27 @@ namespace RGM.Modes
             List<Player> winTeam = new();
 
             if (ev.Player == kingA)
-                winTeam = teamB;
+                winTeam.AddRange(teamB);
 
             if (ev.Player == kingB)
-                winTeam = teamA;
+                winTeam.AddRange(teamA);
+
+            Round.IsLocked = false;
+
+            foreach (var loser in Player.List.Where(x => !winTeam.Contains(x) && x.IsAlive))
+                loser.Kill("당신은 킹을 지키지 못했군요..");
 
             Timing.RunCoroutine(Tools.SetWinner(winTeam, 1));
+        }
 
-            foreach (var player in Player.List)
-            {
-                player.AddBroadcast(20, $"{(winTeam == teamA ? "A" : "B")}팀 승리!");
-            }
+        void OnDroppingItem(DroppingItemEventArgs ev)
+        {
+            ev.IsAllowed = false;
+        }
+
+        void OnSearchingPickup(SearchingPickupEventArgs ev)
+        {
+            ev.IsAllowed = false;
         }
 
         void OnResurrecting(ResurrectingEventArgs ev)
