@@ -1,15 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Target Name="DebugPaths" BeforeTargets="ResolveReferences">
-        <Message Text="SteamDirRaw=|$(SteamDirRaw)|" Importance="high"/>
-        <Message Text="SteamDir=|$(SteamDir)|" Importance="high"/>
-        <Message Text="SLDir=|$(SLDir)|" Importance="high"/>
-    </Target>
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
     <PropertyGroup>
         <SteamDirRaw>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\Software\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</SteamDirRaw>
         <SteamDir>$([System.String]::Copy($(SteamDirRaw)).Replace('/', '\').Trim())</SteamDir>
-        <!-- SCP:SL Dedicated Server 경로 -->
         <SLDir>$(SteamDir)\steamapps\common\SCP Secret Laboratory Dedicated Server</SLDir>
     </PropertyGroup>
     <PropertyGroup>
