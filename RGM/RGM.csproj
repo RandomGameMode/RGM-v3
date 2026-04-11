@@ -1,801 +1,812 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <LangVersion>12.0</LangVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RGM</RootNamespace>
-    <AssemblyName>RGM</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PreferNativeArm64>true</PreferNativeArm64>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PreferNativeArm64>true</PreferNativeArm64>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <WarningLevel>3</WarningLevel>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>12.0</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <PreferNativeArm64>true</PreferNativeArm64>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>12.0</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <PreferNativeArm64>true</PreferNativeArm64>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="API\Databases\Datas.cs" />
-    <Compile Include="API\Features\AudioManager.cs" />
-    <Compile Include="API\Features\ChatManager.cs" />
-    <Compile Include="API\Features\ServerManager.cs" />
-    <Compile Include="API\Features\RoomReplacer.cs" />
-    <Compile Include="API\Features\TranslationManager.cs" />
-    <Compile Include="API\Features\HintManager.cs" />
-    <Compile Include="API\Features\PickupMachineManager.cs" />
-    <Compile Include="API\Features\PlayerManager.cs" />
-    <Compile Include="API\Features\Tools.cs" />
-    <Compile Include="API\Databases\Translations.cs" />
-    <Compile Include="API\Interfaces\SettingInfo.cs" />
-    <Compile Include="API\Interfaces\Product.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\BugVote.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Emotion.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Link.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyIcon.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\CandyParty.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\ToolGun.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Pet.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyBadge.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyCustom.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplySpawnEffect.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyKillEffect.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Chat.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\GetModeDescription.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyPaint.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\Buy.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\PlayerInfo.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Report.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\ScpList.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Suicide.cs" />
-    <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\Use.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Event.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\PlayAudio.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Translator.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Suggest.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\PrintPos.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Warn.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Badge.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Item.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Icon.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerInfo.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerExp.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\DailyCheck.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SpawnEffect.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerRC.cs" />
-    <Compile Include="RGM\EventArgs\MEREvents.cs" />
-    <Compile Include="RGM\EventArgs\Scp\Scp1509Events.cs" />
-    <Compile Include="RGM\IEnumerators\LobbyIEnumerator.cs" />
-    <Compile Include="RGM\IEnumerators\ServerIEnumerator.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Custom.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\KillEffect.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Develop.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\GetPlayerInfo.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\ManageModes.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Paint.cs" />
-    <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerCash.cs" />
-    <Compile Include="RGM\Configs\Config.cs" />
-    <Compile Include="RGM\Configs\Notions.cs" />
-    <Compile Include="RGM\Configs\Tips.cs" />
-    <Compile Include="Donator\Main.cs" />
-    <Compile Include="API\Components\BallComponent.cs" />
-    <Compile Include="API\Features\FileManager.cs" />
-    <Compile Include="API\Components\TagComponent.cs" />
-    <Compile Include="API\Interfaces\PlayerInfo.cs" />
-    <Compile Include="API\Interfaces\PlayerReport.cs" />
-    <Compile Include="Interfaces.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\D계급\또수코인.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\D계급\전력_질주.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049\집결.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049\걸작.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049_2\유대.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049_2\강펀치.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_079\Brake.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_079\Fix.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_096\아드레날린.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_096\분노조절문제.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_106\참호.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_106\비타민_C.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_173\부드럽고_따뜻한_호박_고구마.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_173\엇박자.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_3114\외골격.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_3114\트릭.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_939\유독성_가스.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_939\목표를_포착했다.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\과학자\호신용_후추_스프레이.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\과학자\비브라늄.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\구미호\용도_외_사용금지.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\구미호\몰래_챙겨온_초콜릿.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\반란\연결_확인.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\반란\스펀지.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\시설_경비\이중_탄창.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\시설_경비\구보.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\튜토리얼\변칙성_이동기.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\튜토리얼\프로그램.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\효율.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\치유.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\방어.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\공격.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\속도.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\D계급\강렬한_의지.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\D계급\밤눈.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049\사신.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049\자원봉사자.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049\장의사.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049_2\요리사.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049_2\광기.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_079\Mute.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_079\Upgrade.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_079\Install.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_096\날카로움_5.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_096\본능.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_106\가벼운_주머니.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_106\23분_카레.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_173\피규어.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_173\좋아_자연스러웠어.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_3114\단백질.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_3114\살점은_나의_힘.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_939\흉내쟁이.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_939\암살_조장.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\과학자\지문_인식.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\과학자\선임_연구원.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\구미호\조직.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\구미호\베테랑.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\반란\송수신_해킹.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\반란\방독면.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\시설_경비\변칙_감지.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\시설_경비\위기_감지.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\튜토리얼\선천적_체질.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\튜토리얼\예능.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankBattle.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankInfo.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankSetting.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\RankAbility.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Classes\TFTManager.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Commands\ClientCommands\basicfeatures\Reroll.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Commands\ClientCommands\basicfeatures\Select.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\AddTFTAbility.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\ShowHint.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\StartSelect.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\MapEvents.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\MEREvents.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\PlayerEvents.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\Scp\Scp096Events.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\Scp\Scp3114Events.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\Scp\Scp330Events.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\ServerEvents.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\EventArgs\WarheadEvents.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\IEnumerators\Base.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTSetting.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTBattle.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddDefense2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddHealth2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddJump2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddPower2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddQuick2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddSpeed2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\QuickJudgement.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\AdhesivePlaster.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Ambush.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\AmmoBox.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\AntiScp207.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Armory.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\IllegalWeapon.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Peace.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Scp1853.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Scp207.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Seed2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Survivor.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Vampire.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Scp\FindLocation.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp049\Call.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp049\GoodSense.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\AutoTesla.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\BlackoutZone.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\Charger2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\Generator2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\ResolveProblem.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\RoomLockdown.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Charge.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Enrage.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Enraging.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\OutSider.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Seer.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\StarTearing.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp106\Capture.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp106\Swamp.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp173\Blink.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp173\Mirage.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp173\Scare.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp3114\Disguise.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp3114\Half.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp939\AmnesticCloud.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp939\Attack.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp939\Mimicry.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddDefense3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddHealth3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddJump3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddPower3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddQuick3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddSpeed3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Diver.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Fortunate.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Ghost.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Adventure.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Armory2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\CandyAddict.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\DevilContract.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Gambler.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Pandora.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Smoke.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Scp\TestSubject.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp049\BestDoctor.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\CameraFlash.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\Generator3.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\OverPower.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\PingRemote.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\ResolveProblem2.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\RestArea.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\Shutdown.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp096\RoaringSound.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddDefense1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddHealth1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddJump1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddPower1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddQuick1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddSpeed1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\BomberMan.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\TransparentCloak.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\InventoryUpgrade.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\Kick.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\Miniaturization.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\RemoteSteal.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\Seed.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\TrickorTreat.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\AirStrike.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Charger.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Freedom.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Generator1.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\JustPrice.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Overload.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Repair.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\SystemHacking.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbility.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\Variables\Base.cs" />
-    <Compile Include="RGM\Modes\Lock\Rank\Rank.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Marshmellow.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Scp1509.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\CandyPower.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Hammer.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Rosehip.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Unlimited.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\RandomCandy.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\CandyBag.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\DobbyIsFree.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Flamingo\MiniFactory.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\ABattle.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\ABattleEventHandler.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\BackedUp.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\ColdStew.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\EndOfGraveRobbery.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\NoAFK.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\Teleported.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\TestFailure.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\UsedPingHook.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\UsedSnakeHandRadio.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Blink.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\AntiScp207.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\FoodResearcher.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Scp127.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\A-Sync Research.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\AimHack.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp999.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp966.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp457.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp035.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp008.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\BALLISTAEM3.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\KingsColor.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\ToolGun.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Rabbit.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Clone.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Disguise.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Diver.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\EpicTransition.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\ExtremePoison.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\ForwardLooking.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Gambler.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\GhostRule.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\GraveRobber.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\LuckyVicky.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\MadScientist.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Priest.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\RandomChest.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\RepairMan.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Scp1344.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\SuicideBomber.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\SuperStar.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Survivor.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\TerroristRemains.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\CandyAddict.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\CataclysmGenerator.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\FlashLight.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\KillStreak.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\LavaChicken.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\LegendTransition.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Magician.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Psychics.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\RandomPackage.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Reflector.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scream.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\SnakeHandRadio.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\SpeedWagon.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\WarGod.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\BombGun.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\DimensionThief.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\EyeMan.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\FlameThrower.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Joker.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Noclip.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\RocketLauncher.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Spirit.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\DopamineReleased.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\ExpiredInsurance.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\EpicTransitionSuccess.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\LegendTransitionSuccess.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\EpicTransitionFailure.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\LegendTransitionFailure.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\RareTransitionFailure.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\RareTransitionSuccess.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\TestSuccess.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\UsedAdhesivePlaster.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Agility.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Bodyback.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\BulletSupply.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Dopamine.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Milk.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Escape.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Evolution.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\FindLocation.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Friendship.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\InfinityGun.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\HealGun.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Insurance.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Kick.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Lucky.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Purification.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Rainbow.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\RandomBox.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\ReRoll.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Rush.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Sneak.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\StaminaReplenishment.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Supply.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\SuspiciousStew.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Swift.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Test.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Torch.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Training.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Exchange.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Workout.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\AdhesivePlaster.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Alchemy.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Ambush.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\BomberMan.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Contract.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Dnd.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Gnome.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\GrapplingHook.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Hypass.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Martyrdom.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Panacea.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\PhysicalStrengthening.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\RareTransition.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Salamandra.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\SpaceTravel.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\SteelShell.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Steroid.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\StopWatch.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Sylph.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Teleportation.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\TransparentCloak.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Tripleaxel.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Undine.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Upgrade.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Vampire.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\OrganicMilk.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\WeaponExpert.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\AFK.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Assassin.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\BlackMarket.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\BombParty.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Druid.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\DuplicateFate.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\FourMajorExercises.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Glory.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Gman.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Loser.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\RandomCollection.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Rich1.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Rich2.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\SuicideSquad.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\SurvivalExpert.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Vampire.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Winner.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\CHI\BagOfChaos.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\CHI\ChaosOfChaos.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\CHI\TouchOfChaos.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\IllegalWeapon.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\Larceny.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\SeedsOfCHI.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\Trespassing.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\HealthCenterStaff.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\IndustrialAccidentInsurance.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\ManagerialObligationPerson.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\CollectiveIntelligence.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\MedicalOfficer.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\QuarantineObligation.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\Radar.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scientist\05.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scientist\EngineeringMajor.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scientist\SeedsOfMTF.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Confusion.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Hurger.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Infection.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Meals.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\CompetentDoctor.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\Death.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\MadDoctor.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\Proficiency.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\CameraFlash.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\AirStrike.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\CallScp.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Freedom.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\JustPrice.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Lockdown.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\MobileStrikeForce.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Overclocking.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\OverCurrent.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Overwhelming.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\AutoTesla.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PingHook.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PingRemote.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PortableCharger.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PowerAbsorption.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\RandomFunction.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Repair.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\RestArea.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Shutdown.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\StartWarhead.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\CASSIE.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\SystemHacking.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\CantManageAnger.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Enemy.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Rage.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Seer.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Outsider.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\StarTearing.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp106\HurtingPrey.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp106\Recovery.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp106\StickySwamp.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp173\Aberration.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp173\Fear.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp173\Mirage.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\DoraemonPocket.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\Showmanship.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\HalfBlock.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\SkilledAssassin.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\AgileHuntingTool.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\HugMe.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\NoEyes.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\Minic.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Tutorial\Researcher.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Tutorial\ThirdForce.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Tutorial\Tongue.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Ability.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Commands\ClientCommands\GetExtraModeDescription.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Commands\ClientCommands\CASSIE.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Commands\RemoteAdminCommands\AddAbility.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Commands\ClientCommands\Select.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Commands\RemoteAdminCommands\AddExtraMode.cs" />
-    <Compile Include="RGM\Modes\Plus\ABattle\Variables\ServerManagers.cs" />
-    <Compile Include="RGM\Modes\Plus\AdditionalWave\AdditionalWave.cs" />
-    <Compile Include="RGM\Modes\Plus\Ascension\Ascension.cs" />
-    <Compile Include="RGM\Modes\Plus\Blackout\Blackout.cs" />
-    <Compile Include="RGM\Modes\Plus\Curse\Curse.cs" />
-    <Compile Include="RGM\Modes\Plus\Blessing\Blessing.cs" />
-    <Compile Include="RGM\Modes\Plus\BomberMan\BomberMan.cs" />
-    <Compile Include="RGM\Modes\Plus\Clairvoyance\Clairvoyance.cs" />
-    <Compile Include="RGM\Modes\Plus\Disguise\Disguise.cs" />
-    <Compile Include="RGM\Modes\Plus\DogFight\DogFight.cs" />
-    <Compile Include="RGM\Modes\Plus\Ghost\Ghost.cs" />
-    <Compile Include="RGM\Modes\Plus\GrandBow\GrandBow.cs" />
-    <Compile Include="RGM\Modes\Plus\ChupaChups\ChupaChups.cs" />
-    <Compile Include="RGM\Modes\Plus\Doppelganger\Doppelganger.cs" />
-    <Compile Include="RGM\Modes\Plus\RandomBlockMode\RandomBlockMode.cs" />
-    <Compile Include="RGM\Modes\Plus\SitDown\SitDown.cs" />
-    <Compile Include="RGM\Modes\Plus\Radio\Radio.cs" />
-    <Compile Include="RGM\Modes\Plus\PaperMan\PaperMan.cs" />
-    <Compile Include="RGM\Modes\Plus\RandomEffect\RandomEffect.cs" />
-    <Compile Include="RGM\Modes\Plus\RandomSize\RandomSize.cs" />
-    <Compile Include="RGM\Modes\Plus\Silent\Silent.cs" />
-    <Compile Include="RGM\Modes\Plus\Moon\Moon.cs" />
-    <Compile Include="RGM\Modes\Plus\Subclass\NonePlayer\NonePlayer.cs" />
-    <Compile Include="RGM\Modes\Plus\Subclass\Pet\Capybara.cs" />
-    <Compile Include="RGM\Modes\Plus\Subclass\Steve\Steve.cs" />
-    <Compile Include="RGM\Modes\Plus\TripleAxel\TripleAxel.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\AddScp.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp005\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp005\Scp005.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp1162\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp1162\Scp1162.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp966\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp966\Scp966.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp035\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp035\Scp035.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp294\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp294\Scp294.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp457\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp457\Scp457.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp008\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp008\Scp008.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp999\Commands.cs" />
-    <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp999\Scp999.cs" />
-    <Compile Include="RGM\Modes\Set\Agar\Agar.cs" />
-    <Compile Include="RGM\Modes\Set\Alone\Alone.cs" />
-    <Compile Include="RGM\Modes\Set\BombParty\BombParty.cs" />
-    <Compile Include="RGM\Modes\Set\Chess\Chess.cs" />
-    <Compile Include="RGM\Modes\Set\Cell\Cell.cs" />
-    <Compile Include="RGM\Modes\Plus\Collector\Collector.cs" />
-    <Compile Include="RGM\Modes\Set\ChangedFate\ChangedFate.cs" />
-    <Compile Include="RGM\Modes\Set\DeadLine\DeadLine.cs" />
-    <Compile Include="RGM\Modes\Plus\Distancing\Distancing.cs" />
-    <Compile Include="RGM\Modes\Set\Develop\Develop.cs" />
-    <Compile Include="RGM\Modes\Set\DoubleUp\DoubleUp.cs" />
-    <Compile Include="RGM\Modes\Set\FreeForAll\FreeForAll.cs" />
-    <Compile Include="RGM\Modes\Plus\FriendlyFire\FriendlyFire.cs" />
-    <Compile Include="RGM\Modes\Plus\Gamble\Gamble.cs" />
-    <Compile Include="RGM\Modes\Set\GGClub\GGClub.cs" />
-    <Compile Include="RGM\Modes\Set\GunGame\GunGame.cs" />
-    <Compile Include="RGM\Modes\Set\HideAndSeek\HideAndSeek.cs" />
-    <Compile Include="RGM\Modes\Set\PVE\PVE.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\Config.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\PlayerScoreManager.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeCommands.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeDisplayPatcher.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeEventHandler.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeGameMonitor.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeMarketSystem.cs" />
-    <Compile Include="RGM\Modes\Set\SnowBallFight\SnowBallFight.cs" />
-    <Compile Include="RGM\Modes\Set\Tag\Tag.cs" />
-    <Compile Include="RGM\Modes\Set\HIDE\HIDE.cs" />
-    <Compile Include="RGM\Modes\Set\HotPotato\HotPotato.cs" />
-    <Compile Include="RGM\Modes\Plus\JohnWick\JohnWick.cs" />
-    <Compile Include="RGM\Modes\Set\Infection\Infection.cs" />
-    <Compile Include="RGM\Modes\Set\Juggernaut\Juggernaut.cs" />
-    <Compile Include="RGM\Modes\Plus\KoreanSpeed\KoreanSpeed.cs" />
-    <Compile Include="RGM\Modes\Plus\Outlaw\Outlaw.cs" />
-    <Compile Include="RGM\Modes\Set\LastOne\LastOne.cs" />
-    <Compile Include="RGM\Modes\Set\MiniGames\MiniGames.cs" />
-    <Compile Include="RGM\Modes\Set\ClassSociety\ClassSociety.cs" />
-    <Compile Include="RGM\Modes\Set\Original\Original.cs" />
-    <Compile Include="RGM\Modes\Set\PickMeUp\PickMeUp.cs" />
-    <Compile Include="RGM\Modes\Set\PirateRoulette\PirateRoulette.cs" />
-    <Compile Include="RGM\Modes\Plus\RandomItem\RandomItem.cs" />
-    <Compile Include="RGM\Modes\Plus\RedLightGreenLight\RedLightGreenLight.cs" />
-    <Compile Include="RGM\Modes\Plus\RocketLauncher\RocketLauncher.cs" />
-    <Compile Include="RGM\Modes\Set\Run!\Run.cs" />
-    <Compile Include="RGM\Modes\Set\SCPRUSH\SCPRUSH.cs" />
-    <Compile Include="RGM\Modes\Plus\Siberia\Siberia.cs" />
-    <Compile Include="RGM\Modes\Plus\SoulMate\SoulMate.cs" />
-    <Compile Include="RGM\Modes\Set\Rescue05\Rescue05.cs" />
-    <Compile Include="RGM\Modes\Lock\RussianRoulette\RussianRoulette.cs" />
-    <Compile Include="RGM\Modes\Set\Snake\Snake.cs" />
-    <Compile Include="RGM\Modes\Set\SpeedRun\SpeedRun.cs" />
-    <Compile Include="RGM\Modes\Plus\Spirit\Spirit.cs" />
-    <Compile Include="RGM\Modes\Set\Spleef\Spleef.cs" />
-    <Compile Include="RGM\Modes\Plus\SuperStar\SuperStar.cs" />
-    <Compile Include="RGM\Modes\Set\TailCatcher\TailCatcher.cs" />
-    <Compile Include="RGM\Modes\Set\TeamMatch\TeamMatch.cs" />
-    <Compile Include="RGM\Modes\Set\Tomb\Tomb.cs" />
-    <Compile Include="RGM\Modes\Plus\TrickorTreat\TrickorTreat.cs" />
-    <Compile Include="RGM\Modes\Plus\Unlimited\Unlimited.cs" />
-    <Compile Include="RGM\Modes\Set\TTT\TTT.cs" />
-    <Compile Include="RGM\Modes\Set\WhereamI\WhereamI.cs" />
-    <Compile Include="RGM\Modes\Set\WhoamI1\WhoamI1.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RGM\EventArgs\PlayerEvents.cs" />
-    <Compile Include="RGM\EventArgs\Scp\Scp079Events.cs" />
-    <Compile Include="RGM\EventArgs\Scp\Scp244Events.cs" />
-    <Compile Include="RGM\EventArgs\Scp\Scp330Events.cs" />
-    <Compile Include="RGM\EventArgs\ServerEvents.cs" />
-    <Compile Include="RGM\EventArgs\WarheadEvents.cs" />
-    <Compile Include="RGM\Modes\Set\WhoamI2\WhoamI2.cs" />
-    <Compile Include="RGM\Modes\Lock\WitGame\WitGame.cs" />
-    <Compile Include="RGM\Patches\Wave.cs" />
-    <Compile Include="RGM\Patches\Broadcast.cs" />
-    <Compile Include="RGM\UserSettings\ServerSpecificSettings.cs" />
-    <Compile Include="RGM\Variables\Variables.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="AudioPlayerApi">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\dependencies\AudioPlayerApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Caress">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Caress.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandSystem.Core">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DiscordInteraction">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\dependencies\DiscordInteraction.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\msnha\AppData\Roaming\SCP Secret Laboratory\LabAPI\dependencies\global\Exiled.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CreditTags, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\msnha\AppData\Roaming\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomItems, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\msnha\AppData\Roaming\EXILED\Plugins\Exiled.CustomItems.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomRoles, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\msnha\AppData\Roaming\EXILED\Plugins\Exiled.CustomRoles.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\msnha\AppData\Roaming\EXILED\Plugins\Exiled.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\msnha\AppData\Roaming\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
-    </Reference>
-    <Reference Include="HintServiceMeow-Exiled">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\HintServiceMeow-Exiled.dll</HintPath>
-    </Reference>
-    <Reference Include="LabApi, Version=1.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\LabApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SCPSL\14.1\SCPSL_Data\Managed\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Mirror">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="MultiBroadcast">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\MultiBroadcast.dll</HintPath>
-    </Reference>
-    <Reference Include="netstandard">
-      <HintPath>..\..\..\SCPSL\14.1\SCPSL_Data\Managed\netstandard.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\dependencies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NorthwoodLib">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\NorthwoodLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Pooling">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Pooling.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectMER">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\SCP Secret Laboratory\LabAPI\plugins\global\ProjectMER.dll</HintPath>
-    </Reference>
-    <Reference Include="PveExiled">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\dependencies\PveExiled.dll</HintPath>
-    </Reference>
-    <Reference Include="SLPlayerRotation">
-      <HintPath>..\..\..\..\..\Users\pkj73\AppData\Roaming\EXILED\Plugins\dependencies\SLPlayerRotation.dll</HintPath>
-    </Reference>
-    <Reference Include="Snake">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Snake.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet">
-      <HintPath>..\..\..\..\SCPSL\Latest\SCPSL_Data\Managed\YamlDotNet.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Target Name="DebugPaths" BeforeTargets="ResolveReferences">
+        <Message Text="SteamDirRaw=|$(SteamDirRaw)|" Importance="high"/>
+        <Message Text="SteamDir=|$(SteamDir)|" Importance="high"/>
+        <Message Text="SLDir=|$(SLDir)|" Importance="high"/>
+    </Target>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <SteamDirRaw>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\Software\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</SteamDirRaw>
+        <SteamDir>$([System.String]::Copy($(SteamDirRaw)).Replace('/', '\').Trim())</SteamDir>
+        <!-- SCP:SL Dedicated Server 경로 -->
+        <SLDir>$(SteamDir)\steamapps\common\SCP Secret Laboratory Dedicated Server</SLDir>
+    </PropertyGroup>
+    <PropertyGroup>
+        <LangVersion>12.0</LangVersion>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{DE4A6CC5-C16A-4E1D-9512-9CB02625B72B}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>RGM</RootNamespace>
+        <AssemblyName>RGM</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>3</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PreferNativeArm64>true</PreferNativeArm64>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PreferNativeArm64>true</PreferNativeArm64>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+        <DebugSymbols>true</DebugSymbols>
+        <OutputPath>bin\x64\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Optimize>true</Optimize>
+        <WarningLevel>3</WarningLevel>
+        <DebugType>full</DebugType>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>12.0</LangVersion>
+        <ErrorReport>prompt</ErrorReport>
+        <PreferNativeArm64>true</PreferNativeArm64>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+        <OutputPath>bin\x64\Release\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Optimize>true</Optimize>
+        <DebugType>pdbonly</DebugType>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>12.0</LangVersion>
+        <ErrorReport>prompt</ErrorReport>
+        <PreferNativeArm64>true</PreferNativeArm64>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="API\Databases\Datas.cs"/>
+        <Compile Include="API\Features\AudioManager.cs"/>
+        <Compile Include="API\Features\ChatManager.cs"/>
+        <Compile Include="API\Features\ServerManager.cs"/>
+        <Compile Include="API\Features\RoomReplacer.cs"/>
+        <Compile Include="API\Features\TranslationManager.cs"/>
+        <Compile Include="API\Features\HintManager.cs"/>
+        <Compile Include="API\Features\PickupMachineManager.cs"/>
+        <Compile Include="API\Features\PlayerManager.cs"/>
+        <Compile Include="API\Features\Tools.cs"/>
+        <Compile Include="API\Databases\Translations.cs"/>
+        <Compile Include="API\Interfaces\SettingInfo.cs"/>
+        <Compile Include="API\Interfaces\Product.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\BugVote.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Emotion.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Link.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyIcon.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\CandyParty.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\ToolGun.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Pet.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyBadge.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyCustom.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplySpawnEffect.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyKillEffect.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Chat.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\GetModeDescription.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\ApplyPaint.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\Buy.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\PlayerInfo.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Report.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\ScpList.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\BasicFeatures\Suicide.cs"/>
+        <Compile Include="RGM\Commands\ClientCommands\ShopFeatures\Use.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Event.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\PlayAudio.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Translator.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Suggest.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\PrintPos.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Warn.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Badge.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Item.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Icon.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerInfo.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerExp.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\DailyCheck.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SpawnEffect.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerRC.cs"/>
+        <Compile Include="RGM\EventArgs\MEREvents.cs"/>
+        <Compile Include="RGM\EventArgs\Scp\Scp1509Events.cs"/>
+        <Compile Include="RGM\IEnumerators\LobbyIEnumerator.cs"/>
+        <Compile Include="RGM\IEnumerators\ServerIEnumerator.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Custom.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\KillEffect.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\Develop.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\GetPlayerInfo.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\AdminFeatures\ManageModes.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Paint.cs"/>
+        <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerCash.cs"/>
+        <Compile Include="RGM\Configs\Config.cs"/>
+        <Compile Include="RGM\Configs\Notions.cs"/>
+        <Compile Include="RGM\Configs\Tips.cs"/>
+        <Compile Include="Donator\Main.cs"/>
+        <Compile Include="API\Components\BallComponent.cs"/>
+        <Compile Include="API\Features\FileManager.cs"/>
+        <Compile Include="API\Components\TagComponent.cs"/>
+        <Compile Include="API\Interfaces\PlayerInfo.cs"/>
+        <Compile Include="API\Interfaces\PlayerReport.cs"/>
+        <Compile Include="Interfaces.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\D계급\또수코인.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\D계급\전력_질주.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049\집결.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049\걸작.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049_2\유대.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_049_2\강펀치.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_079\Brake.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_079\Fix.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_096\아드레날린.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_096\분노조절문제.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_106\참호.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_106\비타민_C.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_173\부드럽고_따뜻한_호박_고구마.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_173\엇박자.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_3114\외골격.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_3114\트릭.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_939\유독성_가스.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\SCP_939\목표를_포착했다.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\과학자\호신용_후추_스프레이.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\과학자\비브라늄.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\구미호\용도_외_사용금지.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\구미호\몰래_챙겨온_초콜릿.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\반란\연결_확인.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\반란\스펀지.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\시설_경비\이중_탄창.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\시설_경비\구보.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\튜토리얼\변칙성_이동기.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\가젯\튜토리얼\프로그램.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\효율.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\치유.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\방어.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\공격.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\기어\속도.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\D계급\강렬한_의지.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\D계급\밤눈.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049\사신.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049\자원봉사자.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049\장의사.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049_2\요리사.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_049_2\광기.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_079\Mute.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_079\Upgrade.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_079\Install.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_096\날카로움_5.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_096\본능.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_106\가벼운_주머니.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_106\23분_카레.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_173\피규어.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_173\좋아_자연스러웠어.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_3114\단백질.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_3114\살점은_나의_힘.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_939\흉내쟁이.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\SCP_939\암살_조장.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\과학자\지문_인식.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\과학자\선임_연구원.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\구미호\조직.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\구미호\베테랑.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\반란\송수신_해킹.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\반란\방독면.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\시설_경비\변칙_감지.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\시설_경비\위기_감지.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\튜토리얼\선천적_체질.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbilityList\변칙성\튜토리얼\예능.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankBattle.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankInfo.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankSetting.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\RankAbility.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Classes\TFTManager.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Commands\ClientCommands\basicfeatures\Reroll.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Commands\ClientCommands\basicfeatures\Select.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\AddTFTAbility.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\ShowHint.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\StartSelect.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\MapEvents.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\MEREvents.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\PlayerEvents.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\Scp\Scp096Events.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\Scp\Scp3114Events.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\Scp\Scp330Events.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\ServerEvents.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\EventArgs\WarheadEvents.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\IEnumerators\Base.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTSetting.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTBattle.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddDefense2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddHealth2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddJump2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddPower2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddQuick2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\AddSpeed2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\QuickJudgement.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\AdhesivePlaster.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Ambush.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\AmmoBox.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\AntiScp207.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Armory.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\IllegalWeapon.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Peace.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Scp1853.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Scp207.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Seed2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Survivor.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Vampire.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Scp\FindLocation.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp049\Call.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp049\GoodSense.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\AutoTesla.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\BlackoutZone.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\Charger2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\Generator2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\ResolveProblem.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp079\RoomLockdown.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Charge.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Enrage.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Enraging.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\OutSider.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\Seer.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp096\StarTearing.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp106\Capture.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp106\Swamp.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp173\Blink.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp173\Mirage.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp173\Scare.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp3114\Disguise.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp3114\Half.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp939\AmnesticCloud.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp939\Attack.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Special\Scp939\Mimicry.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddDefense3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddHealth3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddJump3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddPower3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddQuick3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddSpeed3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Diver.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Fortunate.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Ghost.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Adventure.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Armory2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\CandyAddict.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\DevilContract.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Gambler.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Pandora.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Smoke.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Scp\TestSubject.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp049\BestDoctor.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\CameraFlash.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\Generator3.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\OverPower.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\PingRemote.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\ResolveProblem2.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\RestArea.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp079\Shutdown.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp096\RoaringSound.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddDefense1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddHealth1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddJump1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddPower1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddQuick1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\AddSpeed1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\BomberMan.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\All\TransparentCloak.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\InventoryUpgrade.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\Kick.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\Miniaturization.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\RemoteSteal.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\Seed.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Human\TrickorTreat.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\AirStrike.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Charger.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Freedom.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Generator1.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\JustPrice.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Overload.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\Repair.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Safe\Special\Scp079\SystemHacking.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbility.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\Variables\Base.cs"/>
+        <Compile Include="RGM\Modes\Lock\Rank\Rank.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Marshmellow.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Scp1509.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\CandyPower.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Hammer.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Rosehip.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Unlimited.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\RandomCandy.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\CandyBag.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\DobbyIsFree.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Flamingo\MiniFactory.cs"/>
+        <Compile Include="RGM\Modes\Lock\TFT\TFT.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\ABattle.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\ABattleEventHandler.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\BackedUp.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\ColdStew.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\EndOfGraveRobbery.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\NoAFK.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\Teleported.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\TestFailure.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\UsedPingHook.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\UsedSnakeHandRadio.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Blink.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\AntiScp207.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\FoodResearcher.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Scp127.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\A-Sync Research.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\AimHack.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp999.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp966.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp457.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp035.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scp008.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\BALLISTAEM3.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\KingsColor.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\ToolGun.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Rabbit.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Clone.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Disguise.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Diver.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\EpicTransition.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\ExtremePoison.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\ForwardLooking.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Gambler.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\GhostRule.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\GraveRobber.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\LuckyVicky.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\MadScientist.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Priest.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\RandomChest.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\RepairMan.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Scp1344.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\SuicideBomber.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\SuperStar.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\Survivor.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\TerroristRemains.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\CandyAddict.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\CataclysmGenerator.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\FlashLight.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\KillStreak.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\LavaChicken.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\LegendTransition.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Magician.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Psychics.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\RandomPackage.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Reflector.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\Scream.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\SnakeHandRadio.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\SpeedWagon.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\WarGod.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\BombGun.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\DimensionThief.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\EyeMan.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Legend\FlameThrower.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Joker.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Noclip.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\RocketLauncher.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Mythic\Spirit.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\DopamineReleased.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\ExpiredInsurance.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\EpicTransitionSuccess.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\LegendTransitionSuccess.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\EpicTransitionFailure.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\LegendTransitionFailure.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\RareTransitionFailure.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\RareTransitionSuccess.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\TestSuccess.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Dummy\UsedAdhesivePlaster.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Agility.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Bodyback.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\BulletSupply.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Dopamine.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Milk.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Escape.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Evolution.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\FindLocation.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Friendship.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Epic\InfinityGun.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\HealGun.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Insurance.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Kick.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Lucky.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Purification.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Rainbow.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\RandomBox.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\ReRoll.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Rush.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Sneak.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\StaminaReplenishment.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Supply.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\SuspiciousStew.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Swift.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Test.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Torch.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Training.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Exchange.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Normal\Workout.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\AdhesivePlaster.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Alchemy.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Ambush.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\BomberMan.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Contract.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Dnd.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Gnome.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\GrapplingHook.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Hypass.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Martyrdom.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Panacea.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\PhysicalStrengthening.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\RareTransition.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Salamandra.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\SpaceTravel.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\SteelShell.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Steroid.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\StopWatch.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Sylph.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Teleportation.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\TransparentCloak.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Tripleaxel.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Undine.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Upgrade.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\Vampire.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\OrganicMilk.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Rare\WeaponExpert.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\AFK.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Assassin.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\BlackMarket.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\BombParty.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Druid.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\DuplicateFate.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\FourMajorExercises.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Glory.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Gman.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Loser.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\RandomCollection.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Rich1.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Rich2.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\SuicideSquad.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\SurvivalExpert.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Vampire.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Synergy\Winner.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\CHI\BagOfChaos.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\CHI\ChaosOfChaos.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\CHI\TouchOfChaos.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\IllegalWeapon.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\Larceny.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\SeedsOfCHI.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\ClassD\Trespassing.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\HealthCenterStaff.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\IndustrialAccidentInsurance.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\ManagerialObligationPerson.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\CollectiveIntelligence.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\MedicalOfficer.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\QuarantineObligation.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\NTF\Radar.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scientist\05.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scientist\EngineeringMajor.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scientist\SeedsOfMTF.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Confusion.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Hurger.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Infection.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp0492\Meals.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\CompetentDoctor.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\Death.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\MadDoctor.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp049\Proficiency.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\CameraFlash.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\AirStrike.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\CallScp.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Freedom.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\JustPrice.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Lockdown.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\MobileStrikeForce.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Overclocking.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\OverCurrent.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Overwhelming.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\AutoTesla.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PingHook.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PingRemote.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PortableCharger.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\PowerAbsorption.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\RandomFunction.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Repair.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\RestArea.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\Shutdown.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\StartWarhead.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\CASSIE.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp079\SystemHacking.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\CantManageAnger.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Enemy.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Rage.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Seer.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\Outsider.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp096\StarTearing.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp106\HurtingPrey.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp106\Recovery.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp106\StickySwamp.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp173\Aberration.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp173\Fear.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp173\Mirage.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\DoraemonPocket.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\Showmanship.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\HalfBlock.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp3114\SkilledAssassin.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\AgileHuntingTool.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\HugMe.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\NoEyes.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Scp939\Minic.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Tutorial\Researcher.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Tutorial\ThirdForce.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Abilities\Unique\Tutorial\Tongue.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Ability.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Commands\ClientCommands\GetExtraModeDescription.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Commands\ClientCommands\CASSIE.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Commands\RemoteAdminCommands\AddAbility.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Commands\ClientCommands\Select.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Commands\RemoteAdminCommands\AddExtraMode.cs"/>
+        <Compile Include="RGM\Modes\Plus\ABattle\Variables\ServerManagers.cs"/>
+        <Compile Include="RGM\Modes\Plus\AdditionalWave\AdditionalWave.cs"/>
+        <Compile Include="RGM\Modes\Plus\Ascension\Ascension.cs"/>
+        <Compile Include="RGM\Modes\Plus\Blackout\Blackout.cs"/>
+        <Compile Include="RGM\Modes\Plus\Curse\Curse.cs"/>
+        <Compile Include="RGM\Modes\Plus\Blessing\Blessing.cs"/>
+        <Compile Include="RGM\Modes\Plus\BomberMan\BomberMan.cs"/>
+        <Compile Include="RGM\Modes\Plus\Clairvoyance\Clairvoyance.cs"/>
+        <Compile Include="RGM\Modes\Plus\Disguise\Disguise.cs"/>
+        <Compile Include="RGM\Modes\Plus\DogFight\DogFight.cs"/>
+        <Compile Include="RGM\Modes\Plus\Ghost\Ghost.cs"/>
+        <Compile Include="RGM\Modes\Plus\GrandBow\GrandBow.cs"/>
+        <Compile Include="RGM\Modes\Plus\ChupaChups\ChupaChups.cs"/>
+        <Compile Include="RGM\Modes\Plus\Doppelganger\Doppelganger.cs"/>
+        <Compile Include="RGM\Modes\Plus\RandomBlockMode\RandomBlockMode.cs"/>
+        <Compile Include="RGM\Modes\Plus\SitDown\SitDown.cs"/>
+        <Compile Include="RGM\Modes\Plus\Radio\Radio.cs"/>
+        <Compile Include="RGM\Modes\Plus\PaperMan\PaperMan.cs"/>
+        <Compile Include="RGM\Modes\Plus\RandomEffect\RandomEffect.cs"/>
+        <Compile Include="RGM\Modes\Plus\RandomSize\RandomSize.cs"/>
+        <Compile Include="RGM\Modes\Plus\Silent\Silent.cs"/>
+        <Compile Include="RGM\Modes\Plus\Moon\Moon.cs"/>
+        <Compile Include="RGM\Modes\Plus\Subclass\NonePlayer\NonePlayer.cs"/>
+        <Compile Include="RGM\Modes\Plus\Subclass\Pet\Capybara.cs"/>
+        <Compile Include="RGM\Modes\Plus\Subclass\Steve\Steve.cs"/>
+        <Compile Include="RGM\Modes\Plus\TripleAxel\TripleAxel.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\AddScp.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp005\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp005\Scp005.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp1162\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp1162\Scp1162.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp966\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp966\Scp966.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp035\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp035\Scp035.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp294\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp294\Scp294.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp457\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp457\Scp457.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp008\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp008\Scp008.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp999\Commands.cs"/>
+        <Compile Include="RGM\Modes\Set\AddScp\Scps\Scp999\Scp999.cs"/>
+        <Compile Include="RGM\Modes\Set\Agar\Agar.cs"/>
+        <Compile Include="RGM\Modes\Set\Alone\Alone.cs"/>
+        <Compile Include="RGM\Modes\Set\BombParty\BombParty.cs"/>
+        <Compile Include="RGM\Modes\Set\Chess\Chess.cs"/>
+        <Compile Include="RGM\Modes\Set\Cell\Cell.cs"/>
+        <Compile Include="RGM\Modes\Plus\Collector\Collector.cs"/>
+        <Compile Include="RGM\Modes\Set\ChangedFate\ChangedFate.cs"/>
+        <Compile Include="RGM\Modes\Set\DeadLine\DeadLine.cs"/>
+        <Compile Include="RGM\Modes\Plus\Distancing\Distancing.cs"/>
+        <Compile Include="RGM\Modes\Set\Develop\Develop.cs"/>
+        <Compile Include="RGM\Modes\Set\DoubleUp\DoubleUp.cs"/>
+        <Compile Include="RGM\Modes\Set\FreeForAll\FreeForAll.cs"/>
+        <Compile Include="RGM\Modes\Plus\FriendlyFire\FriendlyFire.cs"/>
+        <Compile Include="RGM\Modes\Plus\Gamble\Gamble.cs"/>
+        <Compile Include="RGM\Modes\Set\GGClub\GGClub.cs"/>
+        <Compile Include="RGM\Modes\Set\GunGame\GunGame.cs"/>
+        <Compile Include="RGM\Modes\Set\HideAndSeek\HideAndSeek.cs"/>
+        <Compile Include="RGM\Modes\Set\PVE\PVE.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\Config.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\PlayerScoreManager.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeCommands.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeDisplayPatcher.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeEventHandler.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeGameMonitor.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\SnakeSystem\SnakeMarketSystem.cs"/>
+        <Compile Include="RGM\Modes\Set\SnowBallFight\SnowBallFight.cs"/>
+        <Compile Include="RGM\Modes\Set\Tag\Tag.cs"/>
+        <Compile Include="RGM\Modes\Set\HIDE\HIDE.cs"/>
+        <Compile Include="RGM\Modes\Set\HotPotato\HotPotato.cs"/>
+        <Compile Include="RGM\Modes\Plus\JohnWick\JohnWick.cs"/>
+        <Compile Include="RGM\Modes\Set\Infection\Infection.cs"/>
+        <Compile Include="RGM\Modes\Set\Juggernaut\Juggernaut.cs"/>
+        <Compile Include="RGM\Modes\Plus\KoreanSpeed\KoreanSpeed.cs"/>
+        <Compile Include="RGM\Modes\Plus\Outlaw\Outlaw.cs"/>
+        <Compile Include="RGM\Modes\Set\LastOne\LastOne.cs"/>
+        <Compile Include="RGM\Modes\Set\MiniGames\MiniGames.cs"/>
+        <Compile Include="RGM\Modes\Set\ClassSociety\ClassSociety.cs"/>
+        <Compile Include="RGM\Modes\Set\Original\Original.cs"/>
+        <Compile Include="RGM\Modes\Set\PickMeUp\PickMeUp.cs"/>
+        <Compile Include="RGM\Modes\Set\PirateRoulette\PirateRoulette.cs"/>
+        <Compile Include="RGM\Modes\Plus\RandomItem\RandomItem.cs"/>
+        <Compile Include="RGM\Modes\Plus\RedLightGreenLight\RedLightGreenLight.cs"/>
+        <Compile Include="RGM\Modes\Plus\RocketLauncher\RocketLauncher.cs"/>
+        <Compile Include="RGM\Modes\Set\Run!\Run.cs"/>
+        <Compile Include="RGM\Modes\Set\SCPRUSH\SCPRUSH.cs"/>
+        <Compile Include="RGM\Modes\Plus\Siberia\Siberia.cs"/>
+        <Compile Include="RGM\Modes\Plus\SoulMate\SoulMate.cs"/>
+        <Compile Include="RGM\Modes\Set\Rescue05\Rescue05.cs"/>
+        <Compile Include="RGM\Modes\Lock\RussianRoulette\RussianRoulette.cs"/>
+        <Compile Include="RGM\Modes\Set\Snake\Snake.cs"/>
+        <Compile Include="RGM\Modes\Set\SpeedRun\SpeedRun.cs"/>
+        <Compile Include="RGM\Modes\Plus\Spirit\Spirit.cs"/>
+        <Compile Include="RGM\Modes\Set\Spleef\Spleef.cs"/>
+        <Compile Include="RGM\Modes\Plus\SuperStar\SuperStar.cs"/>
+        <Compile Include="RGM\Modes\Set\TailCatcher\TailCatcher.cs"/>
+        <Compile Include="RGM\Modes\Set\TeamMatch\TeamMatch.cs"/>
+        <Compile Include="RGM\Modes\Set\Tomb\Tomb.cs"/>
+        <Compile Include="RGM\Modes\Plus\TrickorTreat\TrickorTreat.cs"/>
+        <Compile Include="RGM\Modes\Plus\Unlimited\Unlimited.cs"/>
+        <Compile Include="RGM\Modes\Set\TTT\TTT.cs"/>
+        <Compile Include="RGM\Modes\Set\WhereamI\WhereamI.cs"/>
+        <Compile Include="RGM\Modes\Set\WhoamI1\WhoamI1.cs"/>
+        <Compile Include="Plugin.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="RGM\EventArgs\PlayerEvents.cs"/>
+        <Compile Include="RGM\EventArgs\Scp\Scp079Events.cs"/>
+        <Compile Include="RGM\EventArgs\Scp\Scp244Events.cs"/>
+        <Compile Include="RGM\EventArgs\Scp\Scp330Events.cs"/>
+        <Compile Include="RGM\EventArgs\ServerEvents.cs"/>
+        <Compile Include="RGM\EventArgs\WarheadEvents.cs"/>
+        <Compile Include="RGM\Modes\Set\WhoamI2\WhoamI2.cs"/>
+        <Compile Include="RGM\Modes\Lock\WitGame\WitGame.cs"/>
+        <Compile Include="RGM\Patches\Wave.cs"/>
+        <Compile Include="RGM\Patches\Broadcast.cs"/>
+        <Compile Include="RGM\UserSettings\ServerSpecificSettings.cs"/>
+        <Compile Include="RGM\Variables\Variables.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="app.config"/>
+        <None Include="packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <WCFMetadata Include="Connected Services\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>$(APPDATA)\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="AudioPlayerApi">
+            <HintPath>$(APPDATA)\EXILED\Plugins\dependencies\AudioPlayerApi.dll</HintPath>
+        </Reference>
+        <Reference Include="Caress">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Caress.dll</HintPath>
+        </Reference>
+        <Reference Include="CommandSystem.Core">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="DiscordInteraction">
+            <HintPath>$(APPDATA)\EXILED\Plugins\dependencies\DiscordInteraction.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.API, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(APPDATA)\SCP Secret Laboratory\LabAPI\dependencies\global\Exiled.API.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CreditTags, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(APPDATA)\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomItems, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(APPDATA)\EXILED\Plugins\Exiled.CustomItems.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomRoles, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(APPDATA)\EXILED\Plugins\Exiled.CustomRoles.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Events, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(APPDATA)\EXILED\Plugins\Exiled.Events.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Permissions, Version=9.13.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(APPDATA)\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
+        </Reference>
+        <Reference Include="HintServiceMeow-Exiled">
+            <HintPath>$(APPDATA)\EXILED\Plugins\HintServiceMeow-Exiled.dll</HintPath>
+        </Reference>
+        <Reference Include="LabApi, Version=1.1.1.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\LabApi.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Mirror.dll</HintPath>
+        </Reference>
+        <Reference Include="MultiBroadcast">
+            <HintPath>$(APPDATA)\EXILED\Plugins\MultiBroadcast.dll</HintPath>
+        </Reference>
+        <Reference Include="netstandard">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\netstandard.dll</HintPath>
+        </Reference>
+        <Reference Include="Newtonsoft.Json">
+            <HintPath>$(APPDATA)\EXILED\Plugins\dependencies\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="NorthwoodLib">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\NorthwoodLib.dll</HintPath>
+        </Reference>
+        <Reference Include="Pooling">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Pooling.dll</HintPath>
+        </Reference>
+        <Reference Include="ProjectMER">
+            <HintPath>$(APPDATA)\SCP Secret Laboratory\LabAPI\plugins\global\ProjectMER.dll</HintPath>
+        </Reference>
+        <Reference Include="PveExiled">
+            <HintPath>$(APPDATA)\EXILED\Plugins\dependencies\PveExiled.dll</HintPath>
+        </Reference>
+        <Reference Include="SLPlayerRotation">
+            <HintPath>$(APPDATA)\EXILED\Plugins\dependencies\SLPlayerRotation.dll</HintPath>
+        </Reference>
+        <Reference Include="Snake">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Snake.dll</HintPath>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="System.Windows.Forms"/>
+        <Reference Include="System.Xml"/>
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="Unity.TextMeshPro">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AudioModule">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ParticleSystemModule">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsModule">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+        </Reference>
+        <Reference Include="YamlDotNet">
+            <HintPath>$(SLDir)\SCPSL_Data\Managed\YamlDotNet.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
