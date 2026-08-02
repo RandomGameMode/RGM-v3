@@ -17,7 +17,7 @@ using Exiled.API.Features.Roles;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Legend;
 
-[Ability("감시 카메라", "자신이 보는 대상에게 피해를 입힙니다.(0.1초당 1데미지)", AbilityCategory.Legend, AbilityType.LEGEND_SCP079_SECURITYCAMERA, RoleAbility.Scp079)]
+[Ability("감시 카메라", "자신이 보는 대상에게 피해를 입힙니다.(0.2초당 1데미지, 사거리 50)", AbilityCategory.Legend, AbilityType.LEGEND_SCP079_SECURITYCAMERA, RoleAbility.Scp079)]
 public class SecurityCamera : Ability
 {
     CoroutineHandle SecurityCameraHandle;
@@ -58,7 +58,7 @@ public class SecurityCamera : Ability
                 Log.Error($"SecurityCamera Error : {e}");
             }
 
-            yield return Timing.WaitForSeconds(0.1f);
+            yield return Timing.WaitForSeconds(0.2f);
         }
     }
 
@@ -69,7 +69,7 @@ public class SecurityCamera : Ability
 
         List<Player> TargetPlayers = new();
 
-        /*if (player.Role is Scp079Role scp079)
+        if (player.Role is Scp079Role scp079)
         {
             var cam = scp079.Base.CurrentCamera;
 
@@ -78,12 +78,12 @@ public class SecurityCamera : Ability
                 pos = cam.CameraPosition;
                 dir = cam.transform.forward;
             }
-        }*/
+        }
         
 
         foreach (var target in PlayerManager.List)
         {
-            if (Tools.IsLookingAt(player, target, 100f)) TargetPlayers.Add(target);
+            if (Tools.IsLookingAt(dir, pos, target, 50f)) TargetPlayers.Add(target);
         }
 
         return TargetPlayers;
