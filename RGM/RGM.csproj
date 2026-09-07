@@ -1012,6 +1012,7 @@
     <Folder Include="RGM\Modes\Plus\Store\StoreItems\Completed\" />
     <Folder Include="RGM\Modes\Plus\Store\StoreItems\Component\" />
     <Folder Include="RGM\Modes\Plus\Store\StoreItems\Prism\" />
+    <Folder Include="RGM\Modes\Set\TTT\Roles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

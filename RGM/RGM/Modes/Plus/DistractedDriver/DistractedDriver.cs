@@ -14,7 +14,7 @@ public class DistractedDriver : Mode
     public override string Name => "전방주시태만";
     public override string Description => "앞 좀 보고 다니세요!";
     public override string Detail => "모든 플레이어들은 아래를 쳐다보게됩니다.";
-    public override string Color => "#FF3333";
+    public override string Color => "FF3333";
     public override string Author => "Ragdoll";
     
     CoroutineHandle _onModeStarted;
