@@ -450,7 +450,7 @@ namespace RGM.Modes.PveExiledSystem
                     player.Position = playerSpawnPoint;
                     if (!waveConfig.IsSpecial)
                     {
-                        if (CurrentWave >= 6)
+                        if (CurrentWave >= 5)
                         {
                             player.AddItem(ItemType.GunFSP9);
                             player.AddItem(ItemType.Ammo9x19, 10);
