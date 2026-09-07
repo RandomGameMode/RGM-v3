@@ -3,7 +3,7 @@ using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
 
-namespace RGM.Modes.Abilities.Unique.CHI;
+namespace RGM.Modes.Abilities.Unique.CHI.Normal;
 
 [Ability("혼돈의 손길", "지급된 동전을 튕기면 보유한 능력을 전부 삭제합니다.", AbilityCategory.Normal, AbilityType.NORMAL_CHI_TOUCHOFCHAOS, RoleAbility.CHI)]
 public class TouchOfChaos : Ability

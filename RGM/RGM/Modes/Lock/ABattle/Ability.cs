@@ -277,7 +277,6 @@ public enum AbilityType
     DUMMY_LEGENDTRANSITIONFAILURE, // [더미] 상급 변이 실패
     DUMMY_USEDPINGHOOK, // [더미] 핑 갈?고리
     DUMMY_BACKEDUP, // [더미] 백업됨
-    DUMMY_ENDOFGRAVEROBBERY, // [더미] 도굴 끝!
     DUMMY_COLDSTEW, // [더미] 식은 스튜
     DUMMY_NOAFK, // [더미] 자리 다비움
     DUMMY_USEDSNAKEHANDRADIO, // [더미] 뱀의 손 수장
@@ -292,6 +291,7 @@ public enum AbilityType
     DUMMY_DONEDUPLICATION, // [더미] 인공 중복기연
     DUMMY_REBIRTHCOMPLETE, // [더미] 새로운 삶
     DUMMY_GOCMEMBER, // [더미] U.N.G.O.C 대원
+    DUMMY_ALPHAONEMENBER, // [더미] ALPHA-1 대원
 
     // 일반 //
     NORMAL_WORKOUT, // [일반] 운동
@@ -301,7 +301,6 @@ public enum AbilityType
     NORMAL_LUCKY, // [일반] 행운
     NORMAL_STAMINAREPLENISHMENT, // [일반] 체력 보충
     NORMAL_RANDOMBOX, // [일반] 랜덤박스
-    NORMAL_FINDLOCATION, // [일반] 위치 추적
     NORMAL_INSURANCE, // [일반] 보험
     NORMAL_KICK, // [일반] 회축
     NORMAL_SUPPLY, // [일반] 보급
@@ -315,7 +314,6 @@ public enum AbilityType
     NORMAL_DOPAMINE, // [일반] 도파민
     NORMAL_TEST, // [일반] 시험
     NORMAL_AGILITY, // [일반] 민첩
-    NORMAL_BULLETSUPPLY, // [일반] 잔탄 수급
     NORMAL_REROLL, // [일반] 리롤
     NORMAL_SUSPICIOUSSTEW, // [일반] 수상한 스튜
     NORMAL_HEALGUN, // [일반] 치유 사제
@@ -335,7 +333,7 @@ public enum AbilityType
     RARE_TELEPORTATION, // [희귀] 순간이동
     RARE_BOMBERMAN, // [희귀] 봄버맨
     RARE_STOPWATCH, // [희귀] 회중시계
-    RARE_STEROID, // [희귀] 스테로이드
+    RARE_ADRENALINE, // [희귀] 아드레날린
     RARE_MARTYRDOM, // [희귀] 순교
     RARE_HYPASS, // [희귀] 하이패스
     RARE_TRIPLEAXEL, // [희귀] 트리플악셀
@@ -394,6 +392,7 @@ public enum AbilityType
     EPIC_AN94, // [영웅] AN-94
     EPIC_SHARPEYES, // [영웅] 샤프 아이즈
     EPIC_TURTLE, // [영웅] 거북 도사
+    EPIC_CHAINLIGHTNING, // [영웅] 체인 라이트닝
 
     // 전설 //
     LEGEND_SPEEDWAGON, // [전설] 스피드왜건
@@ -418,6 +417,7 @@ public enum AbilityType
     LEGEND_ZERORULE, // [전설] 현을 푸는 제 0법칙
     LEGEND_GAMBLER, // [전설] 도박사
     LEGEND_RESURRECTION, // [전설] 리저렉션
+    LEGEND_UNLIMITEDAMMO, // [전설] 무한 탄환
 
     // 신화 //
     MYTHIC_ROCKETLAUNCHER, // [신화] 로켓 런처
@@ -439,7 +439,7 @@ public enum AbilityType
     // 고대 //
     ANCIENT_ALEPHONE, // [고대] Aleph-1
     ANCIENT_EXPLOSIVEAMMO, // [고대] Anti Matter
-    ANCIENT_SATELLITE, // [고대] Celestial
+    ANCIENT_SATELLITE, // [고대] Satellite Attack
     
     
     // 전용 //
@@ -481,15 +481,19 @@ public enum AbilityType
     
     // NTF
     NORMAL_NTF_HEALTHCENTERSTAFF, // [전용 일반] 보건소 직원
-    RARE_NTF_MANAGERIALOBLIGATIONPERSON, // [전용 희귀] 관리 의무자
     NORMAL_NTF_INDUSTRIALACCIDENTINSURANCE, // [전용 희귀] 산업재해보험
     NORMAL_NTF_RADAR, // [전용 희귀] 레이더
+    
+    RARE_NTF_MANAGERIALOBLIGATIONPERSON, // [전용 희귀] 관리 의무자
     
     LEGEND_NTF_UNGOC, // [전용 전설] U.N.G.O.C
 
     // 혼돈의 반란
     NORMAL_CHI_TOUCHOFCHAOS, // [전용 일반] 혼돈의 손길
-    NORMAL_CHI_CHAOSOFCHAOS, // [전용 희귀] 혼돈의 카오스
+    
+    RARE_CHI_CHAOSOFCHAOS, // [전용 희귀] 혼돈의 카오스
+    
+    LEGEND_CHI_ALPHAONE, // [전용 전설] ALPHA-1, Red Right Hand
 
     // 뱀의 손
     NORMAL_TUTORIAL_TONGUE, // [전용 일반] 세치 혀

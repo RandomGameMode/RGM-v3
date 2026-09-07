@@ -235,7 +235,7 @@ namespace RGM.Modes
             _juggernaut = PlayerManager.List.ToList().GetRandomValue();
             _juggernaut.Role.Set(RoleTypeId.Tutorial);
             _juggernaut.Scale = new Vector3(1.12f, 1.12f, 1.12f);
-            _juggernaut.MaxHealth = 630 * PlayerManager.List.Count;
+            _juggernaut.MaxHealth = 660 * PlayerManager.List.Count;
             _juggernaut.Health = _juggernaut.MaxHealth;
             _juggernaut.IsBypassModeEnabled = true;
             _juggernaut.EnableEffect(EffectType.SinkHole);
@@ -266,10 +266,11 @@ namespace RGM.Modes
             _juggernaut.DisableAllEffects();
             _juggernaut.EnableEffect(EffectType.BodyshotReduction, 4);
             _juggernaut.EnableEffect(EffectType.Lightweight, 10);
-            _juggernaut.EnableEffect(EffectType.NightVision, 50);
+            _juggernaut.EnableEffect(EffectType.NightVision, 70);
             _juggernaut.EnableEffect(EffectType.Scp1344, 1);
             _juggernaut.EnableEffect(EffectType.Scp1853, 1);
-            _juggernaut.EnableEffect(EffectType.Scp207, 2);
+            _juggernaut.EnableEffect(EffectType.Scp207, 3);
+            _juggernaut.EnableEffect(EffectType.MovementBoost, 5);
             _juggernaut.EnableEffect(EffectType.FogControl, 1);
             _juggernaut.EnableEffect(EffectType.Bleeding, 5);
             _juggernaut.EnableEffect(EffectType.Burned, 1);
@@ -323,7 +324,7 @@ namespace RGM.Modes
                 }
                 else
                 {
-                    winners = PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC && !IsJuggernautTeam(x)).ToList();
+                    winners = PlayerManager.List.Where(x => !x.IsNPC && !IsJuggernautTeam(x)).ToList();
                     foreach (var ally in PlayerManager.List.Where(x => x.IsAlive && IsJuggernautTeam(x)))
                         ally.Kill("저거너트가 사망했습니다.");
 

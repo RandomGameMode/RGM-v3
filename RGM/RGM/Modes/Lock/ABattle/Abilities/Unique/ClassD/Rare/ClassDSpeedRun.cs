@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features.Doors;
+using MEC;
 using UnityEngine;
 
 namespace RGM.Modes.Abilities.Unique.ClassD.Rare;
@@ -11,6 +12,7 @@ public class ClassDSpeedRun : Ability
 {
     public override void OnEnabled()
     {
-        Owner.Position = Door.Get(DoorType.SurfaceGate).Position + Vector3.up * 1.5f;
+        Owner.Position = Door.Get(DoorType.EscapeSecondary).Position + Vector3.up * 1.5f;
+        Timing.CallDelayed(Timing.WaitForOneFrame, () => Owner.RemoveAbility(this));
     }
 }

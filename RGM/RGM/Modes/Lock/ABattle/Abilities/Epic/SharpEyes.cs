@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace RGM.Modes.Abilities.Epic;
 
-[Ability("샤프 아이즈", "크리티컬 확률이 50% 증가합니다.\n크리티컬 발동 시 50%p의 추가 피해를 입히며, 추가 획득 시 크리티컬 데미지가 100%p씩 증가합니다.", AbilityCategory.Epic, AbilityType.EPIC_SHARPEYES)]
+[Ability("샤프 아이즈", """
+                   크리티컬 확률이 50% 증가합니다.
+                   크리티컬 발동 시 50%p의 추가 피해를 입히며, 추가 획득 시 크리티컬 데미지가 100%p씩 증가합니다.
+                   """, AbilityCategory.Epic, AbilityType.EPIC_SHARPEYES)]
 public class SharpEyes : Ability
 {
     public override void OnEnabled()
