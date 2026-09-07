@@ -10,7 +10,7 @@ namespace RGM.Modes.Abilities.Legend;
 [Ability("현을 푸는 제 0법칙",
     """
     특수한 시야로 적의 생명줄을 포착합니다.
-    공격 시, 10% 확률로 618.03의 피해를 입힙니다. 해당 피해는 『관통』 효과가 적용됩니다.
+    공격 시 10% 확률로 618.03의 피해를 입힙니다. 해당 피해는 『관통』 효과가 적용됩니다.
     """, 
     AbilityCategory.Legend,
     AbilityType.LEGEND_ZERORULE)]

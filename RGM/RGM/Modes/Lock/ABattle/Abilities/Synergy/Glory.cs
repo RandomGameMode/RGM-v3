@@ -52,8 +52,8 @@ public class Glory : Ability
                     Hitmarker.SendHitmarkerDirectly(Owner.ReferenceHub, 1f);
                     player.EnableEffect(EffectType.Flashed, 1, 1.5f);
                 }
-            lightSource.Position = Owner.Position;
-            yield return Timing.WaitForSeconds(0.05f);
+                lightSource.Position = Owner.Position;
+                yield return Timing.WaitForSeconds(0.05f);
         }
     }
 }

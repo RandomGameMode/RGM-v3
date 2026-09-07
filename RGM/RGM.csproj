@@ -138,13 +138,13 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\AlephOne.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\AntiMatter.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\Satellite.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\AlphaOneMember.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\BackedUp.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\ColdStew.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\CSTCFail.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\CSTCSuccess.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\DoneDuplication.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\DopamineReleased.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\EndOfGraveRobbery.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\EpicTransitionFailure.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\EpicTransitionSuccess.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\ExpiredInsurance.cs" />
@@ -167,6 +167,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\UsedPingHook.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\UsedSnakeHandRadio.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Epic\AddWorkstation.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Epic\ChainLightning.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Epic\SharpEyes.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Epic\AN94.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Epic\AntiScp207.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\Scream.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\SnakeHandRadio.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\SpeedWagon.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\UnlimitedAmmo.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\Wick.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\ZeroRule.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Mythic\Anchor.cs" />
@@ -237,13 +239,11 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Mythic\WarGod.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Agility.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Bodyback.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\BulletSupply.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Cloak.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Dopamine.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Escape.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Evolution.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Exchange.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\FindLocation.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Friendship.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\HealGun.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Normal\Insurance.cs" />
@@ -289,7 +289,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\SaveLocation.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\SpaceTravel.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\SteelShell.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\Steroid.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\Adrenaline.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\StopWatch.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\Sylph.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Rare\Teleportation.cs" />
@@ -320,8 +320,9 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Synergy\Vampire.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Synergy\WeakPointAttack.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Synergy\Winner.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\CHI\ChaosOfChaos.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\CHI\TouchOfChaos.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\CHI\Legend\AlphaOne.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\CHI\Normal\TouchOfChaos.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\CHI\Rare\ChaosOfChaos.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Epic\ChaosRecruit.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Normal\Larceny.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Normal\SeedsOfCHI.cs" />

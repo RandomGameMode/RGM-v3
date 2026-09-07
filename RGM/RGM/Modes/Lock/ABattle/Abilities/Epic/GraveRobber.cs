@@ -6,12 +6,10 @@ using MEC;
 
 namespace RGM.Modes.Abilities.Epic;
 
-[Ability("도굴꾼", "사망한 아군의 능력 중 하나를 랜덤으로 획득합니다. (4회)", 
+[Ability("도굴꾼", "사망한 아군의 능력 중 하나를 랜덤으로 획득합니다.", 
     AbilityCategory.Epic, AbilityType.EPIC_GRAVEROBBER)]
 public class GraveRobber : Ability
 {
-    private int _count = 4;
-
     public override void OnEnabled() 
         => Exiled.Events.Handlers.Player.Dying += OnDying;
 
@@ -31,11 +29,6 @@ public class GraveRobber : Ability
         {
             if (!ev.Player.IsDead) return;
             Owner.AddAbility(abilityTypes.GetRandomValue());
-
-            if (--_count != 0) return;
-            Owner.RemoveAbility(AbilityType.EPIC_GRAVEROBBER);
-            OnDisabled();
-            Owner.AddAbility(AbilityType.DUMMY_ENDOFGRAVEROBBERY);
         });
     }
 }
