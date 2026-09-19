@@ -9,7 +9,7 @@ namespace RGM.UserSettings;
 
 public static partial class MainSettingManager
 {
-    public sealed partial class ScpCanEquipRandomItemSetting() : CustomKeybindSetting(12050,
+    private sealed partial class ScpCanEquipRandomItemSetting() : CustomKeybindSetting(12050,
         "SCP의 아이템 장착ㅣEquipping SCP items", KeyCode.H, allowSpectatorTrigger: false,
         hint: "SCP가 보유한 아이템 중 무작위로 하나를 장착합니다.\n\nEquip a random item from the SCP's inventory.") 
     {

@@ -853,7 +853,6 @@
     <Compile Include="RGM\Patches\Weapon.cs" />
     <Compile Include="RGM\UserSettings\Settings\SettingVariables.cs" />
     <Compile Include="RGM\UserSettings\UserSetting.cs" />
-    <Compile Include="RGM\UserSettings\Settings\Main\BGMVolumeSetting.cs" />
     <Compile Include="RGM\UserSettings\Settings\Main\DetailInfoKeySetting.cs" />
     <Compile Include="RGM\UserSettings\Settings\Main\DownKeySeting.cs" />
     <Compile Include="RGM\UserSettings\Settings\Main\EnterKeySetting.cs" />

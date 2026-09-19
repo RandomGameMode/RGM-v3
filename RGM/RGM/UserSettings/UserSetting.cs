@@ -1,7 +1,6 @@
 ﻿using SecretAPI.Features.UserSettings;
 using System.Collections.Generic;
 using MEC;
-using UserSettings.GUIElements;
 
 namespace RGM.UserSettings
 {

@@ -1,4 +1,8 @@
-﻿using SecretAPI.Features.UserSettings;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
+using SecretAPI.Features.UserSettings;
 
 namespace RGM.UserSettings;
 
@@ -14,7 +18,6 @@ public static partial class MainSettingManager
     private static CustomKeybindSetting RightKey { get; set; }
     private static CustomKeybindSetting EnterKey { get; set; }
     private static CustomKeybindSetting DetailInfoKey { get; set; }  
-    private static CustomSliderSetting BGMVolume { get; set; }
     
     public static void Init()
     {
@@ -44,18 +47,19 @@ public static partial class MainSettingManager
             DetailInfoKey
         ]);
     }
-    
-    
-    public sealed partial class MuteBGMSetting;
-        
-    public sealed partial class MuteBGMSetting;
-    public sealed partial class ScpCanEquipRandomItemSetting;
+
+
+    private sealed partial class MuteBGMSetting;
+
+    private sealed partial class MuteBGMSetting;
+
+    private sealed partial class ScpCanEquipRandomItemSetting;
         
     private sealed partial class TranslationSetting;
 
     private sealed partial class UpKeySetting;
 
-    public sealed partial class DownKeySetting;
+    private sealed partial class DownKeySetting;
 
     private sealed partial class LeftKeySetting;
 
@@ -65,5 +69,31 @@ public static partial class MainSettingManager
 
     private sealed partial class DetailInfoKeySetting;
 
-    private sealed partial class BGMVolumeSetting;
+    public static void AddSettings<T>(this T setting, ushort groupId) where T : CustomSetting 
+        => ModifySettings(groupId, data => data.ToList().Add(setting));
+
+    public static T CreateSettings<T>(T setting) where T : CustomSetting
+    {
+        try
+        {
+            var instance = Activator.CreateInstance<T>();
+
+            if (SettingVariables.Settings.Values.Any(x => x.Any(y => y.Id == instance.Id)))
+                throw new Exception($"This settings already exists: {instance.Id}");
+            Log.Info($"Created Settings instance: {instance.Label}");
+
+            return instance;
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Failure to create settings instance: {e}");
+            throw e.InnerException!;
+        }
+    }
+
+    private static void ModifySettings(ushort settingId, Action<IEnumerable<CustomSetting>> code)
+    {
+        if (!SettingVariables.Settings.TryGetValue(settingId, out var setting)) return;
+        code.Invoke(setting);
+    }
 }

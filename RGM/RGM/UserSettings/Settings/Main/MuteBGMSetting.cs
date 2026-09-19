@@ -6,7 +6,7 @@ namespace RGM.UserSettings;
 
 public static partial class MainSettingManager
 {
-    public sealed partial class MuteBGMSetting() : CustomTwoButtonSetting(12053, "BGM 음소거ㅣBGM mute", "ON", "OFF",
+    private sealed partial class MuteBGMSetting() : CustomTwoButtonSetting(12053, "BGM 음소거ㅣBGM mute", "ON", "OFF",
         defaultIsB: true,
         hint:
         "음악이 유튜브 저작권에 걸릴 것 같다고요? 이 기능을 사용하세요.\n\nAre you worried BGM might be copyrighted by YouTube? Use this feature.") 
