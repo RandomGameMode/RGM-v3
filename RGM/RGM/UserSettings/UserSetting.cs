@@ -1,32 +1,33 @@
 ﻿using SecretAPI.Features.UserSettings;
 using System.Collections.Generic;
+using Exiled.API.Features;
 using MEC;
+using UserSettings.ServerSpecific;
 
-namespace RGM.UserSettings
+namespace RGM.UserSettings;
+
+public static partial class SettingManager
 {
-    public static partial class SettingManager
-    {
-        private static CoroutineHandle _reloader;
+    private static CoroutineHandle _reloader;
 
-        public static partial void Init();
+    public static partial void Init();
         
-        public static partial void Init()
-        {
-            if (!Timing.IsRunning(_reloader))
-                _reloader = Timing.RunCoroutine(Reloader());
+    public static partial void Init()
+    {
+        if (!Timing.IsRunning(_reloader))
+            _reloader = Timing.RunCoroutine(Reloader());
 
-            MainSettingManager.Init();
-            Timing.CallDelayed(Timing.WaitForOneFrame * 5,() => CustomSetting.Register(SettingVariables.Settings[0]));
-        }
+        MainSettingManager.Init();
+        Timing.CallDelayed(Timing.WaitForOneFrame * 5,() => CustomSetting.Register(SettingVariables.Settings[0]));
+    }
 
-        private static IEnumerator<float> Reloader()
+    private static IEnumerator<float> Reloader()
+    {
+        while (true)
         {
-            while (true)
-            {
-                yield return Timing.WaitForSeconds(60f);
+            yield return Timing.WaitForSeconds(60f);
                 
-                CustomSetting.ResyncServer();
-            }
+            CustomSetting.ResyncServer();
         }
     }
 }
