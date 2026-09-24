@@ -13,6 +13,7 @@ namespace RGM.Modes.Abilities.Unique.Scp939.Rare;
 public class Sharpness : Ability
 {
     private const float ClawBaseDamage = 40f;
+    private const string InstanceID = "RGM.ABattle.Scp939.Sharpness";
 
     private static readonly HashSet<ReferenceHub> ActiveOwners = new();
     private Harmony _harmony;
@@ -20,14 +21,14 @@ public class Sharpness : Ability
     public override void OnEnabled()
     {
         ActiveOwners.Add(Owner.ReferenceHub);
-        _harmony = new Harmony("RGM.ABattle.Scp939.Sharpness");
+        _harmony = new Harmony(InstanceID);
         EnsurePatch();
     }
 
     public override void OnDisabled()
     {
         ActiveOwners.Remove(Owner.ReferenceHub);
-        _harmony.UnpatchAll();
+        _harmony.UnpatchAll(InstanceID);
         _harmony = null;
     }
 
