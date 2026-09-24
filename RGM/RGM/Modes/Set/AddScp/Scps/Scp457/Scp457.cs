@@ -87,7 +87,7 @@ namespace RGM.Modes.Sets.AddScp.Scps
                         p.EnableEffect(EffectType.Burned, 1, 0.1f);
                         p.Hit(player, player.Scale.x * 5);
 
-                        player.Heal(0.3f);
+                        player.Heal(player.Scale.x * 0.3f);
                     }
 
                     yield return Timing.WaitForSeconds(0.1f);
@@ -111,10 +111,10 @@ namespace RGM.Modes.Sets.AddScp.Scps
                 }
             }
 
-            var main_c = Timing.RunCoroutine(main());
-            var makeSound_c = Timing.RunCoroutine(makeSound());
-            var burn2_c = Timing.RunCoroutine(burn2());
-            var attack_c = Timing.RunCoroutine(attack());
+            var mainCoroutine = Timing.RunCoroutine(main());
+            var makeSoundCoroutine = Timing.RunCoroutine(makeSound());
+            var burn2Coroutine = Timing.RunCoroutine(burn2());
+            var attackCoroutine = Timing.RunCoroutine(attack());
 
             void OnHurting(HurtingEventArgs ev)
             {
@@ -214,10 +214,10 @@ namespace RGM.Modes.Sets.AddScp.Scps
                             g.FuseTime = 0.1f;
                             g.SpawnActive(pos, player);
 
-                            Timing.KillCoroutines(main_c);
-                            Timing.KillCoroutines(makeSound_c);
-                            Timing.KillCoroutines(burn2_c);
-                            Timing.KillCoroutines(attack_c);
+                            Timing.KillCoroutines(mainCoroutine);
+                            Timing.KillCoroutines(makeSoundCoroutine);
+                            Timing.KillCoroutines(burn2Coroutine);
+                            Timing.KillCoroutines(attackCoroutine);
 
                             schematic.Destroy();
 

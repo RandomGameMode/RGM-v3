@@ -36,10 +36,7 @@ public class AirStrike : Ability
                 light.Color = new Color(1, 0, 0, 1);
                 light.Rotation = Quaternion.Euler(0, 0, 0);
 
-                Timing.CallDelayed(5, () =>
-                {
-                    light.Destroy();
-                });
+                Timing.CallDelayed(5, light.Destroy);
             }
             OnDisabled();
         });

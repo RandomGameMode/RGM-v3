@@ -24,13 +24,10 @@ public class PlagueCurse : Ability
     
     private void OnHurting(HurtingEventArgs ev)
     {
-        if (ev.Attacker != Owner || ev.Player == ev.Attacker)
-            return;
-
-        if (ev.DamageHandler.Type != DamageType.Scp049)
-            return;
-
-        if (ev.Player.HasAbility(AbilityType.EPIC_HOLYPROTECTION))
-            ev.Player.Hurt(ev.Player.MaxHealth, DamageType.Scp049);
+        if (ev.Attacker != Owner || ev.Player == ev.Attacker) return;
+        if (ev.DamageHandler.Type != DamageType.Scp049) return;
+        if (!ev.Player.HasAbility(AbilityType.EPIC_HOLYPROTECTION)) return;
+        
+        ApplyLethalDamage.Apply(Owner, ev.Player);
     }
 }

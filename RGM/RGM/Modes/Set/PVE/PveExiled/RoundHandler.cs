@@ -417,7 +417,8 @@ namespace RGM.Modes.PveExiledSystem
                         if (enemies.Count >= maxEnemy)
                         {
                             while (enemies.Count > minEnemy && GetAlivePlayerCount() > 0) yield return Timing.WaitForSeconds(5);
-                            if (GetAlivePlayerCount() <= 0) { yield return Timing.WaitForSeconds(1); break; }
+                            if (GetAlivePlayerCount() > 0) continue;
+                            yield return Timing.WaitForSeconds(1); break;
                         }
                         else yield return Timing.WaitForSeconds(0.8f);
                     }
@@ -450,15 +451,20 @@ namespace RGM.Modes.PveExiledSystem
                     player.Position = playerSpawnPoint;
                     if (!waveConfig.IsSpecial)
                     {
-                        if (CurrentWave >= 5)
+                        switch (CurrentWave)
                         {
-                            player.AddItem(ItemType.GunFSP9);
-                            player.AddItem(ItemType.Ammo9x19, 10);
-                        }
-                        else
-                        {
-                            player.AddItem(ItemType.GunCOM18);
-                            player.AddItem(ItemType.Ammo9x19, 5);
+                            case >= 11:
+                                player.AddItem(ItemType.GunAK);
+                                player.AddItem(ItemType.Ammo762x39, 8);
+                                break;
+                            case >= 5:
+                                player.AddItem(ItemType.GunCrossvec);
+                                player.AddItem(ItemType.Ammo9x19, 12);
+                                break;
+                            default:
+                                player.AddItem(ItemType.GunCOM18);
+                                player.AddItem(ItemType.Ammo9x19, 5);
+                                break;
                         }
                     }
                     player.EnableEffect(EffectType.HeavyFooted, 100, -1);

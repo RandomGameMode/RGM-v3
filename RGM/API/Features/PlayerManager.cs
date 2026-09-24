@@ -180,7 +180,7 @@ namespace RGM.API.Features
             EffectIntensities[player][type] += intensity;
 
             const byte maxIntensity = 255;
-            byte applyIntensity = (byte)Math.Min(EffectIntensities[player][type], maxIntensity);
+            var applyIntensity = Convert.ToByte(Math.Min(EffectIntensities[player][type], maxIntensity));
 
             var effect = player.ActiveEffects.FirstOrDefault(x => x.GetEffectType() == type);
             float newDuration = effect != null && addDuration
@@ -204,7 +204,7 @@ namespace RGM.API.Features
                         }
                         else
                         {
-                            byte newApplyIntensity = (byte)Math.Min(EffectIntensities[player][type], 255);
+                            var newApplyIntensity = Convert.ToByte(Math.Min(EffectIntensities[player][type], 255));
                             player.EnableEffect(type, newApplyIntensity);
                         }
                     }
@@ -747,9 +747,9 @@ namespace RGM.API.Features
                 ItemType.KeycardFacilityManager,
 
                 // 무기
-                ItemType.GunA7,
+                ItemType.GunRevolver,
                 ItemType.GunShotgun,
-                ItemType.GunCom45,
+                ItemType.GunFSP9,
 
                 // 치료
                 ItemType.Adrenaline,
@@ -771,8 +771,8 @@ namespace RGM.API.Features
 
                 // 무기
                 ItemType.GunCrossvec,
-                ItemType.GunRevolver,
-                ItemType.GunFSP9,
+                ItemType.GunCom45,
+                ItemType.GunA7,
 
                 // 치료
                 ItemType.Medkit,
@@ -806,18 +806,6 @@ namespace RGM.API.Features
                 ItemType.Lantern,
                 ItemType.Coin
             ];
-            /*
-             List<ItemType> customKeycard =
-            [
-                ItemType.KeycardCustomManagement,
-                ItemType.KeycardCustomMetalCase,
-                ItemType.KeycardCustomSite02,
-                ItemType.KeycardCustomTaskForce,
-
-                // 기타
-                ItemType.DebugRagdollMover
-            ];
-            */
 
             if (!PlayerRandomValueCount.ContainsKey(player))
                 PlayerRandomValueCount.Add(player, [0, 0]);
@@ -839,8 +827,8 @@ namespace RGM.API.Features
             }
 
             // 총 100개의 아이템 카테고리를 가중치에 따라 담고, 그 내에서 랜덤 추출
-            for (int i = 0; i < 3; i++) 
-                poll.AddRange(mythos); // 3%
+            for (int i = 0; i < 2; i++) 
+                poll.AddRange(mythos); // 2%
 
             for (int i = 0; i < 6; i++) 
                 poll.AddRange(legendary); // 6%
@@ -848,8 +836,8 @@ namespace RGM.API.Features
             for (int i = 0; i < 16; i++) 
                 poll.AddRange(epic); // 16%
 
-            for (int i = 0; i < 30; i++) 
-                poll.AddRange(rare); // 30%
+            for (int i = 0; i < 31; i++) 
+                poll.AddRange(rare); // 31%
 
             for (int i = 0; i < 45; i++) 
                 poll.AddRange(general); // 45%
@@ -944,7 +932,7 @@ namespace RGM.API.Features
         }
 
         public static void ExplodeGrenade(this Player player, Vector3? pos = null, float fuseTime = 0,
-            ItemType grenade = ItemType.GrenadeHE, bool ignore = false, bool kill = true)
+            ItemType grenade = ItemType.GrenadeHE, bool ignore = false, bool instakill = true)
         {
             pos ??= player.Position;
             if (grenade == ItemType.GrenadeFlash)
@@ -960,8 +948,9 @@ namespace RGM.API.Features
                 g.MaxRadius = ignore ? 0 : g.MaxRadius;
                 g.SpawnActive(pos.Value, player);
 
-                if (kill)
-                    player.Kill(DamageType.Explosion);
+                if (!instakill) return;
+                if (GodModePlayers.Contains(player)) GodModePlayers.Remove(player);
+                player.Kill(DamageType.Explosion);
             }
         }
     }

@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 namespace RGM.Modes.Abilities.Epic;
 
 [Ability("매드 사이언티스트", 
-    "사망 시 10초 후 부활하며 랜덤한 능력 9개를 부여합니다.(별도 등급 확률 적용)", 
+    "사망 시 10초 후 부활하며 랜덤한 능력 10개를 부여합니다.(별도 등급 확률 적용)", 
     AbilityCategory.Epic, AbilityType.EPIC_MADSCIENTIST)]
 public class MadScientist : Ability
 {
@@ -41,11 +41,11 @@ public class MadScientist : Ability
 
                 Timing.CallDelayed(Timing.WaitForOneFrame, () =>
                 {
-                    for (int i = 0; i < 9; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                         try
                         {
-                            var rand = Random.Range(1, 501);
+                            var rand = Convert.ToInt16(Random.Range(1, 501));
                             switch (rand)
                             {
                                 case 1: // 0.20%

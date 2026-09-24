@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using static RGM.Variables.Variable;
 
 namespace RGM.IEnumerators
@@ -30,42 +31,49 @@ namespace RGM.IEnumerators
             {
                 foreach (var player in Player.List)
                 {
-                    if (player.Role is OverwatchRole overwatch)
+                    switch (player.Role)
                     {
-                        if (overwatch.SpectatedPlayer != null && overwatch.SpectatedPlayer.CurrentHint != null)
+                        case OverwatchRole overwatch:
                         {
-                            string content = overwatch.SpectatedPlayer.CurrentHint.Content;
-
-                            if (player.IsUsingTranslator())
+                            if (overwatch.SpectatedPlayer != null && overwatch.SpectatedPlayer.CurrentHint != null)
                             {
-                                TranslationManager.TranslatePreserveNewlines(content, TranslatorPlayers[player],
-                                    translated =>
-                                    {
-                                        player.ShowHint(translated, 1.2f);
-                                    }
-                                );
+                                string content = overwatch.SpectatedPlayer.CurrentHint.Content;
+
+                                if (player.IsUsingTranslator())
+                                {
+                                    TranslationManager.TranslatePreserveNewlines(content, TranslatorPlayers[player],
+                                        translated =>
+                                        {
+                                            player.ShowHint(translated, 1.2f);
+                                        }
+                                    );
+                                }
+                                else
+                                    player.ShowHint(content, 1.2f);
                             }
-                            else
-                                player.ShowHint(content, 1.2f);
-                        }  
-                    }
-                    else if (player.Role is SpectatorRole spectator)
-                    {
-                        if (spectator.SpectatedPlayer != null && spectator.SpectatedPlayer.CurrentHint != null)
+
+                            break;
+                        }
+                        case SpectatorRole spectator:
                         {
-                            string content = spectator.SpectatedPlayer.CurrentHint.Content;
-
-                            if (player.IsUsingTranslator())
+                            if (spectator.SpectatedPlayer != null && spectator.SpectatedPlayer.CurrentHint != null)
                             {
-                                TranslationManager.TranslatePreserveNewlines(content, TranslatorPlayers[player],
-                                    translated =>
-                                    {
-                                        player.ShowHint(translated, 1.2f);
-                                    }
-                                );
+                                string content = spectator.SpectatedPlayer.CurrentHint.Content;
+
+                                if (player.IsUsingTranslator())
+                                {
+                                    TranslationManager.TranslatePreserveNewlines(content, TranslatorPlayers[player],
+                                        translated =>
+                                        {
+                                            player.ShowHint(translated, 1.2f);
+                                        }
+                                    );
+                                }
+                                else
+                                    player.ShowHint(content, 1.2f);
                             }
-                            else
-                                player.ShowHint(content, 1.2f);
+
+                            break;
                         }
                     }
                 }
@@ -78,7 +86,7 @@ namespace RGM.IEnumerators
         {
             while (true)
             {
-                yield return Timing.WaitForSeconds(UnityEngine.Random.Range(60 * 5, 60 * 15 + 1));
+                yield return Timing.WaitForSeconds(Random.Range(4, 11) * 60f);
 
                 if (HolidayUtils.IsHolidayActive(HolidayType.Christmas))
                 {
@@ -102,36 +110,33 @@ namespace RGM.IEnumerators
             {
                 foreach (var player in Player.List.Where(x => x.IsAlive))
                 {
-                    if (OnGround.ContainsKey(player.UserId) && !player.IsNoclipPermitted && player.Role.Type != RoleTypeId.Scp079)
-                    {
-                        if (player.ReferenceHub.IsGrounded())
-                            OnGround[player.UserId] = 6;
+                    if (!OnGround.ContainsKey(player.UserId) || player.IsNoclipPermitted ||
+                        player.Role.Type == RoleTypeId.Scp079) continue;
+                    if (player.ReferenceHub.IsGrounded())
+                        OnGround[player.UserId] = 6;
 
+                    else
+                    {
+                        OnGround[player.UserId] -= 0.1f;
+
+                        if (!(OnGround[player.UserId] <= 0)) continue;
+                        if (Round.ElapsedTime.TotalSeconds < 10)
+                        {
+                            player.IsGodModeEnabled = true;
+
+                            player.Position = PlayerManager.List.Where(x => x != player).GetRandomValue().Position;
+
+                            Timing.CallDelayed(1, () =>
+                            {
+                                player.IsGodModeEnabled = false;
+                            });
+                        }
                         else
                         {
-                            OnGround[player.UserId] -= 0.1f;
-
-                            if (OnGround[player.UserId] <= 0)
-                            {
-                                if (Round.ElapsedTime.TotalSeconds < 10)
-                                {
-                                    player.IsGodModeEnabled = true;
-
-                                    player.Position = PlayerManager.List.Where(x => x != player).GetRandomValue().Position;
-
-                                    Timing.CallDelayed(1, () =>
-                                    {
-                                        player.IsGodModeEnabled = false;
-                                    });
-                                }
-                                else
-                                {
-                                    player.Kill("공허에 빨려들어갔습니다. (5초 이상 낙하)");
-                                }
-
-                                OnGround[player.UserId] = 6;
-                            }
+                            player.Kill("공허에 빨려들어갔습니다. (5초 이상 낙하)");
                         }
+
+                        OnGround[player.UserId] = 6;
                     }
                 }
 
@@ -156,9 +161,9 @@ namespace RGM.IEnumerators
             {
                 foreach (Player player in PlayerManager.List.Where(x => x.IsAlive))
                 {
-                    foreach (Transform Ball in Balls)
+                    foreach (Transform ball in Balls)
                     {
-                        GameObject _ball = Ball.gameObject;
+                        GameObject _ball = ball.gameObject;
 
                         if (Vector3.Distance(_ball.transform.position, player.Position) < 2)
                         {
@@ -205,25 +210,21 @@ namespace RGM.IEnumerators
             {
                 foreach (var player in PlayerManager.List.Where(x => x.IsHuman && !JumpScareCooldown.Contains(x)))
                 {
-                    if (player.TryGetLookPlayer(25, out Player target, out RaycastHit? hit))
+                    if (!player.TryGetLookPlayer(25, out Player target, out _)) continue;
+                    if (!target.IsScpRole()) continue;
+                    JumpScareCooldown.Add(player);
+
+                    Timing.CallDelayed(60, () =>
                     {
-                        if (target.IsScpRole())
-                        {
-                            JumpScareCooldown.Add(player);
+                        JumpScareCooldown.Remove(player);
+                    });
 
-                            Timing.CallDelayed(60, () =>
-                            {
-                                JumpScareCooldown.Remove(player);
-                            });
-
-                            PlayersAudio[player].TryPlay($"facingScp-{UnityEngine.Random.Range(1, 7)}", volume: 2);
+                    PlayersAudio[player].TryPlay($"facingScp-{Random.Range(1, 7)}", volume: 2);
                                     
-                            Timing.CallDelayed(3, () =>
-                            {
-                                PlayersAudio[player].TryPlay("chase", volume: 2);
-                            });
-                        }
-                    }
+                    Timing.CallDelayed(3, () =>
+                    {
+                        PlayersAudio[player].TryPlay("chase", volume: 2);
+                    });
                 }
 
                 yield return Timing.WaitForOneFrame;
@@ -232,26 +233,27 @@ namespace RGM.IEnumerators
 
         public static IEnumerator<float> Scp079Broadcast()
         {
-            yield return Timing.WaitUntilTrue(() => { return Round.IsStarted; });
+            yield return Timing.WaitUntilTrue(() => Round.IsStarted);
 
             while (!Round.IsEnded)
             {
-                if (UnityEngine.Random.Range(1, 1001) == 1)
-                    Tools.PlayGlobalAudio($"scp079-{UnityEngine.Random.Range(1, 3)}", volume: 1.5f);
+                if (Convert.ToInt16(Random.Range(1, 1001)) == 1)
+                    Tools.PlayGlobalAudio($"scp079-{Random.Range(1, 3)}", volume: 1.5f);
 
-                int citizenCount = PlayerManager.List.Where(x => x.Role.Type == RoleTypeId.ClassD || x.Role.Type == RoleTypeId.Scientist).Count();
+                int citizenCount = PlayerManager.List.Count(x => x.Role.Type is RoleTypeId.ClassD or RoleTypeId.Scientist);
 
-                if (citizenCount == 1 && !IsWarningAlone)
+                switch (citizenCount)
                 {
-                    IsWarningAlone = true;
+                    case 1 when !IsWarningAlone:
+                        IsWarningAlone = true;
 
-                    Tools.PlayGlobalAudio("scp079-4", volume: 1.2f);
-                }
-                if (citizenCount == 0 && !IsClearCitizen)
-                {
-                    IsClearCitizen = true;
+                        Tools.PlayGlobalAudio("scp079-4", volume: 1.2f);
+                        break;
+                    case 0 when !IsClearCitizen:
+                        IsClearCitizen = true;
 
-                    Tools.PlayGlobalAudio("scp079-3", volume: 1.2f);
+                        Tools.PlayGlobalAudio("scp079-3", volume: 1.2f);
+                        break;
                 }
 
                 yield return Timing.WaitForSeconds(1);
@@ -266,13 +268,11 @@ namespace RGM.IEnumerators
                 {
                     foreach (var player in PlayerManager.List)
                     {
-                        if (player.CurrentRoom.Type != RoomType.Surface)
-                        {
-                            if (GodModePlayers.Contains(player))
-                                GodModePlayers.Remove(player);
+                        if (player.CurrentRoom.Type == RoomType.Surface) continue;
+                        if (GodModePlayers.Contains(player))
+                            GodModePlayers.Remove(player);
 
-                            player.Kill("제한된 구역입니다.");
-                        }
+                        player.Kill("제한된 구역입니다.");
                     }
                 }
 
@@ -292,7 +292,7 @@ namespace RGM.IEnumerators
             {
                 Player player = Player.List.OrderBy(x => Vector3.Distance(x.Position, target.Position)).FirstOrDefault();
 
-                target.Position = new Vector3(UnityEngine.Random.Range(vector3.Item1, vector3.Item2), UnityEngine.Random.Range(vector3.Item3, vector3.Item4), UnityEngine.Random.Range(vector3.Item5, vector3.Item6));
+                target.Position = new Vector3(Random.Range(vector3.Item1, vector3.Item2), Random.Range(vector3.Item3, vector3.Item4), Random.Range(vector3.Item5, vector3.Item6));
                 target.Rotation = target.Rotation = Quaternion.LookRotation(player.Position - target.Position) * Quaternion.Euler(0, 90, 0);
             }
 
@@ -309,6 +309,7 @@ namespace RGM.IEnumerators
             }
         }
 
+        // 이거 어디서 사용되는지 체크 필요
         public static IEnumerator<float> TimezoneCheck()
         {
             DateTime lastProcessedDate = DateTime.MinValue.Date;
@@ -422,33 +423,39 @@ namespace RGM.IEnumerators
             }
         }
 
-        public static IEnumerator<float> ScpGlow(Player Owner)
+        public static IEnumerator<float> ScpGlow(Player owner)
         {
             SchematicObject schematic = ObjectSpawner.SpawnSchematic("Light", Vector3.zero);
             LightSourceToy light = schematic.GetComponentsInChildren<LightSourceToy>().First();
 
             bool flag = false;
 
-            while (Owner.IsScp)
+            while (owner.IsScp)
             {
-                if (!flag && Owner.CurrentItem != null && !(Owner.Role is Scp3114Role scp3114 && scp3114.DisguiseStatus == PlayerRoles.PlayableScps.Scp3114.Scp3114Identity.DisguiseStatus.Active))
+                switch (flag)
                 {
-                    flag = true;
+                    case false when owner.CurrentItem != null && owner.Role is not Scp3114Role
+                    {
+                        DisguiseStatus: PlayerRoles.PlayableScps.Scp3114.Scp3114Identity.DisguiseStatus.Active
+                    }:
+                    {
+                        flag = true;
 
-                    schematic.transform.parent = Owner.Transform;
-                    schematic.transform.localPosition = Vector3.zero;
+                        schematic.transform.parent = owner.Transform;
+                        schematic.transform.localPosition = Vector3.zero;
 
-                    if (ColorUtility.TryParseHtmlString("#ffff00", out Color color))
-                        light.NetworkLightColor = color;
-                    light.NetworkLightRange = 50;
-                    light.NetworkLightIntensity = 10;
-                }
-                else if (flag && Owner.CurrentItem == null)
-                {
-                    flag = false;
+                        if (ColorUtility.TryParseHtmlString("#ffff00", out Color color))
+                            light.NetworkLightColor = color;
+                        light.NetworkLightRange = 32;
+                        light.NetworkLightIntensity = 8;
+                        break;
+                    }
+                    case true when owner.CurrentItem == null:
+                        flag = false;
 
-                    schematic.transform.parent = null;
-                    schematic.transform.position = Vector3.zero;
+                        schematic.transform.parent = null;
+                        schematic.transform.position = Vector3.zero;
+                        break;
                 }
 
                 yield return Timing.WaitForSeconds(1);

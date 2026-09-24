@@ -6,7 +6,7 @@ namespace RGM.API.DataBases
 {
     public class Datas
     {
-        public static Dictionary<string, string> Colors = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> Colors = new()
         {
             // {"gold", "#EFC01A"},
             // {"teal", "#008080"},
@@ -40,7 +40,7 @@ namespace RGM.API.DataBases
             {"pumpkin", "#EE7600"}
         };
 
-        public static Dictionary<string, List<string>> KillEffectData = new Dictionary<string, List<string>>()
+        public static readonly Dictionary<string, List<string>> KillEffectData = new()
         {
             {"영혼 가출", new List<string>() {"<b><color=#B47474>영</color><color=#915E5F>혼</color> <color=#4D3335>가</color><color=#2B1E20>출</color></b>", "영혼 추출"}},
             {"솔라 테라", new List<string>() {"<b><color=#FD2626>솔</color><color=#FD411E>라</color> <color=#FE770F>테</color><color=#FE9207>라</color></b>", "멜트다운" }},
@@ -58,29 +58,29 @@ namespace RGM.API.DataBases
             {"Lightning", new List<string>() { "_", "<b><color=#fcf525>천</color><color=#0cfcf0>벌</color></b>"}} // _ 표시 -> 안 쓴다는 뜻
         };
 
-        public static List<DamageType> BlockDamageTypes = new()
-        {
+        public static readonly List<DamageType> BlockDamageTypes =
+        [
             DamageType.Warhead,
             DamageType.Crushed,
             DamageType.PocketDimension,
             DamageType.Falldown,
             DamageType.Scp106
-        };
+        ];
 
-        public static List<RoleTypeId> AIRoles = new()
-        {
+        public static readonly List<RoleTypeId> AIRoles =
+        [
             RoleTypeId.Scp049,
             RoleTypeId.Scp096,
             RoleTypeId.Scp106,
             RoleTypeId.Scp173
-        };
+        ];
 
-        public static List<ItemType> ExceptItems = new()
-        {
+        public static readonly List<ItemType> ExceptItems =
+        [
             ItemType.Snowball,
             ItemType.Coal,
             ItemType.SpecialCoal,
             ItemType.SCP1507Tape
-        };
+        ];
     }
 }

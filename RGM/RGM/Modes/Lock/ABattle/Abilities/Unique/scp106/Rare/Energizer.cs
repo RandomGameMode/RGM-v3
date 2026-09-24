@@ -4,12 +4,12 @@ using MEC;
 
 namespace RGM.Modes.Abilities.Unique.Scp106.Rare;
 
-[Ability("에너자이저", "초당 3%의 기력을 회복합니다.", 
+[Ability("에너자이저", "초당 2%의 기력을 회복합니다.", 
     AbilityCategory.Rare, AbilityType.RARE_SCP106_ENERGIZER, RoleAbility.Scp106)]
 
 public class Energizer : Ability
 {
-    private const float RegenValue = 0.03f;
+    private const float RegenValue = 0.02f;
     private CoroutineHandle _regenVigor;
     
     public override void OnEnabled()

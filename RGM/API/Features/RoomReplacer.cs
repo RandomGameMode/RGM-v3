@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exiled.API.Features;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace RGM.API.Features;
 
@@ -11,15 +13,8 @@ public static class RoomReplacer
         foreach (var component in room.gameObject.GetComponentsInChildren<Component>())
             try
             {
-                if (component.name.Contains("SCP-079") || component.name.Contains("CCTV"))
-                {
-                    Log.Debug(
-                        $"Prevent from destroying: {component.name} {component.tag} {component.GetType().FullName}");
-                    continue;
-                }
-
-                if (component.GetComponentsInParent<Component>()
-                    .Any(c => c.name.Contains("SCP-079") || c.name.Contains("CCTV")))
+                if (component.name.Contains("SCP-079") || component.name.Contains("CCTV") || component.GetComponentsInParent<Component>()
+                        .Any(c => c.name.Contains("SCP-079") || c.name.Contains("CCTV")))
                 {
                     Log.Debug(
                         $"Prevent from destroying: {component.name} {component.tag} {component.GetType().FullName}");
@@ -30,8 +25,9 @@ public static class RoomReplacer
 
                 Object.Destroy(component);
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error($"Failed to destroy {room.name}: {e.Message}");
             }
     }
 }

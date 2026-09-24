@@ -1,9 +1,9 @@
-﻿using Exiled.API.Extensions;
+﻿using System;
+using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Player;
 using MEC;
-using UnityEngine;
-
 using static RGM.Variables.Variable;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Mythic;
 
@@ -47,7 +47,7 @@ public class Joker : Ability
         
         for (int i = 0; i < 4; i++)
         {
-            var category = Random.Range(1, 101) <= 15 ? AbilityCategory.Mythic : AbilityCategory.Legend;
+            var category = Convert.ToByte(Random.Range(1, 101)) <= 15 ? AbilityCategory.Mythic : AbilityCategory.Legend;
             ev.Player.AddAbility(ABattle.Instance.GetRandomAbilities(Owner, category, 1)[0]);
         }
 

@@ -1,8 +1,9 @@
-﻿using Exiled.API.Enums;
+﻿using System;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Normal;
 
@@ -42,7 +43,7 @@ public class Lucky : Ability
             return;
         }
 
-        if (Random.Range(1, 101) > 5) return;
+        if (Convert.ToByte(Random.Range(1, 101)) > 5) return;
         ev.IsAllowed = false;
 
         ev.Door.IsOpen = !ev.Door.IsOpen;
@@ -53,7 +54,7 @@ public class Lucky : Ability
         if (ev.Player != Owner)
             return;
 
-        if (Random.Range(1, 101) > 5) return;
+        if (Convert.ToByte(Random.Range(1, 101)) > 5) return;
         ev.IsAllowed = false;
 
         ev.InteractingChamber.IsOpen = !ev.InteractingChamber.IsOpen;
@@ -64,7 +65,7 @@ public class Lucky : Ability
         if (ev.Player != Owner)
             return;
 
-        if (Random.Range(1, 101) > 5) return;
+        if (Convert.ToByte(Random.Range(1, 101)) > 5) return;
         ev.IsAllowed = false;
         ev.Generator.IsOpen = false;
     }
@@ -74,7 +75,7 @@ public class Lucky : Ability
         if (ev.Player != Owner)
             return;
 
-        if (Random.Range(1, 101) > 5) return;
+        if (Convert.ToByte(Random.Range(1, 101)) > 5) return;
         ev.IsAllowed = false;
         ev.Generator.IsOpen = true;
     }

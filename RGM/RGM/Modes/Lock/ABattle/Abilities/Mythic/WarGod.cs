@@ -11,7 +11,7 @@ namespace RGM.Modes.Abilities.Mythic;
 public class WarGod : Ability
 {
     private ushort _lightWarriorSerial;
-    private int _lightWarriorCooldown;
+    private float _lightWarriorCooldown;
 
     public override void OnEnabled()
     {
@@ -43,7 +43,7 @@ public class WarGod : Ability
         {
             if (_lightWarriorCooldown <= 0)
             {
-                _lightWarriorCooldown = 1;
+                _lightWarriorCooldown = 0.5f;
 
                 if (HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub))
                 {
@@ -58,7 +58,7 @@ public class WarGod : Ability
                     g.SpawnActive(ev.Attacker.Position, ev.Attacker);
                 }
 
-                Timing.CallDelayed(1f, () =>
+                Timing.CallDelayed(0.5f, () =>
                 {
                     _lightWarriorCooldown = 0;
                 });

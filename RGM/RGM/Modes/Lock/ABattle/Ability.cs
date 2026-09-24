@@ -102,7 +102,15 @@ public class AbilityData
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public class AbilityAttribute(string name, string description, AbilityCategory category, AbilityType type, RoleAbility roleAbility = RoleAbility.None, bool _79Allowed = false, AbilityHolidayType holidayType = AbilityHolidayType.None, bool keep = false) : Attribute
+public class AbilityAttribute(
+    string name,
+    string description,
+    AbilityCategory category,
+    AbilityType type,
+    RoleAbility roleAbility = RoleAbility.None,
+    bool _79Allowed = false,
+    AbilityHolidayType holidayType = AbilityHolidayType.None,
+    bool keep = false) : Attribute
 {
     public string Name { get; } = name;
     public string Description { get; } = description;
@@ -278,15 +286,15 @@ public enum AbilityType
     DUMMY_TELEPORTED, // [더미] 순간이동됨
     DUMMY_FINALEXAMSUCCESS, // [더미] 기말고사 수석
     DUMMY_FINALEXAMFAIL, // [더미] 기말고사 낙제
-    DUMMY_CSTCSUCCESS, // [더미] 대학수학능력시험 1등급
-    DUMMY_CSTCFAIL, // [더미] 대학수학능력시험 9등급
+    DUMMY_CSATSUCCESS, // [더미] 대학수학능력시험 1등급
+    DUMMY_CSATFAIL, // [더미] 대학수학능력시험 9등급
     DUMMY_INFILTRATIONSUCCESS, // [더미] 침투 성공
     DUMMY_INFILTRATIONFAIL, // [더미] 침투 실패
     DUMMY_INFORMATIONLEAK, // [더미] 개인 정보 유출
     DUMMY_DONEDUPLICATION, // [더미] 인공 중복기연
     DUMMY_REBIRTHCOMPLETE, // [더미] 새로운 삶
     DUMMY_GOCMEMBER, // [더미] U.N.G.O.C 대원
-    DUMMY_ALPHAONEMENBER, // [더미] ALPHA-1 대원
+    DUMMY_GRUPMENBER, // [더미] GRU-P 대원
 
     // 일반 //
     NORMAL_WORKOUT, // [일반] 운동
@@ -319,6 +327,8 @@ public enum AbilityType
     NORMAL_RANDOMCANDY, // [일반] 트릭 오어 트릿
     NORMAL_CLOAK, // [일반] 망토
     NORMAL_NIGHTOWL, // [일반] 밤눈
+    NORMAL_STUDY, // [일반] 공부
+    NORMAL_HEREDITY, // [일반] 유전
 
     // 희귀 //
     RARE_PHYSICALSTRENGTHENING, // [희귀] 육체 강화
@@ -427,7 +437,6 @@ public enum AbilityType
     MYTHIC_KINGSCOLOR, // [신화] 패왕색 패기
     MYTHIC_ROSEHIP, // [신화] 장미칼
     MYTHIC_HAMMER, // [신화] 철퇴
-    MYTHIC_UNLIMITED, // [신화] 무제한
     MYTHIC_ANCHOR, //[신화] 구속
     MYTHIC_SOLDIER76, // [신화] 솔져: 76
 
@@ -489,7 +498,7 @@ public enum AbilityType
     
     RARE_CHI_CHAOSOFCHAOS, // [전용 희귀] 혼돈의 카오스
     
-    LEGEND_CHI_ALPHAONE, // [전용 전설] ALPHA-1, Red Right Hand
+    LEGEND_CHI_GRUP, // [전용 전설] GRU-P
 
     // 뱀의 손
     NORMAL_TUTORIAL_TONGUE, // [전용 일반] 세치 혀
@@ -540,11 +549,13 @@ public enum AbilityType
     MYTHIC_SCP0492_ONEPUNCH, // [전용 신화] ONE PUNCH MAN
 
     // SCP-096
-    NORMAL_SCP096_ENEMY, // [전용 일반] 원수
     NORMAL_SCP096_CANTMANAGEANGER, // [전용 일반] 분노 조절 문제
     NORMAL_SCP096_RAGE, // [전용 일반] 격노
+    NORMAL_SCP096_ENEMY, // [전용 일반] 원수
     
     RARE_SCP096_SEER, // [전용 희귀] 천리안
+    RARE_SCP096_STABLE, // [전용 희귀] 안정
+    RARE_SCP096_THREAT, // [전용 희귀] 위협
     
     EPIC_SCP096_STARTEARING, // [전용 영웅] 별자리 찢기
     EPIC_SCP096_RAGINGATTACK, // [전용 영웅] 분노의 일격
@@ -587,24 +598,24 @@ public enum AbilityType
 
     // SCP-079
     NORMAL_SCP079_PINGREMOTE, // [전용 일반] 핑 리모컨
-    //NORMAL_SCP079_PORTABLECHARGER, // [전용 일반] 간이 충전기
+    NORMAL_SCP079_PORTABLECHARGER, // [전용 일반] 간이 충전기
     NORMAL_SCP079_RANDOMFUNCTION, // [전용 일반] 랜덤 함수
     NORMAL_SCP079_SHUTDOWN, // [전용 일반] 셧다운제
     NORMAL_SCP079_OVERCLOCKING, // [전용 일반] 오버클럭
     NORMAL_SCP079_JUSTPRICE, // [전용 일반] 응당한 대가
     NORMAL_SCP079_CAMERAFLASH, // [전용 일반] 카메라 플래시
-    NORMAL_SCP079_CASSIE, // [전용 일반] C.A.S.S.I.E.
     NORMAL_SCP079_ATTACKORDER, // [전용 일반] 공격 명령
-    NORMAL_SCP079_AUTOTESLA, // [전용 일반] 자동 방어 시스템(x)
     NORMAL_SCP079_WORKOUTORDER, // [전용 일반] 운동 명령
     NORMAL_SCP079_SPAMMESSAGE, // [전용 일반] 스팸 문자
+    NORMAL_SCP079_INSTRUCT, // [전용 일반] 지도
+    NORMAL_SCP079_TACTIC, // [전용 일반] 전략
 
     RARE_SCP079_OVERCURRENT, // [전용 희귀] 과전류(x)
     RARE_SCP079_OVERWHELMING, // [전용 희귀] 고대의 존재 압도
     RARE_SCP079_POWERABSORPTION, // [전용 희귀] 전력 흡수
     RARE_SCP079_PINGHOOK, // [전용 희귀] 핑 갈고리
     RARE_SCP079_AVOIDORDER, // [전용 희귀] 회피 명령
-    RARE_SCP079_LOCKDOWN, // [전용 희귀] 봉쇄(x)
+    RARE_SCP079_LOCKDOWN, // [전용 희귀] 봉쇄
     RARE_SCP079_REPAIR, // [전용 희귀] 수리수리 마수리
     RARE_SCP079_RESTAREA, // [전용 희귀] 휴게소
     RARE_SCP079_FREEDOM, // [전용 희귀] 자유
@@ -613,24 +624,21 @@ public enum AbilityType
     RARE_SCP079_SYSTEMHACKING, // [전용 희귀] 시스템 해킹
     RARE_SCP079_HIDE, // [전용 희귀] 은폐
     RARE_SCP079_DUPLICATION, // [전용 희귀] 중복
+    RARE_SCP079_PROTECTION, // [전용 영웅] 보호
 
-    EPIC_SCP079_CALLSCP, // [전용 영웅] SCP 지원 호출기
     EPIC_SCP079_LEVELUP, //[전용 영웅] 만렙
     EPIC_SCP079_SWIFTSUPPORT, // [전용 영웅] 신속 지원
     EPIC_SCP079_IMPORTUNITY, // [전용 영웅] 끈질김
     EPIC_SCP079_SystemInfiltration, // [전용 영웅] 시스템 침투
     EPIC_SCP079_SURVIVALORDER, // [전용 영웅] 생존 명령
-    EPIC_SCP079_BLESSING, // [전용 영웅] 가호
-    EPIC_SCP079_SUICIDEORDER, // [전용 영웅] 희생 명령
     EPIC_SCP079_SURPRISEATTACK, // [전용 영웅] 기습
-    EPIC_SCP079_PROTECTION, // [전용 영웅] 보호
 
-    LEGEND_SCP079_STARTWARHEAD, // [전용 전설] 자폭 시퀸스
     LEGEND_SCP079_BLACKOUT, // [전용 전설] 블랙아웃
     LEGEND_SCP079_ASSULTORDER, // [전용 전설] 돌격 명령
     LEGEND_SCP079_EXPLOSIONISART, // [전용 전설] 폭발은 예술이다
     LEGEND_SCP079_VIRUS, // [전용 전설] 바이러스
     LEGEND_SCP079_SECURITYCAMERA, // [전용 전설] 감시 카메라
+    LEGEND_SCP079_BLESSING, // [전용 전설] 가호
 
     MYTHIC_SCP079_TOOLPING, // [전용 신화] 따아알깍
     MYTHIC_SCP079_TRANSENDENCE, // [전용 신화] 초월
@@ -667,8 +675,7 @@ public enum AbilityType
     SYNERGY_ASSASSIN, // [시너지] 암살자
     SYNERGY_LOSER, // [시너지] 패배자
     SYNERGY_WINNER, // [시너지] 승리자
-    SYNERGY_VAMPIRE, // [시너지] 뱀파이어,
-    SYNERGY_GMAN, // [시너지] G맨
+    SYNERGY_VAMPIRE, // [시너지] 뱀파이어
     SYNERGY_RICH1, // [시너지] 부자Ⅰ
     SYNERGY_RICH2, // [시너지] 부자Ⅱ
     SYNERGY_AFK, // [시너지] AFK
@@ -679,6 +686,8 @@ public enum AbilityType
     SYNERGY_HEALER, // [시너지] 비숍
     SYNERGY_REFLECTEDLIGHT, // [시너지] 반사광
     SYNERGY_JUGGERNAUT, // [시너지] 저거너트
+    SYNERGY_SOCCERKICK, // [시너지] Soccer Kick
+    SYNERGY_BRILLIANTMIND, // [시너지] 수재
 }
 
 public static class AbilityTypeExtensions

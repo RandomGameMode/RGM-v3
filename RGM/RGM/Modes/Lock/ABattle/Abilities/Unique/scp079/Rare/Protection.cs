@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Rare;
 
-[Ability("보호", "아군들에게 [<color=#2ECCFA>희귀</color>] 하이패스, [<color=#2ECCFA>희귀</color>] 강첩껍질 능력 3개 지급합니다.", AbilityCategory.Epic, AbilityType.EPIC_SCP079_PROTECTION, RoleAbility.Scp079)]
+[Ability("보호", "아군들에게 [<color=#2ECCFA>희귀</color>] 하이패스, [<color=#2ECCFA>희귀</color>] 강첩껍질 능력 3개 지급합니다.",
+    AbilityCategory.Rare, AbilityType.RARE_SCP079_PROTECTION, RoleAbility.Scp079)]
 public class Protection : Ability
 {
     public override void OnEnabled()

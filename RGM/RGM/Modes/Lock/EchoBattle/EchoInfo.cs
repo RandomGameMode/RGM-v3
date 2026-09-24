@@ -59,8 +59,9 @@ public class EchoLoadout
     public ExclusiveWeaponType? EquippedWeapon { get; set; }
 
     /// <summary>슬롯별 메인 스탯 선택. Echo와 1:1로 대응합니다.</summary>
-    public EchoMainStatType? MainSlotStat { get; set; }
-    public EchoMainStatType?[] SubSlotStats { get; set; } = new EchoMainStatType?[4];
+    private EchoMainStatType? MainSlotStat { get; set; }
+
+    private EchoMainStatType?[] SubSlotStats { get; set; } = new EchoMainStatType?[4];
 
     public Dictionary<EchoType, int> Levels { get; set; } = new();
     /// <summary>누적 경험치. 피해량 기반 보상을 정확히 반영하기 위해 소수점도 보존합니다.</summary>
@@ -139,7 +140,7 @@ public class EchoLoadout
         }
     }
 
-    public EchoMainStatType? GetSlotMainStat(int slotIndex)
+    private EchoMainStatType? GetSlotMainStat(int slotIndex)
     {
         // 0 = Main, 1~4 = Sub
         if (slotIndex == 0)
@@ -167,7 +168,7 @@ public class EchoLoadout
         SubSlotStats[sub] = stat;
     }
 
-    public EchoType? GetSlotEcho(int slotIndex)
+    private EchoType? GetSlotEcho(int slotIndex)
     {
         if (slotIndex == 0)
             return MainSlot;

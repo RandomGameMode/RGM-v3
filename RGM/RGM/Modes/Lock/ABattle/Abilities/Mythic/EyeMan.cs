@@ -38,27 +38,16 @@ public class EyeMan : Ability
         {
             try
             {
-                //foreach (var near in PlayerManager.List.Where(x => x.IsAlive && Vector3.Distance(x.Position, Owner.Position) < 11))
-                //{
-                //    if (Owner != near && HitboxIdentity.IsEnemy(Owner.ReferenceHub, near.ReferenceHub))
-                //    {
-                //        near.EnableEffect(EffectType.SinkHole, 1, 0.2f);
-                //        near.EnableEffect(EffectType.Blinded, 1, 0.2f);
-                //        near.Hurt(near.MaxHealth / 240, "눈빛의 힘에 압도당했습니다.");
-                //        Hitmarker.SendHitmarkerDirectly(Owner.ReferenceHub, 1f);
-                //    }
-                //}
-
-                if (Owner.TryGetLookPlayer(100f, out Exiled.API.Features.Player target, out RaycastHit? hit))
+                if (Owner.TryGetLookPlayer(100f, out var target, out _))
                 {
                     if (Owner != target && HitboxIdentity.IsEnemy(Owner.ReferenceHub, target.ReferenceHub))
                     {
                         beam.Position = Owner.CameraTransform.position + Owner.CameraTransform.forward * 0.3f;
                         beam.Rotation = Quaternion.LookRotation(Owner.CameraTransform.forward);
-                        target.EnableEffect(EffectType.SinkHole, 1, 0.2f);
-                        target.EnableEffect(EffectType.Blinded, 1, 0.2f);
+                        target.EnableEffect(EffectType.SinkHole, 1, 0.5f);
+                        target.EnableEffect(EffectType.Blinded, 1, 0.5f);
                         target.CurrentItem = null;
-                        target.Hit(Owner, target.IsScpRole() ? target.MaxHealth * 0.04f : target.MaxHealth * 0.12f);
+                        ApplyFixedDamage.Apply(Owner, target, target.IsScpRole() ? target.MaxHealth * 0.05f : target.MaxHealth * 0.15f);
                         Hitmarker.SendHitmarkerDirectly(Owner.ReferenceHub, 0.5f);
                     }
                     else

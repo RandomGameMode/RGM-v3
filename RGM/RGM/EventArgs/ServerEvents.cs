@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using RGM.Patches;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using static RGM.IEnumerators.LobbyIEnumerator;
 using static RGM.IEnumerators.ServerIEnumerator;
 using static RGM.Variables.Variable;
@@ -87,7 +88,7 @@ namespace RGM.EventArgs
             Timing.RunCoroutine(Ball());
             Timing.RunCoroutine(MovingShootingTarget());
 
-            var rand = UnityEngine.Random.Range(1, 6);
+            var rand = Random.Range(1, 6);
 
             switch (rand)
             {
@@ -145,7 +146,7 @@ namespace RGM.EventArgs
                 {
                     var maxLength = ModeVote.Values.Max(list => list.Count);
                     var longestKeys = ModeVote.Keys.Where(key => ModeVote[key].Count == maxLength).ToList();
-                    var randomKey = longestKeys[UnityEngine.Random.Range(0, longestKeys.Count)];
+                    var randomKey = longestKeys[Random.Range(0, longestKeys.Count)];
                     CurrentMode = randomKey;
                     CurrentSubMode = SubModeVote[ModeVote.Keys.ToList().IndexOf(randomKey)];
 
@@ -189,11 +190,7 @@ namespace RGM.EventArgs
                 player.AddBroadcast(10, ModeDesc[0]);
 
                 player.SendConsoleMessage($"\n{ModeDesc[0].Replace("\n", "\n")}", "white");
-                if (ModeDesc[3] == "")
-                    player.SendConsoleMessage($"\n{ModeDesc[2]}", "white");
-
-                else
-                    player.SendConsoleMessage($"\n{ModeDesc[3]}", "white");
+                player.SendConsoleMessage(ModeDesc[3] == "" ? $"\n{ModeDesc[2]}" : $"\n{ModeDesc[3]}", "white");
             }
 
             Tools.TryInstallMode(CurrentMode);
@@ -209,39 +206,35 @@ namespace RGM.EventArgs
             Webhook.Send($"시작된 모드 : {CurrentMode.GetModeData().Name}");
             Log.Info($"시작된 모드 : {CurrentMode.GetModeData().Name}");
 
-            if (CurrentMode != ModeType.Develop)
+            if (CurrentMode == ModeType.Develop) yield break;
+            if (CurrentMode.GetModeData().Info == ModeInfo.Plus)
             {
-                if (CurrentMode.GetModeData().Info == ModeInfo.Plus)
+                Timing.RunCoroutine(HumanLoop());
+                Timing.RunCoroutine(Scp079Broadcast());
+
+                if (Convert.ToByte(Random.Range(1, 101)) <= 10)
                 {
-                    Timing.RunCoroutine(HumanLoop());
-                    Timing.RunCoroutine(Scp079Broadcast());
-
-                    int num = UnityEngine.Random.Range(1, 11);
-
-                    if (num == 1)
+                    foreach (var special in Specials.Where(_ => Convert.ToByte(Random.Range(1, 101)) <= 25)) 
                     {
-                        foreach (var special in Specials.Where(special => 
-                                     UnityEngine.Random.Range(1, 4) == 1)) {
-                            Tools.LoadMap(special);
-                        }
-
-                        if (UnityEngine.Random.Range(1, 3) == 1)
-                            Scp294.OnEnabled();
-
-                        if (UnityEngine.Random.Range(1, 3) == 1)
-                            Scp1162.OnEnabled();
+                        Tools.LoadMap(special);
                     }
-                }
 
-                yield return Timing.WaitUntilDone(new AutoWarhead().RunCoroutine());
+                    if (Convert.ToByte(Random.Range(1, 101)) <= 35)
+                        Scp294.OnEnabled();
+
+                    if (Convert.ToByte(Random.Range(1, 101)) <= 35)
+                        Scp1162.OnEnabled();
+                }
             }
+
+            yield return Timing.WaitUntilDone(new AutoWarhead().RunCoroutine());
         }
 
         public static IEnumerator<float> OnRoundEnded(RoundEndedEventArgs ev)
         {
             if (HolidayUtils.IsHolidayActive(HolidayType.Halloween))
             {
-                if (UnityEngine.Random.Range(1, 6) == 1)
+                if (Convert.ToByte(Random.Range(1, 101)) <= 20)
                 {
                     List<EffectType> effects =
                     [
@@ -309,17 +302,13 @@ namespace RGM.EventArgs
             {
                 List<string> uc = UsersManager.UsersCache[player.UserId];
 
-                if (uc[22] != "0")
-                {
-                    if (UnityEngine.Random.Range(1, 21) == 1)
-                    {
-                        uc[22] = "0";
-                        UsersManager.UsersCache[player.UserId] = uc;
-                        UsersManager.SaveUsers();
+                if (uc[22] == "0") continue;
+                if (Convert.ToByte(Random.Range(1, 21)) != 1) continue;
+                uc[22] = "0";
+                UsersManager.UsersCache[player.UserId] = uc;
+                UsersManager.SaveUsers();
 
-                        player.AddHint($"경고 해제", "부여된 경고가 해제되었습니다. 행운을 빕니다.", 20);
-                    }
-                }
+                player.AddHint($"경고 해제", "부여된 경고가 해제되었습니다. 행운을 빕니다.", 20);
             }
 
             try
@@ -352,22 +341,7 @@ namespace RGM.EventArgs
 
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"<size=30><b>이번 라운드 TOP 10</b></size>");
-                int rank = 1;
-
-                string ranking(int r)
-                {
-                    switch (r)
-                    {
-                        case 1:
-                            return "fffa66";
-                        case 2:
-                            return "808d8e";
-                        case 3:
-                            return "dfae4d";
-                        default:
-                            return "ffffff";
-                    }
-                }
+                byte rank = 1;
 
                 foreach (var kv in top10)
                 {
@@ -420,12 +394,28 @@ namespace RGM.EventArgs
                 }
 
                 yield return Timing.WaitForSeconds(1);
+                continue;
+
+                string ranking(byte r)
+                {
+                    switch (r)
+                    {
+                        case 1:
+                            return "fffa66";
+                        case 2:
+                            return "808d8e";
+                        case 3:
+                            return "dfae4d";
+                        default:
+                            return "ffffff";
+                    }
+                }
             }
         }
 
         public static void OnRespawnedTeam(RespawnedTeamEventArgs ev)
         {
-            if (HolidayUtils.IsHolidayActive(HolidayType.Christmas) && UnityEngine.Random.Range(0, 100) < 10)
+            if (HolidayUtils.IsHolidayActive(HolidayType.Christmas) && Convert.ToByte(Random.Range(1, 101)) <= 10)
             {
                 Exiled.API.Features.Cassie.Clear();
                 Exiled.API.Features.Cassie.MessageTranslated("$pitch_0.10 .G6", "");
@@ -436,7 +426,7 @@ namespace RGM.EventArgs
                 }
             }
 
-            if (CurrentMode != ModeType.Juggernaut && UnityEngine.Random.Range(1, 21) == 1)
+            if (CurrentMode != ModeType.Juggernaut && Convert.ToByte(Random.Range(1, 101)) <= 5)
             {
                 CallTutorialSupport(ev.Players);
             }

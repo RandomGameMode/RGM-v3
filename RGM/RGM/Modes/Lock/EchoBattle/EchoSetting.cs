@@ -9,22 +9,22 @@ namespace RGM.Modes;
 
 public static class EchoSetting
 {
-    const int SettingIdStart = 3100;
-    const int InfoKeyId = 31001001;
-    const int WeaponSettingId = 3099;
+    private const int SettingIdStart = 3100;
+    private const int InfoKeyId = 31001001;
+    private const int WeaponSettingId = 3099;
 
-    const string NoneOption = "없음";
-    const string AutoOption = "자동 (Echo 기본)";
+    private const string NoneOption = "없음";
+    private const string AutoOption = "자동 (Echo 기본)";
 
-    static readonly Dictionary<int, SettingMeta> Meta = new();
+    private static readonly Dictionary<int, SettingMeta> Meta = new();
     // 클라이언트가 같은 설정값을 재동기화할 수 있으므로, 처리한 선택값을 기억합니다.
-    static readonly Dictionary<Player, Dictionary<int, string>> LastProcessedSelections = new();
-    static List<string> WeaponOptions;
+    private static readonly Dictionary<Player, Dictionary<int, string>> LastProcessedSelections = new();
+    private static List<string> _weaponOptions;
 
-    public static HeaderSetting Header { get; private set; } = new HeaderSetting(190031, "에코 전투");
-    public static KeybindSetting InfoKey { get; private set; }
+    private static HeaderSetting Header { get; set; } = new(190031, "에코 전투");
+    private static KeybindSetting InfoKey { get; set; }
 
-    enum EchoSlotKind
+    private enum EchoSlotKind
     {
         Main,
         Sub0,
@@ -33,14 +33,14 @@ public static class EchoSetting
         Sub3
     }
 
-    enum SettingKind
+    private enum SettingKind
     {
         Echo,
         MainStat,
         Weapon
     }
 
-    class SettingMeta
+    private class SettingMeta
     {
         public SettingKind Kind;
         public EchoSlotKind Slot;
@@ -66,18 +66,18 @@ public static class EchoSetting
         list.Add(InfoKey);
 
         // 전용무기: 메인 Echo 슬롯 위
-        WeaponOptions = BuildWeaponOptions().Prepend(NoneOption).ToList();
+        _weaponOptions = BuildWeaponOptions().Prepend(NoneOption).ToList();
         list.Add(new DropdownSetting(
             id: WeaponSettingId,
             label: "<color=#ffcc66>전용무기</color>",
             hintDescription: BuildWeaponHintDescription(),
-            options: WeaponOptions,
+            options: _weaponOptions,
             header: Header
         ));
         Meta[WeaponSettingId] = new SettingMeta
         {
             Kind = SettingKind.Weapon,
-            Options = WeaponOptions
+            Options = _weaponOptions
         };
 
         int nextId = SettingIdStart;
@@ -92,7 +92,7 @@ public static class EchoSetting
         SettingBase.Register(list);
     }
 
-    static void AddEchoAndStatPair(List<SettingBase> list, ref int nextId, string echoLabel, EchoSlotKind slot, int slotIndex)
+    private static void AddEchoAndStatPair(List<SettingBase> list, ref int nextId, string echoLabel, EchoSlotKind slot, int slotIndex)
     {
         var echoOptions = BuildEchoOptions(slot).Prepend(NoneOption).ToList();
         int echoId = nextId++;
@@ -129,7 +129,7 @@ public static class EchoSetting
         };
     }
 
-    static IEnumerable<string> BuildEchoOptions(EchoSlotKind slot)
+    private static IEnumerable<string> BuildEchoOptions(EchoSlotKind slot)
     {
         foreach (var pair in EchoInfo.Echoes.OrderByDescending(x => (int)x.Value.Cost).ThenBy(x => x.Value.Name))
         {
@@ -140,19 +140,17 @@ public static class EchoSetting
         }
     }
 
-    static IEnumerable<string> BuildMainStatOptions()
+    private static IEnumerable<string> BuildMainStatOptions()
     {
-        foreach (var type in EchoStats.GetAllSelectableMainStats())
-            yield return FormatMainStatOption(type);
+        return EchoStats.GetAllSelectableMainStats().Select(FormatMainStatOption);
     }
 
-    static IEnumerable<string> BuildWeaponOptions()
+    private static IEnumerable<string> BuildWeaponOptions()
     {
-        foreach (var data in ExclusiveWeaponCore.GetAllOrdered())
-            yield return FormatWeaponOption(data);
+        return ExclusiveWeaponCore.GetAllOrdered().Select(FormatWeaponOption);
     }
 
-    static string BuildWeaponHintDescription()
+    private static string BuildWeaponHintDescription()
     {
         var lines = ExclusiveWeaponCore.GetAllOrdered()
             .Select(x => $"• {x.Name}: {x.Description}");
@@ -162,13 +160,13 @@ public static class EchoSetting
                "공진은 전용 1회성 퀘스트 완료 시 자동 승급됩니다.";
     }
 
-    static string FormatWeaponOption(ExclusiveWeaponData data)
+    private static string FormatWeaponOption(ExclusiveWeaponData data)
     {
         // 스펙: Server-Specific 선택창에 이모지 추가하지 않음
         return data.Name;
     }
 
-    static string BuildEchoHintDescription(EchoSlotKind slot)
+    private static string BuildEchoHintDescription(EchoSlotKind slot)
     {
         var lines = EchoInfo.Echoes.Values
             .Where(x => IsEchoAllowedInSlot(slot, x))
@@ -182,7 +180,7 @@ public static class EchoSetting
         return string.Join("\n", lines) + $"\n\n최대 {EchoInfo.MaxEquippedEchoes}개 / 합산 Cost {EchoInfo.MaxTotalCost}{slotLimit}";
     }
 
-    static string BuildMainStatHintDescription()
+    private static string BuildMainStatHintDescription()
     {
         return
             "장착한 Echo의 Cost에 맞는 메인 스탯을 고르세요.\n" +
@@ -193,17 +191,17 @@ public static class EchoSetting
             "• Cost에 없는 스탯을 고르면 적용되지 않습니다.";
     }
 
-    static string FormatEchoOption(EchoData data)
+    private static string FormatEchoOption(EchoData data)
     {
         return $"<color={data.Cost.GetColor()}>[C{(int)data.Cost}]</color> {data.Emoji} {data.Name}";
     }
 
-    static string FormatMainStatOption(EchoMainStatType type)
+    private static string FormatMainStatOption(EchoMainStatType type)
     {
         return EchoStats.GetMainStatDisplayName(type);
     }
 
-    static bool IsEchoAllowedInSlot(EchoSlotKind slot, EchoData data)
+    private static bool IsEchoAllowedInSlot(EchoSlotKind slot, EchoData data)
     {
         if (data == null)
             return false;
@@ -258,7 +256,7 @@ public static class EchoSetting
             HandleMainStatSelection(player, loadout, meta, selected);
     }
 
-    static bool IsPreviouslyProcessedSelection(Player player, int settingId, string selected)
+    private static bool IsPreviouslyProcessedSelection(Player player, int settingId, string selected)
     {
         if (!LastProcessedSelections.TryGetValue(player, out var selections))
         {
@@ -277,11 +275,11 @@ public static class EchoSetting
     /// SyncSelectionText보다 SyncSelectionIndexRaw를 우선해 옵션을 확정합니다.
     /// 텍스트 불일치로 이전 스탯이 남는 문제를 방지합니다.
     /// </summary>
-    static bool TryResolveSelection(SSDropdownSetting dropdown, SettingMeta meta, out string selected)
+    private static bool TryResolveSelection(SSDropdownSetting dropdown, SettingMeta meta, out string selected)
     {
         selected = null;
 
-        if (meta.Options != null && meta.Options.Count > 0)
+        if (meta.Options is { Count: > 0 })
         {
             int index = dropdown.SyncSelectionIndexRaw;
             if (index >= 0 && index < meta.Options.Count)
@@ -295,7 +293,7 @@ public static class EchoSetting
         return !string.IsNullOrWhiteSpace(selected);
     }
 
-    static void HandleWeaponSelection(Player player, EchoLoadout loadout, string selected)
+    private static void HandleWeaponSelection(Player player, EchoLoadout loadout, string selected)
     {
         if (selected == NoneOption)
         {
@@ -315,7 +313,7 @@ public static class EchoSetting
         EchoBattleCore.ShowNotification(player, $"전용무기: {match.Name}  Lv.{level}  공진 {resonance}", 3);
     }
 
-    static void HandleEchoSelection(Player player, EchoLoadout loadout, SettingMeta meta, string selected)
+    private static void HandleEchoSelection(Player player, EchoLoadout loadout, SettingMeta meta, string selected)
     {
         EchoType? selectedType = null;
 
@@ -376,7 +374,7 @@ public static class EchoSetting
             4);
     }
 
-    static void HandleMainStatSelection(Player player, EchoLoadout loadout, SettingMeta meta, string selected)
+    private static void HandleMainStatSelection(Player player, EchoLoadout loadout, SettingMeta meta, string selected)
     {
         var echoType = GetCurrentSlotType(loadout, meta.Slot);
         if (!echoType.HasValue)
@@ -430,7 +428,7 @@ public static class EchoSetting
         EchoBattleCore.ShowNotification(player, $"메인 스탯: {FormatMainStatOption(selectedStat.Value)}", 2);
     }
 
-    static EchoType? GetCurrentSlotType(EchoLoadout loadout, EchoSlotKind kind)
+    private static EchoType? GetCurrentSlotType(EchoLoadout loadout, EchoSlotKind kind)
     {
         return kind switch
         {
@@ -443,7 +441,7 @@ public static class EchoSetting
         };
     }
 
-    static void SetSlot(EchoLoadout loadout, EchoSlotKind kind, EchoType? type)
+    private static void SetSlot(EchoLoadout loadout, EchoSlotKind kind, EchoType? type)
     {
         switch (kind)
         {

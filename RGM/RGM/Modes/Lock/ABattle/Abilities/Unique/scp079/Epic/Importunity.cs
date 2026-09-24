@@ -13,7 +13,8 @@ using Exiled.API.Features.Roles;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Epic;
 
-[Ability("끈질김", "사망 시 부활합니다. SCP가 모두 죽으면 부활하지 않습니다.", AbilityCategory.Epic, AbilityType.EPIC_SCP079_IMPORTUNITY, RoleAbility.Scp079)]
+[Ability("끈질김", "사망 시 부활합니다. SCP가 모두 죽으면 부활하지 않습니다.", 
+    AbilityCategory.Epic, AbilityType.EPIC_SCP079_IMPORTUNITY, RoleAbility.Scp079)]
 public class Importunity : Ability
 {
 

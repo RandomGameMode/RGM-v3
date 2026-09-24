@@ -72,14 +72,14 @@ namespace RGM.Modes
                 Log.Debug($"[PVE] {message}");
         }
         
-        private void OnSpawnedRagdoll(SpawnedRagdollEventArgs ev)
+        private static void OnSpawnedRagdoll(SpawnedRagdollEventArgs ev)
         {
             ev.Ragdoll?.Destroy();
         }
 
         private void OnRoundEnding(EndingRoundEventArgs ev)
         {
-            List<Player> players = PlayerManager.List.Where(x => !x.IsNPC).ToList();
+            List<Player> players = [.. PlayerManager.List.Where(x => !x.IsNPC)];
             if (players.Count == 0 || roundHandler.SelectedDifficulty < 0)
                 return;
             
@@ -109,15 +109,14 @@ namespace RGM.Modes
                 },
                 2 => roundHandler.CurrentWave switch
                 {
-                    <= 2 => 1,
-                    3 => 3,
-                    <= 5 => 5,
-                    6 => 6,
-                    <= 8 => 7,
-                    9 => 8,
-                    <= 11 => 9,
-                    13 => 10,
-                    14 => 11,
+                    <= 2 => 3,
+                    <= 4 => 4,
+                    <= 6 => 5,
+                    <= 8 => 6,
+                    <= 10 => 7,
+                    <= 12 => 8,
+                    13 => 9,
+                    14 => 10,
                     _ => reward
                 },
                 _ => reward
@@ -129,7 +128,7 @@ namespace RGM.Modes
                     .Where(p => Variable.PlayersReport.TryGetValue(p.UserId, out var report)
                                 && report.Damage >= 3500)
             ];
-
+            
             reward *= roundHandler.AllWavesCleared ? 2 : 1;
             reward = reward <= 0 ? 5 : reward;
             Timing.RunCoroutine(Tools.SetWinner(wonplayers, reward));

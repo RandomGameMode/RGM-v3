@@ -25,10 +25,10 @@ namespace RGM.Variables
         public static ModeType CurrentSubMode = ModeType.None;
         public static AudioPlayer GlobalPlayer;
         public static string SelectMode = "";
-        public static string Tip = Tips.LobbyTips.GetRandomValue();
-        public static string Logo = Random.Range(1, 3) == 1 ? "❓" : "❔";
+        public static readonly string Tip = Tips.LobbyTips.GetRandomValue();
+        public static readonly string Logo = Convert.ToByte(Random.Range(1, 3)) == 1 ? "❓" : "❔";
+        public static readonly byte StartupRandom = Convert.ToByte(Random.Range(1, 31));
         public static string WinMessage = "";
-        public static int StartupRandom = Random.Range(1, 31);
         public static bool FreezeGameStart = false;
         public static bool ShootingTargetSignal = false;
         public static bool IsBugVoteProcessing = false;
@@ -108,7 +108,7 @@ namespace RGM.Variables
                 Name = "인형 소환",
                 Description = ".구매 인형/0ㅣ랜덤한 역할군의 인형을 소환합니다. 로비에서만 사용할 수 있습니다.",
                 Price = 3,
-                Check = (player, arg) => { return Round.IsLobby; },
+                Check = (player, arg) => Round.IsLobby,
                 Script = (player, arg) =>
                 {
                     Ragdoll.CreateAndSpawn(Tools.EnumToList<RoleTypeId>().GetRandomValue(), "인형", "이 깜찍한 인형 좀 보세요.",
@@ -122,7 +122,7 @@ namespace RGM.Variables
                 Name = "랜덤박스",
                 Description = ".구매 랜덤박스/0ㅣ랜덤한 아이템을 얻습니다. 로비 또는 라운드 종료 시에만 사용할 수 있습니다.",
                 Price = 3,
-                Check = (player, arg) => { return Round.IsLobby || Round.IsEnded; },
+                Check = (player, arg) => Round.IsLobby || Round.IsEnded,
                 Script = (player, arg) => { player.AddRandomItem(); }
             },
 
@@ -151,11 +151,11 @@ namespace RGM.Variables
                 Name = "휴대용 라디오",
                 Description = $".구매 휴대용 라디오/<노래 이름>ㅣ이 서버에 등록된 소리 파일 중 하나를 랜덤으로 재생합니다.",
                 Price = 5,
-                Check = (player, arg) => { return player.IsAlive; },
+                Check = (player, arg) => player.IsAlive,
                 Script = (player, arg) =>
                 {
                     AudioPlayer radio = AudioPlayer.CreateOrGet($"Radio {player.UserId}",
-                        condition: (ReferenceHub hub) => { return !MuteBGMPlayers.Contains(Player.Get(hub)); },
+                        condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)),
                         onIntialCreation: (p) =>
                         {
                             p.transform.parent = player.GameObject.transform;
@@ -185,7 +185,7 @@ namespace RGM.Variables
                 Name = "확성기",
                 Description = $".구매 확성기/{{내용}}ㅣ{{내용}}을 큼지막한 글씨로 띄웁니다. 로비 또는 라운드 종료 시에만 사용할 수 있습니다.",
                 Price = 5,
-                Check = (player, arg) => { return Round.IsLobby || Round.IsEnded; },
+                Check = (player, arg) => Round.IsLobby || Round.IsEnded,
                 Script = (player, arg) =>
                 {
                     string text = string.Concat(new string[]
@@ -227,7 +227,7 @@ namespace RGM.Variables
                     string modeName = ModeList.Keys
                         .First(x => x.GetModeData().Name == arg && x.GetModeData().Category != ModeCategory.Private)
                         .GetModeData().Name;
-                    bool flag = Random.Range(1, 11) == 1;
+                    bool flag = Convert.ToByte(Random.Range(1, 101)) <= 10;
 
                     if (flag)
                     {
@@ -282,12 +282,12 @@ namespace RGM.Variables
                 Name = "모드 리롤권",
                 Description = $".사용 모드 리롤권ㅣ10% 확률로 모든 투표 목록을 변경합니다. 판 엎기에 딱 좋네요. 한 라운드 당 한번만 사용할 수 있습니다.",
                 Price = 10,
-                Check = (player, arg) => { return Round.IsLobby && !UsedItems.Contains("모드 리롤권"); },
+                Check = (player, arg) => Round.IsLobby && !UsedItems.Contains("모드 리롤권"),
                 Script = (player, arg) =>
                 {
                     UsedItems.Add("모드 리롤권");
 
-                    bool flag = Random.Range(1, 11) == 1;
+                    bool flag = Convert.ToByte(Random.Range(1, 101)) <= 10;
 
                     if (flag)
                     {
@@ -310,7 +310,7 @@ namespace RGM.Variables
                 Name = "고급 모드 리롤권",
                 Description = $".사용 고급 모드 리롤권ㅣ무조건적으로 모든 투표 목록을 변경합니다.",
                 Price = 1205,
-                Check = (player, arg) => { return Round.IsLobby && !UsedItems.Contains("고급 모드 리롤권"); },
+                Check = (player, arg) => Round.IsLobby && !UsedItems.Contains("고급 모드 리롤권"),
                 Script = (player, arg) =>
                 {
                     UsedItems.Add("고급 모드 리롤권");
@@ -328,7 +328,7 @@ namespace RGM.Variables
                 Name = "게임 칩",
                 Description = $".사용 이번 라운드에서 승리 시 10배만큼 랜덤코인을 추가로 얻습니다.",
                 Price = 5,
-                Check = (player, arg) => { return Round.IsLobby && !UsingGameChipUsers.Contains(player.UserId); },
+                Check = (player, arg) => Round.IsLobby && !UsingGameChipUsers.Contains(player.UserId),
                 Script = (player, arg) => { UsingGameChipUsers.Add(player.UserId); }
             }
         ];
@@ -364,7 +364,7 @@ namespace RGM.Variables
         public static Dictionary<Player, List<SettingBase>> PlayerSetting = new();
         public static Dictionary<Player, string> TranslatorPlayers = new();
         public static Dictionary<Player, Dictionary<EffectType, int>> EffectIntensities = new();
-        public static Dictionary<string, string> KillEffects = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> KillEffects = new()
         {
             {"영혼 가출", "죽은 상대에게서 혼을 추출해냅니다!"},
             {"솔라 테라", "죽음에 햇빛 한 점 들기를.."},
@@ -381,17 +381,17 @@ namespace RGM.Variables
             {"SCP999", "이 귀여운 생명체는 뭐죠...?"},
             {"Lightning", "찌리찌리 짜라짜라"}
         };
-        public static Dictionary<string, string> SpawnEffects = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> SpawnEffects = new()
         {
             {"Connected", "연결되었습니다."}
         };
-        public static Dictionary<string, string> Customizations = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> Customizations = new()
         {
             {"커스텀 닉네임", "표시되는 플레이어 이름을 수정합니다."},
             {"커스텀 인포", "플레이어 인포를 추가합니다."},
             {"커스텀 키카드", "들고 있는 키카드를 수정합니다."}
         };
-        public static Dictionary<string, string> Paints = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> Paints = new()
         {
             {"블랙골드", "검은색과 금색의 달콤한 콜라보!"},
             {"핫핑크", "두근두근거리는 핑크들의 콜라보!"},
@@ -420,7 +420,7 @@ namespace RGM.Variables
             {"군대 녹색", "이름이 왜 군대(army) 녹색일까요?"},
             {"호박색", "할로윈 좋아하세요?"}
         };
-        public static Dictionary<string, string> Badges = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> Badges = new()
         {
             {"RGM Owner", "랜덤게임모드(RGM) 공식 운영자 칭호"},
             {"RGM Administrator", "랜덤게임모드(RGM) 공식 관리자 칭호"},
@@ -451,12 +451,12 @@ namespace RGM.Variables
             {"2025 Last Survivor", "2025 연말 이벤트의 마지막 생존자"},
             {"마음만큼은 어린이", "2026년도 어린이날(5월 5일) 기념"}
         };
-        public static Dictionary<string, string> Icons = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> Icons = new()
         {
             {"⭐", "반짝 반짝 작은 별"},
             {"✿", "작은 꿈은 벚꽃처럼 만개하리라"},
         };
-        public static Dictionary<CandyKindID, ICandy> CandyDataDict = new()
+        public static readonly Dictionary<CandyKindID, ICandy> CandyDataDict = new()
         {
             { CandyKindID.Brown, new HauntedCandyBrown() },
             { CandyKindID.Gray, new HauntedCandyGray() },

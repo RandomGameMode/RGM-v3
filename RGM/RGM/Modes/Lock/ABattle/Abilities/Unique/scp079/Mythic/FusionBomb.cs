@@ -21,7 +21,8 @@ namespace RGM.Modes.Abilities.Unique.Scp079.Mythic;
     RoleAbility.Scp079)]
 public class FusionBomb : Ability
 {
-    static bool isScp079Cooldown = false;
+    private static bool _isScp079Cooldown;
+    
     public override void OnEnabled()
     {
         Owner.AddAbility(AbilityType.NORMAL_SCP0492_INFECTION);
@@ -39,9 +40,9 @@ public class FusionBomb : Ability
 
         try
         {
-            if (!isScp079Cooldown)
+            if (!_isScp079Cooldown)
             {
-                isScp079Cooldown = true;
+                _isScp079Cooldown = true;
                 Timing.CallDelayed(0.1f, () =>
                 {
                     Vector3 centerPos = ev.Position + new Vector3(0, 0.1f, 0);
@@ -49,7 +50,7 @@ public class FusionBomb : Ability
 
                     Timing.CallDelayed(15f, () =>
                     {
-                        isScp079Cooldown = false;
+                        _isScp079Cooldown = false;
                     });
                 });
             }
@@ -107,7 +108,5 @@ public class FusionBomb : Ability
             g.FuseTime = 0.1f;
             g.SpawnActive(RealPosition, Owner);
         }
-
-        yield break;
     }
 }

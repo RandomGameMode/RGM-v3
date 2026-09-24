@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Exiled.API.Extensions;
-using Exiled.API.Features;
-using Exiled.API.Features.Items;
-using UnityEngine;
+using MEC;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Legend;
 
-//[Ability("랜덤택배", "고가치 아이템을 30개 드롭합니다.", AbilityCategory.Legend, AbilityType.LEGEND_RANDOMPACKAGE)]
+[Ability("랜덤택배", "30초마다 고가치 아이템 1개를 획득합니다. 10% 확률로 특수 아이템을 획득할 수 있습니다.",
+    AbilityCategory.Legend, AbilityType.LEGEND_RANDOMPACKAGE)]
 public class RandomPackage : Ability
 {
     private readonly List<ItemType> _highvalueitems =
@@ -26,24 +26,39 @@ public class RandomPackage : Ability
         ItemType.GunE11SR,
         ItemType.ArmorHeavy
     ];
+
+    private readonly List<AbilityType> _specials =
+    [
+        AbilityType.RARE_SPACETRAVEL,
+        AbilityType.EPIC_RAMBO,
+        AbilityType.EPIC_TERRORISTREMAINS,
+        AbilityType.LEGEND_FLASHLIGHT,
+        AbilityType.LEGEND_FLAMETHROWER,
+        AbilityType.LEGEND_OTHERWORLDLIGHT
+    ];
+
+    private CoroutineHandle _randomitem;
     
     public override void OnEnabled()
     {
-        for (int i = 1; i < 31; i++)
+        _randomitem = Timing.RunCoroutine(RandomItem());
+    }
+
+    public override void OnDisabled()
+    {
+        Timing.KillCoroutines(_randomitem);
+    }
+
+    private IEnumerator<float> RandomItem()
+    {
+        while (true)
         {
-            try
+            if (Convert.ToByte(Random.Range(1, 101)) <= 10)
             {
-                Item item = Item.Create(_highvalueitems.GetRandomValue());
-
-                if (item is Firearm firearm)
-                    firearm.MagazineAmmo = firearm.MaxMagazineAmmo;
-
-                item.CreatePickup(new Vector3(Owner.Position.x, Owner.Position.y + 2, Owner.Position.z));
+                Owner.AddAbility(_specials.GetRandomValue());
             }
-            catch (Exception ex)
-            {
-                Log.Error($"Failed to create item: {ex}");
-            }
+            Owner.AddItem(_highvalueitems.GetRandomValue());
+            yield return Timing.WaitForSeconds(30f);
         }
     }
 }

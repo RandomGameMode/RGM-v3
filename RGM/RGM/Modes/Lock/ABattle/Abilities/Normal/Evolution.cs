@@ -7,22 +7,12 @@ public class Evolution : Ability
 {
     private const float Scale = 0.08f;
     private const int MaxCount = 10;
-    private bool _applied;
 
     public override void OnEnabled()
     {
         if (Owner.AbilityCount(AbilityType.NORMAL_EVOLUTION) >= MaxCount)
             return;
 
-        _applied = true;
         Owner.Scale = new Vector3(Owner.Scale.x - Scale, Owner.Scale.y - Scale, Owner.Scale.z - Scale);
-    }
-
-    public override void OnDisabled()
-    {
-        if (!_applied)
-            return;
-
-        Owner.Scale = new Vector3(Owner.Scale.x + Scale, Owner.Scale.y + Scale, Owner.Scale.z + Scale);
     }
 }

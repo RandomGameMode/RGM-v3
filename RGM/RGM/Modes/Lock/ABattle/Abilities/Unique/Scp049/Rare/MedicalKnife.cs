@@ -23,6 +23,9 @@ public class MedicalKnife : Ability
 
         if (ev.DamageHandler.Type != DamageType.Scp049)
             return;
+        
+        if (ev.DamageHandler.Type == DamageType.CardiacArrest)
+            return;
 
         ev.DamageHandler.Damage += 80f;
     }

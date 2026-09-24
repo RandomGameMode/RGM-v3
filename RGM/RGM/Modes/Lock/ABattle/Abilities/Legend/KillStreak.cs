@@ -1,12 +1,10 @@
-﻿using Exiled.API.Extensions;
-using Exiled.API.Features.Roles;
+﻿using System.Linq;
 using Exiled.Events.EventArgs.Player;
-using MEC;
 using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Legend;
 
-[Ability("킬스트릭", "적을 처치할 때마다 새로운 능력을 얻습니다. (인간 진영의 경우 능력 12개를 지급받습니다.)",
+[Ability("킬스트릭", "적을 처치할 때마다 새로운 능력을 얻습니다. (인간 진영의 경우 능력 15개를 지급받습니다.)",
     AbilityCategory.Legend, AbilityType.LEGEND_KILLSTREAK)]
 public class KillStreak : Ability
 {
@@ -14,9 +12,12 @@ public class KillStreak : Ability
     public override void OnEnabled()
     {
         if (!Owner.IsScpRole()) {
-            for (int i = 0; i < 12; i++)
-                Owner.AddAbility(ABattle.Instance.GetRandomAbilities(Owner, ABattle.GetCategory(Owner, allowAncient: false), 1,
-                    [AbilityType.NORMAL_FRIENDSHIP, AbilityType.NORMAL_REROLL, AbilityType.RARE_TELEPORTATION, AbilityType.RARE_DND])[0]);
+            for (int i = 0; i < 15; i++)
+                Owner.AddAbility(ABattle.Instance.GetRandomAbilities(Owner,
+                    ABattle.GetCategory(Owner,
+                        allowAncient: false),
+                    1,
+                    [AbilityType.NORMAL_FRIENDSHIP, AbilityType.NORMAL_REROLL, AbilityType.RARE_TELEPORTATION, AbilityType.RARE_DND]).First());
         }
         Exiled.Events.Handlers.Player.Died += OnDied;
     }

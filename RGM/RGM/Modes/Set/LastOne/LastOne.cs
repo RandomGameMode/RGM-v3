@@ -30,9 +30,9 @@ namespace RGM.Modes
 
         public static LastOne Instance;
 
-        List<ItemType> StartupItems = new List<ItemType>();
+        private List<ItemType> _startupItems = [];
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -60,13 +60,13 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
-            StartupItems = Items();
+            _startupItems = Items();
 
             foreach (var player in PlayerManager.List)
             {
                 player.Role.Set(RoleTypeId.Tutorial);
                 player.Position = Tools.GetObjectList("Spot Random").GetRandomValue().position;
-                foreach (var item in StartupItems)
+                foreach (var item in _startupItems)
                     player.AddItem(item);
             }
 
@@ -83,32 +83,47 @@ namespace RGM.Modes
 
         private List<ItemType> Items()
         {
-            List<ItemType> Guns = new List<ItemType>() { ItemType.GunA7, ItemType.GunE11SR, ItemType.GunShotgun, ItemType.GunCom45, ItemType.GunFSP9, ItemType.GunRevolver,
-                ItemType.GunCOM18, ItemType.GunCrossvec, ItemType.GunLogicer, ItemType.GunFRMG0, ItemType.GunAK };
-            List<ItemType> CDItems = new List<ItemType>() { ItemType.Medkit, ItemType.Painkillers, ItemType.Radio, ItemType.GrenadeFlash };
-            List<ItemType> Items = new List<ItemType>();
+            List<ItemType> guns =
+            [
+                ItemType.GunA7, 
+                ItemType.GunE11SR, 
+                ItemType.GunShotgun, 
+                ItemType.GunCom45,
+                ItemType.GunRevolver,
+                ItemType.GunCOM18, 
+                ItemType.GunCrossvec, 
+                ItemType.GunLogicer, 
+                ItemType.GunFRMG0, 
+                ItemType.GunAK
+            ];
+            
+            List<ItemType> cdItems = 
+            [
+                ItemType.Medkit, 
+                ItemType.Painkillers, 
+                ItemType.Radio, 
+                ItemType.GrenadeFlash
+            ];
+            
+            List<ItemType> items = [guns.GetRandomValue()];
 
-            Items.Add(Guns.GetRandomValue());
-
-            foreach (var item in CDItems)
+            foreach (var item in cdItems)
             {
                 if (UnityEngine.Random.Range(1, 3) == 1)
-                    Items.Add(item);
+                    items.Add(item);
             }
 
-            return Items;
+            return items;
         }
 
         private void OnDied(DiedEventArgs ev)
         {
-            List<Player> pl = PlayerManager.List.Where(x => x.IsAlive).ToList();
+            List<Player> pl = [.. PlayerManager.List.Where(x => x.IsAlive)];
 
-            if (pl.Count() < 2)
-            {
-                Round.IsLocked = false;
+            if (pl.Count >= 2) return;
+            Round.IsLocked = false;
 
-                Timing.RunCoroutine(Tools.SetWinner(new List<Player>() { pl[0] }, 5));
-            }
+            Timing.RunCoroutine(Tools.SetWinner([pl[0]], 5));
         }
 
         private void OnDroppingItem(DroppingItemEventArgs ev)

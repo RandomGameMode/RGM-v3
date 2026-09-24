@@ -1,11 +1,12 @@
-﻿using Exiled.API.Enums;
+﻿using System;
+using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Scp079;
 using MEC;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Common;
 
-[Ability("셧다운제", "정전 시, 해당 방의 문들은 각각 50% 확률로 닫히고 잠기게 됩니다.", AbilityCategory.Normal, AbilityType.NORMAL_SCP079_SHUTDOWN, RoleAbility.Scp079)]
+[Ability("셧다운제", "정전 시, 해당 방의 문들은 각각 51% 확률로 닫히고 잠기게 됩니다.", AbilityCategory.Normal, AbilityType.NORMAL_SCP079_SHUTDOWN, RoleAbility.Scp079)]
 public class Shutdown : Ability
 {
     public override void OnEnabled()
@@ -25,16 +26,14 @@ public class Shutdown : Ability
 
         foreach (var door in ev.Room.Doors)
         {
-            if (Random.Range(1, 3) == 1)
-            {
-                door.IsOpen = false;
-                door.Lock(DoorLockType.Lockdown079);
+            if (Convert.ToByte(Random.Range(1, 101)) > 51) continue;
+            door.IsOpen = false;
+            door.Lock(DoorLockType.Lockdown079);
 
-                Timing.CallDelayed(5f, () =>
-                {
-                    door.Unlock();
-                });
-            }
+            Timing.CallDelayed(5f, () =>
+            {
+                door.Unlock();
+            });
         }
     }
 }

@@ -37,7 +37,7 @@ public class MiniPlagueDoctor : Ability
         if (ev.Player.TryGetEffect<CardiacArrest>(out var cardiacArrest) &&
             cardiacArrest.IsEnabled)
         {
-            ev.DamageHandler.Damage = ev.Player.MaxHealth;
+            ApplyLethalDamage.Apply(Owner, ev.Player);
             return;
         }
 

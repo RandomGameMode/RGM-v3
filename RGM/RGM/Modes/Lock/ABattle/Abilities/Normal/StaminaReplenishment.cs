@@ -1,6 +1,7 @@
-﻿using InventorySystem.Items.Usables.Scp330;
+﻿using System;
+using InventorySystem.Items.Usables.Scp330;
 using RGM.API.Features;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Normal;
 
@@ -10,7 +11,7 @@ public class StaminaReplenishment : Ability
     public override void OnEnabled()
     {
         Owner.AddCandy(CandyKindID.Blue);
-        while (Random.Range(1, 101) <= 25)
+        while (Convert.ToByte(Random.Range(1, 101)) <= 25)
         {
             Owner.AddCandy(CandyKindID.Blue);
         }

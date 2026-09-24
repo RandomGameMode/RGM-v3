@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
+using static RGM.Variables.Variable;
 
 namespace RGM.Modes.Abilities.Mythic;
 
@@ -46,7 +47,7 @@ public class KingsColor : Ability
         {
             foreach (var player in PlayerManager.List.Where(x => x.IsAlive && x != Owner))
             {
-                if (!player.TryGetLookPlayer(90f, out Player target, out RaycastHit? hit))
+                if (!player.TryGetLookPlayer(50f, out Player target, out var hit))
                     continue;
 
                 if (Owner != target || !HitboxIdentity.IsEnemy(player.ReferenceHub, target.ReferenceHub))
@@ -107,6 +108,8 @@ public class KingsColor : Ability
 
                     foreach (var player in PlayerManager.List.Where(x => x.IsAlive && x != Owner))
                     {
+                        player.RemoveAllAbilities();
+                        if (GodModePlayers.Contains(player)) GodModePlayers.Remove(player);
                         player.Kill("패기에 의해 공중분해 되었습니다");
                     }
                 });

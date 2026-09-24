@@ -1,10 +1,4 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features.Items;
-using Exiled.Events.EventArgs.Player;
-using MEC;
-using PlayerRoles;
-
-using static RGM.Variables.Variable;
+﻿using Exiled.Events.EventArgs.Player;
 
 namespace RGM.Modes.Abilities.Legend;
 

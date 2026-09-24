@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using System;
+using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using ProjectMER.Features.Serializable;
@@ -6,10 +7,11 @@ using RGM.API.Features;
 using UnityEngine;
 
 using static RGM.Variables.Variable;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Mythic;
 
-[Ability("딸깍", "지급된 동전을 튕기면 보는 방향에 워크스테이션을 설치합니다. 단, 2% 확률로 즉사합니다.",
+[Ability("딸깍", "지급된 동전을 튕기면 보는 방향에 워크스테이션을 설치합니다. 단, 3% 확률로 즉사합니다.",
     AbilityCategory.Mythic, AbilityType.MYTHIC_TOOLGUN)]
 public class ToolGun : Ability
 {
@@ -41,7 +43,7 @@ public class ToolGun : Ability
             return;
 
         Player player = ev.Player;
-        if (Random.Range(1, 101) <= 2)
+        if (Convert.ToByte(Random.Range(1, 101)) <= 3)
         {
             if (GodModePlayers.Contains(player))
                 GodModePlayers.Remove(player);

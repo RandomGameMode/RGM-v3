@@ -1,4 +1,5 @@
-﻿using Exiled.Events.EventArgs.Player;
+﻿using System;
+using Exiled.API.Features;
 using Scp914.Processors;
 using Scp914;
 
@@ -9,8 +10,18 @@ public class Exchange : Ability
 {
     public override void OnEnabled()
     {
-        if (Owner.CurrentItem == null) return;
-        if (Scp914Upgrader.TryGetProcessor(Owner.CurrentItem.Type, out Scp914ItemProcessor processor))
-            processor.UpgradeInventoryItem(Scp914KnobSetting.OneToOne, Owner.CurrentItem.Base);
+        try
+        {
+            var item = Owner.CurrentItem;
+            if (item == null || item.Type == ItemType.SCP1344)
+                return;
+
+            if (Scp914Upgrader.TryGetProcessor(item.Type, out Scp914ItemProcessor processor))
+                processor.UpgradeInventoryItem(Scp914KnobSetting.OneToOne, item.Base);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"능력 적용 실패: {e}");
+        }
     }
 }

@@ -41,7 +41,7 @@ public class Flashback : Ability
         
         // [영웅] 신성방어 능력을 가지고 있다면 최대 HP의 100%만큼 추가 피해
         if (ev.Player.HasAbility(AbilityType.EPIC_HOLYPROTECTION))
-            ev.Player.Hurt(ev.Player.MaxHealth, DamageType.Scp106);
+            ApplyLethalDamage.Apply(Owner, ev.Player);
         
         // ReceivingEffect 이벤트를 거치지 않아 디버프 면역 능력이 차단할 수 없다.
         if (!ev.Player.TryGetEffect(EffectType.Traumatized, out StatusEffectBase traumatized))

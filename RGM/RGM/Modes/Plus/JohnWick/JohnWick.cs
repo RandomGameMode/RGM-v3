@@ -1,4 +1,5 @@
-﻿using RGM.Patches;
+﻿using Exiled.Events.EventArgs.Player;
+using RGM.Patches;
 
 namespace RGM.Modes
 {
@@ -9,8 +10,8 @@ namespace RGM.Modes
         public override string Description => "권총류 무기의 데미지가 일정 배율로 상승합니다.";
         public override string Detail =>
 """
-COM-15 -> 610% 증가
-COM-18 -> 290% 증가
+COM-15 -> 770% 증가
+COM-18 -> 280% 증가
 COM-45 -> 170% 증가
 .44 리볼버 -> 80% 증가
 
@@ -34,12 +35,12 @@ COM-45 -> 170% 증가
             _autoWarhead.KillCoroutine();
         }
 
-        private void OnHurting(Exiled.Events.EventArgs.Player.HurtingEventArgs ev)
+        private void OnHurting(HurtingEventArgs ev)
         {
             if (ev.Attacker == null) return;
             ev.Amount *= ev.Attacker.CurrentItem.Type switch
             {
-                ItemType.GunCOM15 => 7.1f,
+                ItemType.GunCOM15 => 8.7f,
                 ItemType.GunCOM18 => 3.8f,
                 ItemType.GunCom45 => 2.7f,
                 ItemType.GunRevolver => 1.8f,

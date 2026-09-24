@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
@@ -36,7 +37,7 @@ SCP가 처치할 경우, SCP-049-2로 변경됩니다.
 
         private static void OnDied(DiedEventArgs ev)
         {
-            if (ev.Attacker == null) return;
+            if (ev.Attacker == null || ev.DamageHandler.Type == DamageType.PocketDimension) return;
             ev.Player.Role.Set(ev.Attacker.IsScp ? RoleTypeId.Scp0492 : ev.Attacker.Role.Type, RoleSpawnFlags.None);
         }
         

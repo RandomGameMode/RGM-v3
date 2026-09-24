@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RGM.Modes.Abilities.Unique.Scp173.Normal;
 
-[Ability("공포", "적 처치 시 주변 상대를 0.75초간 속박시킵니다.", 
+[Ability("공포", "적 처치 시 주변 상대를 1초간 속박시킵니다.", 
     AbilityCategory.Normal, AbilityType.NORMAL_SCP173_FEAR, RoleAbility.Scp173)]
 public class Fear : Ability
 {
@@ -27,9 +27,9 @@ public class Fear : Ability
 
         foreach (var player in PlayerManager.List.Where(x => !x.IsNPC && !x.IsScpRole()))
         {
-            if (Vector3.Distance(player.Position, ev.Attacker.Position) <= 10)
+            if (Vector3.Distance(player.Position, ev.Attacker.Position) <= 12)
             {
-                player.EnableEffect(EffectType.Ensnared, 1, 0.75f * Owner.AbilityCount(AbilityType.NORMAL_SCP173_FEAR));
+                player.EnableEffect(EffectType.Ensnared, 1, 1f * Owner.AbilityCount(AbilityType.NORMAL_SCP173_FEAR));
             }
         }
     }

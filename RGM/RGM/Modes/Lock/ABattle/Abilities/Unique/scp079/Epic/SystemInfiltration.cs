@@ -5,10 +5,12 @@ using UnityEngine;
 namespace RGM.Modes.Abilities.Unique.Scp079.Epic;
 
 
-[Ability("시스템 침투", "35% 확률로 [워크스테이션 업그레이드]추가 모드를 추가합니다.", AbilityCategory.Epic, AbilityType.EPIC_SCP079_SystemInfiltration, RoleAbility.Scp079)]
+[Ability("시스템 침투", "35% 확률로 [워크스테이션 업그레이드]추가 모드를 추가합니다.",
+    AbilityCategory.Epic, AbilityType.EPIC_SCP079_SystemInfiltration, RoleAbility.Scp079)]
 public class SystemInfiltration : Ability
 {
-    ABattle _instance = ABattle.Instance;
+    private readonly ABattle _instance = ABattle.Instance;
+    
     public override void OnEnabled()
     {
         TryAddExtraMode();

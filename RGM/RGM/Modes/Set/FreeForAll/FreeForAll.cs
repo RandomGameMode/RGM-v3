@@ -54,7 +54,6 @@ namespace RGM.Modes
         {
             List<ItemType> guns =
             [
-                ItemType.GunA7,
                 ItemType.GunE11SR,
                 ItemType.GunShotgun,
                 ItemType.GunCom45,

@@ -6,7 +6,7 @@ namespace RGM.Modes.Abilities.Rare;
 [Ability("육체 강화", "1초당 1p만큼 체력을 회복합니다.", AbilityCategory.Rare, AbilityType.RARE_PHYSICALSTRENGTHENING)]
 public class PhysicalStrengthening : Ability
 {
-    CoroutineHandle _upgradeBody;
+    private CoroutineHandle _upgradeBody;
 
     public override void OnEnabled()
     {

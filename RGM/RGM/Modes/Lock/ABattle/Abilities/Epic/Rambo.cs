@@ -4,7 +4,7 @@ using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Epic;
 
-[Ability("람보", "탄약이 무제한인 로지카를 받습니다. 단, 최종 데미지가 17% 감소되어 지급됩니다.", AbilityCategory.Epic, AbilityType.EPIC_RAMBO)]
+[Ability("람보", "탄약이 무제한인 로지카를 받습니다. 단, 최종 데미지가 15% 감소되어 지급됩니다.", AbilityCategory.Epic, AbilityType.EPIC_RAMBO)]
 public class Rambo : Ability
 {
     private ushort _infinityGunSerial;
@@ -39,7 +39,7 @@ public class Rambo : Ability
     {
         if (ev.Attacker == null || ev.Player == ev.Attacker) return;
         if (ev.Attacker.CurrentItem != null && _infinityGunSerial == ev.Attacker.CurrentItem.Serial) {
-            ev.DamageHandler.Damage *= 0.83f;
+            ev.DamageHandler.Damage *= 0.85f;
         }
     }
 }

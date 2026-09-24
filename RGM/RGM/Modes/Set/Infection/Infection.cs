@@ -77,6 +77,7 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Player.Spawned += OnSpawned;
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.Died += OnDied;
+            Exiled.Events.Handlers.Player.Hurting += OnHurting;
 
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
             _checkEnd = Timing.RunCoroutine(CheckEnd());
@@ -91,6 +92,7 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Player.Spawned -= OnSpawned;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.Died -= OnDied;
+            Exiled.Events.Handlers.Player.Hurting -= OnHurting;
 
             Timing.KillCoroutines(_onModeStarted);
             Timing.KillCoroutines(_checkEnd);
@@ -174,7 +176,7 @@ namespace RGM.Modes
                 yield return Timing.WaitForSeconds(1);
             }
 
-            if (!Round.IsEnded)
+            if (!Round.IsEnded) 
             {
                 Round.IsLocked = false;
                 _isHumanEnd = true;
@@ -193,7 +195,7 @@ namespace RGM.Modes
             }
         }
 
-        private IEnumerator<float> CheckEnd()
+        private static IEnumerator<float> CheckEnd()
         {
             while (!Round.IsEnded)
             {
@@ -221,7 +223,7 @@ namespace RGM.Modes
             }
         }
 
-        private void OnVerified(VerifiedEventArgs ev)
+        private static void OnVerified(VerifiedEventArgs ev)
         {
             ev.Player.Kill("동료들과 함께 인간을 섬멸하십시오.");
         }
@@ -235,7 +237,9 @@ namespace RGM.Modes
                 if (_hostZombies.Contains(ev.Player))
                 {
                     ev.Player.MaxHealth = 666;
+                    ev.Player.MaxHumeShield = 166;
                     ev.Player.Health = ev.Player.MaxHealth;
+                    ev.Player.HumeShield = ev.Player.MaxHumeShield;
                     ev.Player.AddEffect(EffectType.MovementBoost, 5);
                     ev.Player.AddEffect(EffectType.Lightweight, 10);
                     ev.Player.Scale = new Vector3(0.9f, 0.9f, 0.9f);
@@ -274,7 +278,9 @@ namespace RGM.Modes
             {
                 ev.Player.Role.Set(RoleTypeId.Scp0492);
                 ev.Player.MaxHealth = 444;
+                ev.Player.MaxHumeShield = 111;
                 ev.Player.Health = ev.Player.MaxHealth;
+                ev.Player.HumeShield = ev.Player.MaxHumeShield;
 
                 try
                 {
@@ -291,8 +297,13 @@ namespace RGM.Modes
                         .Select(x => x.Position).ToList().GetRandomValue();
                 }
             }
-            else
-                ev.Player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
+            else ev.Player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
+        }
+
+        private void OnHurting(HurtingEventArgs ev)
+        {
+            if (ev.Attacker != null && _hostZombies.Contains(ev.Player))
+                ev.DamageHandler.Damage += 30;
         }
 
         private static void OnStopping(StoppingEventArgs ev)

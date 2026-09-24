@@ -17,7 +17,7 @@ namespace RGM.Modes.Abilities.Mythic;
     AbilityCategory.Mythic, AbilityType.MYTHIC_SPIRIT)]
 public class Spirit : Ability
 {
-    CoroutineHandle _onStarted;
+    private CoroutineHandle _onStarted;
 
     public override void OnEnabled()
     {

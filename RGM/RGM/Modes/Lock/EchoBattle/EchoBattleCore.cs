@@ -15,19 +15,19 @@ namespace RGM.Modes;
 public static class EchoBattleCore
 {
     // 상태표는 우측 상단, 알림은 화면 중앙에 분리해 서로 가리지 않도록 배치합니다.
-    const float HintX = 420f;
-    const float HintY = 330f;
-    const float NotificationX = 0f;
-    const float NotificationY = 770f;
-    const int MaxNotifications = 5;
+    private const float HintX = 420f;
+    private const float HintY = 330f;
+    private const float NotificationX = 0f;
+    private const float NotificationY = 770f;
+    private const int MaxNotifications = 5;
 
-    sealed class Notification
+    private sealed class Notification
     {
         public string Text;
         public DateTime ExpiresAt;
     }
 
-    static readonly Dictionary<Player, List<Notification>> Notifications = new();
+    private static readonly Dictionary<Player, List<Notification>> Notifications = new();
 
     public static void ShowNotification(Player player, string text, float duration = 3f)
     {
@@ -37,7 +37,7 @@ public static class EchoBattleCore
         DateTime now = DateTime.UtcNow;
         if (!Notifications.TryGetValue(player, out var queue))
         {
-            queue = new List<Notification>();
+            queue = [];
             Notifications[player] = queue;
         }
 
@@ -61,7 +61,7 @@ public static class EchoBattleCore
             queue.RemoveAt(0);
     }
 
-    static string BuildNotificationText(Player player)
+    private static string BuildNotificationText(Player player)
     {
         if (player == null || !Notifications.TryGetValue(player, out var queue))
             return null;
@@ -353,7 +353,7 @@ public static class EchoBattleCore
         }
     }
 
-    static string BuildHintText(Player player)
+    private static string BuildHintText(Player player)
     {
         var lines = new List<string>();
 

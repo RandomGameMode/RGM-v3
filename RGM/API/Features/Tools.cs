@@ -20,7 +20,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using RGM.Modes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using static RGM.Variables.Variable;
 
 namespace RGM.API.Features
@@ -38,16 +40,16 @@ namespace RGM.API.Features
         public static List<T> EnumToList<T>()
         {
             Array items = Enum.GetValues(typeof(T));
-            List<T> itemList = new List<T>();
+            List<T> itemList = [];
 
             foreach (T item in items)
             {
-                List<string> list = new List<string>() 
-                {
+                List<string> list =
+                [
                     "None",
                     "Unknown",
                     "Destroyed"
-                };
+                ];
 
                 if (!list.Contains(item.ToString()))
                     itemList.Add(item);
@@ -67,10 +69,14 @@ namespace RGM.API.Features
                 {
                     var staticModeList = ModeList.Keys.Where(x => ModeList[x].Category == ModeCategory.Public && !ModeVote.ContainsKey(x)).ToList();
                     var mode = staticModeList.GetRandomValue();
-                    ModeVote.Add(mode, new List<Player>());
+                    ModeVote.Add(mode, []);
 
-                    if (mode.GetModeData().Info != ModeInfo.Lock && UnityEngine.Random.Range(1, 11) == 1)
-                        SubModeVote.Add(ModeList.Keys.Where(x => ModeList[x].Category != ModeCategory.Private && ModeList[x].Info != ModeInfo.Lock && !ModeVote.ContainsKey(x) && ModeList.Keys.Where(x => x.GetModeData().Info != ModeInfo.Set).Contains(x)).GetRandomValue());
+                    if (mode.GetModeData().Info != ModeInfo.Lock && Random.Range(1, 11) == 1)
+                        SubModeVote.Add(ModeList.Keys.Where(x1 =>
+                                ModeList[x1].Category != ModeCategory.Private && ModeList[x1].Info != ModeInfo.Lock &&
+                                !ModeVote.ContainsKey(x1) &&
+                                ModeList.Keys.Where(x2 => x2.GetModeData().Info != ModeInfo.Set).Contains(x1))
+                            .GetRandomValue());
 
                     else
                         SubModeVote.Add(ModeType.None);
@@ -153,7 +159,7 @@ namespace RGM.API.Features
 
             if (SelectMode != "FightVote") return;
 
-            var fightvoterand = UnityEngine.Random.Range(1, 101);
+            var fightvoterand = Random.Range(1, 101);
 
             if (fightvoterand <= 8)
             {
@@ -244,8 +250,8 @@ namespace RGM.API.Features
         private static Color GetRandomColor(bool transparency = false)
         {
             return !transparency
-                ? new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 1)
-                : new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                ? new Color(Random.value, Random.value, Random.value, 1)
+                : new Color(Random.value, Random.value, Random.value);
         }
 
         public static string GetPlayerInfo(Player player)
@@ -293,10 +299,7 @@ $"""
 
             string GetJoinedInfo(int num)
             {
-                if (uc[num] == "0")
-                    return "-";
-
-                return string.Join(", ", uc[num].Split('/'));
+                return uc[num] == "0" ? "-" : string.Join(", ", uc[num].Split('/'));
             }
         }
 
@@ -333,7 +336,7 @@ $"""
                 {"호박색", ["pumpkin"] }
             };
 
-            if (player.GameObject.TryGetComponent<TagController>(out TagController rtc))
+            if (player.GameObject.TryGetComponent(out TagController rtc))
                 UnityEngine.Object.Destroy(rtc);
 
             TagController rtController = player.GameObject.AddComponent<TagController>();
@@ -343,7 +346,7 @@ $"""
 
         public static void RemovePaint(Player player)
         {
-            if (player.GameObject.TryGetComponent<TagController>(out TagController rtc))
+            if (player.GameObject.TryGetComponent(out TagController rtc))
                 UnityEngine.Object.Destroy(rtc);
 
             player.RankColor = null;
@@ -398,31 +401,37 @@ $"""
             nearestPlayer = null;
             radius = 99999;
 
-            exceptPlayers ??= new List<Player>();
+            exceptPlayers ??= [];
 
             foreach (var near in PlayerManager.List.Where(x => x.IsAlive && x != player && !exceptPlayers.Contains(x)))
             {
-                float Distance = Vector3.Distance(near.Position, player.Position);
+                float distance = Vector3.Distance(near.Position, player.Position);
 
-                if (Distance < radius)
+                if (distance < radius)
                 {
                     nearestPlayer = near;
-                    radius = Distance;
+                    radius = distance;
                 }
             }
 
             return nearestPlayer != null;
         }
 
-        public static bool TryGetLookPlayer(this Player player, float Distance, out Player target, out RaycastHit? raycastHit)
+        public static bool TryGetLookPlayer(this Player player, float distance, out Player target, out RaycastHit? raycastHit)
         {
             target = null;
             raycastHit = null;
 
-            if (Physics.Raycast(player.ReferenceHub.PlayerCameraReference.position + player.ReferenceHub.PlayerCameraReference.forward * 0.2f, player.ReferenceHub.PlayerCameraReference.forward, out RaycastHit hit, Distance) &&
-                    hit.collider.TryGetComponent<IDestructible>(out IDestructible destructible))
+            if (player?.ReferenceHub?.PlayerCameraReference == null)
+                return false;
+
+            var camera = player.ReferenceHub.PlayerCameraReference;
+            if (Physics.Raycast(camera.position + camera.forward * 0.2f, camera.forward, out RaycastHit hit, distance) &&
+                hit.collider != null &&
+                hit.collider.TryGetComponent<IDestructible>(out _) &&
+                hit.collider.GetComponentInParent<ReferenceHub>() is { } referenceHub)
             {
-                if (Player.TryGet(hit.collider.GetComponentInParent<ReferenceHub>().gameObject, out Player t) && player != t)
+                if (Player.TryGet(referenceHub.gameObject, out Player t) && player != t)
                 {
                     target = t;
                     raycastHit = hit;
@@ -436,17 +445,23 @@ $"""
 
         public static bool TryGetLookPlayers(Player player, float distance, out List<Player> targets, out RaycastHit? raycastHit, int count = 100)
         {
-            targets = new List<Player>();
+            targets = [];
             raycastHit = null;
 
-            var origin = player.ReferenceHub.PlayerCameraReference.position + player.ReferenceHub.PlayerCameraReference.forward * 0.2f;
-            var direction = player.ReferenceHub.PlayerCameraReference.forward;
+            if (player?.ReferenceHub?.PlayerCameraReference == null)
+                return false;
+
+            var camera = player.ReferenceHub.PlayerCameraReference;
+            var origin = camera.position + camera.forward * 0.2f;
+            var direction = camera.forward;
             RaycastHit[] hits = Physics.RaycastAll(origin, direction, distance);
 
             foreach (var hit in hits.OrderBy(h => h.distance))
             {
                 if (!hit.collider.TryGetComponent<IDestructible>(out _) ||
-                    !Player.TryGet(hit.collider.GetComponentInParent<ReferenceHub>().gameObject, out Player t) ||
+                    hit.collider.GetComponentInParent<ReferenceHub>() is not { } referenceHub ||
+                    !Player.TryGet(referenceHub.gameObject, out Player t) ||
+                    player == t ||
                     targets.Contains(t)) continue;
                 
                 targets.Add(t);
@@ -638,7 +653,7 @@ $"""
             if (hitCount == 0) return false;
 
             // 거리가 가까운 순서대로 정렬
-            System.Array.Sort(hits, 0, hitCount, System.Collections.Generic.Comparer<RaycastHit>.Create((a, b) => a.distance.CompareTo(b.distance)));
+            Array.Sort(hits, 0, hitCount, Comparer<RaycastHit>.Create((a, b) => a.distance.CompareTo(b.distance)));
 
             for (int i = 0; i < hitCount; i++)
             {
@@ -692,61 +707,59 @@ $"""
         }
         
         
-        public static bool TryInstallMode(ModeType ModeType)
+        public static bool TryInstallMode(ModeType m)
         {
-            var modeType = Type.GetType($"RGM.Modes.{ModeType}");
+            var modeType = Type.GetType($"RGM.Modes.{m}");
 
             if (modeType == null &&
-                ModeList.ContainsKey(ModeType.GetModeData().Type))
-                modeType = Type.GetType($"RGM.Modes.{ModeType.GetModeData().Type}");
+                ModeList.ContainsKey(m.GetModeData().Type))
+                modeType = Type.GetType($"RGM.Modes.{m.GetModeData().Type}");
 
             if (modeType == null) return false;
             Mode modeInstance = (Mode)Activator.CreateInstance(modeType);
-            modeInstance.Data = ModeList[ModeType];
+            modeInstance.Data = ModeList[m];
             EnabledModeList.Add(modeInstance);
 
             var onEnabledMethod = modeType.GetMethod("OnEnabled");
 
-            if (ModeType.GetModeData().Map != "")
-                LoadMap(ModeType.GetModeData().Map);
+            if (m.GetModeData().Map != "")
+                LoadMap(m.GetModeData().Map);
 
             onEnabledMethod?.Invoke(modeInstance, null);
 
             if (!Main.Instance.Config.IsDevMode && !Round.IsEnded && Server.PlayerCount >= 15)
-                Webhook.Send($"{ModeType.GetModeData().Name}", ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook3.txt"));
+                Webhook.Send($"{m.GetModeData().Name}", ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook3.txt"));
 
             return true;
-
         }
 
-        public static bool UnInstallMode(ModeType ModeType)
+        public static bool UnInstallMode(ModeType m)
         {
-            var modeType = Type.GetType($"RGM.Modes.{ModeType}");
+            var modeType = Type.GetType($"RGM.Modes.{m}");
 
             if (modeType == null)
             {
-                if (ModeList.ContainsKey(ModeType.GetModeData().Type))
+                if (ModeList.ContainsKey(m.GetModeData().Type))
                     modeType = Type.GetType($"RGM.Modes.{modeType}");
             }
 
             if (modeType != null)
             {
-                Mode mode = EnabledModeList.First(x => x.Data.Type == ModeType);
+                Mode mode = EnabledModeList.First(x => x.Data.Type == m);
 
                 if (mode == null)
                     return false;
 
                 mode.OnDisabled();
 
-                if (ModeType.GetModeData().Map != "")
-                    Server.ExecuteCommand($"/mp unload {ModeType.GetModeData().Map}");
+                if (m.GetModeData().Map != "")
+                    Server.ExecuteCommand($"/mp unload {m.GetModeData().Map}");
 
                 EnabledModeList.Remove(mode);
 
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         public static string TryGetUserId(string Name)
@@ -858,14 +871,14 @@ $"""
             List<ItemType> items =
             [
                 ItemType.KeycardFacilityManager,
-                ItemType.GunFSP9,
+                ItemType.GunCrossvec,
                 ItemType.GunRevolver,
                 ItemType.Adrenaline,
                 ItemType.SCP500,
                 ItemType.ArmorLight
             ];
 
-            List<ItemType> ammos =
+            List<ItemType> ammoes =
             [
                 ItemType.Ammo44cal,
                 ItemType.Ammo9x19
@@ -879,20 +892,18 @@ $"""
 
             for (int i = 1; i < 3; i++)
             {
-                foreach (var ammo in ammos)
+                foreach (var ammo in ammoes)
                     player.AddItem(ammo);
             }
         }
 
         public static void CallSnakeHand(Player convener, List<Player> playerList)
         {
-            List<Player> snakeHands = playerList;
-
-            foreach (var p in snakeHands)
+            foreach (var p in playerList)
                 MakeSnake(p);
 
             if (convener != null)
-                convener.AddHint("뱀의 손", $"{snakeHands.Count()}명의 <color=#FE2EF7>동료</color>들이 당신과 함께합니다..", 5f);
+                convener.AddHint("뱀의 손", $"{playerList.Count}명의 <color=#FE2EF7>동료</color>들이 당신과 함께합니다..", 5f);
         }
 
         private static string ColorFormat(string cn)
@@ -902,10 +913,7 @@ $"""
 
             var cd = Datas.Colors;
 
-            if (cd.TryGetValue(cn, out var colorFormat))
-                return colorFormat;
-
-            return "#FFFFFF";
+            return cd.TryGetValue(cn, out var colorFormat) ? colorFormat : "#FFFFFF";
         }
 
         public static string BadgeFormat(Player player)
@@ -913,8 +921,7 @@ $"""
             if (player.RankName != null && !player.BadgeHidden)
                 return $"[<color={ColorFormat(player.RankColor)}>{player.RankName}</color>] ";
 
-            else
-                return "";
+            return "";
         }
 
         public static string CustomFormatter(Player player, string str)
@@ -940,9 +947,8 @@ $"""
         public static bool TryGetRaycastPoint(Player player, float _distance, out Vector3 _point)
         {
             Vector3 forward = player.CameraTransform.forward;
-            RaycastHit raycastHit;
 
-            if (!Physics.Raycast(player.CameraTransform.position + forward, forward, out raycastHit, _distance))
+            if (!Physics.Raycast(player.CameraTransform.position + forward, forward, out var raycastHit, _distance))
             {
                 _point = Vector3.zero;
                 return false;
@@ -1022,18 +1028,20 @@ $"""
         public static string GenerateRandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            System.Random random = new System.Random();
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            var random = new System.Random();
+            return new string([
+                .. Enumerable.Repeat(chars, length)
+                    .Select(s => s[random.Next(s.Length)])
+            ]);
         }
 
         public static string GenerateRandomHexColor()
         {
-            int colorValue = UnityEngine.Random.Range(0, 0x1000000);
+            int colorValue = Random.Range(0, 0x1000000);
             return $"#{colorValue:X6}";
         }
 
-        public static IEnumerator<float> DoRocket(Player attacker, Player player, float speed, bool ignoreDefenses = false)
+        public static IEnumerator<float> DoRocket(Player attacker, Player player, float speed, bool isInstantKill = false)
         {
             int amnt = 0;
             while (player.Role != RoleTypeId.Spectator)
@@ -1045,26 +1053,26 @@ $"""
                 if (flag)
                 {
                     player.IsGodModeEnabled = false;
-                    ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, null);
+                    ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
                     grenade.FuseTime = 0.5f;
                     grenade.SpawnActive(player.Position, attacker);
-                    if (ignoreDefenses)
+                    if (isInstantKill)
                     {
-                        player.Hurt(attacker, player.MaxHealth, DamageType.PocketDimension);
+                        ApplyInstantKill.Apply(attacker, player);
                     }
-
-                    player.Hit(attacker, player.MaxHealth);
-
-                    grenade = null;
+                    else
+                    {
+                        player.Hit(attacker, player.MaxHealth);
+                    }
                 }
 
-                yield return float.NegativeInfinity;
+                yield return Timing.WaitForOneFrame;
             }
         }
 
         public static LabApi.Features.Wrappers.TextToy CreateText(Vector3 pos, Quaternion rot, string text, float time = 20)
         {
-            LabApi.Features.Wrappers.TextToy textToy = LabApi.Features.Wrappers.TextToy.Create();
+            var textToy = LabApi.Features.Wrappers.TextToy.Create();
             textToy.Position = pos;
             textToy.Rotation = rot;
             textToy.DisplaySize = new Vector2(100000, 100000);
@@ -1078,10 +1086,8 @@ $"""
 
         public static AudioClipPlayback PlaySound(Transform transform, string name, float volume = 1, bool loop = false, bool isSpatial = true, float minDistance = 1, float maxDistance = 10)
         {
-            AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"Transform - {transform.position}", condition: (ReferenceHub hub) =>
-            {
-                return !MuteBGMPlayers.Contains(Player.Get(hub));
-            },onIntialCreation: p =>
+            AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"Transform - {transform.position}",
+                condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)), onIntialCreation: p =>
             {
                 p.transform.parent = transform;
 
@@ -1096,8 +1102,7 @@ $"""
 
         public static string ApplyGradient(string hexColor, string text)
         {
-            Color baseColor;
-            if (!ColorUtility.TryParseHtmlString(hexColor, out baseColor))
+            if (!ColorUtility.TryParseHtmlString(hexColor, out var baseColor))
                 return text;
 
             int length = text.Length;

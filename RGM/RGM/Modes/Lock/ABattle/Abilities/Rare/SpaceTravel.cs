@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace RGM.Modes.Abilities.Rare;
 
-[Ability("이차원 도약", "지급된 동전을 튕기면 대상과 본인의 위치를 서로 뒤바꿉니다.(사거리 10)\n이동 시, 차원 이동의 부작용으로 영향 받은 대상은 1초간 행동이 불가합니다.",
+[Ability("이차원 도약", """
+                   지급된 동전을 튕기면 대상과 본인의 위치를 서로 뒤바꿉니다.(사거리 12)
+                   이동 시, 차원 이동의 부작용으로 영향 받은 대상은 1초간 행동이 불가합니다.
+                   """,
     AbilityCategory.Rare, AbilityType.RARE_SPACETRAVEL)]
 public class SpaceTravel : Ability
 {
@@ -33,7 +36,7 @@ public class SpaceTravel : Ability
     private void OnFlippingCoin(FlippingCoinEventArgs ev)
     {
         if (_serial != ev.Item.Serial) return;
-        if (ev.Player.TryGetLookPlayer(10f, out Player player, out _))
+        if (ev.Player.TryGetLookPlayer(12f, out var player, out _))
         {
             if (player.HasAbility(AbilityType.RARE_SCP173_IMMENSEWEIGHT))
             {

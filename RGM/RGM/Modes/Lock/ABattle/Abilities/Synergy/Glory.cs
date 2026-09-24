@@ -41,7 +41,7 @@ public class Glory : Ability
 
                     lightSource.Position = Owner.Position;
 
-                    if (!player.IsLookingAt(Owner, fov: 20)) continue;
+                    if (!player.IsLookingAt(Owner, fov: 15)) continue;
 
                     float damage = 3f;
                     if (Owner.HasAbility(AbilityType.SYNERGY_REFLECTEDLIGHT))
@@ -50,7 +50,7 @@ public class Glory : Ability
                         player.EnableEffect(EffectType.Burned, 1, 10f);
                     }
                     Hitmarker.SendHitmarkerDirectly(Owner.ReferenceHub, 1f);
-                    player.EnableEffect(EffectType.Flashed, 1, 1.5f);
+                    player.EnableEffect(EffectType.Flashed, 1, 1f);
                 }
                 lightSource.Position = Owner.Position;
                 yield return Timing.WaitForSeconds(0.05f);

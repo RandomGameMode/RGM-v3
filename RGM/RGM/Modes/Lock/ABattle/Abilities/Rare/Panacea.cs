@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Rare;
 
@@ -8,6 +9,6 @@ public class Panacea : Ability
     public override void OnEnabled()
     {
         Owner.AddItem(ItemType.SCP500);
-        if (Random.Range(1, 101) <= 25) Owner.AddItem(ItemType.SCP500);
+        if (Convert.ToByte(Random.Range(1, 101)) <= 25) Owner.AddItem(ItemType.SCP500);
     }
 }

@@ -1,6 +1,7 @@
-﻿using InventorySystem.Items.Usables.Scp330;
+﻿using System;
+using InventorySystem.Items.Usables.Scp330;
 using RGM.API.Features;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Epic;
 
@@ -9,6 +10,6 @@ public class TerroristRemains : Ability
 {
     public override void OnEnabled()
     {
-        Owner.AddCandy(Random.Range(1, 6) == 1 ? CandyKindID.Evil : CandyKindID.Pink);
+        Owner.AddCandy(Convert.ToByte(Random.Range(1, 101)) <= 20 ? CandyKindID.Evil : CandyKindID.Pink);
     }
 }

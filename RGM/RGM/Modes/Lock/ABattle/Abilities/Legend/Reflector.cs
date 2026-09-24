@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Legend;
 
@@ -6,8 +7,8 @@ namespace RGM.Modes.Abilities.Legend;
     AbilityCategory.Legend, AbilityType.LEGEND_REFLECTOR, RoleAbility.None, true)]
 public class Reflector : Ability
 {
-    private const int MaxChainCount = 3;
-    private const int ReflectionChance = 50;
+    private const byte MaxChainCount = 3;
+    private const byte ReflectionChance = 50;
 
     public override void OnEnabled() => ABattle.Instance.AddingAbility += OnAddingAbility;
 
@@ -20,7 +21,7 @@ public class Reflector : Ability
 
         if (ABattle.Instance.Abilities[ev.AbilityType].Category == AbilityCategory.Ancient ||
             ABattle.Instance.Abilities[ev.AbilityType].Category == AbilityCategory.Synergy ||
-            Random.Range(1, 101) > ReflectionChance)
+            Convert.ToByte(Random.Range(1, 101)) > ReflectionChance)
             return;
 
         ABattle.Instance.AddAbility(

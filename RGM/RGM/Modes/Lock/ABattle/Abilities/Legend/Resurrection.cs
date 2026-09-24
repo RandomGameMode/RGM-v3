@@ -8,13 +8,13 @@ using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Legend;
 
-[Ability("리저렉션",
+/*[Ability("리저렉션",
     """
     죽은 아군 전체를 되살립니다. 자신의 진영이 SCP인 경우, 관전자 중 1명을 079와 049-2를 제외한 랜덤한 SCP로 부활시킵니다.
     부활 후, 자신이 가진 업그레이드 목록을 그대로 전수합니다.
     전용 능력과 일부 능력들은 전수되지 않으며, 전설 등급까지만 전수할 수 있습니다.
     """,
-    AbilityCategory.Legend, AbilityType.LEGEND_RESURRECTION)]
+    AbilityCategory.Legend, AbilityType.LEGEND_RESURRECTION)]*/
 public class Resurrection : Ability
 {
     private static readonly List<RoleTypeId> RandomScpRoles =

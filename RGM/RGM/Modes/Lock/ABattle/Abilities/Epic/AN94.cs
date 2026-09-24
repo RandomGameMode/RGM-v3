@@ -5,7 +5,6 @@ using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.Firearms.Modules;
 using MEC;
 using RGM.API.Features;
-using RGM.Patches;
 
 namespace RGM.Modes.Abilities.Epic;
 
@@ -13,27 +12,39 @@ namespace RGM.Modes.Abilities.Epic;
 
 public class AN94 : Ability
 {
+    private const int MaxAutomaticReloads = 15;
+
     private ushort _an94Serial;
-    private double _lastHandledTriggerPress =  double.NegativeInfinity;
+    private int _automaticReloads;
     private bool _isApplyingBurstDamage;
     private int _burstDamageToken;
     private int _pendingBurstDamageToken;
 
     public override void OnEnabled()
     {
-        // 서버에서도 트리거 누름/뗌 상태를 신뢰할 수 있도록 한 번만 패치를 적용한다.
-        FirearmTriggerStatePatch.Ensure();
-
         Item item = Owner.AddItem(ItemType.GunAK);
         for (int i = 0; i < 4; i++) {
             Owner.AddItem(ItemType.Ammo762x39);
         }
         _an94Serial = item.Serial;
-        ApplyAn94Settings(item.As<Firearm>());
+        Firearm firearm = item.As<Firearm>();
+        ApplyAn94Settings(firearm);
+        LoadSingleRound(firearm);
 
         Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
         Exiled.Events.Handlers.Player.Shooting += OnShooting;
+        Exiled.Events.Handlers.Player.ReloadingWeapon += OnReloadingWeapon;
+        Exiled.Events.Handlers.Player.ReloadedWeapon += OnReloadedWeapon;
         Exiled.Events.Handlers.Player.Hurting += OnHurting;
+    }
+
+    public override void OnDisabled()
+    {
+        Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
+        Exiled.Events.Handlers.Player.Shooting -= OnShooting;
+        Exiled.Events.Handlers.Player.ReloadingWeapon -= OnReloadingWeapon;
+        Exiled.Events.Handlers.Player.ReloadedWeapon -= OnReloadedWeapon;
+        Exiled.Events.Handlers.Player.Hurting -= OnHurting;
     }
 
     public void OnChangedItem(ChangedItemEventArgs ev)
@@ -50,22 +61,37 @@ public class AN94 : Ability
         Firearm firearm = ev.Item.As<Firearm>();
         ApplyAn94Settings(firearm);
 
-        // 반자동 매커니즘: 한 번의 트리거(마우스) 입력마다 첫 발만 허용한다.
-        // 풀오토는 트리거를 누른 채로 유지하는 동안 같은 LastTriggerPress 값으로 여러 번의 Shooting 이벤트를 만든다.
-        // 따라서 직전에 허용한 누름보다 더 최신의 누름이 들어왔을 때(= 손을 뗐다가 다시 누름)만 발사를 허용하고,
-        // 같은 누름에서 이어지는 연사는 모두 취소한다. 시간 간격이 아닌 입력 엣지로 판별하므로 네트워크 지터에 영향을 받지 않는다.
-        if (!IsFreshTriggerPull(firearm))
+        _pendingBurstDamageToken = 0;
+        RegisterPendingBurstDamage();
+        RefillSingleRoundAfterShot();
+    }
+
+    public void OnReloadingWeapon(ReloadingWeaponEventArgs ev)
+    {
+        if (ev.Item == null || ev.Item.Serial != _an94Serial)
+            return;
+
+        Firearm firearm = ev.Item.As<Firearm>();
+        if (IsRoundChambered(firearm))
         {
+            // 약실에 탄환이 남아 있으면 기본 재장전이 30발을 채우므로 막는다.
+            // 이 경우에는 재장전 모션이나 탄약 소비도 발생하지 않는다.
             ev.IsAllowed = false;
             return;
         }
 
-        _pendingBurstDamageToken = 0;
+        // 빈 상태의 재장전은 기본 동작을 허용한다. 따라서 재장전 모션이 재생되고
+        // 예비 탄약도 AK의 한 탄창 분량(30발)만큼 정상적으로 소모된다.
+        _automaticReloads = 0;
+    }
 
-        if (TryConsumeBurstAmmo())
-            RegisterPendingBurstDamage();
+    public void OnReloadedWeapon(ReloadedWeaponEventArgs ev)
+    {
+        if (ev.Item == null || ev.Item.Serial != _an94Serial)
+            return;
 
-        ReleaseTrigger(firearm);
+        _automaticReloads = 0;
+        LoadSingleRound(ev.Item.As<Firearm>());
     }
 
     public void OnHurting(HurtingEventArgs ev)
@@ -106,13 +132,66 @@ public class AN94 : Ability
         });
     }
 
-    private bool TryConsumeBurstAmmo()
+    private void RefillSingleRoundAfterShot()
     {
-        if (Item.Get(_an94Serial) is not Firearm { MagazineAmmo: > 0 } firearm)
+        if (_automaticReloads >= MaxAutomaticReloads)
+            return;
+
+        // Shooting은 실제 탄환 소모 전에 호출된다. 실제 ServerShoot 처리가 끝난 뒤
+        // 보충해야 클라이언트의 격발 예측과 서버의 약실 상태가 어긋나지 않는다.
+        Timing.CallDelayed(0.05f, () =>
+        {
+            if (Item.Get(_an94Serial) is not Firearm { MagazineAmmo: 0 } firearm)
+                return;
+
+            LoadSingleRound(firearm);
+            _automaticReloads++;
+        });
+    }
+
+    private static void LoadSingleRound(Firearm firearm)
+    {
+        if (IsRoundChambered(firearm))
+        {
+            // 약실의 1발만 남기고 탄창 예비 탄약은 제거한다.
+            firearm.MagazineAmmo = 0;
+            return;
+        }
+
+        firearm.MagazineAmmo = 1;
+        ChamberRound(firearm);
+    }
+
+    private static void ChamberRound(Firearm firearm)
+    {
+        if (firearm?.Base == null)
+            return;
+
+        foreach (ModuleBase module in firearm.Base.Modules)
+        {
+            if (module is AutomaticActionModule action)
+            {
+                // 빈 탄창에서 발생한 드라이 파이어는 노리쇠를 잠그고 격발 상태를 해제한다.
+                // 탄약만 보충하면 다음 클릭이 거부되므로, 1발을 약실에 넣어
+                // 노리쇠/격발 상태와 클라이언트 동기화를 함께 복구한다.
+                action.ServerCycleAction();
+                return;
+            }
+        }
+    }
+
+    private static bool IsRoundChambered(Firearm firearm)
+    {
+        if (firearm?.Base == null)
             return false;
 
-        firearm.MagazineAmmo -= 1;
-        return true;
+        foreach (ModuleBase module in firearm.Base.Modules)
+        {
+            if (module is AutomaticActionModule action)
+                return action.IsLoaded;
+        }
+
+        return firearm.MagazineAmmo > 0;
     }
 
     private void RegisterPendingBurstDamage()
@@ -136,54 +215,6 @@ public class AN94 : Ability
         return true;
     }
 
-    private static void ReleaseTrigger(Firearm firearm)
-    {
-        if (firearm?.Base == null)
-            return;
-
-        foreach (ModuleBase module in firearm.Base.Modules)
-        {
-            if (module is SimpleTriggerModule trigger)
-            {
-                // 첫 발 직후 클라이언트에도 트리거 해제를 전파해, 다음 자동 발사 패킷 자체를 막는다.
-                // 위의 IsFreshTriggerPull 검사는 네트워크 지연으로 이미 도착한 반복 발사의 안전망이다.
-                trigger.ServerSetTrigger(false);
-                return;
-            }
-        }
-    }
-
-    private bool IsFreshTriggerPull(Firearm firearm)
-    {
-        if (firearm?.Base == null)
-            return true;
-
-        ITriggerControllerModule trigger = null;
-
-        foreach (ModuleBase module in firearm.Base.Modules)
-        {
-            if (module is ITriggerControllerModule controller)
-            {
-                trigger = controller;
-                break;
-            }
-        }
-
-        // 트리거 컨트롤러를 찾지 못하면 판별할 수 없으므로 정상 발사로 둔다.
-        if (trigger == null)
-            return true;
-
-        double press = trigger.LastTriggerPress;
-
-        // 직전에 허용한 누름보다 더 최신의 누름 → 새 트리거 입력 → 첫 발만 허용
-        if (press > _lastHandledTriggerPress)
-        {
-            _lastHandledTriggerPress = press;
-            return true;
-        }
-
-        return false;
-    }
     private static void ApplyAn94Settings(Firearm firearm)
     {
         if (firearm == null)

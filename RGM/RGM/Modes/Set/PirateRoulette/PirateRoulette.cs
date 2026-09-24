@@ -19,18 +19,15 @@ namespace RGM.Modes
     {
         public override string Name => "해적 룰렛";
         public override string Description => "폭탄을 잘 추려내야 합니다.";
-        public override string Detail =>
-"""
-운빨 싸움
-""";
+        public override string Detail => "운빨 싸움";
         public override string Color => "FFBF00";
 
         public static PirateRoulette Instance;
 
-        Player Scp049 = null;
-        Player Bomb = null;
+        private Player _scp049;
+        private Player _bomb;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -73,7 +70,7 @@ namespace RGM.Modes
             {
                 if (p == scp)
                 {
-                    Scp049 = p;
+                    _scp049 = p;
                     p.Role.Set(RoleTypeId.Scp049, Exiled.API.Enums.SpawnReason.ForceClass, RoleSpawnFlags.None);
                     Timing.CallDelayed(0.25f, () =>
                     {
@@ -88,7 +85,7 @@ namespace RGM.Modes
                         p.Position = RoleTypeId.ChaosConscript.GetRandomSpawnLocation().Position;
                         if (p == bomb)
                         {
-                            Bomb = bomb;
+                            _bomb = bomb;
                             p.AddHint("해적 룰렛", $"<size=25>당신이 <color=#FA5858>폭탄</color>입니다.</size>\n<size=23>술래가 당신을 잡도록 유도해보세요.</size>\n", 20);
                         }
                     });
@@ -113,9 +110,9 @@ namespace RGM.Modes
 
         private IEnumerator<float> HurtScp049()
         {
-            while (Scp049.IsAlive)
+            while (_scp049.IsAlive)
             {
-                Scp049.Hurt(Scp049.MaxHealth / 100);
+                _scp049.Hurt(_scp049.MaxHealth / 100); // 분모 값이 제한 시간(초 단위)이 됨
 
                 yield return Timing.WaitForSeconds(1);
             }
@@ -126,8 +123,8 @@ namespace RGM.Modes
             for (; ; )
             {
                 yield return Timing.WaitForSeconds(0.5f);
-                if (PlayerManager.List.Count(x => x.Role == RoleTypeId.ClassD && x != Bomb) != 0) continue;
-                Bomb.Role.Set(RoleTypeId.Spectator, Exiled.API.Enums.SpawnReason.ForceClass, RoleSpawnFlags.None);
+                if (PlayerManager.List.Count(x => x.Role == RoleTypeId.ClassD && x != _bomb) != 0) continue;
+                _bomb.Role.Set(RoleTypeId.Spectator, Exiled.API.Enums.SpawnReason.ForceClass, RoleSpawnFlags.None);
                 yield break;
             }
         }
@@ -136,7 +133,7 @@ namespace RGM.Modes
         {
             if (ev.Intensity <= 0) return;
             if (!(ev.Effect is CardiacArrest ca)) return;
-            if (ev.Player == Bomb)
+            if (ev.Player == _bomb)
             {
                 foreach (var cdp in PlayerManager.List.Where(x => x.Role == RoleTypeId.ClassD))
                 {
@@ -151,33 +148,33 @@ namespace RGM.Modes
             }
             else
             {
-                ev.Player.Hurt(new Scp049DamageHandler(ca._attacker.Hub, 32767, Scp049DamageHandler.AttackType.Instakill));
+                ev.Player.Hurt(new Scp049DamageHandler(ca._attacker.Hub, 444, Scp049DamageHandler.AttackType.Instakill));
             }
             ev.IsAllowed = false;
         }
 
-        private void OnStartingRecall(Exiled.Events.EventArgs.Scp049.StartingRecallEventArgs ev)
+        private static void OnStartingRecall(Exiled.Events.EventArgs.Scp049.StartingRecallEventArgs ev)
         {
             ev.IsAllowed = false;
         }
 
-        private void OnRespawningTeam(RespawningTeamEventArgs ev)
+        private static void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
             ev.IsAllowed = false;
         }
 
-        private void OnInteractingDoor(Exiled.Events.EventArgs.Player.InteractingDoorEventArgs ev)
+        private static void OnInteractingDoor(Exiled.Events.EventArgs.Player.InteractingDoorEventArgs ev)
         {
             ev.IsAllowed = false;
         }
 
-        private void OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs ev)
+        private static void OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs ev)
         {
             if (ev.Reason.ToLower().Contains("afk"))
                 ev.IsAllowed = false;
         }
 
-        private void OnRoundEnded(RoundEndedEventArgs ev)
+        private static void OnRoundEnded(RoundEndedEventArgs ev)
         {
             Timing.RunCoroutine(
                 PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC).ToList()[0].Role.Type == RoleTypeId.Scp049

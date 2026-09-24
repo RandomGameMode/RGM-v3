@@ -10,11 +10,13 @@ using RGM.API.Features;
 namespace RGM.Modes.Abilities.Rare;
 
 [Ability("자리 비움", """
-                  99초 동안 움직일 수 없고 아이템을 들 수 없습니다. 
+                  77초 동안 움직일 수 없고 아이템을 들 수 없습니다. 
                   지속시간 이후 <color=#A4A4A4>일반</color>, <color=#2ECCFA>희귀</color>, <color=#FF00FF>영웅</color> 능력을 하나씩 획득합니다.
                   """, AbilityCategory.Rare, AbilityType.RARE_DND)]
 public class Dnd : Ability
 {
+    private const float Immobilizeduration = 77f;
+    
     public override void OnEnabled()
     {
         Timing.RunCoroutine(Enumerator());
@@ -22,9 +24,9 @@ public class Dnd : Ability
 
         IEnumerator<float> Enumerator()
         {
-            Owner.EnableEffect(EffectType.Ensnared, 1, 99);
+            Owner.EnableEffect(EffectType.Ensnared, 1, Immobilizeduration);
 
-            for (int i = 0; i < 99; i++)
+            for (int i = 0; i < Immobilizeduration; i++)
             {
                 if (Owner.IsDead)
                     yield break;

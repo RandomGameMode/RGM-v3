@@ -27,12 +27,12 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Player.Jumping -= OnJumping;
         }
 
-        public void OnJumping(JumpingEventArgs ev)
+        private static void OnJumping(JumpingEventArgs ev)
         {
             if (ev.Player.IsNonePlayer())
                 return;
 
-            Timing.RunCoroutine(Tools.DoRocket(ev.Player, ev.Player, 1));
+            Timing.RunCoroutine(Tools.DoRocket(ev.Player, ev.Player, 1, isInstantKill:true));
         }
     }
 }

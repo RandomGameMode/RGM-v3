@@ -22,7 +22,7 @@ public static class Scp173Patch
 {
     private const float BaseBlinkCooldown = 3f;
     private const float MinimumBlinkCooldown = 1f;
-    private const float MaxMovementBoostIntensity = 255f;
+    private const float MaxMovementBoostIntensity = 200f;
 
     private static readonly Dictionary<Player, float> AppliedBlinkCooldowns = new();
 

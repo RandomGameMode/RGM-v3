@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using RGM.API.Features;
-using UnityEngine;
-
 using static RGM.Variables.Variable;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Rare;
 
-[Ability("계약", "지급된 동전을 튕기면 당장 죽지만, 다음 생에 능력 5개를 가진 채로 시작합니다.(별도 등급 확률 적용)", AbilityCategory.Rare, AbilityType.RARE_CONTRACT)]
+[Ability("계약", "지급된 동전을 튕기면 당장 죽지만, 다음 생에 능력 6개를 가진 채로 시작합니다.(별도 등급 확률 적용)", AbilityCategory.Rare, AbilityType.RARE_CONTRACT)]
 public class Contract : Ability
 {
     private ushort _contractCoinSerial;
@@ -51,9 +51,9 @@ public class Contract : Ability
             
         Timing.CallDelayed(Timing.WaitForOneFrame, () =>
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 6; i++)
                 {
-                    var rand = Random.Range(1, 501);
+                    var rand = Convert.ToInt16(Random.Range(1, 501));
                     switch (rand)
                     {
                         case 1: // 0.20%

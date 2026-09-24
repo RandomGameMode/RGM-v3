@@ -19,17 +19,17 @@ namespace RGM.Modes;
 /// </summary>
 public static class ExclusiveWeaponQuest
 {
-    const int KillTargetHuman = 7;
-    const int KillTargetScp = 14;
-    const float SurviveTargetHuman = 540f;
-    const float SurviveTargetScp = 720f;
-    const float DealDamageTarget = 12000f;
-    const float TakeDamageTargetScp = 7500f;
-    const float HealTargetHuman = 1500f;
-    const float HsRecoverTargetScp = 4500f;
+    private const int KillTargetHuman = 7;
+    private const int KillTargetScp = 14;
+    private const float SurviveTargetHuman = 540f;
+    private const float SurviveTargetScp = 720f;
+    private const float DealDamageTarget = 12000f;
+    private const float TakeDamageTargetScp = 7500f;
+    private const float HealTargetHuman = 1500f;
+    private const float HsRecoverTargetScp = 4500f;
 
-    static readonly Dictionary<Player, CoroutineHandle> TrackHandles = new();
-    static readonly Dictionary<Player, float> PrevHs = new();
+    private static readonly Dictionary<Player, CoroutineHandle> TrackHandles = new();
+    private static readonly Dictionary<Player, float> PrevHs = new();
 
     public static void Register()
     {
@@ -84,7 +84,7 @@ public static class ExclusiveWeaponQuest
         StopTracking(player);
     }
 
-    static IEnumerator<float> TrackRoutine(Player player)
+    private static IEnumerator<float> TrackRoutine(Player player)
     {
         while (player != null && player.IsAlive)
         {
@@ -121,7 +121,7 @@ public static class ExclusiveWeaponQuest
             TrackHandles.Remove(player);
     }
 
-    static void OnHurting(HurtingEventArgs ev)
+    private static void OnHurting(HurtingEventArgs ev)
     {
         float damage = ev.DamageHandler?.Damage ?? 0f;
         if (damage <= 0f)
@@ -147,7 +147,7 @@ public static class ExclusiveWeaponQuest
         }
     }
 
-    static void OnDied(DiedEventArgs ev)
+    private static void OnDied(DiedEventArgs ev)
     {
         if (ev.Attacker == null
             || ev.Player == null
@@ -161,7 +161,7 @@ public static class ExclusiveWeaponQuest
         TryAdvanceResonance(ev.Attacker, type, progress);
     }
 
-    static void OnHealing(HealingEventArgs ev)
+    private static void OnHealing(HealingEventArgs ev)
     {
         if (ev.Player == null || ev.Amount <= 0f)
             return;
@@ -181,7 +181,7 @@ public static class ExclusiveWeaponQuest
     /// 완료된 미청구 퀘스트를 순서와 관계없이 각각 청구하며 승급합니다.
     /// Claimed 플래그로 같은 퀘스트가 여러 이벤트에서 중복 청구되는 것을 방지합니다.
     /// </summary>
-    public static void TryAdvanceResonance(Player player, ExclusiveWeaponType type, ExclusiveWeaponProgress progress)
+    private static void TryAdvanceResonance(Player player, ExclusiveWeaponType type, ExclusiveWeaponProgress progress)
     {
         if (player == null || progress == null)
             return;
@@ -223,7 +223,7 @@ public static class ExclusiveWeaponQuest
         }
     }
 
-    static bool IsQuestComplete(Player player, int questIndex, ResonanceQuestState quest)
+    private static bool IsQuestComplete(Player player, int questIndex, ResonanceQuestState quest)
     {
         bool scp = player.IsScpRole();
 
@@ -241,7 +241,7 @@ public static class ExclusiveWeaponQuest
         };
     }
 
-    public static string GetQuestDescription(Player player, int questIndex)
+    private static string GetQuestDescription(Player player, int questIndex)
     {
         bool scp = player != null && player.IsScpRole();
         return questIndex switch
@@ -277,7 +277,7 @@ public static class ExclusiveWeaponQuest
         return string.Join("\n", lines);
     }
 
-    static string GetQuestProgress(Player player, int questIndex, ResonanceQuestState quest)
+    private static string GetQuestProgress(Player player, int questIndex, ResonanceQuestState quest)
     {
         bool scp = player.IsScpRole();
         return questIndex switch
@@ -294,7 +294,7 @@ public static class ExclusiveWeaponQuest
         };
     }
 
-    static bool TryGetEquipped(Player player, out ExclusiveWeaponType type, out ExclusiveWeaponProgress progress)
+    private static bool TryGetEquipped(Player player, out ExclusiveWeaponType type, out ExclusiveWeaponProgress progress)
     {
         type = ExclusiveWeaponType.None;
         progress = null;
@@ -310,7 +310,7 @@ public static class ExclusiveWeaponQuest
         return true;
     }
 
-    static bool IsEnemyRole(RoleTypeId attackerRole, RoleTypeId targetRole)
+    private static bool IsEnemyRole(RoleTypeId attackerRole, RoleTypeId targetRole)
     {
         return HitboxIdentity.IsEnemy(RoleExtensions.GetTeam(attackerRole), RoleExtensions.GetTeam(targetRole));
     }

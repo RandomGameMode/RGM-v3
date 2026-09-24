@@ -26,13 +26,13 @@ namespace RGM.Modes
 """;
         public override string Color => "d97053";
 
-        CoroutineHandle _onModeStarted;
-        CoroutineHandle _check;
+        private CoroutineHandle _onModeStarted;
+        private CoroutineHandle _check;
 
-        Dictionary<Player, BlockedActions> dict = new();
-        Dictionary<Player, Vector3> pos_dict = new();
+        private readonly Dictionary<Player, BlockedActions> _dict = new();
+        private readonly Dictionary<Player, Vector3> _posDict = new();
 
-        enum BlockedActions
+        private enum BlockedActions
         {
             달리기,
             점프,
@@ -61,7 +61,7 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Player.Escaping += OnEscaping;
 
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
-            _check = Timing.RunCoroutine(check());
+            _check = Timing.RunCoroutine(Check());
         }
 
         public override void OnDisabled()
@@ -79,7 +79,7 @@ namespace RGM.Modes
             Timing.KillCoroutines(_check);
         }
 
-        IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
             while (true)
             {
@@ -97,11 +97,11 @@ namespace RGM.Modes
 
                 foreach (var player in PlayerManager.List)
                 {
-                    if (!dict.ContainsKey(player))
-                        dict.Add(player, BlockedActions.달리기);
+                    if (!_dict.ContainsKey(player))
+                        _dict.Add(player, BlockedActions.달리기);
 
                     var blockedAction = Tools.EnumToList<BlockedActions>().GetRandomValue();
-                    dict[player] = blockedAction;
+                    _dict[player] = blockedAction;
 
                     player.AddBroadcast(time, $"<size=30>당신은 <color=red>{blockedAction.ToString().Replace("_", " ")}</color>(을)를 할 수 없습니다.</size>");
                 }
@@ -110,40 +110,44 @@ namespace RGM.Modes
             }
         }
 
-        IEnumerator<float> check()
+        private IEnumerator<float> Check()
         {
             while (true)
             {
-                foreach (var player in dict.Keys.Where(x => !x.IsDead))
+                foreach (var player in _dict.Keys.Where(x => !x.IsDead))
                 {
                     try
                     {
-                        var blockedAction = dict[player];
+                        var blockedAction = _dict[player];
                         FirstPersonMovementModule fpcModule =
                             (player.ReferenceHub.roleManager.CurrentRole as FpcStandardRoleBase)?.FpcModule;
                         if (fpcModule is null) continue;
 
-                        if (blockedAction == BlockedActions.달리기)
+                        switch (blockedAction)
                         {
-                            if (fpcModule.CurrentMovementState == PlayerMovementState.Sprinting)
-                                player.ExplodeGrenade(ignore: true);
-                        }
+                            case BlockedActions.달리기:
+                            {
+                                if (fpcModule.CurrentMovementState == PlayerMovementState.Sprinting)
+                                    player.ExplodeGrenade(ignore: true);
+                                break;
+                            }
+                            case BlockedActions.천천히_걷기:
+                            {
+                                if (fpcModule.CurrentMovementState == PlayerMovementState.Sneaking)
+                                    player.ExplodeGrenade(ignore: true);
+                                break;
+                            }
+                            case BlockedActions.움직이기:
+                            {
+                                if (!_posDict.ContainsKey(player))
+                                    _posDict.Add(player, player.Position);
 
-                        if (blockedAction == BlockedActions.천천히_걷기)
-                        {
-                            if (fpcModule.CurrentMovementState == PlayerMovementState.Sneaking)
-                                player.ExplodeGrenade(ignore: true);
-                        }
+                                if (_posDict[player] != player.Position)
+                                    player.ExplodeGrenade(ignore: true);
 
-                        if (blockedAction == BlockedActions.움직이기)
-                        {
-                            if (!pos_dict.ContainsKey(player))
-                                pos_dict.Add(player, player.Position);
-
-                            if (pos_dict[player] != player.Position)
-                                player.ExplodeGrenade(ignore: true);
-
-                            pos_dict[player] = player.Position;
+                                _posDict[player] = player.Position;
+                                break;
+                            }
                         }
                     }
                     catch (Exception e)
@@ -156,84 +160,83 @@ namespace RGM.Modes
             }
         }
 
-        void OnJumping(JumpingEventArgs ev)
+        private void OnJumping(JumpingEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player) && dict[ev.Player] == BlockedActions.점프)
+            if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.점프)
                 ev.Player.ExplodeGrenade(ignore: true);
         }
 
-        void OnHurting(HurtingEventArgs ev)
+        private void OnHurting(HurtingEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (ev.Attacker != null && dict.ContainsKey(ev.Attacker) && dict[ev.Attacker] == BlockedActions.공격)
+            if (ev.Attacker != null && _dict.ContainsKey(ev.Attacker) && _dict[ev.Attacker] == BlockedActions.공격)
                 ev.Attacker.ExplodeGrenade(ignore: true);
         }
-        
-        void OnVoiceChatting(VoiceChattingEventArgs ev)
+
+        private void OnVoiceChatting(VoiceChattingEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player) && dict[ev.Player] == BlockedActions.말하기 && !ev.Player.IsDead)
+            if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.말하기 && !ev.Player.IsDead)
                 ev.Player.ExplodeGrenade(ignore: true);
         }
 
-        void OnUsedItem(UsingItemEventArgs ev)
+        private void OnUsedItem(UsingItemEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player) && dict[ev.Player] == BlockedActions.아이템_사용)
+            if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.아이템_사용)
                 ev.Player.ExplodeGrenade(ignore: true);
         }
 
-        void OnInteractingDoor(InteractingDoorEventArgs ev)
+        private void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player) && dict[ev.Player] == BlockedActions.문_상호작용)
+            if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.문_상호작용)
                 ev.Player.ExplodeGrenade(ignore: true);
         }
 
-        void OnOpeningGenerator(OpeningGeneratorEventArgs ev)
+        private void OnOpeningGenerator(OpeningGeneratorEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player) && dict[ev.Player] == BlockedActions.발전기_열기)
+            if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.발전기_열기)
                 ev.Player.ExplodeGrenade(ignore: true);
         }
 
-        void OnChangingItem(ChangingItemEventArgs ev)
+        private void OnChangingItem(ChangingItemEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player)) 
-            {
-                if (dict[ev.Player] == BlockedActions.카드키_들기 && ev.Item.Type.IsKeycard())
-                    ev.Player.ExplodeGrenade(ignore: true);
+            if (!_dict.ContainsKey(ev.Player)) return;
+            
+            if (_dict[ev.Player] == BlockedActions.카드키_들기 && ev.Item.Type.IsKeycard())
+                ev.Player.ExplodeGrenade(ignore: true);
 
-                if (dict[ev.Player] == BlockedActions.총_들기 && ev.Item.Type.IsWeapon())
-                    ev.Player.ExplodeGrenade(ignore: true);
+            if (_dict[ev.Player] == BlockedActions.총_들기 && ev.Item.Type.IsWeapon())
+                ev.Player.ExplodeGrenade(ignore: true);
 
-                if (dict[ev.Player] == BlockedActions.의료_아이템_들기 && ev.Item.Type.IsMedical())
-                    ev.Player.ExplodeGrenade(ignore: true);
-            }
+            if (_dict[ev.Player] == BlockedActions.의료_아이템_들기 && ev.Item.Type.IsMedical())
+                ev.Player.ExplodeGrenade(ignore: true);
         }
 
-        void OnEscaping(EscapingEventArgs ev)
+        private void OnEscaping(EscapingEventArgs ev)
         {
             if (ev.Player.IsDead)
                 return;
 
-            if (dict.ContainsKey(ev.Player) && dict[ev.Player] == BlockedActions.탈출하기)
+            if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.탈출하기)
                 ev.Player.ExplodeGrenade(ignore: true);
 
             ev.IsAllowed = false;

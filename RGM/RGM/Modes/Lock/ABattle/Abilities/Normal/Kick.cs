@@ -27,17 +27,25 @@ public class Kick : Ability
         if (ev.Player != Owner)
             return;
 
-        if (ev.Player.IsCaptured(out Player none))
+        if (ev.Player.IsCaptured(out _))
             return;
 
         if (!ev.Player.TryGetLookPlayer(4.7f, out Player player, out RaycastHit? hit)) return;
         if (ev.Player == player || _meleeCooldown > 0 ||
             !HitboxIdentity.IsEnemy(ev.Player.ReferenceHub, player.ReferenceHub)) return;
 
-        float damage = DamageCalcu(hit?.transform.name) * Owner.AbilityCount(AbilityType.NORMAL_KICK);
-
+        float damage = DamageCalc(hit?.transform.name) * Owner.AbilityCount(AbilityType.NORMAL_KICK);
+        
+        if (Owner.HasAbility(AbilityType.SYNERGY_SOCCERKICK))
+        {
+            ev.Player.ExplodeGrenade(ignore:true, instakill:false);
+            ApplyInstantKill.Apply(Owner, player);
+        }
+        else
+        {
+            player.Hit(ev.Player, damage);
+        }
         Hitmarker.SendHitmarkerDirectly(ev.Player.ReferenceHub, damage / Meleedamage);
-        player.Hit(ev.Player, damage);
         ev.Player.Grab();
 
         _meleeCooldown = 1;
@@ -45,7 +53,7 @@ public class Kick : Ability
         Timing.CallDelayed(1f, () => _meleeCooldown = 0);
         return;
 
-        float DamageCalcu(string pos)
+        float DamageCalc(string pos)
         {
             switch (pos)
             {

@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exiled.API.Extensions;
 using RGM.API.DataBases;
 using RGM.API.Features;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Rare;
 
@@ -15,7 +16,7 @@ public class Collector : Ability
             .Where(x => x.ToString().Contains("SCP") && !Datas.ExceptItems.Contains(x))
             .ToList();
 
-        int itemCount = Random.Range(1, 101) <= 20 ? 4 : 2;
+        var itemCount = Convert.ToByte(Random.Range(1, 101)) <= 20 ? 4 : 2;
         for (int i = 0; i < itemCount; i++)
         {
             Owner.AddItem(scpItems.GetRandomValue());

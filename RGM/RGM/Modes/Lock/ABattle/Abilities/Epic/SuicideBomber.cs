@@ -1,8 +1,10 @@
-﻿using Exiled.API.Features.Items;
+﻿using System;
+using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Epic;
 
@@ -33,7 +35,7 @@ public class SuicideBomber : Ability
             g.FuseTime = 0.1f;
             g.SpawnActive(pos, Owner);
 
-            while (Random.Range(1, 101) <= 44)
+            while (Convert.ToByte(Random.Range(1, 101))  <= 44)
             {
                 var chain = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Owner);
                 chain.FuseTime = 0.1f;

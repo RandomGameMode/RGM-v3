@@ -148,9 +148,9 @@ namespace RGM.Modes
 
             Round.IsLocked = false;
 
-            var players = PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC);
+            List<Player> players = [.. PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC)];
 
-            switch (players.Count())
+            switch (players.Count)
             {
                 case 1 when hellMode:
                     Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 15));
@@ -207,7 +207,7 @@ namespace RGM.Modes
                             block.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(12.5f, 0, 0);
                     }
 
-                    IEnumerator<float> enumerator()
+                    IEnumerator<float> Enumerator()
                     {
                         while (!Round.IsEnded)
                         {
@@ -217,14 +217,14 @@ namespace RGM.Modes
                         }
                     }
 
-                    Timing.RunCoroutine(enumerator());
+                    Timing.RunCoroutine(Enumerator());
                 }
 
-                yield return Timing.WaitForSeconds(1);
+                yield return Timing.WaitForSeconds(0.8f);
             }
         }
 
-        private IEnumerator<float> LaserCheck()
+        private static IEnumerator<float> LaserCheck()
         {
             while (!Round.IsEnded)
             {
@@ -232,11 +232,9 @@ namespace RGM.Modes
                 {
                     foreach (var vector in new List<Vector3> { Vector3.down, Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
                     {
-                        if (Physics.Raycast(player.Position, vector, out RaycastHit hit, 0.8f))
-                        {
-                            if (new List<string> { "Oh no", "BorderForSomething" }.Contains(hit.transform.name))
-                                player.Kill("안타깝군요..");
-                        }
+                        if (!Physics.Raycast(player.Position, vector, out RaycastHit hit, 0.8f)) continue;
+                        if (new List<string> { "Oh no", "BorderForSomething" }.Contains(hit.transform.name))
+                            player.Kill("안타깝군요..");
                     }
                 }
 

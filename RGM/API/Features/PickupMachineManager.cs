@@ -24,11 +24,11 @@ namespace RGM.API.Features
             return true;
         }
 
-        public string Command { get; } = "setpm";
+        public string Command => "setpm";
 
-        public string[] Aliases { get; } = { "spm" };
+        public string[] Aliases { get; } = ["spm"];
 
-        public string Description { get; } = "뽑기 기계ㅣ뽑기 기계를 추가합니다.";
+        public string Description => "뽑기 기계ㅣ뽑기 기계를 추가합니다.";
     }
     
     /**
@@ -92,7 +92,7 @@ namespace RGM.API.Features
 
                 if (ev.Pickup.Transform.name.StartsWith("DollGrabberInput"))
                 {
-                    if (ev.Player.CurrentItem != null && ev.Player.CurrentItem.Type == ItemType.Coin)
+                    if (ev.Player.CurrentItem is { Type: ItemType.Coin })
                     {
                         ev.IsAllowed = false;
 

@@ -1,17 +1,12 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Extensions;
 using MEC;
-using MultiBroadcast.Commands.Subcommands;
-using PlayerRoles;
 using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Metadata;
-using System.Security.Policy;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Common;
 
-[Ability("스팸 문자", "적들에게 20초짜리 스팸 문자 3개를 보내 시야를 60초간 방해합니다.", AbilityCategory.Normal, AbilityType.NORMAL_SCP079_SPAMMESSAGE, RoleAbility.Scp079)]
+[Ability("스팸 문자", "적들에게 10초짜리 스팸 문자 4개를 보내 시야를 방해합니다.", AbilityCategory.Normal, AbilityType.NORMAL_SCP079_SPAMMESSAGE, RoleAbility.Scp079)]
 
 public class SpamMessage : Ability
 {
@@ -229,6 +224,12 @@ public class SpamMessage : Ability
         (광고) [AI] 강력추천! 스팸문자 완.벽.타.파. 비법 大공개!! 🚀형님, 아직도 귀찮은 스팸문자 그냥 지우십니까?누구나 하루 3분 투자로 스팸 지옥에서 탈출하는 특급 비법을 100% 무료로 공유합니다. 지금 바로 확인하세요!! 👇👇▶ [안내] 스팸문자 대처 및 신고 가이드http://kisa-spam-block-safe.kr━━━━━━━━━━━━━━━━━━━━━━━━━━[핵심 요약 리포트][주의] 링크 절대 클릭 금지!출처 불분명한 URL이나 번호는 누르는 순간 인생 내리막길! 절대 누르지 마세요.[초간편] 휴대폰 즉시 신고!문자 상단 [스팸번호로 등록] 또는 [스팸 신고] 버튼 터치 한 번이면 KISA(한국인터넷진흥원)로 자동 접수 완료![강력] 통신사 무료 차단 서비스!SKT, KT, LGU+ 고객이라면 누구나 무료로 가입 가능한 '스팸 필터링' 부가서비스 지금 즉시 신청하세요.━━━━━━━━━━━━━━━━━━━━━━━━━━선착순 마감 임박! 지금 조치 안 하시면 내일 또 광고 문자가 쏟아집니다.지금 바로 휴대폰 설정을 변경하세요!!☎ 무료수신거부: 국번없이 118 (불법스팸대응센터)
         </b>
         </size>
+        """,
+        """
+        타올라라🔥권능💫이여 선홍🌹의 불꽃🔥이여 타임라인⌚ 저 너머➡️로 내 앞⚠️의 적😈을 멸할 힘💪을 모아 말하노니🗣️ 눈👁️ 앞에 실현🧙하라 우주🌟로 부터 내리는 운석🌠낙하⬇️ 메테오 어택❗️
+        """,
+        """
+        이게 크산테다 체력 4700 방어력 329 마저201인 챔피언👤이 저지불가🚫, 실드🛡, 벽🧱 넘기는 거 있고요. 에어본🌪 있고, 심지어 쿨타임은 1️⃣초밖에 안되고 마나🧙‍♂️는 1️⃣5️⃣ 들고 w는 심지어 변신💫하면 쿨 초기화에다가 패시브는 고정피해🗡가 들어가며 그 다음에 방마저🥋 올리면📈 올릴수록📈 스킬 가속⏰이 생기고! q에 스킬가속⏰이 생기고 스킬 속도🚀가 빨라지고📈 그 다음에 공격력🗡 계수가 있어가지고 W가 그 이익- 으아아아악😱😱
         """
     ];
 

@@ -1,6 +1,7 @@
+using System;
 using MEC;
 using RGM.API.Features;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Epic;
 
@@ -18,20 +19,23 @@ public class CSAT : Ability
         Timing.CallDelayed(3.1f, () =>
         {
             if (!Owner.IsAlive) return;
-            if (Random.Range(1, 101) <= (ABattle.CurrentExtraModes.Contains("잔칫상") ? 28 : 20))
+            if (Convert.ToByte(Random.Range(1, 101)) <= 4 * Owner.AbilityCount(AbilityType.NORMAL_STUDY) + 
+                (ABattle.CurrentExtraModes.Contains("잔칫상") ? 28 : 20))
             {
                 Owner.AddHint("대학수학능력시험 1등급", "<b>능력을 3개 더 얻었습니다!</b>");
 
-                for (int i = 0; i < 3; i++) {
-                    var category = Random.Range(1, 101) <= 15 ? AbilityCategory.Legend : AbilityCategory.Epic;
+                for (int i = 0; i < (Owner.HasAbility(AbilityType.SYNERGY_BRILLIANTMIND) ? 6 : 3); i++) {
+                    var category = Convert.ToByte(Random.Range(1, 101)) <= 15 
+                        ? Convert.ToByte(Random.Range(1, 101)) <= 50 && Owner.HasAbility(AbilityType.SYNERGY_BRILLIANTMIND)
+                            ? AbilityCategory.Mythic : AbilityCategory.Legend : AbilityCategory.Epic;
                     Owner.AddAbility(ABattle.Instance.GetRandomAbilities(Owner, category, 1)[0]);
                 }
-                Owner.AddAbility(AbilityType.DUMMY_CSTCSUCCESS);
+                Owner.AddAbility(AbilityType.DUMMY_CSATSUCCESS);
             }
             else
             {
                 Owner.AddHint("대학수학능력시험 9등급", "다음 기회에..");
-                Owner.AddAbility(AbilityType.DUMMY_CSTCFAIL);
+                Owner.AddAbility(AbilityType.DUMMY_CSATFAIL);
             };
         });
     }

@@ -53,6 +53,10 @@ namespace RGM
                     case ModeHoliday.Halloween when !HolidayUtils.IsHolidayActive(HolidayType.Halloween):
                     case ModeHoliday.Christmas when !HolidayUtils.IsHolidayActive(HolidayType.Christmas):
                         continue;
+                    case ModeHoliday.None:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
                 if (!typeof(Mode).IsAssignableFrom(type))
@@ -170,55 +174,45 @@ namespace RGM
 
             // SCP·무기 동작 보정은 고정 모드 서버에서도 모드가 설치되므로 항상 적용합니다.
             Harmony scpHarmony = new Harmony($"Harmony.Scp - {DateTime.Now.Ticks}");
-
-            Scp049Patch.Apply(scpHarmony);
-            Scp173Patch.Apply(scpHarmony);
+            Harmony weaponHarmony = new Harmony($"Harmony.Weapon - {DateTime.Now.Ticks}");
+            Harmony seedHarmony = new Harmony($"Harmony.Seed - {DateTime.Now.Ticks}");
 
             LoadoutPatch.Apply();
-
-            Harmony weaponHarmony = new Harmony($"Harmony.Weapon - {DateTime.Now.Ticks}");
-
+            Scp049Patch.Apply(scpHarmony);
+            Scp173Patch.Apply(scpHarmony);
             WeaponPatch.Apply(weaponHarmony);
+            seedHarmony.CreateClassProcessor(typeof(SeedSynchronizerAwakePatch)).Patch();
+            seedHarmony.CreateClassProcessor(typeof(SeedSynchronizerNewPlayerPatch)).Patch();
         }
 
-        public static void OnFixedModeWaitingForPlayers()
+        private static void OnFixedModeWaitingForPlayers()
         {
             ServerManager.Setup();
         }
 
-        public static void OnFixedModeRoundStarted()
+        private static void OnFixedModeRoundStarted()
         {
             foreach (var mode in Instance.Config.FixedModes)
                 Tools.TryInstallMode(mode);
         }
 
-        public static void OnFixedModeVerified(VerifiedEventArgs ev)
+        private static void OnFixedModeVerified(VerifiedEventArgs ev)
         {
             ev.Player.Setup();
         }
 
-        public static void OnFixedModeLeft(LeftEventArgs ev)
+        private static void OnFixedModeLeft(LeftEventArgs ev)
         {
-            if (TranslatorPlayers.ContainsKey(ev.Player))
-                TranslatorPlayers.Remove(ev.Player);
-
-            if (Chats.ContainsKey(ev.Player))
-                Chats.Remove(ev.Player);
-
+            TranslatorPlayers.Remove(ev.Player);
+            Chats.Remove(ev.Player);
             if (Texts.ContainsKey(ev.Player))
             {
                 Texts[ev.Player].Destroy();
                 Texts.Remove(ev.Player);
             }
-
-            if (OnGround.ContainsKey(ev.Player.UserId))
-                OnGround.Remove(ev.Player.UserId);
-
-            if (PlayersAudio.ContainsKey(ev.Player))
-                PlayersAudio.Remove(ev.Player);
-
-            if (EffectIntensities.ContainsKey(ev.Player))
-                EffectIntensities.Remove(ev.Player);
+            OnGround.Remove(ev.Player.UserId);
+            EffectIntensities.Remove(ev.Player);
+            PlayersAudio.Remove(ev.Player);
         }
     }
 }

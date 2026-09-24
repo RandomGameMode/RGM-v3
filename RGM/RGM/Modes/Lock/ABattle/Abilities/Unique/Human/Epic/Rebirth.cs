@@ -6,11 +6,11 @@ using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Unique.Human.Epic;
 
-[Ability("환생", """
+/*[Ability("환생", """
                즉시 본인 진영의 최초 스폰 지점으로 이동하며, 워크스테이션 이용 기록을 초기화합니다.
                환생 시, [영웅] 매드 사이언티스트를 발동한 것으로 간주합니다.
                """,
-    AbilityCategory.Epic, AbilityType.EPIC_HUMAN_REBIRTH, RoleAbility.Human)]
+    AbilityCategory.Epic, AbilityType.EPIC_HUMAN_REBIRTH, RoleAbility.Human)]*/
 public class Rebirth : Ability
 {
     public override void OnEnabled()
@@ -30,7 +30,7 @@ public class Rebirth : Ability
                 {
                     try
                     {
-                        var rand = Random.Range(1, 501);
+                        var rand = Convert.ToInt16(Random.Range(1, 501));
                         switch (rand)
                         {
                             case 1: // 0.20%

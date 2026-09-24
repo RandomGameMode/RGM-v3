@@ -20,10 +20,8 @@ namespace RGM.API.Features
             foreach (var data in CandyDataDict)
                 Scp330Candies.DictionarizedCandies.Add(data.Key, data.Value);
 
-            GlobalPlayer = AudioPlayer.CreateOrGet($"Global AudioPlayer", condition: (ReferenceHub hub) =>
-            {
-                return !MuteBGMPlayers.Contains(Player.Get(hub));
-            }, onIntialCreation: (p) =>
+            GlobalPlayer = AudioPlayer.CreateOrGet($"Global AudioPlayer",
+                condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)), onIntialCreation: (p) =>
             {
                 Speaker speaker = p.AddSpeaker("Main", isSpatial: false, maxDistance: 5000);
             });

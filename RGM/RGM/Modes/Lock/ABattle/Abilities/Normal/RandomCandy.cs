@@ -1,5 +1,6 @@
-﻿using RGM.API.Features;
-using UnityEngine;
+﻿using System;
+using RGM.API.Features;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Normal;
 
@@ -9,7 +10,7 @@ public class RandomCandy : Ability
     public override void OnEnabled()
     {
         Owner.AddRandomCandy();
-        while (Random.Range(1, 101) <= 25) {
+        while (Convert.ToByte(Random.Range(1, 101)) <= 25) {
             Owner.AddRandomCandy();
         }
     }

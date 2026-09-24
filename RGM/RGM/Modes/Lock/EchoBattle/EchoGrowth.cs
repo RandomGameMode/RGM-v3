@@ -12,16 +12,16 @@ namespace RGM.Modes;
 /// </summary>
 public static class EchoGrowth
 {
-    public const float LevelExpMultiplier = 1.085f;
-    public const float LevelExpAdd = 25f;
+    private const float LevelExpMultiplier = 1.085f;
+    private const float LevelExpAdd = 25f;
 
     /// <summary>
     /// 같은 프레임/짧은 구간에 GrantExp가 여러 번 호출되어도 ApplyLoadout은 1회만 예약.
     /// 동시에 여러 Echo가 레벨업해도 한 번의 재적용으로 합산됩니다.
     /// </summary>
-    static readonly HashSet<Player> PendingApplyLoadout = new();
+    private static readonly HashSet<Player> PendingApplyLoadout = [];
 
-    public static int GetBaseExp(EchoCost cost)
+    private static int GetBaseExp(EchoCost cost)
     {
         return cost switch
         {
@@ -35,7 +35,7 @@ public static class EchoGrowth
     /// <summary>
     /// currentLevel → currentLevel+1 에 필요한 경험치.
     /// </summary>
-    public static int GetRequiredExp(EchoCost cost, int currentLevel)
+    private static int GetRequiredExp(EchoCost cost, int currentLevel)
     {
         currentLevel = EchoStats.Clamp(currentLevel, 1, EchoInfo.MaxLevel);
         if (currentLevel >= EchoInfo.MaxLevel)
@@ -49,7 +49,7 @@ public static class EchoGrowth
         return exp;
     }
 
-    public static int NextExp(int previousRequired)
+    private static int NextExp(int previousRequired)
     {
         return (int)Math.Ceiling(LevelExpMultiplier * previousRequired + LevelExpAdd);
     }
@@ -107,7 +107,7 @@ public static class EchoGrowth
     /// <summary>
     /// ApplyLoadout 예약을 debounce. 이미 대기 중이면 추가 예약하지 않습니다.
     /// </summary>
-    static void ScheduleApplyLoadout(Player player)
+    private static void ScheduleApplyLoadout(Player player)
     {
         if (player == null || !EchoInfo.PlayerEchoes.ContainsKey(player))
             return;
@@ -134,7 +134,7 @@ public static class EchoGrowth
     /// <summary>
     /// 특정 Echo에 XP 추가. 레벨업 발생 시 true.
     /// </summary>
-    public static bool AddExp(Player player, EchoLoadout loadout, EchoType type, float amount, out int newLevel)
+    private static bool AddExp(Player player, EchoLoadout loadout, EchoType type, float amount, out int newLevel)
     {
         newLevel = loadout.GetLevel(type);
         if (amount <= 0 || newLevel >= EchoInfo.MaxLevel)
@@ -168,7 +168,7 @@ public static class EchoGrowth
         return leveled;
     }
 
-    public static float GetCurrentExp(EchoLoadout loadout, EchoType type)
+    private static float GetCurrentExp(EchoLoadout loadout, EchoType type)
     {
         return loadout.Experience.TryGetValue(type, out float exp) ? exp : 0f;
     }

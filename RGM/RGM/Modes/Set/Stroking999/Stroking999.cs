@@ -45,7 +45,7 @@ namespace RGM.Modes
             Respawn.PauseWaves();
             AFKManager._kickTime = 120500;
 
-            _seconds = Random.Range(20, 56);
+            _seconds = Random.Range(15, 57);
             _timeLimit = _seconds * 5;
 
             foreach (var player in PlayerManager.List)

@@ -89,12 +89,9 @@ namespace RGM.API.Features
             if (PlayerHints[player].ContainsKey(customId))
             {
                 PlayerHints[player].Remove(customId);
-                PlayerHints[player].Add(customId, (hint, duration));
             }
-            else
-            {
-                PlayerHints[player].Add(customId, (hint, duration));
-            }
+
+            PlayerHints[player].Add(customId, (hint, duration));
         }
     }
 }

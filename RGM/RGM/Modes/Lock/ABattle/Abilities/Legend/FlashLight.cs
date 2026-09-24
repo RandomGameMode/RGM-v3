@@ -11,9 +11,8 @@ namespace RGM.Modes.Abilities.Legend;
 [Ability("플래시라이트", "지급된 손전등을 들고 상대를 쳐다보면 눈뽕 공격을 가할 수 있습니다.", AbilityCategory.Legend, AbilityType.LEGEND_FLASHLIGHT)]
 public class FlashLight : Ability
 {
-    CoroutineHandle _onStarted;
+    private CoroutineHandle _onStarted;
     private ushort _flashLightSerial;
-    
 
     public override void OnEnabled()
     {
@@ -48,7 +47,7 @@ public class FlashLight : Ability
                     if (target == player) continue;
                     if (!HitboxIdentity.IsEnemy(player.ReferenceHub, target.ReferenceHub)) continue;
 
-                    if (!player.IsLookingAt(target, fov: 15)) continue;
+                    if (!player.IsLookingAt(target, fov: 10)) continue;
 
                     float damage = 3f;
                     if (player.HasAbility(AbilityType.SYNERGY_REFLECTEDLIGHT))
@@ -57,7 +56,7 @@ public class FlashLight : Ability
                         target.EnableEffect(EffectType.Burned, 1, 10f);
                     }
                     Hitmarker.SendHitmarkerDirectly(player.ReferenceHub, 1f);
-                    target.EnableEffect(EffectType.Flashed, 1, 1.5f);
+                    target.EnableEffect(EffectType.Flashed, 1, 1);
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using MEC;
@@ -6,6 +7,7 @@ using PlayerRoles;
 using RGM.API.DataBases;
 using RGM.API.Features;
 using RGM.Patches;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes
 {
@@ -27,8 +29,8 @@ namespace RGM.Modes
         public static RocketLauncher Instance;
 
         private readonly AutoWarhead _autoWarhead = new(14, 1);
-        
-        List<Player> queue = new();
+
+        private readonly List<Player> _queue = [];
 
         public override void OnEnabled()
         {
@@ -47,27 +49,30 @@ namespace RGM.Modes
             if (ev.Attacker == null || 
                 !HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub) ||
                 ev.Player == ev.Attacker) return;
-            if (queue.Contains(ev.Player)) return;
-            queue.Add(ev.Player);
+            
+            if (_queue.Contains(ev.Player)) return;
+            
+            _queue.Add(ev.Player);
 
-            if (UnityEngine.Random.Range(1, 101) <= GetPercent())
+            if (Convert.ToByte(Random.Range(1, 101)) <= GetPercent())
             {
                 Tools.MessageTranslated("", $"{ev.Player.DisplayNickname}(<color={ev.Player.Role.Color.ToHex()}>{( Trans.Role[ev.Player.Role.Type])}</color>)(이)가 하늘로 승천했습니다.");
                 Timing.RunCoroutine(Tools.DoRocket(ev.Attacker, ev.Player, 1f));
             }
 
-            Timing.CallDelayed(2, () =>
+            Timing.CallDelayed(1, () =>
             {
-                queue.Remove(ev.Player);
+                _queue.Remove(ev.Player);
             });
+            
             return;
 
-            int GetPercent()
+            byte GetPercent()
             {
                 if (ev.Attacker.IsScpRole())
                     return 51;
 
-                return ev.Attacker.Role.Type == RoleTypeId.Tutorial ? 173 : 6;
+                return Convert.ToByte(ev.Attacker.Role.Type == RoleTypeId.Tutorial ? 173 : 6);
             }
         }
     }

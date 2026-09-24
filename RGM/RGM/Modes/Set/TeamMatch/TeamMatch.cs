@@ -160,7 +160,6 @@ namespace RGM.Modes
         {
             List<ItemType> guns =
             [
-                ItemType.GunA7,
                 ItemType.GunE11SR,
                 ItemType.GunShotgun,
                 ItemType.GunCom45,
@@ -237,7 +236,6 @@ namespace RGM.Modes
                 }
 
                 player.Position = _teamASpawns.GetRandomValue();
-                player.ApplyGodMode(3);
             }
             else if (_teamB.Contains(player))
             {
@@ -252,7 +250,6 @@ namespace RGM.Modes
                 }
 
                 player.Position = _teamBSpawns.GetRandomValue();
-                player.ApplyGodMode(3);
             }
             else
             {
@@ -282,7 +279,7 @@ namespace RGM.Modes
                 string scoreText = $"<size=30><b><color=#FF5533>{_teamAScore}</color> : <color=#FFD700>{_teamBScore}</color></b></size>";
 
                 foreach (var player in PlayerManager.List)
-                    player.AddHint("팀 데스매치 점수", scoreText, 1.2f);
+                    player.AddHint("팀 데스매치 점수", scoreText, 1.05f);
 
                 yield return Timing.WaitForSeconds(1f);
             }

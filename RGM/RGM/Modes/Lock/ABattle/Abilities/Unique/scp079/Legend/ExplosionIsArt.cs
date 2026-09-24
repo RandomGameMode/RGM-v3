@@ -8,7 +8,7 @@ namespace RGM.Modes.Abilities.Unique.Scp079.Legend;
 [Ability("폭발은 예술이다", $"30초마다 <color=#2ECCFA>[전용 희귀]</color> 폭격 능력을 1 ~ 2개 획득합니다.", AbilityCategory.Legend, AbilityType.LEGEND_SCP079_EXPLOSIONISART, RoleAbility.Scp079)]
 public class ExplosionIsArt : Ability
 {
-    CoroutineHandle _airstrike;
+    private CoroutineHandle _airstrike;
     public override void OnEnabled()
     {
         _airstrike = Timing.RunCoroutine(AirstrikeCoroutine());

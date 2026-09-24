@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Unique.NTF.Normal;
 
@@ -11,7 +12,7 @@ public class IndustrialAccidentInsurance : Ability
 {
     public override void OnEnabled()
     {
-        var rand = Random.Range(1, 101);
+        var rand = Convert.ToByte(Random.Range(1, 101));
 
         switch (rand)
         {

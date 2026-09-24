@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Mythic;
 
-
-[Ability("따아알깍", "핑을 찍으면 워크스테이션을 설치합니다. (쿨타임 3초)", AbilityCategory.Mythic, AbilityType.MYTHIC_SCP079_TOOLPING, RoleAbility.Scp079)]
+[Ability("따아알깍", "핑을 찍으면 워크스테이션을 설치합니다. (쿨타임 8초)", AbilityCategory.Mythic, AbilityType.MYTHIC_SCP079_TOOLPING, RoleAbility.Scp079)]
 public class ToolPing : Ability
 {
-    bool isScp079Cooldown = false;
+    private bool _isScp079Cooldown;
+    
     public override void OnEnabled()
     {
         Exiled.Events.Handlers.Scp079.Pinging += OnPinging;
@@ -23,7 +23,7 @@ public class ToolPing : Ability
     private void OnPinging(PingingEventArgs ev)
     {
         if (ev.Player == null || ev.Player != Owner) return;
-        if (!isScp079Cooldown)
+        if (!_isScp079Cooldown)
         {
             Timing.CallDelayed(0.1f, () =>
             {
@@ -34,11 +34,11 @@ public class ToolPing : Ability
                     Rotation = new Vector3(0, 0, 0),
                     Scale = Vector3.one
                 }.SpawnOrUpdateObject();
-                isScp079Cooldown = true;
+                _isScp079Cooldown = true;
 
-                Timing.CallDelayed(3f, () =>
+                Timing.CallDelayed(8f, () =>
                 {
-                    isScp079Cooldown = false;
+                    _isScp079Cooldown = false;
                 });
             });
         }

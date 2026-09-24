@@ -39,15 +39,12 @@ public class MedicalAccident : Ability
         if (ev.Target.TryGetEffect<CardiacArrest>(out var cardiacArrest))
             cardiacArrest.SetAttacker(Owner.ReferenceHub);
 
-        Timing.CallDelayed(0.2f, () =>
+        Timing.CallDelayed(0.1f, () =>
         {
             if (!ev.Target.IsAlive)
                 return;
 
-            ev.Target.Hurt(new Scp049DamageHandler(
-                Owner.ReferenceHub,
-                -1f,
-                Scp049DamageHandler.AttackType.Instakill));
+            ApplyLethalDamage.Apply(Owner, ev.Target);
         });
     }
 }

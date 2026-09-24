@@ -139,23 +139,23 @@ public static class EchoStats
             EchoCost.Cost4 => Cost4MainStats,
             EchoCost.Cost3 => Cost3MainStats,
             EchoCost.Cost1 => Cost1MainStats,
-            _ => Array.Empty<EchoMainStatType>()
+            _ => []
         };
     }
 
-    static readonly EchoMainStatType[] Cost4MainStats =
-    {
+    private static readonly EchoMainStatType[] Cost4MainStats =
+    [
         EchoMainStatType.AttackPercent,
         EchoMainStatType.HpPercent,
         EchoMainStatType.Defense,
         EchoMainStatType.CriticalChance,
         EchoMainStatType.CriticalDamage,
         EchoMainStatType.MoveSpeedAndJump,
-        EchoMainStatType.StaminaDrainReduction,
-    };
+        EchoMainStatType.StaminaDrainReduction
+    ];
 
-    static readonly EchoMainStatType[] Cost3MainStats =
-    {
+    private static readonly EchoMainStatType[] Cost3MainStats =
+    [
         EchoMainStatType.AttackPercent,
         EchoMainStatType.HpPercent,
         EchoMainStatType.Defense,
@@ -163,15 +163,15 @@ public static class EchoStats
         EchoMainStatType.HumanDamagePercent,
         EchoMainStatType.HeadshotDamage,
         EchoMainStatType.AhpRegenAndMax,
-        EchoMainStatType.SizeReduction,
-    };
+        EchoMainStatType.SizeReduction
+    ];
 
-    static readonly EchoMainStatType[] Cost1MainStats =
-    {
+    private static readonly EchoMainStatType[] Cost1MainStats =
+    [
         EchoMainStatType.AttackPercent,
         EchoMainStatType.HpPercent,
-        EchoMainStatType.Defense,
-    };
+        EchoMainStatType.Defense
+    ];
 
     public static bool IsMainStatAvailable(EchoCost cost, EchoMainStatType type)
     {
@@ -184,8 +184,8 @@ public static class EchoStats
         return AllSelectableMainStats;
     }
 
-    static readonly EchoMainStatType[] AllSelectableMainStats =
-    {
+    private static readonly EchoMainStatType[] AllSelectableMainStats =
+    [
         EchoMainStatType.AttackPercent,
         EchoMainStatType.HpPercent,
         EchoMainStatType.Defense,
@@ -197,8 +197,8 @@ public static class EchoStats
         EchoMainStatType.StaminaDrainReduction,
         EchoMainStatType.HeadshotDamage,
         EchoMainStatType.AhpRegenAndMax,
-        EchoMainStatType.SizeReduction,
-    };
+        EchoMainStatType.SizeReduction
+    ];
 
     public static float GetSubStatValue(EchoCost cost, int level)
     {
@@ -227,7 +227,7 @@ public static class EchoStats
         return EchoStats.Clamp(level / 5, 0, 5);
     }
 
-    static List<EchoSubOptionType> GetAllSubOptionTypes()
+    private static List<EchoSubOptionType> GetAllSubOptionTypes()
     {
         return Enum.GetValues(typeof(EchoSubOptionType)).Cast<EchoSubOptionType>()
             .Where(x => x != EchoSubOptionType.None)
@@ -282,7 +282,7 @@ public static class EchoStats
     }
 
     /// <summary>같은 Echo 내 중복 타입은 먼저 해금된(앞쪽) 옵션만 남깁니다.</summary>
-    static void DeduplicateSubOptions(List<EchoSubOptionInstance> options)
+    private static void DeduplicateSubOptions(List<EchoSubOptionInstance> options)
     {
         var seen = new HashSet<EchoSubOptionType>();
         for (int i = 0; i < options.Count;)
@@ -336,7 +336,7 @@ public static class EchoStats
         return result;
     }
 
-    static int RollGrade(System.Random rng)
+    private static int RollGrade(System.Random rng)
     {
         float total = SubOptionGradeWeights.Sum();
         float roll = (float)(rng.NextDouble() * total);
@@ -387,7 +387,7 @@ public static class EchoStats
         return snapshot;
     }
 
-    static void ApplyMainStat(EchoStatSnapshot snapshot, EchoMainStatType type, float value, EchoCost cost, int level)
+    private static void ApplyMainStat(EchoStatSnapshot snapshot, EchoMainStatType type, float value, EchoCost cost, int level)
     {
         // 이중 방어: Cost에 없는 타입은 절대 반영하지 않음
         if (!IsMainStatAvailable(cost, type))
@@ -439,7 +439,7 @@ public static class EchoStats
         }
     }
 
-    static void ApplySubStat(EchoStatSnapshot snapshot, EchoCost cost, int level, Player player)
+    private static void ApplySubStat(EchoStatSnapshot snapshot, EchoCost cost, int level, Player player)
     {
         float value = GetSubStatValue(cost, level);
 
@@ -466,7 +466,7 @@ public static class EchoStats
         }
     }
 
-    static void ApplySubOption(EchoStatSnapshot snapshot, EchoSubOptionInstance option, Player player)
+    private static void ApplySubOption(EchoStatSnapshot snapshot, EchoSubOptionInstance option, Player player)
     {
         switch (option.Type)
         {
@@ -580,7 +580,7 @@ public static class EchoStats
         EchoInfo.PlayerPassiveEffects.Remove(player);
     }
 
-    static void KillEchoAhpProcess(Player player, int killCode)
+    private static void KillEchoAhpProcess(Player player, int killCode)
     {
         if (player?.ReferenceHub?.playerStats == null)
             return;
@@ -589,7 +589,7 @@ public static class EchoStats
         ahpStat?.ServerKillProcess(killCode);
     }
 
-    static bool TryGetEchoAhpProcess(Player player, int? killCode, out AhpProcess process)
+    private static bool TryGetEchoAhpProcess(Player player, int? killCode, out AhpProcess process)
     {
         process = null;
         if (!killCode.HasValue || player?.ReferenceHub?.playerStats == null)
@@ -710,7 +710,7 @@ public static class EchoStats
             Timing.RunCoroutine(RegenRoutine(player, snapshot), $"EchoRegen_{player.UserId}");
     }
 
-    static void OnScp173Blinking(BlinkingEventArgs ev)
+    private static void OnScp173Blinking(BlinkingEventArgs ev)
     {
         if (ev?.Player == null
             || !EchoInfo.PlayerStats.TryGetValue(ev.Player, out var snapshot)
@@ -720,14 +720,14 @@ public static class EchoStats
         ev.BlinkCooldown = GetScp173BlinkCooldown(snapshot.MoveSpeed);
     }
 
-    static bool HasEchoHsBonus(Player player)
+    private static bool HasEchoHsBonus(Player player)
     {
         return player != null
                && EchoInfo.PlayerStats.TryGetValue(player, out var stats)
                && stats.HsMax > 0f;
     }
 
-    static bool TryGetProviderHsMax(Player player, out float providerMax)
+    private static bool TryGetProviderHsMax(Player player, out float providerMax)
     {
         providerMax = 0f;
         if (player?.ReferenceHub?.roleManager?.CurrentRole is not IHumeShieldedRole { HumeShieldModule: { } module })
@@ -740,7 +740,7 @@ public static class EchoStats
     /// <summary>
     /// 바닐라가 provider HsMax로 클램프한 HS 보상을 Echo MaxHumeShield 기준으로 다시 적용합니다.
     /// </summary>
-    static void RestoreHsRewardAgainstEchoMax(Player player, float savedHs, float providerMax, float reward)
+    private static void RestoreHsRewardAgainstEchoMax(Player player, float savedHs, float providerMax, float reward)
     {
         if (player == null || !player.IsAlive || !HasEchoHsBonus(player))
             return;
@@ -755,7 +755,7 @@ public static class EchoStats
     /// <summary>
     /// SCP-096 분노 전환 시 바닐라가 provider HsMax로 현재 HS를 잘라내는 것을 복구합니다.
     /// </summary>
-    static void RestoreHsAfterProviderClamp(Player player, float savedHs, float providerMax)
+    private static void RestoreHsAfterProviderClamp(Player player, float savedHs, float providerMax)
     {
         if (player == null || !player.IsAlive || !HasEchoHsBonus(player))
             return;
@@ -767,19 +767,19 @@ public static class EchoStats
         player.HumeShield = Mathf.Min(savedHs, player.MaxHumeShield);
     }
 
-    static void ScheduleHsRestore(Player player, float savedHs, float providerMax, float reward)
+    private static void ScheduleHsRestore(Player player, float savedHs, float providerMax, float reward)
     {
         Timing.CallDelayed(Timing.WaitForOneFrame, () =>
             RestoreHsRewardAgainstEchoMax(player, savedHs, providerMax, reward));
     }
 
-    static void ScheduleHsClampRestore(Player player, float savedHs, float providerMax)
+    private static void ScheduleHsClampRestore(Player player, float savedHs, float providerMax)
     {
         Timing.CallDelayed(Timing.WaitForOneFrame, () =>
             RestoreHsAfterProviderClamp(player, savedHs, providerMax));
     }
 
-    static void OnScp049FinishingRecallHsGuard(FinishingRecallEventArgs ev)
+    private static void OnScp049FinishingRecallHsGuard(FinishingRecallEventArgs ev)
     {
         // Good Sense 대상 소생 시: HsCurrent = Min(current + 200, HumeShieldModule.HsMax)
         // Echo 최대치가 모듈 기본값보다 크면 현재 HS가 역할 초기 최대치로 잘린다.
@@ -791,7 +791,7 @@ public static class EchoStats
         ScheduleHsRestore(ev.Player, ev.Player.HumeShield, providerMax, Scp049SenseResurrectHsReward);
     }
 
-    static void OnScp096EnragingHsGuard(EnragingEventArgs ev)
+    private static void OnScp096EnragingHsGuard(EnragingEventArgs ev)
     {
         if (ev?.Player == null || !ev.IsAllowed || !HasEchoHsBonus(ev.Player))
             return;
@@ -801,7 +801,7 @@ public static class EchoStats
         ScheduleHsClampRestore(ev.Player, ev.Player.HumeShield, providerMax);
     }
 
-    static void OnScp096CalmingDownHsGuard(CalmingDownEventArgs ev)
+    private static void OnScp096CalmingDownHsGuard(CalmingDownEventArgs ev)
     {
         if (ev?.Player == null || !ev.IsAllowed || !HasEchoHsBonus(ev.Player))
             return;
@@ -811,7 +811,7 @@ public static class EchoStats
         ScheduleHsClampRestore(ev.Player, ev.Player.HumeShield, providerMax);
     }
 
-    static void OnDyingScp173HsGuard(DyingEventArgs ev)
+    private static void OnDyingScp173HsGuard(DyingEventArgs ev)
     {
         // Tantrum(Stained) 처치 보상도 provider HsMax로 클램프된다.
         var attacker = ev?.Attacker;
@@ -833,7 +833,7 @@ public static class EchoStats
         PendingScp173HsFixes[attacker] = new PendingScp173HsFix(attacker.HumeShield, providerMax, reward);
     }
 
-    static void OnDiedScp173HsGuard(DiedEventArgs ev)
+    private static void OnDiedScp173HsGuard(DiedEventArgs ev)
     {
         var attacker = ev?.Attacker;
         if (attacker == null || !PendingScp173HsFixes.TryGetValue(attacker, out var pending))
@@ -846,7 +846,7 @@ public static class EchoStats
     /// <summary>
     /// SCP-173의 이동속도 1당 순간이동 쿨타임을 1.4% 줄이며, 1초보다 짧아지지 않게 합니다.
     /// </summary>
-    static float GetScp173BlinkCooldown(float moveSpeed)
+    private static float GetScp173BlinkCooldown(float moveSpeed)
     {
         float clampedMoveSpeed = Mathf.Clamp(moveSpeed, 0f, Scp173MaximumMoveSpeed);
         float cooldown = Scp173BaseBlinkCooldown
@@ -854,7 +854,7 @@ public static class EchoStats
         return Mathf.Max(Scp173MinimumBlinkCooldown, cooldown);
     }
 
-    static IEnumerator<float> StaminaDrainReductionRoutine(Player player, float reductionPercent)
+    private static IEnumerator<float> StaminaDrainReductionRoutine(Player player, float reductionPercent)
     {
         const float cycleSeconds = 1f;
         float noDrainSeconds = cycleSeconds * Mathf.Clamp(reductionPercent, 0f, 100f) / 100f;
@@ -879,7 +879,7 @@ public static class EchoStats
             player.IsUsingStamina = true;
     }
 
-    static IEnumerator<float> RegenRoutine(Player player, EchoStatSnapshot snapshot)
+    private static IEnumerator<float> RegenRoutine(Player player, EchoStatSnapshot snapshot)
     {
         while (player != null && player.IsAlive && EchoInfo.PlayerStats.ContainsKey(player))
         {
@@ -992,7 +992,7 @@ public static class EchoStats
         }
     }
 
-    static int GetBuckshotAttackFlatHitScale(HurtingEventArgs ev)
+    private static int GetBuckshotAttackFlatHitScale(HurtingEventArgs ev)
     {
         if (ev.DamageHandler?.CustomBase is not Exiled.API.Features.DamageHandlers.FirearmDamageHandler
             {

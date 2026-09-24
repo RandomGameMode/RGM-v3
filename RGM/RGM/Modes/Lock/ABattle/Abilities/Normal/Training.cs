@@ -3,16 +3,13 @@ using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Normal;
 
-[Ability("단련", """
-               공격력이 16%p 추가됩니다.
-               자신이 SCP 진영일 경우 효율이 35% 감소합니다.
-               """, 
+[Ability("단련", "공격력이 16%p 추가됩니다. 자신이 SCP 진영일 경우 효율이 40% 감소합니다.", 
     AbilityCategory.Normal, AbilityType.NORMAL_TRAINING)]
 
 public class Training : Ability
 {
     private const float DamageMultiplier = 0.16f;
-    private const float ScpRoleMultiplierReduction = 0.65f;
+    private const float ScpRoleMultiplierReduction = 0.6f;
     
     public override void OnEnabled()
     {

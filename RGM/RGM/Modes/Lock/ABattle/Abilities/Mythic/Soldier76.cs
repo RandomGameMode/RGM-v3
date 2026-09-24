@@ -11,8 +11,8 @@ namespace RGM.Modes.Abilities.Mythic;
 
 [Ability("솔져: 76",
     """
-    적군 주변 16m 이내에 발사된 총알은 모두 맞은 판정으로 처리하는 E11SR를 획득합니다.
-    단, 최종 데미지가 20%(SCP는 40%) 감소하며 30초마다 50발의 5.56x45mm 탄이 장전됩니다. (150개를 넘을 시 지급되지 않습니다.) 
+    적군 주변 35m 이내에 발사된 총알은 모두 맞은 판정으로 처리하는 E11SR를 획득합니다. SCP 진영이 사용 시 최종 데미지가 35% 감소합니다.
+    30초마다 50발의 5.56x45mm 탄이 장전되며 최대 150발까지 충전 가능합니다.
     추가로, 적의 움직임을 억제합니다.
     """, 
     AbilityCategory.Mythic, 
@@ -58,13 +58,11 @@ public class Soldier76 : Ability
             e.Player.RemoveEffect(EffectType.Scp1344, 1);
     }
     
-    
-
     private void OnShooting(ShootingEventArgs ev)
     {
         if (ev.Item == null || ev.Firearm.Serial != _serial) return;
         
-        if (!ev.Player.TryGetNearestVisiblePlayer(out var player, out _, 10f, 60f, [.. PlayerManager.List.Where(x => 
+        if (!ev.Player.TryGetNearestVisiblePlayer(out var player, out _, 35f, 30f, [.. PlayerManager.List.Where(x => 
                 x == ev.Player || 
                 x.IsDead || 
                 !HitboxIdentity.IsEnemy(ev.Player.ReferenceHub, x.ReferenceHub))]))
@@ -72,8 +70,8 @@ public class Soldier76 : Ability
             ev.IsAllowed = false;
             return;
         }
-        var multiplier = player.IsScpRole() ? 0.6f : 0.8f;
-        var check = Tools.TryGetLookPlayers(ev.Player, 16f, out var victims, out var hit);
+        var multiplier = player.IsScpRole() ? 0.65f : 1f;
+        var check = Tools.TryGetLookPlayers(ev.Player, 35f, out var victims, out var hit);
         if (!check ||
             !victims.Contains(player) ||
             (hit != null && 

@@ -28,6 +28,9 @@ namespace RGM.IEnumerators
 
                     foreach (var player in PlayerManager.List)
                     {
+                        if (player == null || !player.IsConnected)
+                            continue;
+
                         if (Physics.Raycast(player.Position, Vector3.down, out RaycastHit hit, 1f, (LayerMask)1))
                         {
                             if (hit.transform.name == "GameStartRed")
@@ -89,6 +92,9 @@ namespace RGM.IEnumerators
 
                 foreach (var player in PlayerManager.List)
                 {
+                    if (player == null || !player.IsConnected)
+                        continue;
+
                     if (Physics.Raycast(player.Position, Vector3.down, out hit, 1f, (LayerMask)1))
                     {
                         if (hit.transform.name == "ModeResetRed")

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Player;
@@ -6,7 +7,7 @@ using Exiled.Events.EventArgs.Scp049;
 using MEC;
 using PlayerRoles;
 using RGM.API.Features;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Unique.Scp049.Legend;
 
@@ -21,7 +22,7 @@ namespace RGM.Modes.Abilities.Unique.Scp049.Legend;
 
 public class Mutation : Ability
 {
-    private const int MutationChance = 15;
+    private const byte MutationChance = 15;
     private const float ProficiencyReviveDelay = 0.2f;
 
     private static readonly List<RoleTypeId> MutationRoles = Tools.EnumToList<RoleTypeId>()
@@ -53,7 +54,7 @@ public class Mutation : Ability
             !Owner.HasAbility(AbilityType.RARE_SCP049_PROFICIENCY))
             return;
 
-        if (Random.Range(1, 101) > MutationChance)
+        if (Convert.ToByte(Random.Range(1, 101)) > MutationChance)
             return;
 
         RoleTypeId mutationRole = MutationRoles.GetRandomValue();
@@ -62,9 +63,9 @@ public class Mutation : Ability
         Timing.CallDelayed(ProficiencyReviveDelay, () => SetMutationRole(ev.Player, mutationRole));
     }
 
-    private void TryMutate(Exiled.API.Features.Player target)
+    private static void TryMutate(Exiled.API.Features.Player target)
     {
-        if (Random.Range(1, 101) > MutationChance)
+        if (Convert.ToByte(Random.Range(1, 101)) > MutationChance)
             return;
 
         RoleTypeId mutationRole = MutationRoles.GetRandomValue();

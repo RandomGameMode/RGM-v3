@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using static RGM.IEnumerators.ServerIEnumerator;
 using static RGM.Variables.Variable;
 
@@ -39,7 +40,7 @@ namespace RGM.EventArgs
             /*
              * 현재 출석 체크 기능 작동 안 함. 점검 필요.
              */
-            List<string> defaultValues = Enumerable.Repeat("0", 35).ToList();
+            List<string> defaultValues = [.. Enumerable.Repeat("0", 35)];
 
             if (!UsersManager.UsersCache.ContainsKey(ev.Player.UserId))
             {
@@ -53,9 +54,9 @@ namespace RGM.EventArgs
 
                 if (uc[29] == "0") // 오늘 아직 출석 안 했다면
                 {
-                    int total = int.Parse(uc[27]);
-                    int current = int.Parse(uc[30]);
-                    int max = int.Parse(uc[28]);
+                    var total = int.Parse(uc[27]);
+                    var current = int.Parse(uc[30]);
+                    var max = int.Parse(uc[28]);
 
                     total++;
                     current++;
@@ -69,10 +70,7 @@ namespace RGM.EventArgs
                     uc[30] = current.ToString(); // 현재 연속
                     uc[28] = max.ToString(); // 최대 연속
 
-                    if (isNewRecord)
-                        PlayersAudio[ev.Player].TryPlay("출석 체크 굿");
-                    else
-                        PlayersAudio[ev.Player].TryPlay("출석 체크");
+                    PlayersAudio[ev.Player].TryPlay(isNewRecord ? "출석 체크 굿" : "출석 체크");
 
                     UsersManager.SaveUsers();
 
@@ -148,7 +146,7 @@ namespace RGM.EventArgs
 
             // ---------------------------------------------------------------------------------------
 
-            if (UnityEngine.Random.Range(1, 101) == 1)
+            if (Random.Range(1, 101) == 1)
                 CapybaraPet.Create(ev.Player);
 
             // ---------------------------------------------------------------------------------------
@@ -174,11 +172,7 @@ namespace RGM.EventArgs
                 ev.Player.AddBroadcast(10, Message);
 
                 ev.Player.SendConsoleMessage($"\n{Message.Replace("\n", "\n")}", "white");
-                if (Detail == "")
-                    ev.Player.SendConsoleMessage($"\n해당 모드에 대한 자세한 설명이 없습니다.", "white");
-
-                else
-                    ev.Player.SendConsoleMessage($"\n{Detail}", "white");
+                ev.Player.SendConsoleMessage(Detail == "" ? $"\n해당 모드에 대한 자세한 설명이 없습니다." : $"\n{Detail}", "white");
             }
             else
             {
@@ -242,7 +236,7 @@ namespace RGM.EventArgs
                             }
                             else if (hit.transform.name == "Mode")
                             {
-                                List<string> Modes = new List<string>();
+                                List<string> Modes = [];
 
                                 foreach (var mode in ModeList)
                                 {
@@ -252,14 +246,18 @@ namespace RGM.EventArgs
                                     string Color = modeData.Color;
                                     ModeCategory flag = modeData.Category;
 
-                                    if (flag == ModeCategory.Private)
-                                        Modes.Add($"<s><color=#{Color}>{Name}</color></s>");
-
-                                    else if (flag == ModeCategory.OnlySub)
-                                        Modes.Add($"<mark=#FFFF000D><color=#{Color}>{Name}</color></s></mark>");
-
-                                    else
-                                        Modes.Add($"<color=#{Color}>{Name}</color>");
+                                    switch (flag)
+                                    {
+                                        case ModeCategory.Private:
+                                            Modes.Add($"<s><color=#{Color}>{Name}</color></s>");
+                                            break;
+                                        case ModeCategory.OnlySub:
+                                            Modes.Add($"<mark=#FFFF000D><color=#{Color}>{Name}</color></s></mark>");
+                                            break;
+                                        default:
+                                            Modes.Add($"<color=#{Color}>{Name}</color>");
+                                            break;
+                                    }
                                 }
 
                                 ev.Player.AddHint("로비",
@@ -267,7 +265,7 @@ namespace RGM.EventArgs
                             }
                             else if (hit.transform.name == "ExpLeaderBoard")
                             {
-                                List<string> queue = new List<string>();
+                                List<string> queue = [];
 
                                 string c(int num)
                                 {
@@ -287,11 +285,9 @@ namespace RGM.EventArgs
                                     }
                                 }
 
-                                foreach (var user in UsersManager.UsersCache.OrderByDescending(x =>
-                                         {
-                                             int exp;
-                                             return int.TryParse(x.Value[0], out exp) ? exp : 0;
-                                         }).Take(10))
+                                foreach (var user in UsersManager.UsersCache
+                                             .OrderByDescending(x => int.TryParse(x.Value[0], out var exp) ? exp : 0)
+                                             .Take(10))
                                 {
                                     try
                                     {
@@ -391,9 +387,8 @@ namespace RGM.EventArgs
                                 {
                                     if (!ModeList.ContainsKey(SelectedMode) || ModeList[SelectedMode].Suggester == "")
                                         return "";
-                                    else
-                                        return
-                                            $" <size=20><color=white>Idea by <i>{ModeList[SelectedMode].Suggester}</i></color></size>";
+                                    return
+                                        $" <size=20><color=white>Idea by <i>{ModeList[SelectedMode].Suggester}</i></color></size>";
                                 }
 
                                 string St(int num)
@@ -498,53 +493,48 @@ namespace RGM.EventArgs
             }
             else
             {
-                if (PlayersInfo.ContainsKey(ev.Player.UserId))
+                if (!PlayersInfo.ContainsKey(ev.Player.UserId)) yield break;
+                string nickname = ev.Player.Nickname;
+                string role = ev.Player.Role.Name;
+                string userId = ev.Player.UserId;
+
+                yield return Timing.WaitForSeconds(1f);
+
+                Webhook.Send($"**⚖️ 재접속 대기**ㅣ`{nickname}`({role}, {userId})");
+
+                for (int i = 1; i < 181; i++)
                 {
-                    string nickname = ev.Player.Nickname;
-                    string role = ev.Player.Role.Name;
-                    string userId = ev.Player.UserId;
+                    Log.Info($"{nickname}({userId}) 재접속 대기 중.. ({181 - i})");
+
+                    foreach (var player in PlayerManager.List.Where(x => !x.IsNPC))
+                    {
+                        if (userId != player.UserId) continue;
+                        player.Role.Set(PlayersInfo[userId].RoleType);
+                        player.MaxHealth = PlayersInfo[userId].MaxHealth;
+                        player.Health = PlayersInfo[userId].Health;
+
+                        foreach (var effect in PlayersInfo[userId].ActiveEffects)
+                            player.EnableEffect(effect, effect.Intensity, effect.Duration);
+
+                        foreach (var item in PlayersInfo[userId].Items)
+                            player.AddItem(item.Type);
+
+                        player.CurrentItem = player.Items.ToList()
+                            .Find(x => x.Type == PlayersInfo[userId].CurrentItem.Type);
+
+                        player.Position = new Vector3(PlayersInfo[userId].Position.x,
+                            PlayersInfo[userId].Position.y, PlayersInfo[userId].Position.z);
+
+                        PlayersInfo.Remove(userId);
+
+                        PlayerManager.List.Where(x => x.IsDead).ToList().ForEach(x =>
+                            x.AddBroadcast(10,
+                                $"<size=20>❤️ SCP 재접속 -> <b><i>{player.DisplayNickname}</i></b>(<color={player.Role.Color.ToHex()}>{Trans.Role[player.Role.Type]}</color>)</size>"));
+                        Webhook.Send($"**✅ 재접속 완료**ㅣ`{nickname}`({role}, {userId})");
+                        yield break;
+                    }
 
                     yield return Timing.WaitForSeconds(1f);
-
-                    Webhook.Send($"**⚖️ 재접속 대기**ㅣ`{nickname}`({role}, {userId})");
-
-                    for (int i = 1; i < 181; i++)
-                    {
-                        Log.Info($"{nickname}({userId}) 재접속 대기 중.. ({181 - i})");
-
-                        foreach (var player in PlayerManager.List.Where(x => !x.IsNPC))
-                        {
-                            if (userId == player.UserId)
-                            {
-                                player.Role.Set(PlayersInfo[userId].RoleType);
-                                player.MaxHealth = PlayersInfo[userId].MaxHealth;
-                                player.Health = PlayersInfo[userId].Health;
-
-                                foreach (var effect in PlayersInfo[userId].ActiveEffects)
-                                    player.EnableEffect(effect, effect.Intensity, effect.Duration);
-
-                                foreach (var item in PlayersInfo[userId].Items)
-                                    player.AddItem(item.Type);
-
-                                player.CurrentItem = player.Items.ToList()
-                                    .Find(x => x.Type == PlayersInfo[userId].CurrentItem.Type);
-
-                                player.Position = new Vector3(PlayersInfo[userId].Position.x,
-                                    PlayersInfo[userId].Position.y, PlayersInfo[userId].Position.z);
-
-                                if (PlayersInfo.ContainsKey(userId))
-                                    PlayersInfo.Remove(userId);
-
-                                PlayerManager.List.Where(x => x.IsDead).ToList().ForEach(x =>
-                                    x.AddBroadcast(10,
-                                        $"<size=20>❤️ SCP 재접속 -> <b><i>{player.DisplayNickname}</i></b>(<color={player.Role.Color.ToHex()}>{Trans.Role[player.Role.Type]}</color>)</size>"));
-                                Webhook.Send($"**✅ 재접속 완료**ㅣ`{nickname}`({role}, {userId})");
-                                yield break;
-                            }
-                        }
-
-                        yield return Timing.WaitForSeconds(1f);
-                    }
                 }
             }
         }
@@ -557,7 +547,17 @@ namespace RGM.EventArgs
 
         public static void OnSpawnedRagdoll(SpawnedRagdollEventArgs ev)
         {
-            Timing.CallDelayed(5 * 60, () => { ev.Ragdoll?.Destroy(); });
+            var ragdoll = ev.Ragdoll;
+            if (ragdoll == null)
+                return;
+
+            Timing.CallDelayed(5 * 60, () =>
+            {
+                if (ragdoll.Base == null)
+                    return;
+
+                ragdoll.Destroy();
+            });
         }
 
         public static void OnChangingRole(ChangingRoleEventArgs ev)
@@ -582,26 +582,21 @@ namespace RGM.EventArgs
                 if (Round.IsStarted && !ev.Player.IsNonePlayer() && Server.PlayerCount >= 20)
                 {
                     DateTime kst = DateTime.UtcNow.AddHours(9); // 어린이날 전용
-                    if (kst.Month == 5 && kst.Day == 5)
+                    if (kst is { Month: 5, Day: 5 })
                     {
-                        if (UnityEngine.Random.Range(1, 201) == 1)
+                        if (Random.Range(1, 201) == 1)
                         {
                             Foxy.Create(ev.Player);
 
-                            string name;
+                            var name = Random.Range(1, 3) == 1 ? "고급 모드 제안서" : "고급 모드 리롤권";
 
-                            if (UnityEngine.Random.Range(1, 3) == 1)
-                                name = "고급 모드 제안서";
-                            else
-                                name = "고급 모드 리롤권";
-
-                            ev.Player.UserId.AddProduct(name, out string response);
+                            ev.Player.UserId.AddProduct(name, out _);
 
                             Map.Broadcast(20,
                                 $"<size=30><b>🎁 축하드립니다!</b> <i>{ev.Player.DisplayNickname}</i>님께서 {name}(을)를 획득했습니다!</size>");
                             GlobalPlayer.TryPlay("6AM", 1.5f);
                         }
-                        else if (UnityEngine.Random.Range(1, 51) == 1)
+                        else if (Random.Range(1, 51) == 1)
                             Steve.Create(ev.Player);
                     }
                 }
@@ -674,14 +669,14 @@ namespace RGM.EventArgs
                         }
                     }
 
-                    if (UnityEngine.Random.Range(1, 1001) == 1) // 시작 049-2
+                    if (Random.Range(1, 1001) == 1) // 시작 049-2
                     {
                         ev.Player.Role.Set(RoleTypeId.Scp0492);
                         ev.Player.MaxHealth = 1000;
                         ev.Player.Health = ev.Player.MaxHealth;
                     }
 
-                    if (UnityEngine.Random.Range(1, 101) == 1 &&
+                    if (Random.Range(1, 101) == 1 &&
                         !(HolidayUtils.IsHolidayActive(HolidayType.Halloween) ||
                           HolidayUtils.IsHolidayActive(HolidayType.Christmas))) // SCP-3114 추가
                     {
@@ -706,7 +701,7 @@ namespace RGM.EventArgs
                   CurrentMode != ModeType.RussianRoulette &&
                   CurrentMode != ModeType.WitGame)))
             {
-                ev.Player.ApplyGodMode(9);
+                ev.Player.EnableEffect(EffectType.SpawnProtected, 1, 10);
             }
         }
 
@@ -757,7 +752,7 @@ namespace RGM.EventArgs
                     ? ev.Player.MaxHealth + ev.Player.MaxArtificialHealth + ev.Player.MaxHumeShield
                     : ev.DamageHandler.Damage;
 
-                if (ev.Attacker != ev.Player && damage < 65536)
+                if (ev.Attacker != ev.Player && damage <= ushort.MaxValue)
                     PlayersReport[ev.Attacker.UserId].Damage += (int)damage;
 
                 return;
@@ -792,7 +787,7 @@ namespace RGM.EventArgs
                     (ev.DamageHandler.Type.IsWeapon() ||
                      ev.DamageHandler.Type == DamageType.Scp127 ||
                      ev.DamageHandler.Type == DamageType.Scp1509))
-                    ev.DamageHandler.Damage *= 0.7f;
+                    ev.DamageHandler.Damage *= 0.6f;
 
                 float damage = ev.IsInstantKill
                     ? ev.Player.MaxHealth + ev.Player.MaxArtificialHealth + ev.Player.MaxHumeShield
@@ -800,7 +795,7 @@ namespace RGM.EventArgs
 
                 if ((HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub) ||
                      ev.Attacker.LeadingTeam != ev.Player.LeadingTeam || Server.FriendlyFire) &&
-                    ev.Attacker != ev.Player && damage < 65536)
+                    ev.Attacker != ev.Player && damage <= ushort.MaxValue)
                     PlayersReport[ev.Attacker.UserId].Damage += (int)damage;
             }
         }
@@ -925,16 +920,33 @@ namespace RGM.EventArgs
 
         public static void OnDroppedItem(DroppedItemEventArgs ev)
         {
-            Timing.CallDelayed(5 * 60, () => { ev.Pickup?.Destroy(); });
+            var pickup = ev.Pickup;
+            if (pickup == null)
+                return;
+
+            Timing.CallDelayed(5 * 60, () =>
+            {
+                if (pickup.Base == null)
+                    return;
+
+                pickup.Destroy();
+            });
         }
 
         public static void OnDroppedAmmo(DroppedAmmoEventArgs ev)
         {
+            var ammoPickups = ev.AmmoPickups?.ToArray();
+            if (ammoPickups == null)
+                return;
+
             Timing.CallDelayed(5 * 60, () =>
             {
-                foreach (var ammo in ev.AmmoPickups)
+                foreach (var ammo in ammoPickups)
                 {
-                    ammo?.Destroy();
+                    if (ammo?.Base == null)
+                        continue;
+
+                    ammo.Destroy();
                 }
             });
         }
@@ -957,7 +969,7 @@ namespace RGM.EventArgs
                 : 1f;
 
             ev.ClaimedTarget.Hurt(new ScpDamageHandler(ev.Player.ReferenceHub,
-                ev.Firearm.Damage * 0.7f * hitboxMultiplier, DeathTranslations.Scp173));
+                ev.Firearm.Damage * 0.6f * hitboxMultiplier, DeathTranslations.Scp173));
 
             ev.Player.ShowHitMarker();
         }
@@ -988,12 +1000,10 @@ namespace RGM.EventArgs
 
         public static void OnChangingGroup(ChangingGroupEventArgs ev)
         {
-            if (ev.Player.Group != null)
-            {
-                ulong permission = ev.Player.Group.Permissions;
+            if (ev.Player.Group == null) return;
+            var permission = ev.Player.Group.Permissions;
 
-                Timing.CallDelayed(1, () => { ev.Player.Group.Permissions = permission; });
-            }
+            Timing.CallDelayed(1, () => { ev.Player.Group.Permissions = permission; });
         }
 
         public static void OnVoiceChatting(VoiceChattingEventArgs ev)

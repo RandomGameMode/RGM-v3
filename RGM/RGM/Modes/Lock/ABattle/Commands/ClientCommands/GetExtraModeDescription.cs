@@ -9,7 +9,7 @@ public class GetExtraMode : ICommand
 {
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-        ABattle.Instance.ExtraModeNotion(Player.Get(sender), false);
+        ABattle.ExtraModeNotion(Player.Get(sender), false);
 
         response = "워크스테이션 업그레이드 모드의 추가 모드 조회에 성공하였습니다.";
         return true;

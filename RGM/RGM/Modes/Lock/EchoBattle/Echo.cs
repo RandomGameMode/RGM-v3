@@ -49,7 +49,7 @@ public abstract class EchoActiveAbility : Echo
         Timing.KillCoroutines($"EchoActive_{Owner?.UserId}_{Data?.EchoType}");
     }
 
-    void OnTogglingNoClip(TogglingNoClipEventArgs ev)
+    private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
     {
         if (ev.Player != Owner || !IsMainSlot || IsOnCooldown)
             return;
@@ -67,7 +67,7 @@ public abstract class EchoActiveAbility : Echo
 
     protected abstract void OnActiveUsed();
 
-    IEnumerator<float> CooldownRoutine()
+    private IEnumerator<float> CooldownRoutine()
     {
         IsOnCooldown = true;
         RemainingDuration = Duration;

@@ -108,7 +108,7 @@ namespace RGM.Modes
             yield break;
         }
 
-        private IEnumerator<float> Timer()
+        private static IEnumerator<float> Timer()
         {
             for (int i = 1; i < 180; i++)
             {
@@ -127,22 +127,21 @@ namespace RGM.Modes
             }
         }
 
-        private void OnHurting(Exiled.Events.EventArgs.Player.HurtingEventArgs ev)
+        private static void OnHurting(Exiled.Events.EventArgs.Player.HurtingEventArgs ev)
         {
-            if (ev.Attacker.IsScpRole() && ev.DamageHandler.Type != DamageType.Strangled) {
-                ev.DamageHandler.Damage += 79;
-                ev.Attacker.HumeShield += 12;
-            }
+            if (!ev.Attacker.IsScpRole() || ev.DamageHandler.Type == DamageType.Strangled) return;
+            ev.DamageHandler.Damage += 79;
+            ev.Attacker.HumeShield += 12;
         }
 
-        private void OnRoundEnded(RoundEndedEventArgs ev)
+        private static void OnRoundEnded(RoundEndedEventArgs ev)
         {
             List<Player> players = [.. PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC)];
 
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
+                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), PlayerManager.List.Count / 2));
                     break;
                 case > 1:
                     Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));

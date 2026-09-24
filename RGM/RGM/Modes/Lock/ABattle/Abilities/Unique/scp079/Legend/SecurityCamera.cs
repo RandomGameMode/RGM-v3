@@ -8,7 +8,8 @@ using Exiled.API.Features.Roles;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Legend;
 
-[Ability("감시 카메라", "자신이 보는 대상에게 피해를 입힙니다.(0.2초당 대상 최대 HP의 2% 데미지)", AbilityCategory.Legend, AbilityType.LEGEND_SCP079_SECURITYCAMERA, RoleAbility.Scp079)]
+[Ability("감시 카메라", "자신이 보는 대상에게 피해를 입힙니다.(0.2초당 대상 최대 HP의 2% 데미지)",
+    AbilityCategory.Legend, AbilityType.LEGEND_SCP079_SECURITYCAMERA, RoleAbility.Scp079)]
 public class SecurityCamera : Ability
 {
     CoroutineHandle SecurityCameraHandle;

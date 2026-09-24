@@ -29,7 +29,7 @@ public class Martyrdom : Ability
         {
             if (!ev.Player.IsDead) return;
             var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, ev.Player);
-            g.FuseTime = 3f;
+            g.FuseTime = 2f;
             g.SpawnActive(pos, ev.Player);
         });
     }

@@ -63,8 +63,6 @@ SCP는 매 지원마다 새로운 무기를 받습니다.
 
             foreach (var player in PlayerManager.List.Where(x => x.IsAlive && x.Role.Type != RoleTypeId.Scp079))
                 Spawned(player);
-
-            yield break;
         }
 
         private void OnSpawned(SpawnedEventArgs ev)
@@ -76,22 +74,17 @@ SCP는 매 지원마다 새로운 무기를 받습니다.
         {
             Timing.CallDelayed(Timing.WaitForOneFrame, () =>
             {
-                if (player.IsAlive && player.Role.Type != RoleTypeId.Scp079)
-                {
-                    Item weapon = player.AddItem(Tools.EnumToList<ItemType>().Where(x => x.ToString().Contains("Gun")).ToList().GetRandomValue());
+                if (!player.IsAlive || player.Role.Type == RoleTypeId.Scp079) return;
+                Item weapon = player.AddItem(Tools.EnumToList<ItemType>()
+                    .Where(x => x.ToString().Contains("Gun") && x != ItemType.GunFSP9).ToList().GetRandomValue());
 
-                    if (weapon.Type == ItemType.GrenadeHE)
-                        player.AddItem(ItemType.GrenadeHE, 2);
+                if (weapon.Type == ItemType.GrenadeHE)
+                    player.AddItem(ItemType.GrenadeHE, 2);
 
-                    if (weapon is Firearm firearm)
-                    {
-                        if (firearm.AmmoType != AmmoType.None)
-                        {
-                            for (int i = 0; i < 3; i++)
-                                player.AddItem(firearm.AmmoType.GetItemType());
-                        }
-                    }
-                }
+                if (weapon is not Firearm firearm) return;
+                if (firearm.AmmoType == AmmoType.None) return;
+                for (int i = 0; i < 3; i++)
+                    player.AddItem(firearm.AmmoType.GetItemType());
             });
         }
 

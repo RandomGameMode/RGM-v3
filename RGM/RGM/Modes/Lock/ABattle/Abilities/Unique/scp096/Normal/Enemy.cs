@@ -1,28 +1,28 @@
-﻿using MEC;
+﻿using RGM.API.Features;
+using Exiled.Events.EventArgs.Scp096;
 
-namespace RGM.Modes.Abilities.Unique.Scp096.Normal;
+namespace RGM.Modes.Abilities.Unique.Scp096.Rare;
 
-[Ability("원수", "분노 충전 시간이 50% 줄어듭니다.", AbilityCategory.Normal, AbilityType.NORMAL_SCP096_ENEMY, RoleAbility.Scp096)]
+[Ability("원수", "분노 상태 돌입 시 무적 효과가 적용됩니다.",
+    AbilityCategory.Normal, AbilityType.NORMAL_SCP096_ENEMY, RoleAbility.Scp096)]
+
 public class Enemy : Ability
 {
     public override void OnEnabled()
     {
-        Exiled.Events.Handlers.Scp096.Charging += OnCharging;
+        Exiled.Events.Handlers.Scp096.Enraging += OnEnraging;
     }
 
     public override void OnDisabled()
     {
-        Exiled.Events.Handlers.Scp096.Charging -= OnCharging;
+        Exiled.Events.Handlers.Scp096.Enraging -= OnEnraging;
     }
 
-    private void OnCharging(Exiled.Events.EventArgs.Scp096.ChargingEventArgs ev)
+    private void OnEnraging(EnragingEventArgs ev)
     {
         if (ev.Player != Owner)
             return;
-
-        Timing.CallDelayed(Timing.WaitForOneFrame, () =>
-        {
-            ev.Scp096.RemainingChargeDuration /= 2;
-        });
+        
+        ev.Player.ApplyGodMode(5);
     }
 }

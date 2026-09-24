@@ -4,6 +4,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using PlayerStatsSystem;
 using RGM.Modes.Abilities.Unique.Scp106.Mythic;
+using RGM.Modes;
 
 namespace RGM.Modes.Abilities.Synergy;
 
@@ -35,6 +36,11 @@ public class WeakPointAttack : Ability
         if (ev.Attacker == null ||
             ev.Attacker != Owner ||
             !HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub))
+            return;
+
+        // ApplyFixedDamage already compensates these modifiers before the
+        // native damage handler runs.
+        if (ApplyFixedDamage.IsApplying)
             return;
 
         HitboxType hitbox = ev.DamageHandler.Base is StandardDamageHandler standard

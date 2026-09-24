@@ -10,9 +10,9 @@ namespace RGM.Modes;
 /// </summary>
 public static class ExclusiveWeaponGrowth
 {
-    static readonly HashSet<Player> PendingApply = new();
+    private static readonly HashSet<Player> PendingApply = [];
 
-    public static int GetRequiredExp(int currentLevel)
+    private static int GetRequiredExp(int currentLevel)
     {
         currentLevel = ExclusiveWeaponStats.Clamp(currentLevel, 1, ExclusiveWeaponInfo.MaxLevel);
         if (currentLevel >= ExclusiveWeaponInfo.MaxLevel)
@@ -25,7 +25,7 @@ public static class ExclusiveWeaponGrowth
         return exp;
     }
 
-    public static int NextExp(int previousRequired)
+    private static int NextExp(int previousRequired)
     {
         return (int)Math.Ceiling(ExclusiveWeaponInfo.LevelExpMultiplier * previousRequired + ExclusiveWeaponInfo.LevelExpAdd);
     }
@@ -64,7 +64,7 @@ public static class ExclusiveWeaponGrowth
         ScheduleApply(player);
     }
 
-    public static bool AddExp(ExclusiveWeaponProgress progress, ExclusiveWeaponType type, float amount, out int newLevel)
+    private static bool AddExp(ExclusiveWeaponProgress progress, ExclusiveWeaponType type, float amount, out int newLevel)
     {
         newLevel = progress.GetLevel(type);
         if (amount <= 0 || newLevel >= ExclusiveWeaponInfo.MaxLevel)
@@ -106,7 +106,7 @@ public static class ExclusiveWeaponGrowth
         return $"{current:0.##}/{required}";
     }
 
-    static void ScheduleApply(Player player)
+    private static void ScheduleApply(Player player)
     {
         if (player == null || !ExclusiveWeaponInfo.PlayerWeapons.ContainsKey(player))
             return;

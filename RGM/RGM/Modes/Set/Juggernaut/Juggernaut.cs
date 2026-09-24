@@ -236,7 +236,7 @@ namespace RGM.Modes
             _juggernaut = PlayerManager.List.ToList().GetRandomValue();
             _juggernaut.Role.Set(RoleTypeId.Tutorial);
             _juggernaut.Scale = new Vector3(1.12f, 1.12f, 1.12f);
-            _juggernaut.MaxHealth = 660 * PlayerManager.List.Count;
+            _juggernaut.MaxHealth = 700 * PlayerManager.List.Count;
             _juggernaut.Health = _juggernaut.MaxHealth;
             _juggernaut.IsBypassModeEnabled = true;
             _juggernaut.EnableEffect(EffectType.SinkHole);
@@ -414,26 +414,24 @@ namespace RGM.Modes
 
         private void Spawned(Player player)
         {
-            if (player.IsAlive && player.IsScpRole())
-            {
-                List<RoleTypeId> scpsList =
-                [
-                    RoleTypeId.Scp3114,
-                    RoleTypeId.Scp079,
-                    RoleTypeId.Scp049,
-                    RoleTypeId.Flamingo,
-                    RoleTypeId.AlphaFlamingo,
-                    RoleTypeId.ChaosFlamingo,
-                    RoleTypeId.NtfFlamingo,
-                    RoleTypeId.ZombieFlamingo
-                ];
+            if (!player.IsAlive || !player.IsScpRole()) return;
+            List<RoleTypeId> scpsList =
+            [
+                RoleTypeId.Scp3114,
+                RoleTypeId.Scp079,
+                RoleTypeId.Scp049,
+                RoleTypeId.Flamingo,
+                RoleTypeId.AlphaFlamingo,
+                RoleTypeId.ChaosFlamingo,
+                RoleTypeId.NtfFlamingo,
+                RoleTypeId.ZombieFlamingo
+            ];
 
-                if (scpsList.Contains(player.Role))
-                {
-                    player.Role.Set(Tools.EnumToList<RoleTypeId>()
-                        .Where(x => !scpsList.Contains(x) && x.IsScpRole())
-                        .ToList().GetRandomValue());
-                }
+            if (scpsList.Contains(player.Role))
+            {
+                player.Role.Set(Tools.EnumToList<RoleTypeId>()
+                    .Where(x => !scpsList.Contains(x) && x.IsScpRole())
+                    .ToList().GetRandomValue());
             }
         }
 
@@ -457,81 +455,75 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker != null)
+            if (ev.Attacker == null) yield break;
+            var isPlayerJuggernautTeam = IsJuggernautTeam(ev.Player);
+            var isAttackerJuggernautTeam = IsJuggernautTeam(ev.Attacker);
+
+            if (isPlayerJuggernautTeam == isAttackerJuggernautTeam)
             {
-                var isPlayerJuggernautTeam = IsJuggernautTeam(ev.Player);
-                var isAttackerJuggernautTeam = IsJuggernautTeam(ev.Attacker);
+                ev.IsAllowed = false;
+                yield break;
+            }
 
-                if (isPlayerJuggernautTeam == isAttackerJuggernautTeam)
-                {
-                    ev.IsAllowed = false;
-                    yield break;
-                }
-
-                if (isPlayerJuggernautTeam || isAttackerJuggernautTeam)
-                {
-                    if (ev.Attacker == _juggernaut && ev.Player != _juggernaut)
+            if (!isPlayerJuggernautTeam && !isAttackerJuggernautTeam) yield break;
+            if (ev.Attacker == _juggernaut && ev.Player != _juggernaut)
+            {
+                if (ev.DamageHandler.CustomBase is FirearmDamageHandler
                     {
-                        if (ev.DamageHandler.CustomBase is FirearmDamageHandler
-                            {
-                                Hitbox: HitboxType.Headshot
-                            } damageHandler)
-                            damageHandler.Damage /= 2;
+                        Hitbox: HitboxType.Headshot
+                    } damageHandler)
+                    damageHandler.Damage /= 2;
 
-                        ev.DamageHandler.Damage *= 3.1f;
-                    }
-                    else if (ev.Player == _juggernaut)
+                ev.DamageHandler.Damage *= 3.1f;
+            }
+            else if (ev.Player == _juggernaut)
+            {
+                if (!_playerDamages.ContainsKey(ev.Attacker))
+                    _playerDamages.Add(ev.Attacker, 0);
+
+                _playerDamages[ev.Attacker] += ev.DamageHandler.Damage;
+                _stack += ev.DamageHandler.Damage;
+
+                if (_stack > 200)
+                {
+                    Respawn.GrantInfluence(Faction.FoundationStaff, 20);
+                    Respawn.GrantInfluence(Faction.FoundationEnemy, 20);
+
+                    if (_stack > 2400)
                     {
-                        if (!_playerDamages.ContainsKey(ev.Attacker))
-                            _playerDamages.Add(ev.Attacker, 0);
-
-                        _playerDamages[ev.Attacker] += ev.DamageHandler.Damage;
-                        _stack += ev.DamageHandler.Damage;
-
-                        if (_stack > 200)
-                        {
-                            Respawn.GrantInfluence(Faction.FoundationStaff, 20);
-                            Respawn.GrantInfluence(Faction.FoundationEnemy, 20);
-
-                            if (_stack > 2400)
-                            {
-                                CallRegularSupport();
-                                _stack = 0;
-                            }
-                        }
-
-                        foreach (var wave in WaveManager.Waves)
-                        {
-                            WaveTimer.TryGetWaveTimers(wave.TargetFaction, out List<WaveTimer> waves);
-
-                            foreach (var w in waves)
-                                w.SetTime((int)w.TimeLeft.TotalSeconds - 5);
-                        }
-
-                        List<RoleTypeId> listscp =
-                        [
-                            RoleTypeId.Scp173,
-                            RoleTypeId.Scp106,
-                            RoleTypeId.Scp096,
-                            RoleTypeId.Scp939,
-                            RoleTypeId.Scp0492
-                        ];
-
-                        if (ev.IsInstantKill || (listscp.Contains(ev.Attacker.Role.Type) &&
-                                                 !_scpAttackCooldown.Contains(ev.Attacker)))
-                        {
-                            ev.IsAllowed = false;
-                            ev.Player.Hurt(200f, DamageType.Scp);
-                            ev.Attacker.ShowHitMarker(1.5f);
-
-                            _scpAttackCooldown.Add(ev.Attacker);
-
-                            yield return Timing.WaitForSeconds(1.1f);
-
-                            _scpAttackCooldown.Remove(ev.Attacker);
-                        }
+                        CallRegularSupport();
+                        _stack = 0;
                     }
                 }
+
+                foreach (var wave in WaveManager.Waves)
+                {
+                    WaveTimer.TryGetWaveTimers(wave.TargetFaction, out List<WaveTimer> waves);
+
+                    foreach (var w in waves)
+                        w.SetTime((int)w.TimeLeft.TotalSeconds - 5);
+                }
+
+                List<RoleTypeId> listscp =
+                [
+                    RoleTypeId.Scp173,
+                    RoleTypeId.Scp106,
+                    RoleTypeId.Scp096,
+                    RoleTypeId.Scp939,
+                    RoleTypeId.Scp0492
+                ];
+
+                if (!ev.IsInstantKill && (!listscp.Contains(ev.Attacker.Role.Type) ||
+                                          _scpAttackCooldown.Contains(ev.Attacker))) yield break;
+                ev.IsAllowed = false;
+                ev.Player.Hurt(200f, DamageType.Scp);
+                ev.Attacker.ShowHitMarker(1.5f);
+
+                _scpAttackCooldown.Add(ev.Attacker);
+
+                yield return Timing.WaitForSeconds(1.1f);
+
+                _scpAttackCooldown.Remove(ev.Attacker);
             }
         }
 

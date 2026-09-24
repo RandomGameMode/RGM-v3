@@ -286,7 +286,7 @@ namespace RGM.API.Features
                 loadedDb = parsed;
                 return true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Log.Error($"[UsersManager] Failed to parse Users.db: {ex}");
                 return false;

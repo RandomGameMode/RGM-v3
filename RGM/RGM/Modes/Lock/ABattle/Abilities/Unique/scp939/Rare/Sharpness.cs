@@ -7,8 +7,8 @@ using PlayerRoles.PlayableScps.Scp939;
 
 namespace RGM.Modes.Abilities.Unique.Scp939.Rare;
 
-[Ability("연마", "SCP-939의 공격에 인원 비례 데미지 감소 패널티가 제거됩니다.",
-    AbilityCategory.Rare, AbilityType.RARE_SCP939_SHARPNESS, RoleAbility.Scp939)]
+/*[Ability("연마", "SCP-939의 공격에 인원 비례 데미지 감소 패널티가 제거됩니다.",
+    AbilityCategory.Rare, AbilityType.RARE_SCP939_SHARPNESS, RoleAbility.Scp939)]*/
 
 public class Sharpness : Ability
 {

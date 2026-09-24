@@ -22,26 +22,26 @@ namespace RGM.Modes;
 /// </summary>
 public static class EchoQuest
 {
-    public const int SurviveSeconds = 30;
-    public const int SurviveReward = 40;
-    public const int ScpItemReward = 600;
-    public const int KillArmedEnemyReward = 100;
-    public const int KillEscapeEnemyReward = 40;
-    public const int ScpHitReward = 60;
-    public const int ContainScpReward = 4000;
-    public const int KillScp0492Reward = 400;
-    public const int HumanEscapeReward = 4000;
+    private const int SurviveSeconds = 30;
+    private const int SurviveReward = 40;
+    private const int ScpItemReward = 600;
+    private const int KillArmedEnemyReward = 100;
+    private const int KillEscapeEnemyReward = 40;
+    private const int ScpHitReward = 60;
+    private const int ContainScpReward = 4000;
+    private const int KillScp0492Reward = 400;
+    private const int HumanEscapeReward = 4000;
 
-    enum QuestSide
+    private enum QuestSide
     {
         Common,
         Human,
         Scp
     }
 
-    static readonly Dictionary<Player, QuestProgress> Progress = new();
-    static readonly Dictionary<Player, CoroutineHandle> SurviveHandles = new();
-    static readonly HashSet<ushort> ClaimedScpItemSerials = new();
+    private static readonly Dictionary<Player, QuestProgress> Progress = new();
+    private static readonly Dictionary<Player, CoroutineHandle> SurviveHandles = new();
+    private static readonly HashSet<ushort> ClaimedScpItemSerials = [];
 
     public class QuestProgress
     {
@@ -127,7 +127,7 @@ public static class EchoQuest
         return CanProgressQuests(player, QuestSide.Common);
     }
 
-    static bool CanProgressQuests(Player player, QuestSide questSide)
+    private static bool CanProgressQuests(Player player, QuestSide questSide)
     {
         if (player == null)
             return false;
@@ -146,7 +146,7 @@ public static class EchoQuest
         return ExclusiveWeaponGrowth.CanGrow(player);
     }
 
-    static bool CanProgressQuestSide(Player player, QuestSide questSide)
+    private static bool CanProgressQuestSide(Player player, QuestSide questSide)
     {
         return questSide switch
         {
@@ -163,8 +163,7 @@ public static class EchoQuest
 
         Timing.KillCoroutines($"EchoQuestSurvive_{player.UserId}");
 
-        if (SurviveHandles.ContainsKey(player))
-            SurviveHandles.Remove(player);
+        SurviveHandles.Remove(player);
 
         if (Progress.TryGetValue(player, out var progress))
             progress.SurviveTimer = 0f;
@@ -202,7 +201,7 @@ public static class EchoQuest
         }
     }
 
-    static void OnHurting(HurtingEventArgs ev)
+    private static void OnHurting(HurtingEventArgs ev)
     {
         float damage = ev.DamageHandler?.Damage ?? 0f;
         bool isDamagingAttack = damage > 0f || ev.IsInstantKill;
@@ -231,7 +230,7 @@ public static class EchoQuest
             GrantDamageExp(ev.Player, damage);
     }
 
-    static void OnPickingUpItem(PickingUpItemEventArgs ev)
+    private static void OnPickingUpItem(PickingUpItemEventArgs ev)
     {
         if (ev.Player == null || ev.Pickup == null)
             return;
@@ -239,7 +238,7 @@ public static class EchoQuest
         TryGrantScpItemReward(ev.Player, ev.Pickup.Type, ev.Pickup.Serial, ev.IsAllowed);
     }
 
-    static void OnItemAdded(ItemAddedEventArgs ev)
+    private static void OnItemAdded(ItemAddedEventArgs ev)
     {
         if (ev.Player == null || ev.Item == null)
             return;
@@ -247,17 +246,17 @@ public static class EchoQuest
         TryGrantScpItemReward(ev.Player, ev.Item.Type, ev.Item.Serial, true);
     }
 
-    static void OnScp049Attacking(Exiled.Events.EventArgs.Scp049.AttackingEventArgs ev)
+    private static void OnScp049Attacking(Exiled.Events.EventArgs.Scp049.AttackingEventArgs ev)
     {
         TryGrantSpecialScpHitReward(ev.Player, ev.Target, ev.IsAllowed);
     }
 
-    static void OnScp106Attacking(Exiled.Events.EventArgs.Scp106.AttackingEventArgs ev)
+    private static void OnScp106Attacking(Exiled.Events.EventArgs.Scp106.AttackingEventArgs ev)
     {
         TryGrantSpecialScpHitReward(ev.Player, ev.Target, ev.IsAllowed);
     }
 
-    static void OnDied(DiedEventArgs ev)
+    private static void OnDied(DiedEventArgs ev)
     {
         if (ev.Attacker == null
             || ev.Player == null
@@ -285,7 +284,7 @@ public static class EchoQuest
     /// 무장 병력(Guard / MTF / Chaos) 및 Tutorial → 100 XP,
     /// 탈출 병력(ClassD / Scientist) → 40 XP.
     /// </summary>
-    static int GetKillEnemyReward(RoleTypeId targetRole)
+    private static int GetKillEnemyReward(RoleTypeId targetRole)
     {
         return targetRole switch
         {
@@ -294,7 +293,7 @@ public static class EchoQuest
         };
     }
 
-    static void OnEscaping(EscapingEventArgs ev)
+    private static void OnEscaping(EscapingEventArgs ev)
     {
         if (!ev.IsAllowed
             || ev.Player == null
@@ -310,7 +309,7 @@ public static class EchoQuest
         GrantQuestReward(ev.Player, HumanEscapeReward, "시설 탈출");
     }
 
-    static bool CanProgressEscapeQuest(Player player)
+    private static bool CanProgressEscapeQuest(Player player)
     {
         if (player == null || !EchoInfo.PlayerLoadouts.TryGetValue(player, out var loadout))
             return false;
@@ -318,7 +317,7 @@ public static class EchoQuest
         return loadout.HasGrowableEquipped() || ExclusiveWeaponGrowth.CanGrow(player);
     }
 
-    static bool IsScpItem(ItemType itemType)
+    private static bool IsScpItem(ItemType itemType)
     {
         return itemType switch
         {
@@ -340,12 +339,12 @@ public static class EchoQuest
         };
     }
 
-    static bool UsesSpecialScpAttackingEvent(RoleTypeId roleType)
+    private static bool UsesSpecialScpAttackingEvent(RoleTypeId roleType)
     {
         return roleType is RoleTypeId.Scp049 or RoleTypeId.Scp106;
     }
 
-    static void TryGrantScpItemReward(Player player, ItemType itemType, ushort serial, bool isAllowed)
+    private static void TryGrantScpItemReward(Player player, ItemType itemType, ushort serial, bool isAllowed)
     {
         if (!isAllowed
             || !CanProgressQuests(player, QuestSide.Human)
@@ -358,12 +357,12 @@ public static class EchoQuest
         GrantQuestReward(player, ScpItemReward, "SCP 아이템 획득");
     }
 
-    static bool IsEnemyRole(RoleTypeId attackerRole, RoleTypeId targetRole)
+    private static bool IsEnemyRole(RoleTypeId attackerRole, RoleTypeId targetRole)
     {
         return HitboxIdentity.IsEnemy(RoleExtensions.GetTeam(attackerRole), RoleExtensions.GetTeam(targetRole));
     }
 
-    static void TryGrantSpecialScpHitReward(Player attacker, Player target, bool isAllowed)
+    private static void TryGrantSpecialScpHitReward(Player attacker, Player target, bool isAllowed)
     {
         if (!isAllowed
             || attacker == null
@@ -376,7 +375,7 @@ public static class EchoQuest
         GrantQuestReward(attacker, ScpHitReward, "SCP 적 1회 타격");
     }
 
-    static void GrantQuestReward(Player player, int reward, string questName)
+    private static void GrantQuestReward(Player player, int reward, string questName)
     {
         EchoGrowth.GrantExpToEquipped(player, reward, questName);
         ExclusiveWeaponGrowth.GrantExp(player, reward, questName);
@@ -389,7 +388,7 @@ public static class EchoQuest
     /// <summary>
     /// 피해 이벤트마다 알림을 띄우면 전투 중 화면을 가리므로, 레벨업 알림만 각 성장 시스템에 맡깁니다.
     /// </summary>
-    static void GrantDamageExp(Player player, float damage)
+    private static void GrantDamageExp(Player player, float damage)
     {
         EchoGrowth.GrantExpToEquipped(player, damage);
         ExclusiveWeaponGrowth.GrantExp(player, damage);

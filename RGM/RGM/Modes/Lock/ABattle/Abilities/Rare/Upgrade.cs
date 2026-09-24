@@ -1,4 +1,6 @@
-﻿using Scp914;
+﻿using System;
+using Exiled.API.Features;
+using Scp914;
 using Scp914.Processors;
 
 namespace RGM.Modes.Abilities.Rare;
@@ -8,9 +10,19 @@ public class Upgrade : Ability
 {
     public override void OnEnabled()
     {
-        if (Owner.CurrentItem == null) return;
-        if (Scp914Upgrader.TryGetProcessor(Owner.CurrentItem.Type, out Scp914ItemProcessor processor))
-            processor.UpgradeInventoryItem(Scp914KnobSetting.VeryFine, Owner.CurrentItem.Base);
+        try
+        {
+            var item = Owner.CurrentItem;
+            if (item == null || item.Type == ItemType.SCP1344)
+                return;
+
+            if (Scp914Upgrader.TryGetProcessor(item.Type, out Scp914ItemProcessor processor))
+                processor.UpgradeInventoryItem(Scp914KnobSetting.VeryFine, item.Base);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"능력 적용 실패: {e}");
+        }
     }
 
 }

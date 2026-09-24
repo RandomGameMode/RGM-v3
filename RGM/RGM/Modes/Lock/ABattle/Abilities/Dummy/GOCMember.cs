@@ -15,6 +15,7 @@ public class GOCMember : Ability
             Owner.MaxHealth += AddHealth;
             Owner.Health += AddHealth;
             
+            Owner.AddAbility(AbilityType.EPIC_FALLENKINGSSWORD);
             Owner.AddAbility(AbilityType.EPIC_CONTEXPERT);
             Owner.AddAbility(AbilityType.EPIC_TURTLE);
             Owner.AddAbility(AbilityType.EPIC_HOLYPROTECTION);

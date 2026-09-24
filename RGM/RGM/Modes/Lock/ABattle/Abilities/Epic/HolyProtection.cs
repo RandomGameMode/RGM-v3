@@ -19,7 +19,8 @@ public class HolyProtection : Ability
         if (ev.Player != Owner) return;
         var effectType = ev.Effect.GetEffectType();
 
-        if (!EffectManager.IsKeptBuff(effectType))
+        // Intensity 0 is the effect's removal request. Allow it so active debuffs can expire normally.
+        if (ev.Intensity > 0 && !EffectManager.IsKeptBuff(effectType))
             ev.IsAllowed = false;
     }
 }
