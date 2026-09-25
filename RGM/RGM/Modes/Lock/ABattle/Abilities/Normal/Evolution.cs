@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
+
+using static RGM.Variables.Variable;
 
 namespace RGM.Modes.Abilities.Normal;
 
@@ -11,6 +14,8 @@ public class Evolution : Ability
     public override void OnEnabled()
     {
         if (Owner.AbilityCount(AbilityType.NORMAL_EVOLUTION) >= MaxCount)
+            return;
+        if (EnabledModeList.Any(x => x.Data.Type == ModeType.GulliversTravels))
             return;
 
         Owner.Scale = new Vector3(Owner.Scale.x - Scale, Owner.Scale.y - Scale, Owner.Scale.z - Scale);

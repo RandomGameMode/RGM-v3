@@ -1,6 +1,7 @@
 ﻿using AFK;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using PlayerRoles;
@@ -51,6 +52,7 @@ namespace RGM.Modes
             foreach (var player in PlayerManager.List)
             {
                 _scores[player] = 0;
+                player.EnableEffect(EffectType.Fade, intensity: 100);
             }
 
             Exiled.Events.Handlers.Player.TogglingNoClip += OnTogglingNoClip;

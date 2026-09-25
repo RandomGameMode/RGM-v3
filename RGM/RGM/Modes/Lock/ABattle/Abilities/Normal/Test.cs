@@ -27,8 +27,8 @@ public class Test : Ability
                     var category = Convert.ToByte(Random.Range(1, 101)) <= 30
                         ? Convert.ToByte(Random.Range(1, 101)) <= 50 && Owner.HasAbility(AbilityType.SYNERGY_BRILLIANTMIND)
                             ? AbilityCategory.Epic : AbilityCategory.Rare : AbilityCategory.Normal;
-                    
-                    Owner.AddAbility(ABattle.Instance.GetRandomAbilities(Owner, category, 1,[AbilityType.RARE_DND, AbilityType.RARE_TELEPORTATION])[0]);
+
+                    Owner.AddAbility(ABattle.Instance.GetRandomAbilities(Owner, category, 1, [AbilityType.RARE_DND, AbilityType.RARE_TELEPORTATION])[0]);   //시험류 안 나오게 해야할 것 같음. (보류)
                 }
                 Owner.AddAbility(AbilityType.DUMMY_TESTSUCCESS);
             }

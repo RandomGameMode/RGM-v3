@@ -688,6 +688,7 @@
     <Compile Include="RGM\Modes\Lock\Rank\Rank.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\Variables\Base.cs" />
     <Compile Include="RGM\Modes\Plus\DistractedDriver\DistractedDriver.cs" />
+    <Compile Include="RGM\Modes\Plus\GulliversTravels\GulliversTravels.cs" />
     <Compile Include="RGM\Modes\Plus\KoreanSpeed\Patches\ScpPatch.cs" />
     <Compile Include="RGM\Modes\Plus\Store\StoreEventHandler.cs" />
     <Compile Include="RGM\Modes\Plus\Store\StoreItems\Starter\기본인간의_의지.cs" />

@@ -166,7 +166,8 @@ public enum ModeType
     EchoBattle,
     DistractedDriver,
     Scp1509Hand,
-    Stroking999
+    Stroking999,
+    GulliversTravels
 }
 
 
