@@ -18,6 +18,7 @@ using Exiled.API.Enums;
 using Exiled.CustomItems.API.EventArgs;
 using Exiled.Events.EventArgs.Server;
 using Respawning;
+using RGM.Features;
 using RGM.Patches;
 
 namespace RGM.Modes;

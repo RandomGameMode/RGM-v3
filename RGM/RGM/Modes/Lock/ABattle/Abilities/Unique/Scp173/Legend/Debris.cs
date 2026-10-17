@@ -2,6 +2,7 @@
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using RGM.API.Features;
+using RGM.Features;
 using UnityEngine;
 
 namespace RGM.Modes.Abilities.Unique.Scp173.Legend;

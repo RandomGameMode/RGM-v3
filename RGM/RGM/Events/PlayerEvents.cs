@@ -201,15 +201,19 @@ namespace RGM.Events
 
                 Tools.TeleportToLobby(ev.Player);
 
-                ItemType itemType = ItemType.Coin;
-
                 if (HolidayUtils.IsHolidayActive(HolidayType.Christmas))
-                    itemType = ItemType.Snowball;
-
+                {
+                    ev.Player.AddItem(ItemType.Snowball);
+                }
                 else if (HolidayUtils.IsHolidayActive(HolidayType.Halloween))
+                {
                     ev.Player.AddItem(ItemType.Lantern);
+                }
+                else
+                {
+                    ev.Player.AddItem(ItemType.Coin);
+                }
 
-                ev.Player.AddItem(itemType);
                 ev.Player.EnableEffect(EffectType.MovementBoost, 50);
                 ev.Player.EnableEffect(EffectType.Lightweight, 100);
 
@@ -1014,11 +1018,11 @@ namespace RGM.Events
                 var role = ev.Player.Role;
                 var target = PlayerManager.List.Where(x => !x.IsNPC && x.IsDead).GetRandomValue();
                 float hp = ev.Player.Health;
-            
+
                 target.RoleManager.ServerSetRole(role.Type, RoleChangeReason.None);
                 target.Health = hp;
             }
-            
+
             MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(10,
                 $"<size=20>{ev.Target.Nickname}(이)가 서버에서 <color=red>추방</color>되었습니다. (사유: {ev.Reason})</size>");
         }

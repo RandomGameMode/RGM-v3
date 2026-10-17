@@ -1,4 +1,5 @@
 ﻿using Exiled.Events.EventArgs.Player;
+using RGM.Features;
 using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Legend;

@@ -38,7 +38,7 @@ namespace RGM.IEnumerators
                             if (overwatch.SpectatedPlayer != null && overwatch.SpectatedPlayer.CurrentHint != null)
                             {
                                 string content = overwatch.SpectatedPlayer.CurrentHint.Content;
-                                
+
                                 player.ShowHint(content, 1.2f);
                             }
 
@@ -77,8 +77,10 @@ namespace RGM.IEnumerators
 
                 foreach (var player in Player.List)
                 {
-                    player.AddBroadcast(20, $"<size=20><b><color=#7289da>Discord</color>에 가입하여 <color=#C8FE2E>실시간 업데이트 현황</color>을 확인하고, 서버에 대한 <color=#F781D8>아이디어</color>를 나누고, <color=#FF4000>상점</color>을 이용하세요!</b></size>");
-                    player.AddBroadcast(20, $"<size=20>만일 서버가 터진다면 그것은 개발자가 이상한 거 만들다가 가끔씩 터트리는 것이오니, 계속 플레이하시려면 고쳐질때까지 계속 <b>재접속</b>하시는 것을 권장드립니다.</size>");
+                    player.AddBroadcast(20,
+                        $"<size=20><b><color=#7289da>Discord</color>에 가입하여 <color=#C8FE2E>실시간 업데이트 현황</color>을 확인하고, 서버에 대한 <color=#F781D8>아이디어</color>를 나누고, <color=#FF4000>상점</color>을 이용하세요!</b></size>");
+                    player.AddBroadcast(20,
+                        $"<size=20>만일 서버가 터진다면 그것은 개발자가 이상한 거 만들다가 가끔씩 터트리는 것이오니, 계속 플레이하시려면 고쳐질때까지 계속 <b>재접속</b>하시는 것을 권장드립니다.</size>");
                 }
             }
         }
@@ -105,10 +107,7 @@ namespace RGM.IEnumerators
 
                             player.Position = PlayerManager.List.Where(x => x != player).GetRandomValue().Position;
 
-                            Timing.CallDelayed(1, () =>
-                            {
-                                player.IsGodModeEnabled = false;
-                            });
+                            Timing.CallDelayed(1, () => { player.IsGodModeEnabled = false; });
                         }
                         else
                         {
@@ -147,7 +146,8 @@ namespace RGM.IEnumerators
                         if (Vector3.Distance(_ball.transform.position, player.Position) < 2)
                         {
                             _ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
-                            rig.AddForce(player.GameObject.transform.forward + new Vector3(0, 0.01f, 0), ForceMode.Impulse);
+                            rig.AddForce(player.GameObject.transform.forward + new Vector3(0, 0.01f, 0),
+                                ForceMode.Impulse);
                         }
 
                         /*
@@ -193,17 +193,11 @@ namespace RGM.IEnumerators
                     if (!target.IsScpRole()) continue;
                     JumpScareCooldown.Add(player);
 
-                    Timing.CallDelayed(60, () =>
-                    {
-                        JumpScareCooldown.Remove(player);
-                    });
+                    Timing.CallDelayed(60, () => { JumpScareCooldown.Remove(player); });
 
                     PlayersAudio[player].TryPlay($"facingScp-{Random.Range(1, 7)}", volume: 2);
-                                    
-                    Timing.CallDelayed(3, () =>
-                    {
-                        PlayersAudio[player].TryPlay("chase", volume: 2);
-                    });
+
+                    Timing.CallDelayed(3, () => { PlayersAudio[player].TryPlay("chase", volume: 2); });
                 }
 
                 yield return Timing.WaitForOneFrame;
@@ -219,7 +213,8 @@ namespace RGM.IEnumerators
                 if (Convert.ToInt16(Random.Range(1, 1001)) == 1)
                     Tools.PlayGlobalAudio($"scp079-{Random.Range(1, 3)}", volume: 1.5f);
 
-                int citizenCount = PlayerManager.List.Count(x => x.Role.Type is RoleTypeId.ClassD or RoleTypeId.Scientist);
+                int citizenCount =
+                    PlayerManager.List.Count(x => x.Role.Type is RoleTypeId.ClassD or RoleTypeId.Scientist);
 
                 switch (citizenCount)
                 {
@@ -238,7 +233,7 @@ namespace RGM.IEnumerators
                 yield return Timing.WaitForSeconds(1);
             }
         }
-        
+
         public static IEnumerator<float> Detonation()
         {
             while (!Round.IsEnded)
@@ -269,10 +264,13 @@ namespace RGM.IEnumerators
 
             void apply(ShootingTargetToy target, (float, float, float, float, float, float) vector3)
             {
-                Player player = Player.List.OrderBy(x => Vector3.Distance(x.Position, target.Position)).FirstOrDefault();
+                Player player = Player.List.OrderBy(x => Vector3.Distance(x.Position, target.Position))
+                    .FirstOrDefault();
 
-                target.Position = new Vector3(Random.Range(vector3.Item1, vector3.Item2), Random.Range(vector3.Item3, vector3.Item4), Random.Range(vector3.Item5, vector3.Item6));
-                target.Rotation = target.Rotation = Quaternion.LookRotation(player.Position - target.Position) * Quaternion.Euler(0, 90, 0);
+                target.Position = new Vector3(Random.Range(vector3.Item1, vector3.Item2),
+                    Random.Range(vector3.Item3, vector3.Item4), Random.Range(vector3.Item5, vector3.Item6));
+                target.Rotation = target.Rotation = Quaternion.LookRotation(player.Position - target.Position) *
+                                                    Quaternion.Euler(0, 90, 0);
             }
 
             while (true)
@@ -312,7 +310,9 @@ namespace RGM.IEnumerators
                 var initNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, kst);
                 lastProcessedDate = initNow.Date;
             }
-            catch { }
+            catch
+            {
+            }
 
             while (true)
             {

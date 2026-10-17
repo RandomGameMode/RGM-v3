@@ -29,8 +29,8 @@ namespace RGM
 
         public override string Name => "RGM";
         public override string Author => "GoldenPig1205";
-        public override Version Version { get; } = new(3, 22, 7);
-        public override Version RequiredExiledVersion { get; } = new(1, 2, 0, 5);
+        public override Version Version { get; } = new(3, 23, 0);
+        public override Version RequiredExiledVersion { get; } = new(9, 15, 0, 0);
 
         public override void OnEnabled()
         {

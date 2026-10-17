@@ -3,6 +3,7 @@ using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using PlayerRoles.PlayableScps.Scp106;
 using RGM.API.Features;
+using RGM.Features;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
 
 namespace RGM.Modes.Abilities.Unique.Scp106.Legend;

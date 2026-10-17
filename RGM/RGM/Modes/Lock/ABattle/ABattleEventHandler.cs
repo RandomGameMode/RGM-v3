@@ -14,6 +14,7 @@ using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Server;
 using PlayerRoles;
 using RGM.API.Features;
+using RGM.Features;
 using Random = UnityEngine.Random;
 
 namespace RGM.Modes;
@@ -72,8 +73,8 @@ public class ABattleEventHandler(ABattle aBattle)
 
     private void OnSpawned(SpawnedEventArgs ev)
     {
-        if(!ev.Player.IsScpRole()) ev.Player.ApplyGodMode(50f);
-        
+        if (!ev.Player.IsScpRole()) ev.Player.ApplyGodMode(50f);
+
         if (_pendingAbilityRestores.TryGetValue(ev.Player, out var abilities))
         {
             _pendingAbilityRestores.Remove(ev.Player);

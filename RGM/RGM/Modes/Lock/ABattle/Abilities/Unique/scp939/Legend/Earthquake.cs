@@ -2,6 +2,7 @@
 using Exiled.API.Enums;
 using PlayerRoles.PlayableScps.Scp939;
 using RGM.API.Features;
+using RGM.Features;
 using UnityEngine;
 
 namespace RGM.Modes.Abilities.Unique.Scp939.Legend;

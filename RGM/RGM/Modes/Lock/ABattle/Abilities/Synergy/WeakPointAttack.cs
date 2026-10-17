@@ -3,6 +3,7 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using PlayerStatsSystem;
+using RGM.Features;
 using RGM.Modes.Abilities.Unique.Scp106.Mythic;
 using RGM.Modes;
 

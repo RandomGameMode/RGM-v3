@@ -2,7 +2,7 @@
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using RGM.API.Features;
-
+using RGM.Features;
 using static RGM.Variables.Variable;
 
 namespace RGM.Modes.Abilities.Unique.Scp0492.Mythic;

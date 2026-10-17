@@ -14,8 +14,9 @@ namespace RGM.API.Features
         /// <summary>
         /// 해당 플레이어 객체의 힌트 정보를 기록합니다.
         /// </summary>
-        private static readonly Dictionary<Player, Dictionary<string, (string, float)>> PlayerHints = new(); // Custom ID, (힌트, 남은 시간)
-        
+        private static readonly Dictionary<Player, Dictionary<string, (string, float)>>
+            PlayerHints = new(); // Custom ID, (힌트, 남은 시간)
+
         /**
          * <summary>살아있는 플레이어에게 힌트를 띄웁니다</summary>
          * <returns>MEC 코루틴</returns>
@@ -24,19 +25,19 @@ namespace RGM.API.Features
         {
             while (!Round.IsEnded)
             {
-                foreach (var player in Player.List.Where(x => x.IsAlive && PlayerHints.ContainsKey(x) && PlayerHints[x].Count > 0))
+                foreach (var player in Player.List.Where(x =>
+                             x.IsAlive && PlayerHints.ContainsKey(x) && PlayerHints[x].Count > 0))
                 {
                     string message = $"{string.Join("\n", PlayerHints[player].Values.Select(x => x.Item1))}";
 
                     message = message.Replace("<color=#855439>*</color>", "");
                     player.ShowHint(message, 0.2f);
-                    
                 }
-                
+
                 yield return Timing.WaitForSeconds(0.1f);
             }
         }
-        
+
         /**
          * <summary>힌트가 띄워진 모든 플레이어에게서 힌트를 제거합니다</summary>
          */
@@ -62,7 +63,7 @@ namespace RGM.API.Features
                 yield return Timing.WaitForSeconds(0.1f);
             }
         }
-        
+
         /**
          * <summary>Player의 확장 메서드로서 힌트를 띄우는 메서드를 추가합니다</summary>
          * <param name="player"> 플레이어 인스턴스</param>

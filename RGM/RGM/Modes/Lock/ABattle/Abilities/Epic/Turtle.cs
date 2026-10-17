@@ -1,5 +1,6 @@
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
+using RGM.Features;
 using RGM.Modes.Abilities.Legend;
 using RGM.Modes.Abilities.Synergy;
 

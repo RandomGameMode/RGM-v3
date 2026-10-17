@@ -19,6 +19,7 @@ using RGM.Modes.SubClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RGM.Features;
 using UnityEngine;
 using static RGM.Variables.Variable;
 
@@ -26,7 +27,7 @@ namespace RGM.API.Features
 {
     ///
     ///<summary>플레이어 관련 작업을 처리합니다</summary>
-     ///
+    ///
     public static class PlayerManager
     {
         /// <summary>
@@ -89,7 +90,7 @@ namespace RGM.API.Features
         /// </summary>
         /// <param name="player">대상 <c>Player</c>입니다.</param>
         /// <returns>NonePlayer일 경우 <b>True</b>를 반환합니다.</returns>
-        public static bool IsNonePlayer(this Player player) 
+        public static bool IsNonePlayer(this Player player)
             => NonePlayer.Players.Contains(player);
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace RGM.API.Features
         {
             return roleTypeId.IsScp() || roleTypeId.ToString().Contains("Flamingo");
         }
-        
+
         ///<summary>
         /// <c>Player</c>의 확장 메서드로서 플레이어를 세팅하는 메서드를 추가합니다
         /// </summary>
@@ -700,7 +701,7 @@ namespace RGM.API.Features
         {
             if (player.IsNonePlayer() || player.IsNPC)
                 return Item.Create(ItemType.None);
-            
+
             List<ItemType> poll = [];
             // 추후 constant로 옮길 예정
             List<ItemType> mythos =
@@ -827,21 +828,21 @@ namespace RGM.API.Features
             }
 
             // 총 100개의 아이템 카테고리를 가중치에 따라 담고, 그 내에서 랜덤 추출
-            for (int i = 0; i < 2; i++) 
+            for (int i = 0; i < 2; i++)
                 poll.AddRange(mythos); // 2%
 
-            for (int i = 0; i < 6; i++) 
+            for (int i = 0; i < 6; i++)
                 poll.AddRange(legendary); // 6%
 
-            for (int i = 0; i < 16; i++) 
+            for (int i = 0; i < 16; i++)
                 poll.AddRange(epic); // 16%
 
-            for (int i = 0; i < 31; i++) 
+            for (int i = 0; i < 31; i++)
                 poll.AddRange(rare); // 31%
 
-            for (int i = 0; i < 45; i++) 
+            for (int i = 0; i < 45; i++)
                 poll.AddRange(general); // 45%
-            
+
 
             var item = player.AddItem(poll.GetRandomValue());
             PlayerRandomValueCount[player][0]++;

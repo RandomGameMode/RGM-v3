@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Exiled.API.Features;
-
 using static RGM.Variables.Variable;
-
 using RGM.API.Features;
 
 namespace RGM.IEnumerators
@@ -45,7 +43,8 @@ namespace RGM.IEnumerators
 
                                 RemainingPress -= 1;
 
-                                redObject.position = new Vector3(redObject.position.x, redObject.position.y - 0.015f, redObject.transform.position.z);
+                                redObject.position = new Vector3(redObject.position.x, redObject.position.y - 0.015f,
+                                    redObject.transform.position.z);
                             }
                         }
                     }
@@ -56,7 +55,8 @@ namespace RGM.IEnumerators
                         {
                             RemainingPress += 1;
 
-                            redObject.position = new Vector3(redObject.transform.position.x, redObject.transform.position.y + 0.015f, redObject.transform.position.z);
+                            redObject.position = new Vector3(redObject.transform.position.x,
+                                redObject.transform.position.y + 0.015f, redObject.transform.position.z);
                         }
                     }
                 }
@@ -108,7 +108,7 @@ namespace RGM.IEnumerators
 
                 if (PlayerManager.List.Count() > 1)
                 {
-                    float maxPlayers = 35;
+                    float maxPlayers = 30;
                     float pressMultiplier = Math.Max(1, maxPlayers / Server.PlayerCount);
                     float pressAmount = 0.012f * pressMultiplier;
 
@@ -119,7 +119,9 @@ namespace RGM.IEnumerators
                     {
                         RemainingPress -= pressAmount * stack;
 
-                        redObject.position = new Vector3(redObject.position.x, redObject.position.y - (0.00012f * stack * pressMultiplier), redObject.transform.position.z);
+                        redObject.position = new Vector3(redObject.position.x,
+                            redObject.position.y - (0.00012f * stack * pressMultiplier),
+                            redObject.transform.position.z);
                     }
                 }
 
@@ -127,7 +129,8 @@ namespace RGM.IEnumerators
             }
 
             Tools.PickModes();
-            Tools.MessageTranslated("", $"<mark=#ffff00aa><color=#000000><color=#ffffff>모드 투표 리스트</color>가 초기화되었습니다.</color></mark>");
+            Tools.MessageTranslated("",
+                $"<mark=#ffff00aa><color=#000000><color=#ffffff>모드 투표 리스트</color>가 초기화되었습니다.</color></mark>");
 
             FreezeGameStart = true;
 

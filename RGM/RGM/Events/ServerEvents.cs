@@ -5,7 +5,6 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Server;
 using MapGeneration.Holidays;
 using MEC;
-
 using PlayerRoles;
 using ProjectMER.Features;
 using RGM.API.Components;
@@ -33,22 +32,25 @@ namespace RGM.Events
 
             yield return Timing.WaitForSeconds(1f);
 
-            Server.Name = Server.Name.Replace("{version}", $"v{Main.Instance.Version.Major}.{Main.Instance.Version.Minor}.{Main.Instance.Version.Build}");
+            Server.Name = Server.Name.Replace("{version}",
+                $"v{Main.Instance.Version.Major}.{Main.Instance.Version.Minor}.{Main.Instance.Version.Build}");
 
             try
             {
                 var folderPath = $"{Paths.AppData}/SCP Secret Laboratory/LocalAdminLogs/{Server.Port}/";
                 var files = new DirectoryInfo(folderPath)
-                            .GetFiles()
-                            .OrderByDescending(f => f.CreationTime)
-                            .ToList();
+                    .GetFiles()
+                    .OrderByDescending(f => f.CreationTime)
+                    .ToList();
 
                 if (files.Count >= 2)
                 {
                     FileInfo secondOldest = files[1];
                     string content = File.ReadAllText(secondOldest.FullName);
 
-                    Webhook.Send($"LocalAdminLogs : {Server.Port}", Tools.ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook2.txt"), $"{secondOldest.FullName}");
+                    Webhook.Send($"LocalAdminLogs : {Server.Port}",
+                        Tools.ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook2.txt"),
+                        $"{secondOldest.FullName}");
                 }
             }
             catch (Exception e)
@@ -163,7 +165,8 @@ namespace RGM.Events
                             Timing.CallDelayed(1f, () =>
                             {
                                 foreach (var p in PlayerManager.List)
-                                    p.AddBroadcast(10, $"<size=25><b>롤토체스 당첨자(<b><i>{player.DisplayNickname}</i></b>)</b>에 의해 모드가 {CurrentMode.GetModeData().Name}(으)로 선택되었습니다.</size>");
+                                    p.AddBroadcast(10,
+                                        $"<size=25><b>롤토체스 당첨자(<b><i>{player.DisplayNickname}</i></b>)</b>에 의해 모드가 {CurrentMode.GetModeData().Name}(으)로 선택되었습니다.</size>");
                             });
                         }
                     }
@@ -172,7 +175,8 @@ namespace RGM.Events
                 {
                     if (!ModeList.ContainsKey(CurrentMode))
                     {
-                        CurrentMode = ModeList.Keys.Where(x => ModeList[x].Category == ModeCategory.Public).ToList().GetRandomValue();
+                        CurrentMode = ModeList.Keys.Where(x => ModeList[x].Category == ModeCategory.Public).ToList()
+                            .GetRandomValue();
 
                         foreach (var p in PlayerManager.List)
                             p.AddBroadcast(10, $"<size=25><b>알 수 없는 이유로 모드가 선택되지 않았으므로, 모드가 랜덤으로 선택되었습니다.</size>");
@@ -180,7 +184,8 @@ namespace RGM.Events
                 }
             }
 
-            Server.Name = Server.Name.Replace("[라운드 시작 전 로비]", $"[현재 모드: <color=#{CurrentMode.GetModeData().Color}>{CurrentMode.GetModeData().Name}</color>{(CurrentSubMode == ModeType.None ? "" : $"<size=25> + <color=#{CurrentSubMode.GetModeData().Color}>{CurrentSubMode.GetModeData().Name}</color></size>")}]");
+            Server.Name = Server.Name.Replace("[라운드 시작 전 로비]",
+                $"[현재 모드: <color=#{CurrentMode.GetModeData().Color}>{CurrentMode.GetModeData().Name}</color>{(CurrentSubMode == ModeType.None ? "" : $"<size=25> + <color=#{CurrentSubMode.GetModeData().Color}>{CurrentSubMode.GetModeData().Name}</color></size>")}]");
 
             List<string> ModeDesc = Tools.GetModeDesc(CurrentMode, CurrentSubMode);
 
@@ -213,7 +218,7 @@ namespace RGM.Events
 
                 if (Convert.ToByte(Random.Range(1, 101)) <= 10)
                 {
-                    foreach (var special in Specials.Where(_ => Convert.ToByte(Random.Range(1, 101)) <= 25)) 
+                    foreach (var special in Specials.Where(_ => Convert.ToByte(Random.Range(1, 101)) <= 25))
                     {
                         Tools.LoadMap(special);
                     }
@@ -327,7 +332,8 @@ namespace RGM.Events
                     }
                 }
 
-                Webhook.Send($"# {Server.IpAddress}:{Server.Port}", Tools.ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook4.txt"), path);
+                Webhook.Send($"# {Server.IpAddress}:{Server.Port}",
+                    Tools.ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook4.txt"), path);
             }
             catch (Exception e)
             {
@@ -337,9 +343,9 @@ namespace RGM.Events
             while (Round.IsEnded)
             {
                 var top10 = PlayersReport
-                .OrderByDescending(kv => kv.Value.Damage)
-                .Take(10)
-                .ToList();
+                    .OrderByDescending(kv => kv.Value.Damage)
+                    .Take(10)
+                    .ToList();
 
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"<size=30><b>이번 라운드 TOP 10</b></size>");
@@ -365,12 +371,15 @@ namespace RGM.Events
 
                         if (found && player != null)
                         {
-                            sb.AppendLine($"<size=25><color=#{ranking(rank)}>{rank}.</color> {Tools.BadgeFormat(player)}<color={player.Role.Color.ToHex()}><b><i>{player.DisplayNickname}</i></b></color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
+                            sb.AppendLine(
+                                $"<size=25><color=#{ranking(rank)}>{rank}.</color> {Tools.BadgeFormat(player)}<color={player.Role.Color.ToHex()}><b><i>{player.DisplayNickname}</i></b></color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
                         }
                         else
                         {
-                            sb.AppendLine($"<size=25><color=#{ranking(rank)}>{rank}.</color> <color=#888888>null</color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
+                            sb.AppendLine(
+                                $"<size=25><color=#{ranking(rank)}>{rank}.</color> <color=#888888>null</color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
                         }
+
                         rank++;
                     }
                     catch (Exception e)
@@ -384,7 +393,8 @@ namespace RGM.Events
                     try
                     {
                         var report = PlayersReport[player.UserId];
-                        string text = $"<align=left><size=20><b><i>{player.DisplayNickname}</i></b> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size></align>\n<align=left>{sb}</align>\n\n\n\n";
+                        string text =
+                            $"<align=left><size=20><b><i>{player.DisplayNickname}</i></b> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size></align>\n<align=left>{sb}</align>\n\n\n\n";
                         string result = $"{WinMessage}\n\n{text}";
 
                         player.ShowHint(result, 1.2f);
@@ -424,7 +434,10 @@ namespace RGM.Events
 
                 foreach (var player in ev.Players)
                 {
-                    player.Role.Set(ev.Wave.TargetFaction == Faction.FoundationStaff ? RoleTypeId.NtfFlamingo : RoleTypeId.ChaosFlamingo, RoleSpawnFlags.AssignInventory);
+                    player.Role.Set(
+                        ev.Wave.TargetFaction == Faction.FoundationStaff
+                            ? RoleTypeId.NtfFlamingo
+                            : RoleTypeId.ChaosFlamingo, RoleSpawnFlags.AssignInventory);
                 }
             }
 

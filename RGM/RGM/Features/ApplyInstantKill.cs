@@ -7,7 +7,7 @@ using MEC;
 using PlayerStatsSystem;
 using static RGM.Variables.Variable;
 
-namespace RGM.Modes;
+namespace RGM.Features;
 
 /// <summary>
 /// Immediately kills a target and attributes the kill to the supplied attacker.

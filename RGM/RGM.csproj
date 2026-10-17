@@ -113,6 +113,9 @@
     <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\SetPlayerRC.cs" />
     <Compile Include="RGM\Events\MEREvents.cs" />
     <Compile Include="RGM\Events\Scp\Scp1509Events.cs" />
+    <Compile Include="RGM\Features\ApplyFixedDamage.cs" />
+    <Compile Include="RGM\Features\ApplyInstantKill.cs" />
+    <Compile Include="RGM\Features\ApplyLethalDamage.cs" />
     <Compile Include="RGM\IEnumerators\LobbyIEnumerator.cs" />
     <Compile Include="RGM\IEnumerators\ServerIEnumerator.cs" />
     <Compile Include="RGM\Commands\RemoteAdminCommands\ShopFeatures\Custom.cs" />
@@ -148,14 +151,12 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Mythic\DualPersonality.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Normal\Instruct.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Normal\Tactic.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp173\Epic\ComfirmKill.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp3114\Legend\Execution.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp3114\Normal\DoraemonPocket.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp3114\Normal\HalfBlock.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp3114\Normal\Showmanship.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp939\Epic\HeavyInjure.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\ApplyFixedDamage.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\ApplyInstantKill.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\ApplyLethalDamage.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\DeathPrevention.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\AlephOne.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\AntiMatter.cs" />

@@ -20,12 +20,12 @@ namespace RGM.API.Features
         /// RGM 설정 주소
         /// </summary>
         public static string FolderPath => Path.Combine(Paths.Configs, "RGM");
-        
+
         /// <summary>
         /// 무결성을 위해 Mutex를 사용합니다
         /// </summary>
         private static readonly Mutex _fileMutex = new Mutex(false, "Global\\RGM_FileManager_Mutex");
-        
+
         /**
          * <summary>파일 주소를 결합합니다</summary>
          * <param name="fileName">파일 이름</param>
@@ -34,7 +34,7 @@ namespace RGM.API.Features
         {
             return Path.IsPathRooted(fileName) ? fileName : Path.Combine(FolderPath, fileName);
         }
-        
+
         /**
          * <summary>폴더를 생성합니다</summary>
          */
@@ -161,7 +161,7 @@ namespace RGM.API.Features
         출석 여부 (오늘) - 29
         현재 연속 출석 일수 - 30
         */
-        
+
         Exp = 0,
         RandomCoin = 1,
         Cash = 2,
@@ -194,31 +194,32 @@ namespace RGM.API.Features
         TodayAttend = 29,
         NowDayStreak = 30
     }
-    
+
     /**
      * <summary>유저 DB 관련 작업을 처리합니다</summary>
      */
     public static class UsersManager
     {
-        
         /// <summary>
         /// 마지막 유저 DB 로드 시간 (UTC)
         /// </summary>
         private static DateTime _lastUsersFileLoadUtc = DateTime.MinValue;
+
         /// <summary>
         /// 마지막 유저 DB 쓰기 시간 (UTC)
         /// </summary>
         private static DateTime _lastUsersFileWriteUtc = DateTime.MinValue;
-        
+
         /// <summary>
         /// 유저 DB 주소
         /// </summary>
         public static string UsersFileName = Path.Combine(Paths.Configs, "RGM/Users.db");
+
         /// <summary>
         /// 유저 캐시
         /// </summary>
         public static Dictionary<string, List<string>> UsersCache = new();
-        
+
         /**
          * <summary>유저에 대한 정보를 불러옵니다</summary>
          * <param name="userId">유저의 아이디</param>
@@ -232,7 +233,7 @@ namespace RGM.API.Features
 
             return null;
         }
-        
+
         /**
          * <summary>유저와 유저 정보를 추가합니다</summary>
          * <param name="userId"></param>
@@ -243,7 +244,7 @@ namespace RGM.API.Features
             UsersCache[userId] = UserInfo;
             return true;
         }
-        
+
         /**
          * <summary>유저 DB의 마지막 쓰기 시간을 가져옵니다</summary>
          * <returns>마지막 쓰기 시간 (UTC)</returns>
@@ -263,7 +264,7 @@ namespace RGM.API.Features
                 return DateTime.MinValue;
             }
         }
-        
+
         /**
          * <summary>유저 DB를 읽으려 시도합니다</summary>
          * <param name="loadedDb">(OUT) 로딩된 DB 내용</param>
@@ -292,7 +293,7 @@ namespace RGM.API.Features
                 return false;
             }
         }
-        
+
         /**
          * <summary>외부에서 DB가 수정된 경우 다시 로드합니다</summary>
          * <returns>로드 여부</returns>
@@ -304,7 +305,9 @@ namespace RGM.API.Features
             if (diskWriteUtc == DateTime.MinValue)
                 return false;
 
-            DateTime baseline = _lastUsersFileWriteUtc > DateTime.MinValue ? _lastUsersFileWriteUtc : _lastUsersFileLoadUtc;
+            DateTime baseline = _lastUsersFileWriteUtc > DateTime.MinValue
+                ? _lastUsersFileWriteUtc
+                : _lastUsersFileLoadUtc;
             if (baseline != DateTime.MinValue && diskWriteUtc <= baseline)
                 return false;
 
@@ -315,10 +318,11 @@ namespace RGM.API.Features
             _lastUsersFileLoadUtc = diskWriteUtc;
 
             Timing.RunCoroutine(RefreshDiscordId());
-            Log.Warn("[UsersManager] Users.db was modified externally. Reloaded cache from disk and skipped this save cycle to preserve external changes.");
+            Log.Warn(
+                "[UsersManager] Users.db was modified externally. Reloaded cache from disk and skipped this save cycle to preserve external changes.");
             return true;
         }
-        
+
         /**
          * <summary>유저 DB를 저장합니다</summary>
          */
@@ -339,7 +343,7 @@ namespace RGM.API.Features
             if (_lastUsersFileWriteUtc == DateTime.MinValue)
                 _lastUsersFileWriteUtc = DateTime.UtcNow;
         }
-        
+
         /**
          * <summary>유저 DB를 불러와 캐시에 저장합니다</summary>
          */
@@ -356,7 +360,7 @@ namespace RGM.API.Features
 
             IsUsersFileLoaded = true;
         }
-        
+
         /**
          * <summary>연동된 유저 목록을 다시 로드합니다</summary>
          * <returns>MEC 코루틴</returns>
@@ -364,9 +368,9 @@ namespace RGM.API.Features
         public static IEnumerator<float> RefreshDiscordId()
         {
             var validUsers = UsersManager.UsersCache
-            .Where(x => x.Value.Count > 13 && x.Value[13] != "0")
-            .GroupBy(userData => userData.Value[13])
-            .ToDictionary(group => group.Key, group => group.First().Key);
+                .Where(x => x.Value.Count > 13 && x.Value[13] != "0")
+                .GroupBy(userData => userData.Value[13])
+                .ToDictionary(group => group.Key, group => group.First().Key);
 
             DiscordIdToUserId = validUsers;
 

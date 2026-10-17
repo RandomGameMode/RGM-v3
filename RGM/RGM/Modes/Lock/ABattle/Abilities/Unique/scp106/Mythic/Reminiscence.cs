@@ -9,6 +9,7 @@ using MEC;
 using PlayerRoles.PlayableScps.Scp106;
 using PlayerStatsSystem;
 using RGM.API.Features;
+using RGM.Features;
 using Scp106Role = Exiled.API.Features.Roles.Scp106Role;
 using UnityEngine;
 

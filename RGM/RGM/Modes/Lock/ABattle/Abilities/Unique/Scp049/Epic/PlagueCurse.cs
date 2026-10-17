@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using PlayerStatsSystem;
+using RGM.Features;
 
 namespace RGM.Modes.Abilities.Unique.Scp049.Epic;
 

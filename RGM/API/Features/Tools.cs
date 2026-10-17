@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using RGM.Features;
 using RGM.Modes;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -67,7 +68,8 @@ namespace RGM.API.Features
 
                 for (int i = 1; i < 5; i++)
                 {
-                    var staticModeList = ModeList.Keys.Where(x => ModeList[x].Category == ModeCategory.Public && !ModeVote.ContainsKey(x)).ToList();
+                    var staticModeList = ModeList.Keys
+                        .Where(x => ModeList[x].Category == ModeCategory.Public && !ModeVote.ContainsKey(x)).ToList();
                     var mode = staticModeList.GetRandomValue();
                     ModeVote.Add(mode, []);
 
@@ -81,11 +83,13 @@ namespace RGM.API.Features
                     else
                         SubModeVote.Add(ModeType.None);
                 }
+
                 List<List<Transform>> pads = [First, Second, Third, Fourth];
 
                 for (int i = 0; i < 4; i++)
                 {
-                    Color padColor = ColorUtility.TryParseHtmlString("#" + ModeList[ModeVote.Keys.ToList()[i]].Color, out Color color)
+                    Color padColor = ColorUtility.TryParseHtmlString("#" + ModeList[ModeVote.Keys.ToList()[i]].Color,
+                        out Color color)
                         ? color
                         : Color.white;
 
@@ -149,12 +153,12 @@ namespace RGM.API.Features
                 RoleTypeId.NtfSpecialist,
                 RoleTypeId.Tutorial
             ];
-            
+
             player.Role.Set(humans.GetRandomValue());
             player.ClearInventory();
 
-            if (GameObject.Find("LobbyStartPoint") == null) return; 
-            
+            if (GameObject.Find("LobbyStartPoint") == null) return;
+
             player.Position = GameObject.Find("LobbyStartPoint").transform.position;
 
             if (SelectMode != "FightVote") return;
@@ -182,7 +186,8 @@ namespace RGM.API.Features
 
         public static List<Transform> GetObjectList(string name)
         {
-            return GameObject.FindObjectsByType<Transform>(FindObjectsSortMode.InstanceID).Where(t => t.name == name).ToList();
+            return GameObject.FindObjectsByType<Transform>(FindObjectsSortMode.InstanceID).Where(t => t.name == name)
+                .ToList();
         }
 
         /// <summary>
@@ -234,7 +239,10 @@ namespace RGM.API.Features
             string message = Notions.StartModeDescription
                 .Replace("{ModeColor}", color)
                 .Replace("{CurrentMode}", name)
-                .Replace("{CurrentSubMode}", subModeType != ModeType.None ? $"<size=20>추가된 서브 모드 : <color=#{ModeList[subModeType].Color}>{ModeList[subModeType].Name}</color></size>\n" : "")
+                .Replace("{CurrentSubMode}",
+                    subModeType != ModeType.None
+                        ? $"<size=20>추가된 서브 모드 : <color=#{ModeList[subModeType].Color}>{ModeList[subModeType].Name}</color></size>\n"
+                        : "")
                 .Replace("{ModeDescription}", description)
                 .Replace("{ModeInfo}", modeType.GetModeData().Info.ToString());
 
@@ -259,43 +267,43 @@ namespace RGM.API.Features
             List<string> uc = UsersManager.UsersCache[player.UserId];
 
             return
-$"""
+                $"""
 
 
-<size=20><b><i>{player.Nickname}</i></b>님의 정보</size>
+                 <size=20><b><i>{player.Nickname}</i></b>님의 정보</size>
 
-<size=15>SteamID: {player.UserId}</size>
-<size=15>Exp: {uc[0]}</size>
-<size=15>랜덤코인: {uc[1]}</size>
-<size=15>Cash: ₩{int.Parse(uc[2]):N0}</size>
-<size=15>누적 출석: {uc[27]}회 · 현재 {uc[30]}일 연속 출석 중 (최대 {uc[28]}일)</size>
+                 <size=15>SteamID: {player.UserId}</size>
+                 <size=15>Exp: {uc[0]}</size>
+                 <size=15>랜덤코인: {uc[1]}</size>
+                 <size=15>Cash: ₩{int.Parse(uc[2]):N0}</size>
+                 <size=15>누적 출석: {uc[27]}회 · 현재 {uc[30]}일 연속 출석 중 (최대 {uc[28]}일)</size>
 
-<size=15>보유한 킬이펙트: {GetJoinedInfo(3)}</size>
-<size=15>장착한 킬이펙트: {(uc[4] == "0" ? "-" : uc[4])} ({(uc[15] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
-<size=10>{(uc[4] == "0" ? "'.킬이펙트 <킬이펙트 이름>' 명령어를 사용하여 킬이펙트를 장착할 수 있습니다." : KillEffects[uc[4]])}</size>
+                 <size=15>보유한 킬이펙트: {GetJoinedInfo(3)}</size>
+                 <size=15>장착한 킬이펙트: {(uc[4] == "0" ? "-" : uc[4])} ({(uc[15] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
+                 <size=10>{(uc[4] == "0" ? "'.킬이펙트 <킬이펙트 이름>' 명령어를 사용하여 킬이펙트를 장착할 수 있습니다." : KillEffects[uc[4]])}</size>
 
-<size=15>보유한 스폰이펙트: {GetJoinedInfo(19)}</size>
-<size=15>장착한 스폰이펙트: {(uc[20] == "0" ? "-" : uc[20])} ({(uc[21] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
-<size=10>{(uc[20] == "0" ? "'.스폰이펙트 <스폰이펙트 이름>' 명령어를 사용하여 스폰이펙트를 장착할 수 있습니다." : SpawnEffects[uc[20]])}</size>
+                 <size=15>보유한 스폰이펙트: {GetJoinedInfo(19)}</size>
+                 <size=15>장착한 스폰이펙트: {(uc[20] == "0" ? "-" : uc[20])} ({(uc[21] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
+                 <size=10>{(uc[20] == "0" ? "'.스폰이펙트 <스폰이펙트 이름>' 명령어를 사용하여 스폰이펙트를 장착할 수 있습니다." : SpawnEffects[uc[20]])}</size>
 
-<size=15>보유한 커스텀: {GetJoinedInfo(7)}</size>
-<size=15>커스텀 닉네임: {(uc[5] == "0" ? "-" : uc[5])}</size>
-<size=10>{(uc[5] == "0" ? "'.닉네임 <텍스트>' 명령어를 사용하여 커스텀 닉네임을 설정할 수 있습니다." : $"미리 보기: {Tools.CustomFormatter(player, uc[5]).Replace("\n", "\\n")}")}</size>
-<size=15>커스텀 인포: {(uc[6] == "0" ? "-" : uc[6])}</size>
-<size=10>{(uc[6] == "0" ? "'.인포 <텍스트>' 명령어를 사용하여 커스텀 인포를 설정할 수 있습니다." : $"미리 보기: {Tools.CustomFormatter(player, uc[6]).Replace("\n", "\\n")}")}</size>
+                 <size=15>보유한 커스텀: {GetJoinedInfo(7)}</size>
+                 <size=15>커스텀 닉네임: {(uc[5] == "0" ? "-" : uc[5])}</size>
+                 <size=10>{(uc[5] == "0" ? "'.닉네임 <텍스트>' 명령어를 사용하여 커스텀 닉네임을 설정할 수 있습니다." : $"미리 보기: {Tools.CustomFormatter(player, uc[5]).Replace("\n", "\\n")}")}</size>
+                 <size=15>커스텀 인포: {(uc[6] == "0" ? "-" : uc[6])}</size>
+                 <size=10>{(uc[6] == "0" ? "'.인포 <텍스트>' 명령어를 사용하여 커스텀 인포를 설정할 수 있습니다." : $"미리 보기: {Tools.CustomFormatter(player, uc[6]).Replace("\n", "\\n")}")}</size>
 
-<size=15>보유한 페인트: {GetJoinedInfo(8)}</size>
-<size=15>장착한 페인트: {(uc[9] == "0" ? "-" : uc[9])} ({(uc[16] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
-<size=10>{(uc[9] == "0" ? "'.페인트 <페인트 이름>' 명령어를 사용하여 페인트를 장착할 수 있습니다." : Paints[uc[9]])}</size>
+                 <size=15>보유한 페인트: {GetJoinedInfo(8)}</size>
+                 <size=15>장착한 페인트: {(uc[9] == "0" ? "-" : uc[9])} ({(uc[16] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
+                 <size=10>{(uc[9] == "0" ? "'.페인트 <페인트 이름>' 명령어를 사용하여 페인트를 장착할 수 있습니다." : Paints[uc[9]])}</size>
 
-<size=15>보유한 칭호: {GetJoinedInfo(10)}</size>
-<size=15>장착한 칭호: {(uc[11] == "0" ? "-" : uc[11])} ({(uc[17] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
-<size=10>{(uc[11] == "0" ? "'.칭호 <칭호 이름>' 명령어를 사용하여 칭호를 장착할 수 있습니다." : Badges[uc[11]])}</size>
+                 <size=15>보유한 칭호: {GetJoinedInfo(10)}</size>
+                 <size=15>장착한 칭호: {(uc[11] == "0" ? "-" : uc[11])} ({(uc[17] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
+                 <size=10>{(uc[11] == "0" ? "'.칭호 <칭호 이름>' 명령어를 사용하여 칭호를 장착할 수 있습니다." : Badges[uc[11]])}</size>
 
-<size=15>보유한 아이콘: {GetJoinedInfo(24)}</size>
-<size=15>장착한 아이콘: {(uc[25] == "0" ? "-" : uc[25])} ({(uc[26] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
-<size=10>{(uc[25] == "0" ? "'.아이콘 <아이콘 이름>' 명령어를 사용하여 아이콘을 장착할 수 있습니다." : Icons[uc[25]])}</size>
-""";
+                 <size=15>보유한 아이콘: {GetJoinedInfo(24)}</size>
+                 <size=15>장착한 아이콘: {(uc[25] == "0" ? "-" : uc[25])} ({(uc[26] == "0" ? "랜덤 적용 ❌" : "랜덤 적용 ✅")})</size>
+                 <size=10>{(uc[25] == "0" ? "'.아이콘 <아이콘 이름>' 명령어를 사용하여 아이콘을 장착할 수 있습니다." : Icons[uc[25]])}</size>
+                 """;
 
             string GetJoinedInfo(int num)
             {
@@ -308,32 +316,32 @@ $"""
             if (color == "0") return;
             Dictionary<string, string[]> colorDictionary = new Dictionary<string, string[]>
             {
-                {"블랙골드", ["brown", "yellow"] },
-                {"핫핑크", ["magenta", "pink"] },
-                {"레인보우", [.. Datas.Colors.Keys] },
-                {"분홍색", ["pink"] },
-                {"빨간색", ["red"] },
-                {"흰색", ["default"] },
-                {"갈색", ["brown"] },
-                {"은색", ["silver"] },
-                {"밝은 녹색", ["light_green"] },
-                {"진홍색", ["crimson"] },
-                {"청록색", ["cyan"] },
-                {"옥색", ["aqua"] },
-                {"진한 분홍색", ["deep_pink"] },
-                {"토마토색", ["tomato"] },
-                {"노란색", ["yellow"] },
-                {"짙은 홍색", ["magenta"] },
-                {"푸른 녹색", ["blue_green"] },
-                {"주황색", ["orange"] },
-                {"라임색", ["lime"] },
-                {"초록색", ["green"] },
-                {"에메랄드색", ["emerald"] },
-                {"카민색", ["carmine"] },
-                {"니켈색", ["nickel"] },
-                {"박하색", ["mint"] },
-                {"군대 녹색", ["army_green"] },
-                {"호박색", ["pumpkin"] }
+                { "블랙골드", ["brown", "yellow"] },
+                { "핫핑크", ["magenta", "pink"] },
+                { "레인보우", [.. Datas.Colors.Keys] },
+                { "분홍색", ["pink"] },
+                { "빨간색", ["red"] },
+                { "흰색", ["default"] },
+                { "갈색", ["brown"] },
+                { "은색", ["silver"] },
+                { "밝은 녹색", ["light_green"] },
+                { "진홍색", ["crimson"] },
+                { "청록색", ["cyan"] },
+                { "옥색", ["aqua"] },
+                { "진한 분홍색", ["deep_pink"] },
+                { "토마토색", ["tomato"] },
+                { "노란색", ["yellow"] },
+                { "짙은 홍색", ["magenta"] },
+                { "푸른 녹색", ["blue_green"] },
+                { "주황색", ["orange"] },
+                { "라임색", ["lime"] },
+                { "초록색", ["green"] },
+                { "에메랄드색", ["emerald"] },
+                { "카민색", ["carmine"] },
+                { "니켈색", ["nickel"] },
+                { "박하색", ["mint"] },
+                { "군대 녹색", ["army_green"] },
+                { "호박색", ["pumpkin"] }
             };
 
             if (player.GameObject.TryGetComponent(out TagController rtc))
@@ -368,18 +376,24 @@ $"""
                     return 10;
                 }
 
-                foreach (var player in playerList.Where(x => !x.IsNonePlayer() && UsersManager.UsersCache.ContainsKey(x.UserId)))
+                foreach (var player in playerList.Where(x =>
+                             !x.IsNonePlayer() && UsersManager.UsersCache.ContainsKey(x.UserId)))
                 {
-                    if (!isPreSeason) 
+                    if (!isPreSeason)
                     {
-                        UsersManager.UsersCache[player.UserId][0] = (int.Parse(UsersManager.UsersCache[player.UserId][0]) + amount).ToString(); // EXP
+                        UsersManager.UsersCache[player.UserId][0] =
+                            (int.Parse(UsersManager.UsersCache[player.UserId][0]) + amount).ToString(); // EXP
                     }
-                    UsersManager.UsersCache[player.UserId][1] = (int.Parse(UsersManager.UsersCache[player.UserId][1]) + amount * IsUsingGameChipUsers(player)).ToString(); // 랜덤코인
+
+                    UsersManager.UsersCache[player.UserId][1] = (int.Parse(UsersManager.UsersCache[player.UserId][1]) +
+                                                                 amount * IsUsingGameChipUsers(player))
+                        .ToString(); // 랜덤코인
                 }
 
                 UsersManager.SaveUsers();
 
-                WinMessage = $"<size={30 - Math.Round(playerList.Count * 0.5f)}><color=yellow><b>✨</b></color> <b>{string.Join($", ", playerList.Select(x => $"<color={x.Role.Color.ToHex()}><i>{x.DisplayNickname}</i></color>"))}</b>(이)가 <b>{amount}</b> EXP, 랜덤코인을 획득하였습니다";
+                WinMessage =
+                    $"<size={30 - Math.Round(playerList.Count * 0.5f)}><color=yellow><b>✨</b></color> <b>{string.Join($", ", playerList.Select(x => $"<color={x.Role.Color.ToHex()}><i>{x.DisplayNickname}</i></color>"))}</b>(이)가 <b>{amount}</b> EXP, 랜덤코인을 획득하였습니다";
             }
             else
             {
@@ -390,17 +404,18 @@ $"""
         /*
          * SetPersonalWin 구상
          *
-         * 
+         *
          */
-        
+
         /*
         public static IEnumerator<float> SetPersonalWin(List<Player> playerList, int amount)
         {
-           
+
         }
         */
-    
-        public static bool TryGetNearestPlayer(this Player player, out Player nearestPlayer, out float radius, List<Player> exceptPlayers = null)
+
+        public static bool TryGetNearestPlayer(this Player player, out Player nearestPlayer, out float radius,
+            List<Player> exceptPlayers = null)
         {
             nearestPlayer = null;
             radius = 99999;
@@ -421,7 +436,8 @@ $"""
             return nearestPlayer != null;
         }
 
-        public static bool TryGetLookPlayer(this Player player, float distance, out Player target, out RaycastHit? raycastHit)
+        public static bool TryGetLookPlayer(this Player player, float distance, out Player target,
+            out RaycastHit? raycastHit)
         {
             target = null;
             raycastHit = null;
@@ -430,7 +446,8 @@ $"""
                 return false;
 
             var camera = player.ReferenceHub.PlayerCameraReference;
-            if (Physics.Raycast(camera.position + camera.forward * 0.2f, camera.forward, out RaycastHit hit, distance) &&
+            if (Physics.Raycast(camera.position + camera.forward * 0.2f, camera.forward, out RaycastHit hit,
+                    distance) &&
                 hit.collider != null &&
                 hit.collider.TryGetComponent<IDestructible>(out _) &&
                 hit.collider.GetComponentInParent<ReferenceHub>() is { } referenceHub)
@@ -447,7 +464,8 @@ $"""
             return false;
         }
 
-        public static bool TryGetLookPlayers(Player player, float distance, out List<Player> targets, out RaycastHit? raycastHit, int count = 100)
+        public static bool TryGetLookPlayers(Player player, float distance, out List<Player> targets,
+            out RaycastHit? raycastHit, int count = 100)
         {
             targets = [];
             raycastHit = null;
@@ -467,7 +485,7 @@ $"""
                     !Player.TryGet(referenceHub.gameObject, out Player t) ||
                     player == t ||
                     targets.Contains(t)) continue;
-                
+
                 targets.Add(t);
                 if (targets.Count == 1)
                     raycastHit = hit;
@@ -477,7 +495,7 @@ $"""
 
             return targets.Count > 0;
         }
-        
+
         /**
          * 화면 내에 비치는 가장 가까운 플레이어를 구합니다.
          * <param name="observer">관찰자 (확장)</param>
@@ -498,8 +516,9 @@ $"""
             nearestPlayer = null;
             radius = float.MaxValue;
             exceptPlayers ??= [];
-            
-            foreach (var near in PlayerManager.List.Where(x => x.IsAlive && x != observer && !exceptPlayers.Contains(x)))
+
+            foreach (var near in
+                     PlayerManager.List.Where(x => x.IsAlive && x != observer && !exceptPlayers.Contains(x)))
             {
                 float distance = Vector3.Distance(near.Position, observer.Position);
 
@@ -513,7 +532,7 @@ $"""
 
             return nearestPlayer != null;
         }
-        
+
         /// <summary>
         /// observer(관찰자)가 target(대상)을 실제로 바라보고 있는지 확인합니다.
         /// </summary>
@@ -523,7 +542,7 @@ $"""
         /// <param name="fov">시야각 (기본값: 60도)</param>
         public static bool IsLookingAt(this Player observer, Player target, float maxDistance = 30f, float fov = 60f)
         {
-            if (observer == null || target == null) 
+            if (observer == null || target == null)
                 throw new NullReferenceException("The object Observer or Target is null.");
 
             var observerEyePos = observer.CameraTransform.position;
@@ -547,7 +566,7 @@ $"""
             int visionMask = VisionInformation.VisionLayerMask;
             return options.Any(x => !Physics.Linecast(observerEyePos, x, visionMask));
         }
-        
+
         /// <summary>
         /// 특정 위치를 기준으로 방향을 봤을 때 target(대상)을 실제로 바라보고 있는지 확인합니다.
         /// </summary>
@@ -556,11 +575,12 @@ $"""
         /// <param name="target">대상 플레이어</param>
         /// <param name="maxDistance">최대 거리 (기본값: 30m)</param>
         /// <param name="fov">시야각 (기본값: 60도)</param>
-        public static bool IsLookingAt(Vector3 direction, Vector3 pos, Player target, float maxDistance = 30f, float fov = 60f)
+        public static bool IsLookingAt(Vector3 direction, Vector3 pos, Player target, float maxDistance = 30f,
+            float fov = 60f)
         {
             if (target == null)
                 throw new NullReferenceException("The target is null.");
-            
+
             Vector3 targetPos = target.Position;
 
             float distance = Vector3.Distance(pos, targetPos);
@@ -589,12 +609,13 @@ $"""
         /// <param name="maxDistance">최대 거리 (기본값: 30m)</param>
         /// <param name="fov">시야각 (기본값: 60도)</param>
         /// <param name="offset"> 오프셋</param>
-        public static bool IsLookingAt(this Player observer, Vector3 position, float maxDistance = 30f, float fov = 60f, float offset = 0f)
+        public static bool IsLookingAt(this Player observer, Vector3 position, float maxDistance = 30f, float fov = 60f,
+            float offset = 0f)
         {
             if (observer == null) return false;
             if (!observer.IsAlive) return false;
 
-            List<Vector3> options = 
+            List<Vector3> options =
             [
                 Vector3.up,
                 Vector3.down,
@@ -603,7 +624,7 @@ $"""
                 Vector3.forward,
                 Vector3.back
             ];
-            
+
             Vector3 observerEyePos = observer.CameraTransform.position;
 
             float distance = Vector3.Distance(observerEyePos, position);
@@ -615,13 +636,15 @@ $"""
             if (Vector3.Angle(forwardDirection, directionToTarget) > fov) return false;
             int visionMask = VisionInformation.VisionLayerMask;
 
-            if (offset != 0 && options.Any(option 
-                        => !Physics.Linecast(observerEyePos, position + option * offset, visionMask))) return true;
+            if (offset != 0 && options.Any(option
+                    => !Physics.Linecast(observerEyePos, position + option * offset, visionMask))) return true;
 
             return !Physics.Linecast(observerEyePos, position, visionMask);
         }
+
         // 
-        public static bool TryGetLookPoint(Player player, float distance, SurfaceType type, out Vector3 point, float floorNormalThreshold = 0.7f, int layerMask = ~0)
+        public static bool TryGetLookPoint(Player player, float distance, SurfaceType type, out Vector3 point,
+            float floorNormalThreshold = 0.7f, int layerMask = ~0)
         {
             point = Vector3.zero;
 
@@ -644,7 +667,8 @@ $"""
             return false;
         }
 
-        public static bool TryGetLookFirstPoint(Player player, float distance, SurfaceType type, out Vector3 point, float floorNormalThreshold = 0.7f, int layerMask = ~0) 
+        public static bool TryGetLookFirstPoint(Player player, float distance, SurfaceType type, out Vector3 point,
+            float floorNormalThreshold = 0.7f, int layerMask = ~0)
         {
             point = Vector3.zero;
             Vector3 forward = player.CameraTransform.forward;
@@ -664,19 +688,20 @@ $"""
                 RaycastHit hit = hits[i];
 
                 // 충돌한 오브젝트가 플레이어 본인이거나 그 하위 오브젝트라면 패스
-                if (hit.transform.IsChildOf(player.GameObject.transform) || hit.transform == player.GameObject.transform)
+                if (hit.transform.IsChildOf(player.GameObject.transform) ||
+                    hit.transform == player.GameObject.transform)
                     continue;
 
                 // 본인이 아닌 첫 번째 충돌체를 찾았으므로 기존 로직 수행
                 bool isFloor = hit.normal.y >= floorNormalThreshold;
                 bool isWall = !isFloor && Mathf.Abs(hit.normal.y) < floorNormalThreshold;
 
-                if ((isFloor && type.HasFlag(SurfaceType.Floor)) || (isWall && type.HasFlag(SurfaceType.Wall))) 
+                if ((isFloor && type.HasFlag(SurfaceType.Floor)) || (isWall && type.HasFlag(SurfaceType.Wall)))
                 {
                     point = hit.point;
                     return true;
                 }
-        
+
                 // 만약 본인이 아닌 첫 충돌체가 지정한 SurfaceType(예: 바닥)이 아니라면 
                 // 뒤에 있는 오브젝트를 투과하지 않고 바로 실패 처리해야 하므로 break
                 break;
@@ -709,8 +734,8 @@ $"""
         {
             return t.position + t.forward * moveDistance;
         }
-        
-        
+
+
         public static bool TryInstallMode(ModeType m)
         {
             var modeType = Type.GetType($"RGM.Modes.{m}");
@@ -732,7 +757,8 @@ $"""
             onEnabledMethod?.Invoke(modeInstance, null);
 
             if (!Main.Instance.Config.IsDevMode && !Round.IsEnded && Server.PlayerCount >= 15)
-                Webhook.Send($"{m.GetModeData().Name}", ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook3.txt"));
+                Webhook.Send($"{m.GetModeData().Name}",
+                    ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook3.txt"));
 
             return true;
         }
@@ -763,6 +789,7 @@ $"""
 
                 return true;
             }
+
             return false;
         }
 
@@ -797,7 +824,7 @@ $"""
 
             Webhook.Send($"🗳️ **게임 진행 불가 투표**ㅣ{host.Nickname}에 의해 시작됨 ({reason})");
 
-            for (int i = 1; i<21; i++)
+            for (int i = 1; i < 21; i++)
             {
                 if (BugVotePlayers.Count() >= RequiredCount)
                 {
@@ -806,16 +833,20 @@ $"""
                 }
 
                 foreach (var player in PlayerManager.List)
-                    player.AddHint("게임진행불가투표", $"<size=25><i>{host.DisplayNickname}</i>(이)가 <b><color=#FFBF00>게임 진행 불가 투표</color></b>를 개설하였습니다.\n라운드를 강제로 종료해야 한다면 <b>.찬성</b> 명령어를 입력하세요.</size>\n이유 : {reason}\n<size=20>투표 종료까지 {21 - i}초 남음 ({BugVotePlayers.Count}/{RequiredCount})</size>", 1.2f);
+                    player.AddHint("게임진행불가투표",
+                        $"<size=25><i>{host.DisplayNickname}</i>(이)가 <b><color=#FFBF00>게임 진행 불가 투표</color></b>를 개설하였습니다.\n라운드를 강제로 종료해야 한다면 <b>.찬성</b> 명령어를 입력하세요.</size>\n이유 : {reason}\n<size=20>투표 종료까지 {21 - i}초 남음 ({BugVotePlayers.Count}/{RequiredCount})</size>",
+                        1.2f);
 
                 yield return Timing.WaitForSeconds(1);
             }
 
             if (IsSuccess)
             {
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(5, $"게임 진행 불가 투표가 <b><color=#9AFE2E>가결</color></b>되었습니다. 곧 서버가 재시작됩니다.");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(5,
+                    $"게임 진행 불가 투표가 <b><color=#9AFE2E>가결</color></b>되었습니다. 곧 서버가 재시작됩니다.");
 
-                Webhook.Send($"🗳️ **게임 진행 불가 투표**ㅣ✅ 가결됨 (투표자: {string.Join(", ", BugVotePlayers.Select(x => x.Nickname))})");
+                Webhook.Send(
+                    $"🗳️ **게임 진행 불가 투표**ㅣ✅ 가결됨 (투표자: {string.Join(", ", BugVotePlayers.Select(x => x.Nickname))})");
 
                 yield return Timing.WaitForSeconds(5);
 
@@ -823,9 +854,11 @@ $"""
             }
             else
             {
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(5, $"게임 진행 불가 투표가 <b><color=#FE2E2E>부결</color></b>되었습니다.");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(5,
+                    $"게임 진행 불가 투표가 <b><color=#FE2E2E>부결</color></b>되었습니다.");
 
-                Webhook.Send($"🗳️ **게임 진행 불가 투표**ㅣ❌ 부결됨 (투표자: {string.Join(", ", BugVotePlayers.Select(x => x.Nickname))})");
+                Webhook.Send(
+                    $"🗳️ **게임 진행 불가 투표**ㅣ❌ 부결됨 (투표자: {string.Join(", ", BugVotePlayers.Select(x => x.Nickname))})");
             }
 
             IsBugVoteProcessing = false;
@@ -848,7 +881,9 @@ $"""
                 }
 
                 foreach (var player in PlayerManager.List)
-                    player.AddHint("의문의 제안", $"<size=25><b><color=#DA81F5>의문의 제안</color></b>이 개설되었습니다.\n제안을 수락하시려면 <b>.수락</b> 명령어를 입력하세요.</size>\n{reason}\n<size=20>투표 종료까지 {31 - i}초 남음 ({SuggestPlayers.Count}/{RequiredCount})</size>", 1.2f);
+                    player.AddHint("의문의 제안",
+                        $"<size=25><b><color=#DA81F5>의문의 제안</color></b>이 개설되었습니다.\n제안을 수락하시려면 <b>.수락</b> 명령어를 입력하세요.</size>\n{reason}\n<size=20>투표 종료까지 {31 - i}초 남음 ({SuggestPlayers.Count}/{RequiredCount})</size>",
+                        1.2f);
 
                 yield return Timing.WaitForSeconds(1);
             }
@@ -933,18 +968,18 @@ $"""
             Dictionary<string, PlayerReport> pr = PlayersReport;
 
             return str
-                .Replace("\\n", "\n")
-                .Replace("{name}", player.Nickname)
-                .Replace("{kill}", $"{pr[player.UserId].Kill}")
-                .Replace("{death}", $"{pr[player.UserId].Death}")
-                .Replace("{revive}", $"{pr[player.UserId].Revive}")
-                .Replace("{kill_scp}", $"{pr[player.UserId].KillScp}")
-                .Replace("{kill_human}", $"{pr[player.UserId].KillHuman}")
-                .Replace("{max_health}", $"{player.MaxHealth}")
-                .Replace("{health}", $"{player.Health}")
-                .Replace("{items_count}", $"{player.Items.Count}")
-                .Replace("{role}", $"{Trans.Role[player.Role]}")
-                .Replace("{damage}", $"{pr[player.UserId].Damage}")
+                    .Replace("\\n", "\n")
+                    .Replace("{name}", player.Nickname)
+                    .Replace("{kill}", $"{pr[player.UserId].Kill}")
+                    .Replace("{death}", $"{pr[player.UserId].Death}")
+                    .Replace("{revive}", $"{pr[player.UserId].Revive}")
+                    .Replace("{kill_scp}", $"{pr[player.UserId].KillScp}")
+                    .Replace("{kill_human}", $"{pr[player.UserId].KillHuman}")
+                    .Replace("{max_health}", $"{player.MaxHealth}")
+                    .Replace("{health}", $"{player.Health}")
+                    .Replace("{items_count}", $"{player.Items.Count}")
+                    .Replace("{role}", $"{Trans.Role[player.Role]}")
+                    .Replace("{damage}", $"{pr[player.UserId].Damage}")
                 ;
         }
 
@@ -981,7 +1016,8 @@ $"""
             }
         }
 
-        public static AudioClipPlayback PlayGlobalAudio(string clipName, float volume = 1, bool loop = false, bool destroyOnEnd = true, bool isNoNotice = false)
+        public static AudioClipPlayback PlayGlobalAudio(string clipName, float volume = 1, bool loop = false,
+            bool destroyOnEnd = true, bool isNoNotice = false)
         {
             string notice = $"로드된 오디오: {clipName}";
 
@@ -1071,7 +1107,8 @@ $"""
             }
         }
 
-        public static LabApi.Features.Wrappers.TextToy CreateText(Vector3 pos, Quaternion rot, string text, float time = 20)
+        public static LabApi.Features.Wrappers.TextToy CreateText(Vector3 pos, Quaternion rot, string text,
+            float time = 20)
         {
             var textToy = LabApi.Features.Wrappers.TextToy.Create();
             textToy.Position = pos;
@@ -1085,18 +1122,20 @@ $"""
             return textToy;
         }
 
-        public static AudioClipPlayback PlaySound(Transform transform, string name, float volume = 1, bool loop = false, bool isSpatial = true, float minDistance = 1, float maxDistance = 10)
+        public static AudioClipPlayback PlaySound(Transform transform, string name, float volume = 1, bool loop = false,
+            bool isSpatial = true, float minDistance = 1, float maxDistance = 10)
         {
             AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"Transform - {transform.position}",
                 condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)), onIntialCreation: p =>
-            {
-                p.transform.parent = transform;
+                {
+                    p.transform.parent = transform;
 
-                Speaker speaker = p.AddSpeaker("Main", isSpatial: isSpatial, minDistance: minDistance, maxDistance: maxDistance);
+                    Speaker speaker = p.AddSpeaker("Main", isSpatial: isSpatial, minDistance: minDistance,
+                        maxDistance: maxDistance);
 
-                speaker.transform.parent = transform;
-                speaker.transform.localPosition = Vector3.zero;
-            });
+                    speaker.transform.parent = transform;
+                    speaker.transform.localPosition = Vector3.zero;
+                });
 
             return audioPlayer.TryPlay(name, volume, loop);
         }
@@ -1144,25 +1183,25 @@ $"""
             [
                 CandyKindID.Evil
             ];
-            
+
             List<CandyKindID> legendary =
             [
                 CandyKindID.Black,
                 CandyKindID.Pink
             ];
-            
+
             List<CandyKindID> epic =
             [
                 CandyKindID.White,
                 CandyKindID.Orange,
                 CandyKindID.Gray
             ];
-            
+
             List<CandyKindID> rare =
             [
                 CandyKindID.Rainbow
             ];
-            
+
             List<CandyKindID> general =
             [
                 CandyKindID.Blue,
@@ -1171,21 +1210,21 @@ $"""
                 CandyKindID.Yellow,
                 CandyKindID.Purple
             ];
-            
+
             // 총 100개의 아이템 카테고리를 가중치에 따라 담고, 그 내에서 랜덤 추출
-            for (int i = 0; i < 3; i++) 
+            for (int i = 0; i < 3; i++)
                 poll.AddRange(mythos); // 3%
 
-            for (int i = 0; i < 6; i++) 
+            for (int i = 0; i < 6; i++)
                 poll.AddRange(legendary); // 6%
 
-            for (int i = 0; i < 16; i++) 
+            for (int i = 0; i < 16; i++)
                 poll.AddRange(epic); // 16%
 
-            for (int i = 0; i < 30; i++) 
+            for (int i = 0; i < 30; i++)
                 poll.AddRange(rare); // 30%
 
-            for (int i = 0; i < 45; i++) 
+            for (int i = 0; i < 45; i++)
                 poll.AddRange(general); // 45%
 
             return poll.GetRandomValue();
@@ -1207,7 +1246,8 @@ $"""
             NetworkServer.Destroy(dummy.GameObject);
         }
 
-        public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
+        public static void MessageTranslated(string message, string translation, bool isHeld = false,
+            bool isNoisy = true, bool isSubtitles = true)
         {
             Exiled.API.Features.Cassie.MessageTranslated(message, translation, isHeld, isNoisy, isSubtitles);
         }
@@ -1237,6 +1277,7 @@ $"""
                         sb.Append(' ');
                         currentLength++;
                     }
+
                     sb.Append(word);
                     currentLength += word.Length;
                 }
@@ -1244,13 +1285,14 @@ $"""
 
             return sb.ToString();
         }
+
         [Flags]
         public enum SurfaceType
         {
-            None  = 0,
+            None = 0,
             Floor = 1 << 0, // 1
-            Wall  = 1 << 1, // 2
-            Both  = Floor | Wall // 3
+            Wall = 1 << 1, // 2
+            Both = Floor | Wall // 3
         }
 
         public static void CallAutoBan(
@@ -1274,8 +1316,8 @@ $"""
             Func<Player, bool> predicate)
         {
             if (player.IsNPC || player.IsHost || !predicate(player)) return;
-            
-            player.Ban(banTime, 
+
+            player.Ban(banTime,
                 $"""
                  -----[자동제재({data.Name})]----- 
                  사유: {reason} 

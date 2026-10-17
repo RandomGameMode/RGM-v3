@@ -22,9 +22,9 @@ namespace RGM.API.Features
 
             GlobalPlayer = AudioPlayer.CreateOrGet($"Global AudioPlayer",
                 condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)), onIntialCreation: (p) =>
-            {
-                Speaker speaker = p.AddSpeaker("Main", isSpatial: false, maxDistance: 5000);
-            });
+                {
+                    Speaker speaker = p.AddSpeaker("Main", isSpatial: false, maxDistance: 5000);
+                });
 
             Timing.RunCoroutine(InputCooldown());
             Timing.RunCoroutine(SyncSpectatedHint());

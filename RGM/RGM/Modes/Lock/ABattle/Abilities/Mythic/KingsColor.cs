@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
+using RGM.Features;
 using static RGM.Variables.Variable;
 
 namespace RGM.Modes.Abilities.Mythic;

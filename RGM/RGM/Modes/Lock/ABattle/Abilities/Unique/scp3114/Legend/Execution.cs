@@ -1,5 +1,6 @@
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
+using RGM.Features;
 
 namespace RGM.Modes.Abilities.Unique.Scp3114.Legend;
 
