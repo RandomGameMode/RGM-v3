@@ -9,11 +9,12 @@ namespace DAONTFT.Core.TFT.Keter.Human;
 [TFTAbility("마약 중독자", "20초마다 랜덤한 사탕을 획득합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.CandyAddict, "🍭")]
 public class CandyAddict : TFTAbility
 {
-    CoroutineHandle _candyParty;
+    private CoroutineHandle _candyParty;
 
     public override void OnEnabled()
     {
-        _candyParty = Timing.RunCoroutine(candyParty());
+        if (!Timing.IsRunning(_candyParty))
+            _candyParty = Timing.RunCoroutine(candyParty());
     }
 
     public override void OnDisabled()
