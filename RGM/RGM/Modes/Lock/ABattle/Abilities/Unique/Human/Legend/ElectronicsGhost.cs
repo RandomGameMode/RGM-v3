@@ -20,7 +20,7 @@ namespace RGM.Modes.Abilities.Unique.Human.Legend;
 [Ability("전자 유령",
     """
     전자 유령이 되어 시설 시스템에 간섭합니다.
-    지급된 무전기를 우클릭 시, 모든 적 세력 인원에게서 각 인원 마다 능력을 1개 강탈합니다. 강탈한 능력은 반사경 및 복제로 능력 복제가 불가합니다.
+    지급된 무전기를 우클릭 시, 모든 적 세력 인원에게서 각 인원 마다 능력을 1개(25% 확률로 연쇄) 강탈합니다. 강탈한 능력은 반사경 및 복제로 능력 복제가 불가합니다.
     추가로, 6초간 모든 시설 시스템을 정지시키며, SCP-079의 신호를 15초간 차단시키고, 레벨을 2 감소시킵니다.
     사용 시 재사용 대기시간 120초가 적용됩니다.
     """, 
@@ -32,6 +32,7 @@ public class ElectronicsGhost : Ability
     private const float BlackoutDuration = 6f;
     private const float Scp079SignalLostDuration = 15f;
     private const int Scp079LevelPenalty = 2;
+    private const float ExtraStealChance = 0.25f;
     private const float RadioCheckInterval = 0.1f;
 
     private ushort _electronicsGhostSerial;
@@ -180,6 +181,14 @@ public class ElectronicsGhost : Ability
                 continue;
 
             totalStolen++;
+            
+            while (UnityEngine.Random.value < ExtraStealChance)
+            {
+                if (!TryStealAbility(enemy))
+                    break;
+
+                totalStolen++;
+            }
         }
 
         Owner.AddHint("전자 유령", $"적 세력에게서 능력을 총 {totalStolen}개 강탈했습니다!");
