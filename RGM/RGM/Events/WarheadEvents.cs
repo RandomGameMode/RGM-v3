@@ -39,14 +39,12 @@ namespace RGM.Events
 
             Tools.MessageTranslated("", "시간이 너무 오래 걸립니다! 모두의 체력이 점차 줄어듭니다!");
             PlayerManager.List.ToList().ForEach(x => x.EnableEffect(EffectType.PocketCorroding));
-
-            const float tau = Mathf.PI * 2f;
+            
             var x = 1f;
-            var cubicRoot = Mathf.Pow(tau / 5, 1.0f / 3.0f);
 
             while (!Round.IsEnded)
             {
-                var fx = Mathf.Pow(cubicRoot, x / 7) - 1;
+                var fx = (float)Math.Tanh(x / 60);
                 
                 foreach (var player in PlayerManager.List)
                 {
