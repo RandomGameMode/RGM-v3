@@ -153,6 +153,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\Scp999.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ElectronicsGhost.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Mythic\DualPersonality.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Ancient\Overwhelming.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Normal\Instruct.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Normal\Tactic.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp173\Epic\ComfirmKill.cs" />

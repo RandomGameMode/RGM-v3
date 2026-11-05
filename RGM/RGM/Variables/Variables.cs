@@ -14,6 +14,7 @@ using RGM.API.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -143,17 +144,17 @@ namespace RGM.Variables
             },
 
             new()
-            {
-                IsPubliced = false,
+            {   
+                IsPubliced = true,
                 Name = "휴대용 라디오",
                 Description = $".구매 휴대용 라디오/<노래 이름>ㅣ이 서버에 등록된 소리 파일 중 하나를 랜덤으로 재생합니다.",
                 Price = 5,
-                Check = (player, arg) => player.IsAlive,
+                Check = (player, _) => player.IsAlive,
                 Script = (player, arg) =>
                 {
-                    AudioPlayer radio = AudioPlayer.CreateOrGet($"Radio {player.UserId}",
-                        condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)),
-                        onIntialCreation: (p) =>
+                    async Task AsyncScript()
+                    {
+                        AudioPlayer radio = AudioPlayer.CreateOrGet($"Radio {player.UserId}", condition: hub => !MuteBGMPlayers.Contains(Player.Get(hub)), onIntialCreation: (p) =>
                         {
                             p.transform.parent = player.GameObject.transform;
                             Speaker speaker = p.AddSpeaker("Main", isSpatial: true, minDistance: 1f, maxDistance: 50f);
@@ -161,18 +162,20 @@ namespace RGM.Variables
                             speaker.transform.localPosition = Vector3.zero;
                         });
 
-                    string audioDir = Paths.Plugins + "/audio/";
-                    string[] audioFiles = Directory.GetFiles(audioDir).Select(Path.GetFileName).ToArray();
-                    string fileName = audioDir + $"{arg}.ogg";
-                    string clipName = audioFiles.GetRandomValue().Replace(".ogg", "").Replace(audioDir, "");
+                        string audioDir = Paths.Plugins + "/audio/";
+                        string[] audioFiles = Directory.GetFiles(audioDir).Select(Path.GetFileName).ToArray();
+                        string clipName = audioFiles.GetRandomValue().Replace(".ogg", "").Replace(audioDir, "");
 
-                    if (radio.TryPlay(arg, 0.5f) != null)
-                        clipName = arg;
+                        if (radio.TryPlay(arg, 0.5f) != null)
+                            clipName = arg;
 
-                    else
-                        radio.TryPlay(clipName, 0.5f);
+                        else radio.TryPlay(clipName, 0.5f);
+                        await Task.Delay(200);
 
-                    player.AddHint("휴대용 라디오", $"<size=20>{clipName} 재생 중..</size>", 5);
+                        player.AddHint("휴대용 라디오", $"<size=20>{clipName} 재생 중..</size>", 5);
+                    }
+
+                    _ = AsyncScript();
                 }
             },
 

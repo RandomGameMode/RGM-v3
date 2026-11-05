@@ -670,6 +670,8 @@ public enum AbilityType
     MYTHIC_SCP079_SEVEREVIRUS, // [전용 신화] 치명적인 바이러스
     MYTHIC_SCP079_BACKDOOR, // [전용 신화] 백도어
     MYTHIC_SCP079_FUSIONBOMB, // [전용 신화] 융단 폭격
+    
+    ANCIENT_SCP079_OVERWHELMING, // [전용 고대] 고대의 존재 압도,
 
 
     //79가 먹을 수 있는 범용 능력

@@ -29,6 +29,6 @@ public class ComfirmKill : Ability
             return;
 
         ev.IsAllowed = false;
-        ApplyInstantKill.Apply(Owner, ev.Player);
+        ev.Player.Kill(ev.DamageHandler);
     }
 }
