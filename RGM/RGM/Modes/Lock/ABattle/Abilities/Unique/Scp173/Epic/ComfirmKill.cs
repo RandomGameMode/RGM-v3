@@ -1,4 +1,8 @@
-﻿using Exiled.Events.EventArgs.Player;
+﻿using System.Collections.Generic;
+using Exiled.API.Features;
+using Exiled.API.Features.DamageHandlers;
+using Exiled.Events.EventArgs.Player;
+using MEC;
 using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Unique.Scp173.Epic;
@@ -11,24 +15,31 @@ public class ComfirmKill : Ability
 {
     public override void OnEnabled()
     {
-        Exiled.Events.Handlers.Player.Hurting += OnHurting;
+        Exiled.Events.Handlers.Player.Dying += OnDying;
     }
 
     public override void OnDisabled()
     {
-        Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+        Exiled.Events.Handlers.Player.Dying -= OnDying;
     }
 
-    private void OnHurting(HurtingEventArgs ev)
+    private void OnDying(DyingEventArgs ev)
     {
         // ApplyInstantKill's own damage raises Hurting again; ignore it to avoid infinite recursion.
         if (ApplyInstantKill.IsApplying ||
             ev.Attacker != Owner ||
-            ev.Player == Owner ||
-            !ev.IsInstantKill)
+            ev.Player == Owner)
             return;
 
-        ev.IsAllowed = false;
-        ev.Player.Kill(ev.DamageHandler);
+        Timing.RunCoroutine(KillProcess(ev.Player, ev.DamageHandler));
+    }
+
+    private static IEnumerator<float> KillProcess(Player player, CustomDamageHandler handler)
+    {
+        while (!player.IsDead)
+        {
+            yield return Timing.WaitForOneFrame;
+            player.Kill(handler);
+        }
     }
 }
