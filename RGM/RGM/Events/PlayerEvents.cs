@@ -960,7 +960,7 @@ namespace RGM.Events
             if (pickup == null)
                 return;
 
-            Timing.CallDelayed(3 * 60, () =>
+            Timing.CallDelayed(150, () =>
             {
                 if (pickup.Base == null)
                     return;
@@ -975,7 +975,7 @@ namespace RGM.Events
             if (ammoPickups == null)
                 return;
 
-            Timing.CallDelayed(3 * 60, () =>
+            Timing.CallDelayed(150, () =>
             {
                 foreach (var ammo in ammoPickups)
                 {
