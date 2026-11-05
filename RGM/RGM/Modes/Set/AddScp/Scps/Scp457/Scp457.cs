@@ -92,7 +92,7 @@ namespace RGM.Modes.Sets.AddScp.Scps
 
             void OnHurting(HurtingEventArgs ev)
             {
-                if (ev.Attacker == null || ev.Attacker != player)
+                if (ev.Player != player)
                     return;
 
                 if (ev.DamageHandler.Type == DamageType.Explosion)
@@ -146,7 +146,7 @@ namespace RGM.Modes.Sets.AddScp.Scps
                                                  Vector3.Distance(x.Position, pos) < 4))
                                     {
                                         p.EnableEffect(EffectType.Burned, 1, 0.1f);
-                                        p.Hit(player, player.Scale.x * 25 + (player.Scale.x >= 1.15f ? player.MaxHealth * 0.02f : 0));
+                                        p.Hit(player, player.Scale.x * 25 + (player.Scale.x >= 1.15f ? player.MaxHealth * 0.01f : 0));
                                     }
 
                                     yield return Timing.WaitForSeconds(1);

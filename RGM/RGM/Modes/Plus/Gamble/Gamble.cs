@@ -76,8 +76,8 @@ namespace RGM.Modes
             else
             {
                 ev.Item.Destroy();
-                Item CurrentItem = ev.Player.AddRandomItem();
-                ev.Player.DropItem(CurrentItem);
+                Item currentItem = ev.Player.AddRandomItem();
+                ev.Player.DropItem(currentItem);
             }
         }
 

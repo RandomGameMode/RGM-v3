@@ -384,7 +384,8 @@ namespace RGM.API.Features
                 UsersManager.SaveUsers();
 
                 WinMessage =
-                    $"<size={30 - Math.Round(playerList.Count * 0.5f)}><color=yellow><b>✨</b></color> <b>{string.Join($", ", playerList.Select(x => $"<color={x.Role.Color.ToHex()}><i>{x.DisplayNickname}</i></color>"))}</b>(이)가 <b>{amount}</b>" + (isPreSeason ? "" : "EXP, ") + "랜덤코인을 획득하였습니다";
+                    $"<size={30 - Math.Round(playerList.Count * 0.5f)}><color=yellow><b>✨</b></color> <b>{string.Join($", ", playerList.Select(x => $"<color={x.Role.Color.ToHex()}><i>{x.DisplayNickname}</i></color>"))}</b>(이)가 <b>{amount}</b>" +
+                    (isPreSeason ? "" : "EXP, ") + "랜덤코인을 획득하였습니다";
             }
             else
             {
@@ -898,7 +899,7 @@ namespace RGM.API.Features
 
         /*public static IEnumerator<float> SurrenderVote(Player host)
         {
-            
+
         }*/
 
         public static void MakeSnake(Player player)
