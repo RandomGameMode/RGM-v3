@@ -17,12 +17,12 @@ namespace RGM.Modes
     class FreeForAll : Mode
     {
         public override string Name => "개인전";
-        public override string Description => "가장 먼저 40킬을 달성하세요!";
+        public override string Description => "가장 먼저 50킬을 달성하세요!";
         public override string Detail =>
 """
 랜덤한 전투 맵에서 다른 모든 플레이어와 싸우세요.
 
-먼저 40킬을 달성하거나, 3분 후 가장 많은 킬을 기록한 플레이어가 승리합니다.
+먼저 50킬을 달성하거나, 3분 후 가장 많은 킬을 기록한 플레이어가 승리합니다.
 """;
         public override string Color => "FA58F4";
 
@@ -35,9 +35,9 @@ namespace RGM.Modes
             "Battle_Shipment"
         ];
         
-        private const int TargetKills = 40;
+        private const int TargetKills = 50;
         private const float MatchDuration = 180f;
-        private const float RespawnDelay = 5f;
+        private const float RespawnDelay = 2f;
 
         private readonly List<Player> _players = new();
         private readonly Dictionary<Player, int> _kills = new();
@@ -250,7 +250,7 @@ namespace RGM.Modes
             foreach (var player in PlayerManager.List)
                 player.AddBroadcast(10, $"<size=30><b>승리자: <color=#FFD700>{winnerNames}</color></b></size>");
 
-            Timing.RunCoroutine(Tools.SetWinner(winners, 13));
+            Timing.RunCoroutine(Tools.SetWinner(winners, 10));
         }
         private IEnumerator<float> CleanDecals()
         {
