@@ -135,7 +135,7 @@ namespace RGM
                 Exiled.Events.Handlers.Scp079.Recontained += OnRecontained;
 
                 ProjectMER.Events.Handlers.Schematic.SchematicSpawned += OnSchematicSpawned;
-                ProjectMER.Events.Handlers.Schematic.SchematicDestroyed += OnSchematicDestroyed;
+                //ProjectMER.Events.Handlers.Schematic.SchematicDestroyed += OnSchematicDestroyed;
 
                 // ------------------------------------------------------------------------------------------------------
 

@@ -17,7 +17,7 @@ namespace RGM.Events
 
         public static void OnSchematicSpawned(SchematicSpawnedEventArgs ev)
         {
-            if (ev.Schematic.Name == "Cafeteria")
+            /*if (ev.Schematic.Name == "Cafeteria")
             {
                 foreach (var targetBlock in ev.Schematic.AttachedBlocks.Where(x => x.name.StartsWith("Target/")))
                 {
@@ -54,6 +54,7 @@ namespace RGM.Events
                     Timing.RunCoroutine(work());
                 }
             }
+            */
 
             if (ev.Schematic.Name == "VirtualWorld")
             {
@@ -64,6 +65,7 @@ namespace RGM.Events
             }
         }
 
+        /*
         public static void OnSchematicDestroyed(SchematicDestroyedEventArgs ev) 
         { 
             if (ev.Schematic.Name == "Cafeteria")
@@ -75,6 +77,6 @@ namespace RGM.Events
                     targets.Remove(target);
                 }
             }
-        }
+        }*/
     }
 }
