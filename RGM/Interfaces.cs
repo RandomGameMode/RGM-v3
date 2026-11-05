@@ -106,7 +106,7 @@ public enum ModeType
     GunGame,
     JohnWick,
     HIDE,
-    Skeleton,
+    HotPotato,
     KoreanSpeed,
     Outlaw,
     PaperMan,
