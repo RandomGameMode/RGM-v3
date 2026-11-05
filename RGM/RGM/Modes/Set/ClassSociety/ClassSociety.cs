@@ -162,6 +162,8 @@ namespace RGM.Modes
                     foreach (var player in players)
                     {
                         player.RankName = "10";
+                        player.ClearInventory();
+                        player.AddItem(ItemType.GunLogicer);
                     }
 
                     break;
