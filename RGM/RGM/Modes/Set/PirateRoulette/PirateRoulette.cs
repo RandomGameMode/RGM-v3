@@ -112,7 +112,7 @@ namespace RGM.Modes
         {
             while (_scp049.IsAlive)
             {
-                _scp049.Hurt(_scp049.MaxHealth / 100); // 분모 값이 제한 시간(초 단위)이 됨
+                _scp049.Hurt((_scp049.MaxHealth + _scp049.MaxArtificialHealth + _scp049.MaxHumeShield) / 100); // 분모 값이 제한 시간(초 단위)이 됨
 
                 yield return Timing.WaitForSeconds(1);
             }
