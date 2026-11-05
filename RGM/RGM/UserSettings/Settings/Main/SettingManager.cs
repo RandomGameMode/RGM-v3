@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using System;
+using Exiled.API.Features;
 using RGM.Variables;
 using SecretAPI.Features.UserSettings;
 
@@ -6,6 +7,7 @@ namespace RGM.UserSettings;
 
 public static partial class MainSettingManager
 {
+    [Obsolete("기능 정지로 인해 사용이 중지되었습니다.")]
     private sealed partial class TranslationSetting() : CustomDropdownSetting(12054, "번역ㅣTranslation",
         ["Korean (ko)", "English (en)"],
         defaultOptionIndex: Main.Instance.Config.EN ? 1 : 0,

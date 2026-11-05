@@ -18,7 +18,7 @@ public static partial class SettingManager
             _reloader = Timing.RunCoroutine(Reloader());
 
         MainSettingManager.Init();
-        Timing.CallDelayed(Timing.WaitForOneFrame * 5,() => CustomSetting.Register(SettingVariables.Settings[0]));
+        Timing.CallDelayed(0.01f,() => CustomSetting.Register(SettingVariables.Settings[0]));
     }
 
     private static IEnumerator<float> Reloader()
