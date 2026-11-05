@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.SCPRUSH)]
-    public class SCPRUSH : Mode
+    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.ScpRush)]
+    public class ScpRush : Mode
     {
         public override string Name => "SCP 러쉬";
         public override string Description => "모든 SCP가 한 개체로 통일됩니다.";
@@ -25,7 +25,7 @@ SCP-3114도 동일한 확률로 러쉬에 참여할 수 있습니다.
 """;
         public override string Color => "FE2E2E";
 
-        public static SCPRUSH Instance;
+        public static ScpRush Instance;
 
         private CoroutineHandle _onModeStarted;
         private readonly AutoWarhead _autoWarhead = new(14, 1);
@@ -83,10 +83,10 @@ SCP-3114도 동일한 확률로 러쉬에 참여할 수 있습니다.
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], PlayerManager.List.Count / 2));
                     break;
                 case > 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 1));
                     break;
             }
         }

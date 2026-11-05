@@ -371,12 +371,12 @@ namespace RGM.Events
                         if (found && player != null)
                         {
                             sb.AppendLine(
-                                $"<size=25><color=#{ranking(rank)}>{rank}.</color> {Tools.BadgeFormat(player)}<color={player.Role.Color.ToHex()}><b><i>{player.DisplayNickname}</i></b></color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
+                                $"<size=25><color=#{Ranking(rank)}>{rank}.</color> {Tools.BadgeFormat(player)}<color={player.Role.Color.ToHex()}><b><i>{player.DisplayNickname}</i></b></color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
                         }
                         else
                         {
                             sb.AppendLine(
-                                $"<size=25><color=#{ranking(rank)}>{rank}.</color> <color=#888888>null</color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
+                                $"<size=25><color=#{Ranking(rank)}>{rank}.</color> <color=#888888>null</color> - {report.Kill} kill / {report.Death} death / {report.Damage} damage</size>");
                         }
 
                         rank++;
@@ -407,7 +407,7 @@ namespace RGM.Events
                 yield return Timing.WaitForSeconds(1);
                 continue;
 
-                string ranking(byte r)
+                string Ranking(byte r)
                 {
                     switch (r)
                     {

@@ -14,9 +14,12 @@ using RGM.API.Features;
 using static RGM.Variables.Variable;
 using Respawning;
 using Exiled.API.Features.Waves;
+using Exiled.Events.EventArgs.Item;
+using RGM.Events;
 using RGM.Patches;
 using Door = Exiled.API.Features.Doors.Door;
 using ChaosMiniWave = Respawning.Waves.ChaosMiniWave;
+using Item = Exiled.Events.Handlers.Item;
 using NtfMiniWave = Respawning.Waves.NtfMiniWave;
 using Player = Exiled.API.Features.Player;
 using Round = Exiled.API.Features.Round;
@@ -27,7 +30,7 @@ using Warhead = Exiled.API.Features.Warhead;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.Juggernaut)]
-    class Juggernaut : Mode
+    internal class Juggernaut : Mode
     {
         public override string Name => "저거너트";
         public override string Description => "모두 힘을 합쳐 외부의 적에 대항하세요.";
@@ -76,7 +79,7 @@ namespace RGM.Modes
 
             Exiled.Events.Handlers.Server.RespawnedTeam += OnRespawnedTeam;
 
-            Exiled.Events.Handlers.Item.ChargingJailbird += OnChargingJailbird;
+            Item.ChargingJailbird += OnChargingJailbird;
 
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
             _findLocate = Timing.RunCoroutine(FindLocate());
@@ -97,7 +100,7 @@ namespace RGM.Modes
 
             Exiled.Events.Handlers.Server.RespawnedTeam -= OnRespawnedTeam;
 
-            Exiled.Events.Handlers.Item.ChargingJailbird -= OnChargingJailbird;
+            Item.ChargingJailbird -= OnChargingJailbird;
 
             _juggernautExternalSupportWaves.Clear();
 
@@ -113,7 +116,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> JuggernautExternalTimer()
         {
-            for (int i = 1; i < 75; i++)
+            for (var i = 1; i < 75; i++)
             {
                 if (Round.IsEnded) yield break;
                 PlayerManager.List.ToList()
@@ -125,7 +128,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> RoundTimer()
         {
-            for (int i = 1; i < 821; i++)
+            for (var i = 1; i < 821; i++)
             {
                 if (Round.IsEnded || Warhead.IsDetonated)
                     yield break;
@@ -139,7 +142,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> AnnihilationTimer()
         {
-            for (int i = 1; i < 120; i++)
+            for (var i = 1; i < 120; i++)
             {
                 if (Round.IsEnded)
                     yield break;
@@ -157,7 +160,7 @@ namespace RGM.Modes
 
         private bool TryGetExternalSupportWave<T>(out SpawnableWaveBase wave) where T : SpawnableWaveBase
         {
-            if (WaveManager.TryGet<T>(out T spawnWave))
+            if (WaveManager.TryGet(out T spawnWave))
             {
                 wave = spawnWave;
                 return true;
@@ -170,10 +173,8 @@ namespace RGM.Modes
         private bool TryGetRandomSupportWave(out SpawnableWaveBase wave)
         {
             if (Random.Range(1, 3) == 1)
-            {
                 return TryGetExternalSupportWave<NtfMiniWave>(out wave) ||
                        TryGetExternalSupportWave<ChaosMiniWave>(out wave);
-            }
 
             return TryGetExternalSupportWave<ChaosMiniWave>(out wave) ||
                    TryGetExternalSupportWave<NtfMiniWave>(out wave);
@@ -184,7 +185,7 @@ namespace RGM.Modes
             if (Round.IsEnded || !PlayerManager.List.Any(x => x.IsDead && x.Role.Type != RoleTypeId.Overwatch))
                 return;
 
-            if (!TryGetRandomSupportWave(out SpawnableWaveBase wave))
+            if (!TryGetRandomSupportWave(out var wave))
                 return;
 
             _juggernautExternalSupportWaves.Add(wave);
@@ -197,12 +198,12 @@ namespace RGM.Modes
             if (Round.IsEnded || !PlayerManager.List.Any(x => x.IsDead && x.Role.Type != RoleTypeId.Overwatch))
                 return;
 
-            if (!TryGetRandomSupportWave(out SpawnableWaveBase wave))
+            if (!TryGetRandomSupportWave(out var wave))
                 return;
 
             Respawn.GrantTokens(wave.TargetFaction, 1);
 
-            if (!WaveTimer.TryGetWaveTimers(wave.TargetFaction, out List<WaveTimer> waves))
+            if (!WaveTimer.TryGetWaveTimers(wave.TargetFaction, out var waves))
                 return;
 
             foreach (var w in waves)
@@ -212,37 +213,30 @@ namespace RGM.Modes
         private void TriggerAnnihilation()
         {
             Warhead.Detonate();
-            foreach (var player in PlayerManager.List.Where(x => true))
-            {
-                player.Kill("초토화 작전으로 인해 모든것이 허무로 돌아갑니다...");
-            }
+            foreach (var player in PlayerManager.List.Where(x => true)) player.Kill("초토화 작전으로 인해 모든것이 허무로 돌아갑니다...");
         }
 
         private IEnumerator<float> OnModeStarted()
         {
             if (Random.Range(1, 101) <= 10)
-            {
                 //10% 확률로 워크스테이션 업그레이드 시작
                 Tools.TryInstallMode(ModeType.ABattle);
-            }
 
             Door.Get(DoorType.EscapeFinal).IsOpen = true;
 
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             _juggernaut = PlayerManager.List.ToList().GetRandomValue();
             _juggernaut.Role.Set(RoleTypeId.Tutorial);
             _juggernaut.Scale = new Vector3(1.12f, 1.12f, 1.12f);
-            _juggernaut.MaxHealth = 700 * PlayerManager.List.Count;
+            _juggernaut.MaxHealth = 630 * PlayerManager.List.Count;
             _juggernaut.Health = _juggernaut.MaxHealth;
             _juggernaut.IsBypassModeEnabled = true;
             _juggernaut.EnableEffect(EffectType.SinkHole);
             _juggernaut.EnableEffect(EffectType.Slowness, 5);
             _juggernaut.EnableEffect(EffectType.BodyshotReduction, 4);
-            _juggernaut.AddBroadcast(10, "<b><size=30>당신은 <color=#298A08>저거너트</color>입니다.</size></b>\n<size=25>본인을 제외한 모두를 사살하십시오.</size>");
+            _juggernaut.AddBroadcast(10,
+                "<b><size=30>당신은 <color=#298A08>저거너트</color>입니다.</size></b>\n<size=25>본인을 제외한 모두를 사살하십시오.</size>");
             _juggernaut.Position = new Vector3(123.3271f, 288.7908f, 27.01838f);
 
             List<ItemType> items =
@@ -279,9 +273,9 @@ namespace RGM.Modes
             _juggernaut.ClearInventory();
             _juggernaut.AddItem(ItemType.GunLogicer);
             _juggernaut.AddItem(ItemType.ArmorHeavy);
-            
+
             _juggernaut.AddHint("", "과부하의 영항으로 Jailbird가 파괴되었습니다.", 10f);
-            
+
             PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(10,
                 "<b><size=30><color=#298A08>저거너트</color>가 과부하 상태에 돌입합니다!</size></b>\n<size=25>모든 능력치가 강화되는 대신 지속 피해를 받으며, 받는 피해가 25% 증가합니다.</size>"));
             yield return Timing.WaitForSeconds(10f);
@@ -303,15 +297,15 @@ namespace RGM.Modes
 
         private IEnumerator<float> MonitorRoundEnd()
         {
-            bool IsEnd = false;
-            bool juggernautWon = false;
+            var IsEnd = false;
+            var juggernautWon = false;
             List<Player> winners = [];
             while (!IsEnd && !Round.IsEnded)
             {
                 if (_juggernaut.IsAlive)
                 {
-                    List<Player> alivePlayers = PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC).ToList();
-                    List<Player> aliveJuggernautTeam = alivePlayers.Where(IsJuggernautTeam).ToList();
+                    var alivePlayers = PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC).ToList();
+                    var aliveJuggernautTeam = alivePlayers.Where(IsJuggernautTeam).ToList();
 
                     if (!alivePlayers.Except(aliveJuggernautTeam).Any())
                     {
@@ -352,13 +346,15 @@ namespace RGM.Modes
             {
                 if (_juggernaut.TryGetNearestPlayer(out _, out var radius))
                 {
-                    int alivePlayersCount =
+                    var alivePlayersCount =
                         PlayerManager.List.Count(x => x.IsAlive && !x.IsNPC && !IsJuggernautTeam(x));
                     _juggernaut.AddHint("저거너트 레이더",
                         $"<b>[ 남은 인원 : {alivePlayersCount}명 | 가장 가까운 유기체와의 거리 : {radius:F1}m ]</b>", 1.1f);
                 }
                 else
+                {
                     _juggernaut.AddHint("저거너트 승리", "당신은 임무를 완수하였습니다.", 1.1f);
+                }
 
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -366,13 +362,13 @@ namespace RGM.Modes
 
         private IEnumerator<float> MusicAsync()
         {
-            AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"Player {_juggernaut.DisplayNickname}",
-                condition: (ReferenceHub hub) => { return !MuteBGMPlayers.Contains(Player.Get(hub)); },
-                onIntialCreation: (p) =>
+            var audioPlayer = AudioPlayer.CreateOrGet($"Player {_juggernaut.DisplayNickname}",
+                condition: hub => { return !MuteBGMPlayers.Contains(Player.Get(hub)); },
+                onIntialCreation: p =>
                 {
                     p.transform.parent = _juggernaut.GameObject.transform;
 
-                    Speaker speaker = p.AddSpeaker("Main", isSpatial: true, minDistance: 5f, maxDistance: 20f);
+                    var speaker = p.AddSpeaker("Main", isSpatial: true, minDistance: 5f, maxDistance: 20f);
 
                     speaker.transform.parent = _juggernaut.GameObject.transform;
                     speaker.transform.localPosition = Vector3.zero;
@@ -389,7 +385,7 @@ namespace RGM.Modes
             {
                 foreach (var wave in WaveManager.Waves)
                 {
-                    bool flag = WaveTimer.TryGetWaveTimers(wave.TargetFaction, out List<WaveTimer> waves);
+                    var flag = WaveTimer.TryGetWaveTimers(wave.TargetFaction, out var waves);
 
                     foreach (var w in waves)
                         w.SetTime((int)w.TimeLeft.TotalSeconds - 5);
@@ -409,7 +405,7 @@ namespace RGM.Modes
             if (!_juggernautExternalSupportWaves.Remove(ev.Wave))
                 return;
 
-            Events.ServerEvents.CallTutorialSupport(ev.Players);
+            ServerEvents.CallTutorialSupport(ev.Players);
         }
 
         private void Spawned(Player player)
@@ -428,11 +424,9 @@ namespace RGM.Modes
             ];
 
             if (scpsList.Contains(player.Role))
-            {
                 player.Role.Set(Tools.EnumToList<RoleTypeId>()
                     .Where(x => !scpsList.Contains(x) && x.IsScpRole())
                     .ToList().GetRandomValue());
-            }
         }
 
         private void OnSearchingPickup(SearchingPickupEventArgs ev)
@@ -498,7 +492,7 @@ namespace RGM.Modes
 
                 foreach (var wave in WaveManager.Waves)
                 {
-                    WaveTimer.TryGetWaveTimers(wave.TargetFaction, out List<WaveTimer> waves);
+                    WaveTimer.TryGetWaveTimers(wave.TargetFaction, out var waves);
 
                     foreach (var w in waves)
                         w.SetTime((int)w.TimeLeft.TotalSeconds - 5);
@@ -531,7 +525,10 @@ namespace RGM.Modes
         {
             if (ev.Player == _juggernaut && ev.Effect.GetEffectType() != EffectType.SinkHole)
             {
-                if (ev.Effect.GetEffectType() == EffectType.PocketCorroding) ev.IsAllowed = false;
+                if (ev.Effect.GetEffectType() == EffectType.PocketCorroding)
+                {
+                    ev.IsAllowed = false;
+                }
 
                 else if (ev.Effect.GetEffectType().GetCategories() == EffectCategory.Harmful ||
                          ev.Effect.GetEffectType().GetCategories() == EffectCategory.Negative)
@@ -549,7 +546,7 @@ namespace RGM.Modes
             ev.IsAllowed = false;
         }
 
-        private void OnChargingJailbird(Exiled.Events.EventArgs.Item.ChargingJailbirdEventArgs ev)
+        private void OnChargingJailbird(ChargingJailbirdEventArgs ev)
         {
             if (ev.Player == _juggernaut)
                 ev.Item.As<Jailbird>().TotalCharges = 0;

@@ -1,5 +1,7 @@
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
+using PlayerRoles;
+using PlayerStatsSystem;
 using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Unique.Scp3114.Legend;
@@ -20,13 +22,13 @@ public class Execution : Ability
 
     private void OnHurting(HurtingEventArgs ev)
     {
-        if (ev.Attacker == null || ev.Attacker != Owner)
+        if (ev.Attacker == null || ev.Attacker != Owner || ev.DamageHandler.Type != DamageType.Strangled)
             return;
 
-        if (ev.DamageHandler.Type == DamageType.Strangled)
-        {
-            ev.IsAllowed = false;
-            ApplyInstantKill.Apply(ev.Attacker, ev.Player);
-        }
+        ev.IsAllowed = false;
+        if (ApplyLethalDamage.Apply(ev.Attacker, ev.Player, DeathTranslations.Crushed))
+            ev.Attacker.ShowHitMarker(1.5f);
+
+        ev.Player.Role.Set(RoleTypeId.Spectator);
     }
 }

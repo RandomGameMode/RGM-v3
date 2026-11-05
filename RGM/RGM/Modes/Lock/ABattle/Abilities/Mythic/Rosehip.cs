@@ -7,6 +7,7 @@ using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using PlayerRoles;
+using PlayerStatsSystem;
 using RGM.API.Features;
 using Random = UnityEngine.Random;
 
@@ -84,7 +85,8 @@ public class Rosehip : Ability
             return;
         }
 
-        ApplyInstantKill.Apply(ev.Attacker, ev.Player);
+        ApplyLethalDamage.Apply(ev.Attacker, ev.Player, DeathTranslations.Crushed);
+        ev.Player.Role.Set(RoleTypeId.Spectator);
     }
 
     private void PruneResolved(float now)

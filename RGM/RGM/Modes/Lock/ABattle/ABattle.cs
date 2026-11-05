@@ -134,7 +134,7 @@ public class ABattle : Mode
         { "잔칫상", $"<color={RatingColor["희귀"]}>희귀</color> 이상 등급의 능력이 등장할 확률이 높아집니다." },
         { "스펙업", "능력을 획득할 때마다 15(SCP 45)만큼 최대 체력이 증가합니다." },
         { "캐시 청소", "8분마다 모든 유저의 워크스테이션 획득 기록이 초기화됩니다." },
-        //{ "환상", "워크스테이션 제한이 해제됩니다. 각 워크스테이션마다 처음 1회를 제외하고 추가로 얻으려고 시도하는 경우, 22% 확룔로 모든 능력과 아이템이 초기화됩니다." },
+        { "더블업", "2가지 추가 모드가 동시에 적용됩니다. 단, 난장판은 제외됩니다." },
         { "지원", "45 ~ 165초 중 랜덤 간격으로 모두에게 능력 선택창이 열립니다." },
         {
             "난장판",
@@ -185,7 +185,7 @@ public class ABattle : Mode
 
         string extraMode;
 
-        if (allowBasic && Convert.ToByte(Random.Range(1, 7)) == 1)
+        if (allowBasic && Convert.ToByte(Random.Range(1, ExtraModes.Count)) == 1)
         {
             extraMode = "기본";
         }
@@ -231,6 +231,10 @@ public class ABattle : Mode
                 break;
             case "지원":
                 Timing.RunCoroutine(Instance.Backup());
+                break;
+            case "더블업":
+                for (int i = 0; i < 2; i++)
+                    PickExtraMode(exceptModes: ["난장판"], allowBasic: false);
                 break;
             case "난장판":
             {

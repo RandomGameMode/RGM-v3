@@ -12,11 +12,10 @@ public static class ApplyLethalDamage
     public static bool Apply(Player attacker, Player target) =>
         Apply(attacker, target, DeathTranslations.Unknown);
 
-    public static bool Apply(
-        Player attacker,
-        Player target,
-        DeathTranslation deathReason)
+    public static bool Apply(Player attacker, Player target, DeathTranslation deathReason)
     {
+        var targetMaxHealth = target.MaxHealth + target.MaxArtificialHealth + target.MaxHumeShield;
+        
         if (attacker == null)
             throw new ArgumentNullException(nameof(attacker));
 
@@ -26,6 +25,6 @@ public static class ApplyLethalDamage
         if (!target.IsAlive || target.MaxHealth <= 0f)
             return false;
 
-        return ApplyFixedDamage.Apply(attacker, target, target.MaxHealth, deathReason);
+        return ApplyFixedDamage.Apply(attacker, target, targetMaxHealth, deathReason);
     }
 }

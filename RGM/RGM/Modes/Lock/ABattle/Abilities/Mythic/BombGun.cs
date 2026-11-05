@@ -11,20 +11,20 @@ using UnityEngine;
 namespace RGM.Modes.Abilities.Mythic;
 
 [Ability("워 머신", """
-                 발사할 때마다 최종 데미지가 30% 감소된 고폭 수류탄을 투하하는, 탄약이 무제한인 리볼버를 얻습니다.
+                 발사할 때마다 최종 데미지가 15% 감소된 고폭 수류탄을 투하하는, 탄약이 무제한인 Com15를 얻습니다.
                  능력 획득 시 자신이 받는 폭발 데미지가 98% 감소합니다.
                  """, AbilityCategory.Mythic, AbilityType.MYTHIC_BOMBGUN)]
 public class BombGun : Ability
 {
     private const float OwnerExplosionDamageMultiplier = 0.02f;
-    private const float WarMachineGrenadeDamageMultiplier = 0.7f;
+    private const float WarMachineGrenadeDamageMultiplier = 0.85f;
 
     private ushort _itemSerial;
     private readonly Dictionary<ExplosionGrenadeProjectile, Vector3> _bombGunGrenadePositions = new();
 
     public override void OnEnabled()
     {
-        Item item = Owner.AddItem(ItemType.GunRevolver);
+        Item item = Owner.AddItem(ItemType.GunCOM15);
 
         _itemSerial = item.Serial;
 
@@ -53,9 +53,9 @@ public class BombGun : Ability
 
         Timing.RunCoroutine(ExplodeOnImpact(throwable));
 
-        Timing.CallDelayed(1, () =>
+        Timing.CallDelayed(0.1f, () =>
         {
-            ev.Item.As<Firearm>().MagazineAmmo = 6;
+            ev.Item.As<Firearm>().MagazineAmmo = 18;
         });
     }
 

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace RGM.Modes.Abilities.Mythic;
 
 [Ability("차원 강탈자", """
-                   타격한 상대의 능력을 일정 확률로 강탈합니다.
+                   적 타격 시 30% 확률로 상대의 능력을 1개 강탈합니다.
                    적을 처치할 시, 상대의 능력을 모두 가져옵니다! (반사경 효과 미적용)
                    """,
     AbilityCategory.Mythic, AbilityType.MYTHIC_DIMENSIONTHIEF, isUnique: true)]
@@ -38,7 +38,7 @@ public class DimensionThief : Ability
     {
         if (!ev.IsAllowed || ev.Attacker != Owner || ev.Player == null ||
             !HitboxIdentity.IsEnemy(Owner.ReferenceHub, ev.Player.ReferenceHub) ||
-            Random.value >= 0.25f)
+            Random.value >= 0.3f)
         {
             return;
         }

@@ -1,7 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Scp1509;
 using MEC;
-using RGM.API.Features;
 
 namespace RGM.Events
 {
