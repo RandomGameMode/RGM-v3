@@ -89,7 +89,7 @@ public class ABattleEventHandler(ABattle aBattle)
         if (player.IsAlive)
             ABattle.ApplyPrelude(player);
         
-        if (!player.IsScp) 
+        if (!player.IsScp && !player.IsNPC) 
             player.ApplyGodMode(50f);
     }
 

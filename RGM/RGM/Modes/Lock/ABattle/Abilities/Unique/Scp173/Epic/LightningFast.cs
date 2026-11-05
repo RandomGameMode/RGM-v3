@@ -3,7 +3,7 @@
 namespace RGM.Modes.Abilities.Unique.Scp173.Epic;
 
 [Ability("전광석화",
-    "SCP-173의 기본 텔레포트 쿨타임이 고정 0.5초로 설정됩니다.",
+    "SCP-173의 기본 텔레포트 쿨타임이 50% 감소합니다.",
     AbilityCategory.Epic, AbilityType.EPIC_SCP173_LIGHTNINGFAST, RoleAbility.Scp173, isUnique: true)]
 public class LightningFast : Ability
 {
@@ -26,6 +26,6 @@ public class LightningFast : Ability
         if (ev.Player != Owner || !ev.IsAllowed) return;
 
         if (_isEnabled)
-            ev.BlinkCooldown = 0.5f;
+            ev.BlinkCooldown = 1.5f;
     }
 }

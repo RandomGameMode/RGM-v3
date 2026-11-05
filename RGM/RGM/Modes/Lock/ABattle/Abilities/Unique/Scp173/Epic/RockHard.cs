@@ -2,7 +2,7 @@
 
 namespace RGM.Modes.Abilities.Unique.Scp173.Epic;
 
-[Ability("경화", "받는 데미지가 55% 감소합니다.",
+[Ability("경화", "받는 데미지가 50% 감소합니다.",
     AbilityCategory.Epic, AbilityType.EPIC_SCP173_ROCKHARD, RoleAbility.Scp173, isUnique:true)]
 
 public class RockHard : Ability
@@ -21,6 +21,6 @@ public class RockHard : Ability
     {
         if (ev.Player != Owner || ev.Attacker == null) return;
         
-        ev.DamageHandler.Damage *= 0.45f;
+        ev.DamageHandler.Damage *= 0.5f;
     }
 }
