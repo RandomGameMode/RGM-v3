@@ -695,8 +695,8 @@ namespace RGM.Events
 
                     if (Random.Range(1, 1001) == 1) // 시작 049-2
                     {
-                        ev.Player.Role.Set(RoleTypeId.Scp0492);
-                        ev.Player.MaxHealth = 1000;
+                        ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.None);
+                        ev.Player.MaxHealth = 1777;
                         ev.Player.Health = ev.Player.MaxHealth;
                     }
 

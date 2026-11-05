@@ -1095,7 +1095,8 @@ namespace RGM.API.Features
                     GodModePlayers.Remove(player);
                     while (player.IsAlive)
                     {
-                        ApplyInstantKill.Apply(attacker, player);
+                        ApplyLethalDamage.Apply(attacker, player);
+                        player.Role.Set(RoleTypeId.Spectator);
                         yield return Timing.WaitForSeconds(0.1f);
                     }
 
