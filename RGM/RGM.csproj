@@ -827,7 +827,7 @@
     <Compile Include="RGM\Modes\Plus\RedLightGreenLight\RedLightGreenLight.cs" />
     <Compile Include="RGM\Modes\Plus\RocketLauncher\RocketLauncher.cs" />
     <Compile Include="RGM\Modes\Set\Run!\Run.cs" />
-    <Compile Include="RGM\Modes\Set\SCPRUSH\SCPRUSH.cs" />
+    <Compile Include="RGM\Modes\Set\ScpRush\ScpRush.cs" />
     <Compile Include="RGM\Modes\Plus\Siberia\Siberia.cs" />
     <Compile Include="RGM\Modes\Set\Rescue05\Rescue05.cs" />
     <Compile Include="RGM\Modes\Lock\RussianRoulette\RussianRoulette.cs" />
