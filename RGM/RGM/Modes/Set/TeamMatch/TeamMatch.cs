@@ -221,7 +221,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> RespawnPlayer(Player player, int modeId)
         {
-            yield return Timing.WaitForSeconds(5f);
+            yield return Timing.WaitForSeconds(2f);
 
             if (!_isModeActive || modeId != _modeId || _isMatchEnded || !Round.IsLocked || player.IsAlive)
                 yield break;
