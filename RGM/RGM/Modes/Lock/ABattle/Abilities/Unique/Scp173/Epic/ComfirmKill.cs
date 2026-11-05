@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.DamageHandlers;
 using Exiled.Events.EventArgs.Player;
 using MEC;
+using PlayerRoles;
 using RGM.API.Features;
 
 namespace RGM.Modes.Abilities.Unique.Scp173.Epic;
@@ -13,6 +14,8 @@ namespace RGM.Modes.Abilities.Unique.Scp173.Epic;
 
 public class ComfirmKill : Ability
 {
+    private HashSet<Player> KillingPlayer = [];
+    
     public override void OnEnabled()
     {
         Exiled.Events.Handlers.Player.Dying += OnDying;
@@ -34,12 +37,16 @@ public class ComfirmKill : Ability
         Timing.RunCoroutine(KillProcess(ev.Player, ev.DamageHandler));
     }
 
-    private static IEnumerator<float> KillProcess(Player player, CustomDamageHandler handler)
+    private IEnumerator<float> KillProcess(Player player, CustomDamageHandler handler)
     {
-        while (!player.IsDead)
+        if (!KillingPlayer.Add(player)) yield break;
+
+        while (player.Role.Type is not RoleTypeId.Spectator)
         {
             yield return Timing.WaitForOneFrame;
             player.Kill(handler);
         }
+
+        KillingPlayer.Remove(player);
     }
 }
