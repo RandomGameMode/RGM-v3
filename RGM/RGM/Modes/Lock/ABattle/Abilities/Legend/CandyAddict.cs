@@ -8,7 +8,7 @@ using RGM.API.Features;
 namespace RGM.Modes.Abilities.Legend;
 
 [Ability("마약 중독자", """
-                   9초마다 랜덤한 사탕이 지급됩니다.
+                   6초마다 랜덤한 사탕이 지급됩니다.
                    Halloween 기간에는 지급 시간이 3초 감소되고, 지급 개수가 1개 증가합니다.
                    """, AbilityCategory.Legend, AbilityType.LEGEND_CANDYADDICT)]
 public class CandyAddict : Ability
@@ -27,7 +27,7 @@ public class CandyAddict : Ability
             Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
             if (_isHalloween) Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
-            yield return Timing.WaitForSeconds(_isHalloween ? 6 : 9);
+            yield return Timing.WaitForSeconds(_isHalloween ? 3 : 6);
         } 
     }
 }

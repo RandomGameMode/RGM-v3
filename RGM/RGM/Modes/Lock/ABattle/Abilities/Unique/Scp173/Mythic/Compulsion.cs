@@ -14,8 +14,8 @@ namespace RGM.Modes.Abilities.Unique.Scp173.Mythic;
 
 [Ability("강박증",
     """
-    40m 이내의 플레이어가 자신을 강제로 보게 합니다.
-    추가로, 『피격 제한』이 자신의 최대 HP의 0.25%까지 적용됩니다.
+    40m 이내의 플레이어가 자신을 강제로 보게 하며. 보는 시간이 길어질수록 점차 강해지는 실명 효과를 부여합니다.
+    추가로, 『피격 제한』이 자신의 최대 HP의 0.05%까지 적용됩니다.
     """,
     AbilityCategory.Mythic,
     AbilityType.MYTHIC_SCP173_COMPULSION,
@@ -23,7 +23,7 @@ namespace RGM.Modes.Abilities.Unique.Scp173.Mythic;
 
 public class Compulsion : Ability
 {
-    private const float MaxHealthRatio = 0.0025f;
+    private const float MaxHealthRatio = 0.0005f;
     private int visionMask = VisionInformation.VisionLayerMask;
     private CoroutineHandle Handle;
     public override void OnEnabled()
@@ -67,8 +67,9 @@ public class Compulsion : Ability
                 if (Physics.Linecast(target.CameraTransform.position, Owner.CameraTransform.position, visionMask)) continue;
                 target.ForceLookAt(Owner.CameraTransform.position);
                 target.AddHint("강박증", "<b><color=#FF0000>눈을 떼지 않으면 안돼...</color></b>");
+                target.AddEffect(EffectType.Blinded, 1, 1);
             }
-            yield return Timing.WaitForOneFrame;
+            yield return Timing.WaitForSeconds(0.0667f);
         }
     }
 }

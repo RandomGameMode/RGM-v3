@@ -29,14 +29,6 @@ namespace RGM.API.Features
 {
     public static class Tools
     {
-        /*[Obsolete("이 메서드 대신 Exiled 의 확장 메서드 GetRandomValue를 사용하세요")]
-        public static T GetRandomValue<T>(List<T> list)
-        {
-            System.Random random = new System.Random();
-            int index = random.Next(0, list.Count);
-            return list[index];
-        }*/
-
         public static List<T> EnumToList<T>()
         {
             Array items = Enum.GetValues(typeof(T));
@@ -392,11 +384,11 @@ namespace RGM.API.Features
                 UsersManager.SaveUsers();
 
                 WinMessage =
-                    $"<size={30 - Math.Round(playerList.Count * 0.5f)}><color=yellow><b>✨</b></color> <b>{string.Join($", ", playerList.Select(x => $"<color={x.Role.Color.ToHex()}><i>{x.DisplayNickname}</i></color>"))}</b>(이)가 <b>{amount}</b> EXP, 랜덤코인을 획득하였습니다";
+                    $"<size={30 - Math.Round(playerList.Count * 0.5f)}><color=yellow><b>✨</b></color> <b>{string.Join($", ", playerList.Select(x => $"<color={x.Role.Color.ToHex()}><i>{x.DisplayNickname}</i></color>"))}</b>(이)가 <b>{amount}</b>" + (isPreSeason ? "" : "EXP, ") + "랜덤코인을 획득하였습니다";
             }
             else
             {
-                WinMessage = $"<size=25>서버 인원이 10명 이하이므로 우승 보상은 지급되지 않습니다.</size>";
+                WinMessage = "<size=25>서버 인원이 10명 이하이므로 우승 보상은 지급되지 않습니다.</size>";
             }
         }
 
@@ -417,7 +409,7 @@ namespace RGM.API.Features
             List<Player> exceptPlayers = null)
         {
             nearestPlayer = null;
-            radius = 99999;
+            radius = short.MaxValue;
 
             exceptPlayers ??= [];
 
@@ -755,7 +747,7 @@ namespace RGM.API.Features
 
             onEnabledMethod?.Invoke(modeInstance, null);
 
-            if (!Main.Instance.Config.IsDevMode && !Round.IsEnded && Server.PlayerCount >= 15)
+            if (!Main.Instance.Config.IsDevMode && !Round.IsEnded && Server.PlayerCount >= 10)
                 Webhook.Send($"{m.GetModeData().Name}",
                     ReadTextFile(Path.Combine(Paths.Configs, "RGM"), "Webhook3.txt"));
 
@@ -903,6 +895,11 @@ namespace RGM.API.Features
             IsSuggestProcessing = false;
             SuggestPlayers.Clear();
         }
+
+        /*public static IEnumerator<float> SurrenderVote(Player host)
+        {
+            
+        }*/
 
         public static void MakeSnake(Player player)
         {
