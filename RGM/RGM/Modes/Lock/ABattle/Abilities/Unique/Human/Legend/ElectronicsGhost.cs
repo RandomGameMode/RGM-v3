@@ -23,7 +23,7 @@ namespace RGM.Modes.Abilities.Unique.Human.Legend;
     추가로, 6초간 모든 시설 시스템을 정지시키며, SCP-079의 신호를 15초간 차단시키고, 레벨을 2 감소시킵니다.
     사용 시 재사용 대기시간 120초가 적용됩니다.
     """, 
-    AbilityCategory.Mythic, AbilityType.MYTHIC_HUMAN_ELECTRONICSGHOST, RoleAbility.Human, isUnique:true)]
+    AbilityCategory.Legend, AbilityType.LEGEND_HUMAN_ELECTRONICSGHOST, RoleAbility.Human, isUnique:true)]
 
 public class ElectronicsGhost : Ability
 {
