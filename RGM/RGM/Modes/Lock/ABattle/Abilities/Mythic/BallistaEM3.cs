@@ -12,13 +12,13 @@ using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Mythic;
 
-[Ability("BALLISTA EM-3",
+/*[Ability("BALLISTA EM-3",
     """
     10초마다 탄약이 하나 추가되고, 90% 확률로 능력을 삭제하며, 벽을 관통하고, 1300 데미지를 입히는 입자 분열기를 받습니다.
     능력 삭제 시도에 실패하거나 능력이 없는 대상을 공격 시, 『죽음에 이르는 공격』을 가합니다.
     추가로, [영웅] 투시를 받습니다.
     """,
-    AbilityCategory.Mythic, AbilityType.MYTHIC_BALLISTAEM3)]
+    AbilityCategory.Mythic, AbilityType.MYTHIC_BALLISTAEM3)]*/
 public class BallistaEM3 : Ability
 {
     private readonly Mutex _mutex = new();

@@ -10,12 +10,12 @@ using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Mythic;
 
-/*[Ability("로켓 런처", """
+[Ability("로켓 런처", """
                   공격 시, 8% 확률로 상대방을 하늘로 승천시킬 수 있습니다!
                   <color=red>SCP</color>는 40% 확률로 적용되며, 특정 직업군은 무조건 승천시킵니다!
                   해당 공격은 『사망』 효과가 적용됩니다.
                   """,
-    AbilityCategory.Mythic, AbilityType.MYTHIC_ROCKETLAUNCHER)]*/
+    AbilityCategory.Mythic, AbilityType.MYTHIC_ROCKETLAUNCHER)]
 public class RocketLauncher : Ability
 {
     private readonly List<Player> _isInRocket = [];

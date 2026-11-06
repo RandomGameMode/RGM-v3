@@ -11,7 +11,7 @@ using RGM.API.Features;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.Spleef)]
+    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.Spleef)]
     class Spleef : Mode
     {
         public override string Name => "스플리프";

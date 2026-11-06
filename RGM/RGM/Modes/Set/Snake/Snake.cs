@@ -13,7 +13,7 @@ using AFK;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.Snake)]
+    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.Snake)]
     public class Snake : Mode
     {
         public override string Name => "스네이크";
@@ -147,7 +147,7 @@ namespace RGM.Modes
             {
                 Round.IsLocked = false;
 
-                List<Player> getResult()
+                List<Player> GetResult()
                 {
                     int maxScore = int.MinValue;
                     var tops = new List<Player>();
@@ -170,13 +170,17 @@ namespace RGM.Modes
                     return tops;
                 }
 
-                 List<Player> players = getResult();
+                var players = GetResult();
 
-                if (players.Count() == 1)
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
-
-                else if (players.Count() > 1)
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 3));
+                switch (players.Count)
+                {
+                    case 1:
+                        Timing.RunCoroutine(Tools.SetWinner([.. players], 5));
+                        break;
+                    case > 1:
+                        Timing.RunCoroutine(Tools.SetWinner([.. players], 3));
+                        break;
+                }
             }
         }
 

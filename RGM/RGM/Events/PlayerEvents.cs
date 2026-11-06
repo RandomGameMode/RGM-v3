@@ -420,7 +420,7 @@ namespace RGM.Events
                                 }
 
                                 List<string> uc = UsersManager.UsersCache[ev.Player.UserId];
-                                string formatted = Notions.LobbyMessage
+                                string formatted = Notions.LobbyMessage // 해당 내용 DisplayKit로 변경할 예정
                                     .Replace("{FirstMark}", ModeVote[iv(1)].Contains(ev.Player) ? "■" : "□")
                                     .Replace("{SecondMark}", ModeVote[iv(2)].Contains(ev.Player) ? "■" : "□")
                                     .Replace("{ThirdMark}", ModeVote[iv(3)].Contains(ev.Player) ? "■" : "□")
@@ -574,7 +574,7 @@ namespace RGM.Events
             if (ragdoll == null)
                 return;
 
-            Timing.CallDelayed(5 * 60, () =>
+            Timing.CallDelayed(150, () =>
             {
                 if (ragdoll.Base == null)
                     return;
@@ -634,6 +634,13 @@ namespace RGM.Events
 
                 if (ev.Player.IsScpRole())
                     Timing.RunCoroutine(ScpGlow(ev.Player));
+
+                // SCP-079로 스폰될 때마다 체력을 적용한다.
+                if (ev.Player.Role.Type == RoleTypeId.Scp079)
+                {
+                    ev.Player.MaxHealth = 4500;
+                    ev.Player.Health = ev.Player.MaxHealth;
+                }
             }
 
             if (ev.Reason == SpawnReason.RoundStart)
@@ -646,13 +653,6 @@ namespace RGM.Events
 
                 if (ev.Player.IsScpRole())
                 {
-                    if (ev.Player.Role.Type == RoleTypeId.Scp079)
-                    {
-                        ev.Player.MaxHealth = 4500;
-                        ev.Player.Health = ev.Player.MaxHealth;
-                        // 라운드 시작시 단 1번만 작동함. 매 스폰마다 작동하도록 수정해야 함.
-                    }
-
                     if (CurrentMode != ModeType.None && CurrentMode.GetModeData().Info == ModeInfo.Plus)
                     {
                         if (!PlayersInfo.ContainsKey(ev.Player.UserId))
@@ -695,8 +695,8 @@ namespace RGM.Events
 
                     if (Random.Range(1, 1001) == 1) // 시작 049-2
                     {
-                        ev.Player.Role.Set(RoleTypeId.Scp0492);
-                        ev.Player.MaxHealth = 1000;
+                        ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.None);
+                        ev.Player.MaxHealth = 1777;
                         ev.Player.Health = ev.Player.MaxHealth;
                     }
 
@@ -960,7 +960,7 @@ namespace RGM.Events
             if (pickup == null)
                 return;
 
-            Timing.CallDelayed(3 * 60, () =>
+            Timing.CallDelayed(150, () =>
             {
                 if (pickup.Base == null)
                     return;
@@ -975,7 +975,7 @@ namespace RGM.Events
             if (ammoPickups == null)
                 return;
 
-            Timing.CallDelayed(3 * 60, () =>
+            Timing.CallDelayed(150, () =>
             {
                 foreach (var ammo in ammoPickups)
                 {

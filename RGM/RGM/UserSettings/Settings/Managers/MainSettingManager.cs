@@ -1,4 +1,5 @@
 ﻿using SecretAPI.Features.UserSettings;
+using UnityEngine;
 
 namespace RGM.UserSettings;
 
@@ -63,7 +64,7 @@ public static partial class MainSettingManager
 
     private sealed partial class RightKeySetting;
 
-    private sealed partial class EnterKeySetting : CustomKeybindSetting;
+    private sealed partial class EnterKeySetting;
 
     private sealed partial class DetailInfoKeySetting;
 }

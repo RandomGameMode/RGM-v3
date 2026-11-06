@@ -2,6 +2,8 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using MEC;
+using PlayerRoles;
+using PlayerStatsSystem;
 using RGM.API.Features;
 using UnityEngine;
 
@@ -43,7 +45,8 @@ public class Kick : Ability
             // 폭발의 투척자를 피해자가 아닌 공격자(Owner)로 지정한다.
             // 피해자가 투척자이면 즉사 처리 직후 투척자가 사망 상태가 되어 폭발이 정상 처리되지 않는다.
             player.ExplodeGrenade(fuseTime: 0.01f, ignore: true, instakill: false, thrower: Owner);
-            ApplyInstantKill.Apply(Owner, player);
+            ApplyLethalDamage.Apply(Owner, player, DeathTranslations.Crushed);
+            player.Role.Set(RoleTypeId.Spectator);
         }
         else
         {

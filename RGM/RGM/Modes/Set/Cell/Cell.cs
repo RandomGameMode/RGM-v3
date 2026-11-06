@@ -64,7 +64,7 @@ namespace RGM.Modes
 
             while (true)
             {
-                Player badLucky = PlayerManager.List.Where(x => x.IsAlive).ToList().GetRandomValue();
+                var badLucky = PlayerManager.List.Where(x => x.IsAlive).ToList().GetRandomValue();
 
                 Throwable scp018 = (Throwable)badLucky.AddItem(ItemType.SCP018);
                 Scp018 scp = (Scp018)scp018;
@@ -81,7 +81,7 @@ namespace RGM.Modes
             if (!_pl.Contains(ev.Player)) return;
             _pl.Remove(ev.Player);
 
-            if (_pl.Count() >= 2) return;
+            if (_pl.Count >= 2) return;
             Round.IsLocked = false;
 
             PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20, $"승리자 : {_pl[0].DisplayNickname}"));

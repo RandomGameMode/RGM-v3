@@ -15,8 +15,10 @@ namespace RGM.Modes
     {
         public override string Name => "수집가";
         public override string Description => "SCP 아이템 3개를 가지고 시작합니다.";
+
         public override string Detail =>
             "이름에 <color=#FE2E2E>SCP</color>가 들어가는 모든 아이템 중에서 랜덤으로 3개를 지급받고 시작합니다.";
+
         public override string Color => "FFBF00";
 
         public static Collector Instance;
@@ -39,9 +41,12 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
-            if (Random.Range(1, 101) <= 10) { //10% 확률로 워크스테이션 업그레이드 시작
+            if (Random.Range(1, 101) <= 10)
+            {
+                //10% 확률로 워크스테이션 업그레이드 시작
                 Tools.TryInstallMode(ModeType.ABattle);
             }
+
             foreach (var player in PlayerManager.List.Where(x => x.IsAlive && x.Role.Type != RoleTypeId.Scp079))
             {
                 Timing.RunCoroutine(Spawned(player));
@@ -60,9 +65,11 @@ namespace RGM.Modes
             if (player.Role.Type == RoleTypeId.Scp079 || !player.IsAlive || player.IsNonePlayer())
                 yield break;
 
-            for (int i=1; i<4; i++)
+            for (int i = 1; i < 4; i++)
             {
-                player.AddItem(Tools.EnumToList<ItemType>().Where(x => x.ToString().Contains("SCP") && !Datas.ExceptItems.Contains(x)).ToList().GetRandomValue());
+                player.AddItem(Tools.EnumToList<ItemType>()
+                    .Where(x => x.ToString().Contains("SCP") && !Datas.ExceptItems.Contains(x)).ToList()
+                    .GetRandomValue());
 
                 yield return Timing.WaitForSeconds(1);
             }

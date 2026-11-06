@@ -1,6 +1,8 @@
 ﻿using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using MEC;
+using PlayerRoles;
+using PlayerStatsSystem;
 using RGM.API.Features;
 using static RGM.Variables.Variable;
 
@@ -41,7 +43,8 @@ public class OnePunch : Ability
             ev.DamageHandler.Type != DamageType.Scp0492)
             return;
 
-        if (ApplyInstantKill.Apply(Owner, ev.Player))
+        if (ApplyLethalDamage.Apply(Owner, ev.Player, DeathTranslations.Crushed))
             Owner.ShowHitMarker(1.5f);
+        ev.Player.Role.Set(RoleTypeId.Spectator);
     }
 }

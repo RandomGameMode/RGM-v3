@@ -69,9 +69,9 @@ namespace RGM.Modes.SnakeSystem
             }
             catch (System.Exception)
             {
-#pragma warning disable CS0618
+#pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
                 snakeDisplays = UnityEngine.Object.FindObjectsOfType<SnakeDisplay>();
-#pragma warning restore CS0618
+#pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
             }
 
             // Önce tüm oyuncuları kontrol et

@@ -10,40 +10,45 @@ using RGM.API.Features;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.SpeedRun)]
-    class SpeedRun : Mode
+    internal class SpeedRun : Mode
     {
         public override string Name => "스피드런";
         public override string Description => "누구보다 빠르게 시설에서 탈출하세요. 아, 그리고 핵을 중지하려 시도하지 마세요!";
-        public override string Detail =>
-"""
-아이템이 <color=#C8FE2E>랜덤</color>하게 지급됩니다.
 
-모든 방법을 총동원하여 1등으로 시설에서 탈출하세요.
-그것 뿐입니다.
-""";
+        public override string Detail =>
+            """
+            아이템이 <color=#C8FE2E>랜덤</color>하게 지급됩니다.
+
+            모든 방법을 총동원하여 1등으로 시설에서 탈출하세요.
+            그것 뿐입니다.
+            """;
+
         public override string Color => "58FAAC";
 
         public static SpeedRun Instance;
 
-        List<Player> pl = new List<Player>();
-        List<ItemType> _standards = new List<ItemType>()
-        {
+        private readonly List<Player> _pl = [];
+
+        private readonly List<ItemType> _standards =
+        [
             ItemType.Flashlight
-        };
-        List<ItemType> _extensions = new List<ItemType>()
-        {
+        ];
+
+        private readonly List<ItemType> _extensions =
+        [
             ItemType.KeycardO5,
             ItemType.Adrenaline,
             ItemType.Coin,
             ItemType.Lantern,
             ItemType.Medkit,
             ItemType.Painkillers
-        };
-        List<ItemType> _itemsList = new List<ItemType>();
+        ];
 
-        bool IsEnd = false;
+        private readonly List<ItemType> _itemsList = [];
 
-        CoroutineHandle _onModeStarted;
+        private bool _isEnd;
+
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -68,20 +73,18 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            PlayerManager.List.ToList().CopyTo(pl);
+            PlayerManager.List.ToList().CopyTo(_pl);
 
             Warhead.Start();
 
-            foreach (var Item in _standards)
-                _itemsList.Add(Item);
+            foreach (var item in _standards)
+                _itemsList.Add(item);
 
-            foreach (var Item in _extensions)
-            {
+            foreach (var item in _extensions)
                 if (UnityEngine.Random.Range(1, 3) == 1)
-                    _itemsList.Add(Item);
-            }
+                    _itemsList.Add(item);
 
             Tools.TryInstallMode(ModeType.FriendlyFire);
 
@@ -91,67 +94,57 @@ namespace RGM.Modes
             yield break;
         }
 
-        public void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
+        private void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
         {
             Spawned(ev.Player);
         }
 
-        public void Spawned(Player player)
+        private void Spawned(Player player)
         {
-            if (pl.Contains(player))
+            if (!_pl.Contains(player)) return;
+            if (player.Role.Type == RoleTypeId.ChaosConscript)
+                return;
+
+            player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.All);
+
+            Timing.CallDelayed(0.1f, () =>
             {
-                if (player.Role.Type == RoleTypeId.ChaosConscript)
-                    return;
-
-                if (player.Role.Type != RoleTypeId.ClassD)
-                    player.Role.Set(RoleTypeId.ClassD);
-
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    foreach (var _item in _itemsList)
-                        player.AddItem(_item);
-                });
-            }
+                foreach (var item in _itemsList)
+                    player.AddItem(item);
+            });
         }
 
-        public void OnDying(Exiled.Events.EventArgs.Player.DyingEventArgs ev)
+        private void OnDying(Exiled.Events.EventArgs.Player.DyingEventArgs ev)
         {
-            if (pl.Contains(ev.Player))
-            {
-                pl.Remove(ev.Player);
+            if (!_pl.Contains(ev.Player)) return;
+            _pl.Remove(ev.Player);
 
-                if (pl.Count() < 2)
-                {
-                    if (!IsEnd)
-                    {
-                        Round.IsLocked = false;
+            if (_pl.Count >= 2) return;
+            if (_isEnd) return;
+            Round.IsLocked = false;
 
-                        PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20, $"<b><size=30><생존자 : {pl[0].DisplayNickname}></size></b>"));
-                        Timing.RunCoroutine(Tools.SetWinner(new List<Player>() { pl[0] }, 5));
-                        IsEnd = true;
-                    }
-                }
-            }
+            PlayerManager.List.ToList().ForEach(x =>
+                x.AddBroadcast(20, $"<b><size=30><생존자 : {_pl[0].DisplayNickname}></size></b>"));
+            Timing.RunCoroutine(Tools.SetWinner([_pl[0]], 5));
+            _isEnd = true;
         }
 
-        public void OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
+        private void OnEscaping(Exiled.Events.EventArgs.Player.EscapingEventArgs ev)
         {
-            if (ev.Player.Role.Type == RoleTypeId.ClassD)
-            {
-                if (!IsEnd)
-                {
-                    Round.IsLocked = false;
+            if (ev.Player.Role.Type != RoleTypeId.ClassD) return;
+            if (_isEnd) return;
+            Round.IsLocked = false;
 
-                    PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20, $"<b><size=30><최초 탈출자 : {ev.Player.DisplayNickname}></size></b>"));
-                    Timing.RunCoroutine(Tools.SetWinner(new List<Player>() { ev.Player }, 5));
-                    IsEnd = true;
-                }
-            }
+            PlayerManager.List.ToList().ForEach(x =>
+                x.AddBroadcast(20, $"<b><size=30><최초 탈출자 : {ev.Player.DisplayNickname}></size></b>"));
+            Timing.RunCoroutine(Tools.SetWinner([ev.Player], 5));
+            _isEnd = true;
         }
 
-        public void OnStopping(Exiled.Events.EventArgs.Warhead.StoppingEventArgs ev)
+        private void OnStopping(Exiled.Events.EventArgs.Warhead.StoppingEventArgs ev)
         {
-            PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20, $"<size=30>{ev.Player.DisplayNickname}(으)로 인해 20초 뒤 <color=red>핵</color>이 강제로 폭파됩니다.</size>"));
+            PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20,
+                $"<size=30>{ev.Player.DisplayNickname}(으)로 인해 20초 뒤 <color=red>핵</color>이 강제로 폭파됩니다.</size>"));
 
             Timing.CallDelayed(20, Warhead.Detonate);
         }

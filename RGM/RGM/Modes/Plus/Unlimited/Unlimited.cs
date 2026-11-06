@@ -6,6 +6,7 @@ using Exiled.API.Features.Items;
 using Exiled.API.Features.Roles;
 using Exiled.Events.EventArgs.Item;
 using Exiled.Events.EventArgs.Player;
+using InventorySystem.Items.MicroHID.Modules;
 using MEC;
 using PlayerRoles;
 using RGM.API.Features;
@@ -18,10 +19,12 @@ internal class Unlimited : Mode
 {
     public override string Name => "무제한";
     public override string Description => "말 그대로 제한이 없습니다.";
+
     public override string Detail =>
         """
         몇몇 개의 기능들은 제한이 있습니다.
         """;
+
     public override string Color => "3F13AB";
 
     public static Unlimited Instance;
@@ -31,10 +34,8 @@ internal class Unlimited : Mode
     private CoroutineHandle _onModeStarted;
 
     private const float ChargingJailbirdDuration = 5f;
-    private const float MicroHidChargeDelay = 2f;
 
     private static readonly Dictionary<ushort, float> ChargingJailbirds = [];
-    private static readonly Dictionary<ushort, int> MicroHidChargeVersions = [];
 
     public override void OnEnabled()
     {
@@ -65,7 +66,7 @@ internal class Unlimited : Mode
         Exiled.Events.Handlers.Scp173.UsingBreakneckSpeeds += OnUsingBreakneckSpeeds;
 
         Exiled.Events.Handlers.Item.ChargingJailbird += OnChargingJailbird;
-            
+
         Timing.RunCoroutine(OnModeStarted());
     }
 
@@ -96,19 +97,21 @@ internal class Unlimited : Mode
 
         Exiled.Events.Handlers.Scp173.PlacingTantrum -= OnPlacingTantrum;
         Exiled.Events.Handlers.Scp173.UsingBreakneckSpeeds -= OnUsingBreakneckSpeeds;
-            
+
         Exiled.Events.Handlers.Item.ChargingJailbird -= OnChargingJailbird;
 
         Timing.KillCoroutines(_onModeStarted);
         ChargingJailbirds.Clear();
-        MicroHidChargeVersions.Clear();
     }
 
     private static IEnumerator<float> OnModeStarted()
     {
-        if (Random.Range(1, 101) <= 10) { //10% 확률로 워크스테이션 업그레이드 시작
+        if (Random.Range(1, 101) <= 10)
+        {
+            //10% 확률로 워크스테이션 업그레이드 시작
             Tools.TryInstallMode(ModeType.ABattle);
         }
+
         PlayerManager.List.ToList().ForEach(Spawned);
 
         while (true)
@@ -120,8 +123,8 @@ internal class Unlimited : Mode
                     case Scp049Role scp049:
                     {
                         if (scp049.IsAlive)
-                            scp049.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
-                                    
+                            scp049.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
+
                         if (scp049.CallCooldown > 0)
                             scp049.CallCooldown = 0;
 
@@ -135,8 +138,8 @@ internal class Unlimited : Mode
                     case Scp106Role scp106:
                     {
                         if (scp106.IsAlive)
-                            scp106.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
-                            
+                            scp106.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
+
                         if (scp106.CaptureCooldown > 0)
                             scp106.CaptureCooldown = 0;
 
@@ -147,8 +150,8 @@ internal class Unlimited : Mode
                     case Scp173Role scp173:
                     {
                         if (scp173.IsAlive)
-                            scp173.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
-                            
+                            scp173.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
+
                         if (scp173.BlinkCooldown > 1f)
                             scp173.BlinkCooldown = 1f;
 
@@ -159,8 +162,8 @@ internal class Unlimited : Mode
                     case Scp096Role scp096:
                     {
                         if (scp096.IsAlive)
-                            scp096.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
-                            
+                            scp096.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
+
                         if (scp096.EnrageCooldown > 0)
                             scp096.EnrageCooldown = 0;
 
@@ -171,8 +174,8 @@ internal class Unlimited : Mode
                     case Scp939Role scp939:
                     {
                         if (scp939.IsAlive)
-                            scp939.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
-                            
+                            scp939.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
+
                         if (scp939.MimicryCooldown > 0)
                             scp939.MimicryCooldown = 0;
 
@@ -197,7 +200,9 @@ internal class Unlimited : Mode
                         if (scp079.PingAbility != null)
                         {
                             var field = typeof(PlayerRoles.PlayableScps.Scp079.Pinging.Scp079PingAbility)
-                                .GetField("_rateLimiter", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+                                .GetField("_rateLimiter",
+                                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic |
+                                    System.Reflection.BindingFlags.Public);
 
                             if (field != null)
                             {
@@ -210,13 +215,13 @@ internal class Unlimited : Mode
                     case Scp0492Role scp0492:
                     {
                         if (scp0492.IsAlive)
-                            scp0492.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
+                            scp0492.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
                         break;
                     }
                     case Scp3114Role scp3114:
                     {
                         if (scp3114.IsAlive)
-                            scp3114.HumeShieldModule.HsStat.MaxValue = player.MaxHealth;
+                            scp3114.HumeShieldModule.HsStat.MaxValue = player.MaxHealth * 0.5f;
                         break;
                     }
                 }
@@ -239,7 +244,7 @@ internal class Unlimited : Mode
         if (player.Role.Type == RoleTypeId.Scp0492)
             player.MaxHealth += 100;
     }
-        
+
     private static void OnHealing(HealingEventArgs ev)
     {
         ev.Player.MaxHealth += ev.Amount;
@@ -315,8 +320,10 @@ internal class Unlimited : Mode
         yield return Timing.WaitForOneFrame;
 
         ev.Scp096.EnrageCooldown = 0;
-        ev.Scp096.EnragedTimeLeft = 99999;
+        ev.Scp096.EnragedTimeLeft = 9999;
         ev.Scp096.SprintingSpeed = 500;
+        ev.Scp096.TotalEnrageTime = 9999;
+        ev.Scp096.RageManager.HumeShieldBlocked = false;
     }
 
     private IEnumerator<float> OnPlacingTantrum(Exiled.Events.EventArgs.Scp173.PlacingTantrumEventArgs ev)
@@ -336,7 +343,8 @@ internal class Unlimited : Mode
         }
     }
 
-    private static IEnumerator<float> OnUsingBreakneckSpeeds(Exiled.Events.EventArgs.Scp173.UsingBreakneckSpeedsEventArgs ev)
+    private static IEnumerator<float> OnUsingBreakneckSpeeds(
+        Exiled.Events.EventArgs.Scp173.UsingBreakneckSpeedsEventArgs ev)
     {
         yield return Timing.WaitForSeconds(1f);
 
@@ -350,6 +358,8 @@ internal class Unlimited : Mode
 
     private static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev)
     {
+        if (ev.NewPhase == MicroHidPhase.WindingUp)
+            ev.NewPhase = MicroHidPhase.Firing;
         ev.MicroHID.Energy = 1f;
     }
 
@@ -381,14 +391,14 @@ internal class Unlimited : Mode
         if (HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub))
         {
             jailbird.TotalDamageDealt = 0;
-                
+
             var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, ev.Player);
             g.FuseTime = 0.1f;
             g.MaxRadius = 0f;
             g.SpawnActive(ev.Player.Position, ev.Attacker);
         }
     }
-        
+
     private static void OnChargingJailbird(ChargingJailbirdEventArgs ev)
     {
         if (ev.Item == null || ev.Player == null) return;

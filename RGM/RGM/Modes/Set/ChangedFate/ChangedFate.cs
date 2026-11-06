@@ -120,7 +120,7 @@ $"""
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner([.. players], 5));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], PlayerManager.List.Count / 2));
                     break;
                 case > 1:
                     Timing.RunCoroutine(Tools.SetWinner([.. players], 1));

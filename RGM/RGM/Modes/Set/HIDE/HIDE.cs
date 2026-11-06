@@ -76,22 +76,21 @@ namespace RGM.Modes
                     _monster.RankName = "MONSTER";
                     _monster.RankColor = "red";
                     _monster.Position = new Vector3(-0.6015625f, 332.9026f, -32.56641f);
-                    Server.ExecuteCommand($"/open ESCAPE_PRIMARY");
 
-                    float health = 15 * PlayerManager.List.Count;
+                    float health = 13 * PlayerManager.List.Count;
                     _monster.MaxHealth = health;
                     _monster.Health = health;
                     _monster.IsUsingStamina = false;
                     _monster.MaxHumeShield = 60;
                     _monster.HumeShield = _monster.MaxHumeShield;
                     _monster.EnableEffect(EffectType.MovementBoost, 70);
-                    _monster.EnableEffect(EffectType.Fade, 220);
-                    _monster.EnableEffect(EffectType.Lightweight, 150);
+                    _monster.EnableEffect(EffectType.Fade, 204);
+                    _monster.EnableEffect(EffectType.Lightweight, 100);
 
                     foreach (var player in PlayerManager.List)
                     {
                         if (player == _monster) continue;
-                        player.Role.Set(RoleTypeId.NtfPrivate);
+                        player.Role.Set(RoleTypeId.ClassD);
                         player.Position = new Vector3(36.61497f, 332.9037f, -69.72147f);
                         for (int i = 1; i < 10; i++)
                             player.AddItem(ItemType.Ammo9x19);
@@ -110,7 +109,7 @@ namespace RGM.Modes
 
         private static IEnumerator<float> Timer()
         {
-            for (int i = 1; i < 180; i++)
+            for (int i = 1; i < 120; i++)
             {
                 PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(1, $"<size=25><color=#2ECCFA>NTF 승리</color>까지</color> {180 - i}초</size>"));
 
@@ -141,10 +140,10 @@ namespace RGM.Modes
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), PlayerManager.List.Count / 2));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], PlayerManager.List.Count / 3));
                     break;
                 case > 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 1));
                     break;
             }
         }

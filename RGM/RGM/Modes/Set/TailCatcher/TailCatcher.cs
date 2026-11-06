@@ -13,7 +13,7 @@ using Exiled.Events.EventArgs.Player;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.TailCatcter)]
+    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.TailCatcher)]
     public class TailCatcter : Mode
     {
         public override string Name => "꼬리 잡기";

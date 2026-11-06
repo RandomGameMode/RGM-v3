@@ -25,11 +25,9 @@ public static partial class MainSettingManager
             if (!player.IsScpRole())
                 return;
 
-            var candidates = player.Items
-                .Where(x => player.CurrentItem != x)
-                .ToList();
+            var candidates = player.Items.Where(x => x.ToString().Contains("Armor") && player.CurrentItem != x).ToList();
 
-            candidates.Add(null);
+            candidates.Add(null); // null 넣는 이유를 알아야 함.
 
             if (candidates.Count == 0)
                 return;

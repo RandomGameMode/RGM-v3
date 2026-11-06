@@ -6,6 +6,8 @@ using System.Linq;
 using UnityEngine;
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
+using PlayerRoles;
+using PlayerStatsSystem;
 using static RGM.Variables.Variable;
 
 namespace RGM.Modes.Abilities.Mythic;
@@ -115,7 +117,8 @@ public class KingsColor : Ability
 
                     foreach (var player in PlayerManager.List.Where(x => x.IsAlive && x != Owner))
                     {
-                        ApplyInstantKill.Apply(Owner, player);
+                        ApplyLethalDamage.Apply(Owner, player, DeathTranslations.Crushed);
+                        player.Role.Set(RoleTypeId.Spectator);
                     }
                 });
 
