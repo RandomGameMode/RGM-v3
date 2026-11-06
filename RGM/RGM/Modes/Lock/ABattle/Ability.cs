@@ -479,7 +479,7 @@ public enum AbilityType
     LEGEND_HUMAN_SCP035, // [전용 전설] SCP-035, 빙의 가면
     LEGEND_HUMAN_SCP457, // [전용 전설] SCP-457, 불타는 남자
     LEGEND_HUMAN_SCP966, // [전용 전설] SCP-966, 잠을 죽이는 자
-    LEGEND_HUMAN_ELECTRONICSGHOST, // [전용 전설] 전자 유령
+    MYTHIC_HUMAN_ELECTRONICSGHOST, // [전용 전설] 전자 유령
     
     MYTHIC_HUMAN_DUALPERSONALITY, // [전용 신화] 이중인격
 
@@ -671,6 +671,8 @@ public enum AbilityType
     MYTHIC_SCP079_SEVEREVIRUS, // [전용 신화] 치명적인 바이러스
     MYTHIC_SCP079_BACKDOOR, // [전용 신화] 백도어
     MYTHIC_SCP079_FUSIONBOMB, // [전용 신화] 융단 폭격
+    
+    ANCIENT_SCP079_OVERWHELMING, // [전용 고대] 고대의 존재 압도,
 
 
     //79가 먹을 수 있는 범용 능력

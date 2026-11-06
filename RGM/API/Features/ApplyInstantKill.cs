@@ -176,17 +176,10 @@ public static class ApplyInstantKill
                  attempt++)
             {
                 yield return Timing.WaitForOneFrame;
-
-                if (!IsRetryStillValid(attacker, target, startRole))
-                    yield break;
-
-                if (TryApplyOnce(attacker, target, out bool dyingRaised) || dyingRaised)
-                    yield break;
-
-                // The kill went through by some other path (e.g. DealDamage reported
-                // failure but the death was still processed).
-                if (!target.IsAlive)
-                    yield break;
+                if (!IsRetryStillValid(attacker, target, startRole) ||
+                    TryApplyOnce(attacker, target, out bool dyingRaised) ||
+                    dyingRaised || 
+                    !target.IsAlive) yield break;
             }
 
             Log.Warn(

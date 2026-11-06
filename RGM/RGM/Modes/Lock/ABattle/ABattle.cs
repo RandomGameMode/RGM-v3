@@ -1148,8 +1148,7 @@ public class ABattle : Mode
         IEnumerable<AbilityType> exceptTypes = null, RoleAbility roleAbility = RoleAbility.None,
         bool _79Allowed = false)
     {
-        if (category == AbilityCategory.Ancient && player.HasAbility(AbilityType.SYNERGY_BLACKMARKET))
-            return [];
+        if (category == AbilityCategory.Ancient && player.HasAbility(AbilityType.SYNERGY_BLACKMARKET)) return [];
 
         var abilities = Abilities
             .Where(x => x.Value.Category == category)
