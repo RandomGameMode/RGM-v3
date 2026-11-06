@@ -150,7 +150,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Synergy\SoccerKick.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\EMP.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\Scp1509Hand.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\Scp999.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\ChangeScp999.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ElectronicsGhost.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Mythic\DualPersonality.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Ancient\Overwhelming.cs" />
@@ -360,10 +360,10 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Flamingo\MiniFactory.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\Rebirth.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\UrgentSupport.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\Scp008.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\Scp035.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\Scp457.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\Scp966.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp008.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp035.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp457.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp966.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Normal\DenyMessage.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Rare\MedicalOfficer.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\NTF\Legend\UNGOC.cs" />
