@@ -1,6 +1,5 @@
 ﻿using CustomPlayerEffects;
 using Exiled.API.Extensions;
-using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Server;
 using MEC;
@@ -9,8 +8,14 @@ using PlayerStatsSystem;
 using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
-
+using Exiled.API.Enums;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp049;
+using Exiled.Events.Handlers;
+using UnityEngine;
 using static RGM.Variables.Variable;
+using Item = Exiled.API.Features.Items.Item;
+using Player = Exiled.API.Features.Player;
 
 namespace RGM.Modes
 {
@@ -33,14 +38,14 @@ namespace RGM.Modes
         {
             Exiled.Events.Handlers.Player.ReceivingEffect += OnReceivingEffect;
 
-            Exiled.Events.Handlers.Scp049.StartingRecall += OnStartingRecall;
+            Scp049.StartingRecall += OnStartingRecall;
 
-            Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
+            Server.RespawningTeam += OnRespawningTeam;
 
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.Kicking += OnKicking;
 
-            Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
+            Server.RoundEnded += OnRoundEnded;
 
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
         }
@@ -49,33 +54,31 @@ namespace RGM.Modes
         {
             Exiled.Events.Handlers.Player.ReceivingEffect -= OnReceivingEffect;
 
-            Exiled.Events.Handlers.Scp049.StartingRecall -= OnStartingRecall;
+            Scp049.StartingRecall -= OnStartingRecall;
 
-            Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
+            Server.RespawningTeam -= OnRespawningTeam;
 
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.Kicking -= OnKicking;
 
-            Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
+            Server.RoundEnded -= OnRoundEnded;
 
             Timing.KillCoroutines(_onModeStarted);
         }
 
         private IEnumerator<float> OnModeStarted()
         {
-            var scp = PlayerManager.List.ToList()[UnityEngine.Random.Range(0, PlayerManager.List.Count())];
-            var bomb = PlayerManager.List.Where(x => x != scp).ToList()[UnityEngine.Random.Range(0, PlayerManager.List.Count() - 1)];
+            var scp = PlayerManager.List.ToList()[Random.Range(0, PlayerManager.List.Count())];
+            var bomb = PlayerManager.List.Where(x => x != scp).ToList()[
+                Random.Range(0, PlayerManager.List.Count() - 1)];
 
             foreach (var p in PlayerManager.List)
-            {
                 if (p == scp)
                 {
                     _scp049 = p;
-                    p.Role.Set(RoleTypeId.Scp049, Exiled.API.Enums.SpawnReason.ForceClass, RoleSpawnFlags.None);
-                    Timing.CallDelayed(0.25f, () =>
-                    {
-                        p.Position = RoleTypeId.Tutorial.GetRandomSpawnLocation().Position;
-                    });
+                    p.Role.Set(RoleTypeId.Scp049, SpawnReason.ForceClass, RoleSpawnFlags.None);
+                    Timing.CallDelayed(0.25f,
+                        () => { p.Position = RoleTypeId.Tutorial.GetRandomSpawnLocation().Position; });
                 }
                 else
                 {
@@ -83,26 +86,20 @@ namespace RGM.Modes
                     Timing.CallDelayed(0.25f, () =>
                     {
                         p.Position = RoleTypeId.ChaosConscript.GetRandomSpawnLocation().Position;
-                        if (p == bomb)
-                        {
-                            _bomb = bomb;
-                            p.AddHint("해적 룰렛", $"<size=25>당신이 <color=#FA5858>폭탄</color>입니다.</size>\n<size=23>술래가 당신을 잡도록 유도해보세요.</size>\n", 20);
-                        }
+                        if (p != bomb) return;
+                        _bomb = bomb;
+                        p.AddHint("해적 룰렛",
+                            "<size=25>당신이 <color=#FA5858>폭탄</color>입니다.</size>\n<size=23>술래가 당신을 잡도록 유도해보세요.</size>\n",
+                            20);
                     });
                 }
-            }
+
             yield return Timing.WaitForSeconds(5f);
             foreach (var p in PlayerManager.List)
-            {
                 if (p == scp)
-                {
                     p.Position = RoleTypeId.ChaosConscript.GetRandomSpawnLocation().Position;
-                }
                 else
-                {
-                    p.EnableEffect(Exiled.API.Enums.EffectType.Ensnared);
-                }
-            }
+                    p.EnableEffect(EffectType.Ensnared);
 
             Timing.RunCoroutine(HurtScp049());
             Timing.RunCoroutine(EndSequence());
@@ -112,7 +109,8 @@ namespace RGM.Modes
         {
             while (_scp049.IsAlive)
             {
-                _scp049.Hurt((_scp049.MaxHealth + _scp049.MaxArtificialHealth + _scp049.MaxHumeShield) / 100); // 분모 값이 제한 시간(초 단위)이 됨
+                _scp049.Hurt((_scp049.MaxHealth + _scp049.MaxArtificialHealth + _scp049.MaxHumeShield) /
+                             100); // 분모 값이 제한 시간(초 단위)이 됨
 
                 yield return Timing.WaitForSeconds(1);
             }
@@ -120,19 +118,19 @@ namespace RGM.Modes
 
         private IEnumerator<float> EndSequence()
         {
-            for (; ; )
+            for (;;)
             {
                 yield return Timing.WaitForSeconds(0.5f);
                 if (PlayerManager.List.Count(x => x.Role == RoleTypeId.ClassD && x != _bomb) != 0) continue;
-                _bomb.Role.Set(RoleTypeId.Spectator, Exiled.API.Enums.SpawnReason.ForceClass, RoleSpawnFlags.None);
+                _bomb.Role.Set(RoleTypeId.Spectator, SpawnReason.ForceClass, RoleSpawnFlags.None);
                 yield break;
             }
         }
 
-        private void OnReceivingEffect(Exiled.Events.EventArgs.Player.ReceivingEffectEventArgs ev)
+        private void OnReceivingEffect(ReceivingEffectEventArgs ev)
         {
             if (ev.Intensity <= 0) return;
-            if (!(ev.Effect is CardiacArrest ca)) return;
+            if (ev.Effect is not CardiacArrest ca) return;
             if (ev.Player == _bomb)
             {
                 foreach (var cdp in PlayerManager.List.Where(x => x.Role == RoleTypeId.ClassD))
@@ -140,6 +138,7 @@ namespace RGM.Modes
                     cdp.DisableAllEffects();
                     GodModePlayers.Add(cdp);
                 }
+
                 var scp = Player.Get(ca._attacker);
                 scp.Health = 1;
                 var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, ev.Player);
@@ -148,12 +147,14 @@ namespace RGM.Modes
             }
             else
             {
-                ev.Player.Hurt(new Scp049DamageHandler(ca._attacker.Hub, 444, Scp049DamageHandler.AttackType.Instakill));
+                ev.Player.Hurt(new Scp049DamageHandler(ca._attacker.Hub, 444,
+                    Scp049DamageHandler.AttackType.Instakill));
             }
+
             ev.IsAllowed = false;
         }
 
-        private static void OnStartingRecall(Exiled.Events.EventArgs.Scp049.StartingRecallEventArgs ev)
+        private static void OnStartingRecall(StartingRecallEventArgs ev)
         {
             ev.IsAllowed = false;
         }
@@ -163,12 +164,12 @@ namespace RGM.Modes
             ev.IsAllowed = false;
         }
 
-        private static void OnInteractingDoor(Exiled.Events.EventArgs.Player.InteractingDoorEventArgs ev)
+        private static void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
             ev.IsAllowed = false;
         }
 
-        private static void OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs ev)
+        private static void OnKicking(KickingEventArgs ev)
         {
             if (ev.Reason.ToLower().Contains("afk"))
                 ev.IsAllowed = false;
@@ -178,8 +179,8 @@ namespace RGM.Modes
         {
             Timing.RunCoroutine(
                 PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC).ToList()[0].Role.Type == RoleTypeId.Scp049
-                    ? Tools.SetWinner(PlayerManager.List.Where(x => x.IsAlive).ToList(), PlayerManager.List.Count)
-                    : Tools.SetWinner(PlayerManager.List.Where(x => x.IsAlive).ToList(), 1));
+                    ? Tools.SetWinner([.. PlayerManager.List.Where(x => x.IsAlive)], PlayerManager.List.Count)
+                    : Tools.SetWinner([.. PlayerManager.List.Where(x => x.IsAlive)], 1));
         }
     }
 }

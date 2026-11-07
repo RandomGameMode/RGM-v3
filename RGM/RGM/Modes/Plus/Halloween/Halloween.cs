@@ -8,7 +8,7 @@ using PlayerEvents = Exiled.Events.Handlers.Player;
 
 namespace RGM.RGM.Modes.Plus.Halloween;
 
-[Mode(ModeCategory.Private, ModeInfo.Plus, ModeType.Halloween,  ModeHoliday.Halloween)]
+[Mode(ModeCategory.Public, ModeInfo.Plus, ModeType.Halloween,  ModeHoliday.Halloween)]
 public class Halloween : Mode
 {
     public override void OnEnabled()
