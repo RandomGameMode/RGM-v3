@@ -8,7 +8,7 @@ using Exiled.API.Enums;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.OnlySub, ModeInfo.Plus, ModeType.Clairvoyance)]
-    class Clairvoyance : Mode
+    internal class Clairvoyance : Mode
     {
         public override string Name => "야간 작전";
         public override string Description => "모두가 SCP-1344 효과를 받습니다.";
@@ -35,10 +35,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             yield break;
         }

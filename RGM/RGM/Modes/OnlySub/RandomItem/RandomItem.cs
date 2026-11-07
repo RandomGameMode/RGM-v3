@@ -30,7 +30,7 @@ namespace RGM.Modes
 
         public static RandomItem Instance;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {

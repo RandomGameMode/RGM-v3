@@ -14,22 +14,24 @@ namespace RGM.Modes
     {
         public override string Name => "뜀박질";
         public override string Description => "일어났다가 앉았다가";
+
         public override string Detail =>
-"""
-인간은 ALT키를 통해 일어났다가 앉을 수 있습니다.
-""";
+            """
+            인간은 ALT키를 통해 일어났다가 앉을 수 있습니다.
+            """;
+
         public override string Color => "d7dfbd";
 
         public static SitDown Instance;
 
-        static Dictionary<Player, PlayerStatus> playerStatuses = new Dictionary<Player, PlayerStatus>();
+        private static readonly Dictionary<Player, PlayerStatus> PlayerStatuses = new();
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
-        class PlayerStatus
+        private class PlayerStatus
         {
-            public bool IsSitDown { get; set; } = false;
-            public bool IsChangingSitDownState { get; set; } = false;
+            public bool IsSitDown { get; set; }
+            public bool IsChangingSitDownState { get; set; }
         }
 
         public override void OnEnabled()
@@ -48,34 +50,27 @@ namespace RGM.Modes
 
         public IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                playerStatuses.Add(player, new PlayerStatus());
-            }
+            foreach (var player in PlayerManager.List) PlayerStatuses.Add(player, new PlayerStatus());
 
             yield break;
         }
 
         public void OnVerified(VerifiedEventArgs ev)
         {
-            if (!playerStatuses.ContainsKey(ev.Player))
-            {
-                playerStatuses.Add(ev.Player, new PlayerStatus());
-            }
+            if (!PlayerStatuses.ContainsKey(ev.Player)) PlayerStatuses.Add(ev.Player, new PlayerStatus());
         }
 
         public static IEnumerator<float> OnTogglingNoClip(TogglingNoClipEventArgs ev)
         {
-            if (!playerStatuses[ev.Player].IsChangingSitDownState && !ev.Player.IsJumping && !ev.Player.IsNoclipPermitted && ev.Player.IsHuman)
-            {
-                playerStatuses[ev.Player].IsChangingSitDownState = true;
+            if (PlayerStatuses[ev.Player].IsChangingSitDownState || ev.Player.IsJumping ||
+                ev.Player.IsNoclipPermitted || !ev.Player.IsHuman) yield break;
+            PlayerStatuses[ev.Player].IsChangingSitDownState = true;
 
-                AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"Player {ev.Player.Nickname}", condition: (ReferenceHub hub) =>
+            var audioPlayer = AudioPlayer.CreateOrGet($"Player {ev.Player.Nickname}",
+                condition: hub => !MuteBGMPlayers.Contains(Player.Get(hub)),
+                onIntialCreation: p =>
                 {
-                    return !MuteBGMPlayers.Contains(Player.Get(hub));
-                }, onIntialCreation: (p) =>
-                {
-                    Speaker speaker = p.AddSpeaker("Main", maxDistance: 3);
+                    var speaker = p.AddSpeaker("Main", maxDistance: 3);
 
                     p.transform.parent = ev.Player.GameObject.transform;
 
@@ -84,44 +79,43 @@ namespace RGM.Modes
                     speaker.transform.localPosition = Vector3.zero;
                 });
 
-                if (playerStatuses[ev.Player].IsSitDown)
-                {
-                    audioPlayer.TryPlay($"standing");
+            if (PlayerStatuses[ev.Player].IsSitDown)
+            {
+                audioPlayer.TryPlay($"standing");
 
-                    while (ev.Player.Scale.y >= 0.65f)
+                while (ev.Player.Scale.y >= 0.65f)
+                {
+                    ev.Player.Scale = new Vector3(1, ev.Player.Scale.y - 0.01f, 1);
+
+                    yield return Timing.WaitForOneFrame;
+                }
+
+                ev.Player.EnableEffect(EffectType.Slowness, 50);
+                ev.Player.EnableEffect(EffectType.SilentWalk, 10);
+
+                PlayerStatuses[ev.Player].IsSitDown = false;
+            }
+            else
+            {
+                if (!Physics.Raycast(ev.Player.Position, Vector3.up, out var hit, 1, (LayerMask)1))
+                {
+                    audioPlayer.TryPlay($"sitting");
+
+                    while (ev.Player.Scale.y <= 1)
                     {
-                        ev.Player.Scale = new Vector3(1, ev.Player.Scale.y - 0.01f, 1);
+                        ev.Player.Scale = new Vector3(1, ev.Player.Scale.y + 0.01f, 1);
 
                         yield return Timing.WaitForOneFrame;
                     }
 
-                    ev.Player.EnableEffect(EffectType.Slowness, 50);
-                    ev.Player.EnableEffect(EffectType.SilentWalk, 10);
+                    ev.Player.DisableEffect(EffectType.Slowness);
+                    ev.Player.DisableEffect(EffectType.SilentWalk);
 
-                    playerStatuses[ev.Player].IsSitDown = false;
+                    PlayerStatuses[ev.Player].IsSitDown = true;
                 }
-                else
-                {
-                    if (!Physics.Raycast(ev.Player.Position, Vector3.up, out RaycastHit hit, 1, (LayerMask)1))
-                    {
-                        audioPlayer.TryPlay($"sitting");
-
-                        while (ev.Player.Scale.y <= 1)
-                        {
-                            ev.Player.Scale = new Vector3(1, ev.Player.Scale.y + 0.01f, 1);
-
-                            yield return Timing.WaitForOneFrame;
-                        }
-
-                        ev.Player.DisableEffect(EffectType.Slowness);
-                        ev.Player.DisableEffect(EffectType.SilentWalk);
-
-                        playerStatuses[ev.Player].IsSitDown = true;
-                    }
-                }
-
-                playerStatuses[ev.Player].IsChangingSitDownState = false;
             }
+
+            PlayerStatuses[ev.Player].IsChangingSitDownState = false;
         }
     }
 }

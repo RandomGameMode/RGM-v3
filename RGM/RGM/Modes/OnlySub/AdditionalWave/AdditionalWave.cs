@@ -8,7 +8,7 @@ using PlayerRoles;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.OnlySub, ModeInfo.Plus, ModeType.AdditionalWave)]
-    class AdditionalWave : Mode
+    internal class AdditionalWave : Mode
     {
         public override string Name => "추가 지원";
         public override string Description => "지원의 형태가 추가되고, 추가 아이템이 지급됩니다.";
@@ -35,7 +35,7 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
         }
 
-        public void OnRespawningTeam(Exiled.Events.EventArgs.Server.RespawningTeamEventArgs ev)
+        private void OnRespawningTeam(Exiled.Events.EventArgs.Server.RespawningTeamEventArgs ev)
         {
             Timing.CallDelayed(Timing.WaitForOneFrame, () => 
             {

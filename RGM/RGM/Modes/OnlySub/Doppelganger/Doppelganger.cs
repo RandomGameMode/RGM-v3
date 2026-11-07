@@ -12,21 +12,23 @@ namespace RGM.Modes
     {
         public override string Name => "도플갱어";
         public override string Description => "모두의 이름과 칭호가 살아있는 한 사람의 것으로 변경됩니다.";
-        public override string Detail =>
-"""
-도플갱어
-도플갱어
 
-모두의 이름과 칭호가 살아있는 한 사람의 것으로 변경됩니다.
-모두의 이름과 칭호가 살아있는 한 사람의 것으로 변경됩니다.
-""";
+        public override string Detail =>
+            """
+            도플갱어
+            도플갱어
+
+            모두의 이름과 칭호가 살아있는 한 사람의 것으로 변경됩니다.
+            모두의 이름과 칭호가 살아있는 한 사람의 것으로 변경됩니다.
+            """;
+
         public override string Color => "9453d9";
 
         public static Doppelganger Instance;
 
-        Player owner;
+        private Player _owner;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -42,37 +44,32 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            owner = PlayerManager.List.GetRandomValue(x => x.IsAlive);
+            _owner = PlayerManager.List.GetRandomValue(x => x.IsAlive);
 
             while (!Round.IsEnded)
             {
                 foreach (var player in PlayerManager.List)
-                {
-                    if (player == owner)
+                    if (player == _owner)
                     {
                         player.DisplayNickname = player.Nickname;
                     }
                     else
                     {
-                        player.DisplayNickname = owner.Nickname;
-                        player.CustomInfo = owner.CustomInfo;
-                        player.RankName = owner.RankName;
-                        player.RankColor = owner.RankColor;
+                        player.DisplayNickname = _owner.Nickname;
+                        player.CustomInfo = _owner.CustomInfo;
+                        player.RankName = _owner.RankName;
+                        player.RankColor = _owner.RankColor;
                     }
-                }
 
                 yield return Timing.WaitForOneFrame;
             }
         }
 
-        public void OnDied(DiedEventArgs ev)
+        private void OnDied(DiedEventArgs ev)
         {
-            if (ev.Player == owner)
-            {
-                owner = PlayerManager.List.GetRandomValue(x => x.IsAlive);
-            }
+            if (ev.Player == _owner) _owner = PlayerManager.List.GetRandomValue(x => x.IsAlive);
         }
     }
 }

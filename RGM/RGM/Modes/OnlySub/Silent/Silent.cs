@@ -11,17 +11,19 @@ namespace RGM.Modes
     {
         public override string Name => "사일런트";
         public override string Description => "쉿! 조용히 이야기하세요!";
+
         public override string Detail =>
-"""
-조용히 이야기해야 합니다. (0.4보다 작게)
-채팅(.ㅊ)은 사용할 수 없습니다.
-""";
+            """
+            조용히 이야기해야 합니다. (0.4보다 작게)
+            채팅(.ㅊ)은 사용할 수 없습니다.
+            """;
+
         public override string Color => "9E82F5";
 
         public static Silent Instance;
 
-        OpusDecoder _decoder;
-        float[] _decodedBuffer;
+        private OpusDecoder _decoder;
+        private float[] _decodedBuffer;
 
         public override void OnEnabled()
         {
@@ -43,23 +45,19 @@ namespace RGM.Modes
             return len < 0 ? 0f : _decodedBuffer.Max();
         }
 
-        public void OnVoiceChatting(VoiceChattingEventArgs ev)
+        private void OnVoiceChatting(VoiceChattingEventArgs ev)
         {
-            if (ev.Player.IsAlive)
-            {
-                if (GetLoudness(ev.VoiceMessage.Data, ev.VoiceMessage.DataLength) > 0.35f)
-                {
-                    var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, ev.Player);
-                    g.FuseTime = 0f;
-                    g.MaxRadius = 0;
-                    g.SpawnActive(ev.Player.Position, null);
+            if (!ev.Player.IsAlive) return;
+            if (!(GetLoudness(ev.VoiceMessage.Data, ev.VoiceMessage.DataLength) > 0.35f)) return;
+            var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, ev.Player);
+            g.FuseTime = 0f;
+            g.MaxRadius = 0;
+            g.SpawnActive(ev.Player.Position, null);
 
-                    if (GodModePlayers.Contains(ev.Player))
-                        GodModePlayers.Remove(ev.Player);
+            if (GodModePlayers.Contains(ev.Player))
+                GodModePlayers.Remove(ev.Player);
 
-                    ev.Player.Kill("입이 근질거리는 것을 참지 못했습니다.");
-                }
-            }
+            ev.Player.Kill("입이 근질거리는 것을 참지 못했습니다.");
         }
     }
 }

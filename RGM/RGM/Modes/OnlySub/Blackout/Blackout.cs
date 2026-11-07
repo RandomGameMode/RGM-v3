@@ -11,19 +11,21 @@ namespace RGM.Modes
     {
         public override string Name => "블랙아웃";
         public override string Description => "시설 곳곳이 정전됩니다.";
-        public override string Detail =>
-"""
-각 방마다 <color=#FF00FF>기믹</color>이 적용될 수 있습니다.
 
-50% - 방이 정전됩니다.
-50% - 방의 색상이 변경됩니다.
-(소숫점 버림)
-""";
+        public override string Detail =>
+            """
+            각 방마다 <color=#FF00FF>기믹</color>이 적용될 수 있습니다.
+
+            50% - 방이 정전됩니다.
+            50% - 방의 색상이 변경됩니다.
+            (소숫점 버림)
+            """;
+
         public override string Color => "2A0A0A";
 
         public static Blackout Instance;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -39,41 +41,32 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
             foreach (var room in Room.List)
-            {
-                switch (UnityEngine.Random.Range(1, 3))
+                switch (Random.Range(1, 3))
                 {
                     case 1:
                         room.TurnOffLights();
                         break;
                     case 2:
-                        room.Color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                        room.Color = new Color(Random.value, Random.value, Random.value);
                         break;
                 }
-            }
 
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             yield return 0f;
         }
 
-        public void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
+        private void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
         {
             Spawned(ev.Player);
         }
 
-        public void Spawned(Player player)
+        private void Spawned(Player player)
         {
-            if (UnityEngine.Random.Range(1, 11) == 1)
-                player.AddItem(ItemType.Lantern);
-
-            else
-                player.AddItem(ItemType.Flashlight);
+            player.AddItem(Random.Range(1, 11) == 1 ? ItemType.Lantern : ItemType.Flashlight);
         }
     }
 }
