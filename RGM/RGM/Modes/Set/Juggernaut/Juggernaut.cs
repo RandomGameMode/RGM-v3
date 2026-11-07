@@ -114,40 +114,40 @@ namespace RGM.Modes
                 _speaker.Destroy();
         }
 
-        private IEnumerator<float> JuggernautExternalTimer()
+        private static IEnumerator<float> JuggernautExternalTimer()
         {
-            for (var i = 1; i < 75; i++)
+            for (var i = 75; i > 0; i--)
             {
                 if (Round.IsEnded) yield break;
                 PlayerManager.List.ToList()
-                    .ForEach(x => x.AddBroadcast(1, $"<size=25>저거너트 외부 지원 호출까지 {75 - i}초</size>"));
+                    .ForEach(x => x.AddBroadcast(1, $"<size=25>저거너트 외부 지원 호출까지 {i}초</size>"));
 
                 yield return Timing.WaitForSeconds(1f);
             }
         }
 
-        private IEnumerator<float> RoundTimer()
+        private static IEnumerator<float> RoundTimer()
         {
-            for (var i = 1; i < 821; i++)
+            for (var i = 820; i > 0; i--)
             {
                 if (Round.IsEnded || Warhead.IsDetonated)
                     yield break;
 
                 PlayerManager.List.ToList()
-                    .ForEach(x => x.AddBroadcast(1, $"<size=25>저거너트 과부하 프로토콜 가동까지 {821 - i}초</size>"));
+                    .ForEach(x => x.AddBroadcast(1, $"<size=25>저거너트 과부하 프로토콜 가동까지 {i}초</size>"));
 
                 yield return Timing.WaitForSeconds(1f);
             }
         }
 
-        private IEnumerator<float> AnnihilationTimer()
+        private static IEnumerator<float> AnnihilationTimer()
         {
-            for (var i = 1; i < 120; i++)
+            for (var i = 120; i > 0; i--)
             {
                 if (Round.IsEnded)
                     yield break;
 
-                PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(1, $"<size=25>초토화 작전 실행까지 {120 - i}초</size>"));
+                PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(1, $"<size=25>초토화 작전 실행까지 {i}초</size>"));
 
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -213,7 +213,7 @@ namespace RGM.Modes
         private void TriggerAnnihilation()
         {
             Warhead.Detonate();
-            foreach (var player in PlayerManager.List.Where(x => true)) player.Kill("초토화 작전으로 인해 모든것이 허무로 돌아갑니다...");
+            foreach (var player in PlayerManager.List.Where(_ => true)) player.Kill("초토화 작전으로 인해 모든것이 허무로 돌아갑니다...");
         }
 
         private IEnumerator<float> OnModeStarted()
@@ -297,10 +297,10 @@ namespace RGM.Modes
 
         private IEnumerator<float> MonitorRoundEnd()
         {
-            var IsEnd = false;
+            var isEnd = false;
             var juggernautWon = false;
             List<Player> winners = [];
-            while (!IsEnd && !Round.IsEnded)
+            while (!isEnd && !Round.IsEnded)
             {
                 if (_juggernaut.IsAlive)
                 {
@@ -311,7 +311,7 @@ namespace RGM.Modes
                     {
                         PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20,
                             "<size=25>더 이상 저지할 수 있는 <b>Site-76 구성원</b>이 없습니다.</size>\n<color=#298A08>저거너트</color>의 승리입니다."));
-                        IsEnd = true;
+                        isEnd = true;
                         juggernautWon = true;
                         winners = aliveJuggernautTeam;
                         Timing.RunCoroutine(Tools.SetWinner(winners, winners.Count == 1 ? 20 : 4));
@@ -325,7 +325,7 @@ namespace RGM.Modes
 
                     PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(20,
                         "<size=25><color=#298A08>저거너트</color>가 사망했습니다.</size>\n<b>Site-76 구성원</b>들의 승리입니다."));
-                    IsEnd = true;
+                    isEnd = true;
                     Timing.RunCoroutine(Tools.SetWinner(winners, 2));
                 }
 
@@ -385,7 +385,7 @@ namespace RGM.Modes
             {
                 foreach (var wave in WaveManager.Waves)
                 {
-                    var flag = WaveTimer.TryGetWaveTimers(wave.TargetFaction, out var waves);
+                    WaveTimer.TryGetWaveTimers(wave.TargetFaction, out var waves);
 
                     foreach (var w in waves)
                         w.SetTime((int)w.TimeLeft.TotalSeconds - 5);
