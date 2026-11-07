@@ -109,13 +109,13 @@ namespace RGM.Modes
                         Log.Error(e);
                     }
 
-                for (var i = 1; i < 11; i++)
+                for (var i = 10; i > 0; i--)
                 {
                     PlayerManager.List.ToList().ForEach(x => x.AddHint("폭탄돌리기 폭탄 알림",
-                        $"현재 폭탄 : {string.Join(" & ", _bomberMans.Select(b => b.DisplayNickname))}\n{11 - i}초 후 폭탄이 터집니다.",
-                        1.2f));
+                        $"현재 폭탄 : {string.Join(" & ", _bomberMans.Select(b => b.DisplayNickname))}\n{i}초 후 폭탄이 터집니다.",
+                        1.1f));
 
-                    yield return Timing.WaitForSeconds(1f);
+                    yield return Timing.WaitForSeconds(1);
                 }
 
                 foreach (var bomber in _bomberMans)

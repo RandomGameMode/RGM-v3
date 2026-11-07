@@ -12,13 +12,13 @@ namespace RGM.Modes
     {
         public override string Name => "달";
         public override string Description => "점프력이 증가합니다.";
+
         public override string Detail =>
-"""
-점프력이 증가하며, 낙사 데미지를 받지 않습니다.
-""";
+            "점프력이 증가하며, 낙사 데미지를 받지 않습니다.";
+
         public override string Color => "d1d6c6";
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -34,27 +34,21 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             yield break;
         }
 
-        public void OnSpawned(SpawnedEventArgs ev)
+        private void OnSpawned(SpawnedEventArgs ev)
         {
             Spawned(ev.Player);
         }
 
-        public void Spawned(Player player)
+        private void Spawned(Player player)
         {
-            if (player.IsAlive)
-            {
-                player.EnableEffect(EffectType.Lightweight, 255);
-            }
+            if (player.IsAlive) player.EnableEffect(EffectType.Lightweight, 255);
         }
     }
-};
+}

@@ -479,7 +479,7 @@ public enum AbilityType
     LEGEND_HUMAN_SCP035, // [전용 전설] SCP-035, 빙의 가면
     LEGEND_HUMAN_SCP457, // [전용 전설] SCP-457, 불타는 남자
     LEGEND_HUMAN_SCP966, // [전용 전설] SCP-966, 잠을 죽이는 자
-    MYTHIC_HUMAN_ELECTRONICSGHOST, // [전용 전설] 전자 유령
+    LEGEND_HUMAN_ELECTRONICSGHOST, // [전용 전설] 전자 유령
     
     MYTHIC_HUMAN_DUALPERSONALITY, // [전용 신화] 이중인격
 

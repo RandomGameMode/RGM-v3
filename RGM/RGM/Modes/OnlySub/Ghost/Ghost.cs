@@ -20,15 +20,17 @@ namespace RGM.Modes
     {
         public override string Name => "고스트";
         public override string Description => "정체불명의 누군가가 시설의 제어권을 탈취했군요.";
+
         public override string Detail =>
-"""
-1초마다 무언가 이벤트가 일어납니다.
-""";
+            """
+            1초마다 무언가 이벤트가 일어납니다.
+            """;
+
         public override string Color => "7401DF";
 
         public static Ghost Instance;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -44,42 +46,38 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }   
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             while (true)
             {
-                int a = Random.Range(1, Random.Range(2, Random.Range(3, Random.Range(6, Random.Range(8, 13)))));
-                Door door = Door.List.GetRandomValue();
+                var a = Random.Range(1, Random.Range(2, Random.Range(3, Random.Range(6, Random.Range(8, 13)))));
+                var door = Door.List.GetRandomValue();
 
-                switch (a) 
-                { 
+                switch (a)
+                {
                     case 1:
                         door.Room.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
                         break;
 
                     case 2:
                         if (!door.IsElevator)
-                            door.IsOpen = Random.Range(1, 3) == 1 ? true : false;
+                            door.IsOpen = Random.Range(1, 3) == 1;
                         break;
 
                     case 3:
                         if (door is BreakableDoor breakableDoor)
-                        {
                             switch (Random.Range(1, 3))
                             {
                                 case 1:
-                                    breakableDoor.Break(Interactables.Interobjects.DoorUtils.DoorDamageType.ServerCommand);
+                                    breakableDoor.Break();
                                     break;
                                 case 2:
                                     breakableDoor.Repair();
                                     break;
                             }
-                        }
+
                         break;
 
                     case 4:
@@ -95,7 +93,7 @@ namespace RGM.Modes
                         break;
 
                     case 7:
-                        TeslaGate teslaGate = TeslaGate.AllGates.GetRandomValue();
+                        var teslaGate = TeslaGate.AllGates.GetRandomValue();
 
                         switch (Random.Range(1, 3))
                         {
@@ -107,6 +105,7 @@ namespace RGM.Modes
                                 teslaGate.RpcInstantBurst();
                                 break;
                         }
+
                         break;
 
                     case 8:
@@ -118,26 +117,26 @@ namespace RGM.Modes
                         break;
 
                     case 10:
-                        Item item = Item.Create(Tools.EnumToList<ItemType>().Where(x => !Datas.ExceptItems.Contains(x)).ToList().GetRandomValue());
+                        var item = Item.Create(Tools.EnumToList<ItemType>().Where(x => !Datas.ExceptItems.Contains(x))
+                            .ToList().GetRandomValue());
                         item.CreatePickup(door.Position, new Quaternion(a, a, a, a));
                         break;
 
                     case 11:
-                        AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"{Random.Range(1, 10000001)}", condition: (ReferenceHub hub) =>
-                        {
-                            return !MuteBGMPlayers.Contains(Player.Get(hub));
-                        }, onIntialCreation: (p) =>
-                        {
-                            Speaker speaker = p.AddSpeaker("Main", isSpatial: true, minDistance: 1, maxDistance: 10);
+                        var audioPlayer = AudioPlayer.CreateOrGet($"{Random.Range(1, 10000001)}",
+                            condition: (ReferenceHub hub) => !MuteBGMPlayers.Contains(Player.Get(hub)),
+                            onIntialCreation: (p) =>
+                            {
+                                var speaker = p.AddSpeaker("Main", isSpatial: true, minDistance: 1, maxDistance: 10);
 
-                            speaker.transform.position = door.Position;
-                        });
+                                speaker.transform.position = door.Position;
+                            });
 
                         audioPlayer.TryPlay(AudioClipStorage.AudioClips.Select(x => x.Key).ToList().GetRandomValue());
                         break;
 
                     case 12:
-                        Player player = PlayerManager.List.GetRandomValue();
+                        var player = PlayerManager.List.GetRandomValue();
 
                         player.EnableEffect(EffectType.Slowness, 150, Random.Range(1, 11));
                         break;
@@ -147,13 +146,13 @@ namespace RGM.Modes
             }
         }
 
-        void OnSpawned(SpawnedEventArgs ev)
+        private void OnSpawned(SpawnedEventArgs ev)
         {
             if (ev.Player.IsAlive)
                 Spawned(ev.Player);
         }
 
-        void Spawned(Player player)
+        private void Spawned(Player player)
         {
             player.EnableEffect(EffectType.Fade, 100);
         }

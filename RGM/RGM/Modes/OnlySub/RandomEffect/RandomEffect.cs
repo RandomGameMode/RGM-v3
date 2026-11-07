@@ -10,20 +10,23 @@ using System.Linq;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.OnlySub, ModeInfo.Plus, ModeType.RandomEffect)]
-    class RandomEffect : Mode
+    internal class RandomEffect : Mode
     {
         public override string Name => "랜덤효과";
         public override string Description => "영구적인 랜덤한 효과를 얻습니다.";
+
         public override string Detail =>
-"""
-효과의 종류와 세기는 랜덤입니다.
-""";
+            """
+            효과의 종류와 세기는 랜덤입니다.
+            """;
+
         public override string Color => "BFFF00";
         public override string Suggester => "몬키키";
 
         public static RandomEffect Instance;
-        List<EffectType> ignoredEffect = new List<EffectType>
-        {
+
+        private readonly List<EffectType> _ignoredEffect =
+        [
             EffectType.PocketCorroding,
             EffectType.PitDeath,
             EffectType.CardiacArrest,
@@ -32,22 +35,19 @@ namespace RGM.Modes
             EffectType.Ensnared,
             EffectType.Flashed,
             EffectType.SeveredHands
-        };
+        ];
 
 
-        List<EffectType> GoodEffect = new List<EffectType>
-        {
-            
-        };
+        private List<EffectType> GoodEffect = [];
 
-        List<EffectType> BadEffect = new List<EffectType>
-        {
-           EffectType.AmnesiaItems,
-           EffectType.AmnesiaVision,
-        };
+        private List<EffectType> BadEffect =
+        [
+            EffectType.AmnesiaItems,
+            EffectType.AmnesiaVision
+        ];
 
-        List<EffectType> HalloweenEffect = new List<EffectType>
-        {
+        private List<EffectType> HalloweenEffect =
+        [
             EffectType.Marshmallow,
             EffectType.Metal,
             EffectType.OrangeCandy,
@@ -57,30 +57,30 @@ namespace RGM.Modes
             EffectType.Spicy,
             EffectType.SugarCrave,
             EffectType.SugarRush,
-            EffectType.SugarHigh, //SugarHigh랑 SugarCrave 중에 보라 사탕이랑 초록사탕인 것 같은데 모르겠음
+            EffectType.SugarHigh, //SugarHigh랑 SugarCrave 중에 보라 사탕이랑 초록사탕인 것 같은데 모르겠음 <- Ans. 초록사탕임.
             EffectType.TemporaryBypass, //?
             EffectType.TraumatizedByEvil, //?
             EffectType.WhiteCandy
-        };
+        ];
 
-        List<EffectType> ChristmasEffect = new List<EffectType>
-        {
-            EffectType.BecomingFlamingo,  //??
+        private List<EffectType> ChristmasEffect =
+        [
+            EffectType.BecomingFlamingo, //??
             EffectType.Scp559,
             EffectType.Scp956Target, //??
             EffectType.Snowed,
             EffectType.SugarCrave
-        };
+        ];
 
-        List<EffectType> AprilFoolsEffect = new List<EffectType>
-        {
-            EffectType.BecomingFlamingo,  //??
+        private List<EffectType> AprilFoolsEffect =
+        [
+            EffectType.BecomingFlamingo, //??
             EffectType.Scp559,
             EffectType.Scp956Target, //??
             EffectType.Snowed
-        };
+        ];
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -96,31 +96,30 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             yield break;
         }
 
-        public void OnSpawned(SpawnedEventArgs ev)
+        private void OnSpawned(SpawnedEventArgs ev)
         {
             if (ev.Player.IsAlive)
                 Spawned(ev.Player);
         }
 
-        public void Spawned(Player player)
+        private void Spawned(Player player)
         {
-            List<EffectType> effects = Tools.EnumToList<EffectType>().Where(x => !ignoredEffect.Contains(x)).ToList();
+            var effects = Tools.EnumToList<EffectType>().Where(x => !_ignoredEffect.Contains(x)).ToList();
 
-            EffectType Effect = effects.GetRandomValue();
-            byte Intensity = (byte)UnityEngine.Random.Range(1, UnityEngine.Random.Range(12, UnityEngine.Random.Range(48, UnityEngine.Random.Range(64, UnityEngine.Random.Range(100, 255)))));
+            var effect = effects.GetRandomValue();
+            var intensity = (byte)UnityEngine.Random.Range(1,
+                UnityEngine.Random.Range(12,
+                    UnityEngine.Random.Range(48, UnityEngine.Random.Range(64, UnityEngine.Random.Range(100, 255)))));
 
-            player.EnableEffect(Effect, Intensity);
-            player.AddHint("랜덤효과 안내", $"<color=#D0FA58>{Effect}</color> 효과가 {Intensity}만큼 적용되는 중입니다.", 99999);
+            player.EnableEffect(effect, intensity);
+            player.AddHint("랜덤효과 안내", $"<color=#D0FA58>{effect}</color> 효과가 {intensity}만큼 적용되는 중입니다.", 99999);
         }
 
         /*public bool AddEffect(Player player, EffectType effect, byte intensity)

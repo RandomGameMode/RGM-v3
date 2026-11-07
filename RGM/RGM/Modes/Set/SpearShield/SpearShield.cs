@@ -93,7 +93,7 @@ public class SpearShield : Mode
             player.Position = basePosition;
             player.AddItem(ItemType.GunE11SR);
             player.EnableEffect(EffectType.Scp1853);
-            player.ApplyGodMode(5);
+            player.ApplyGodMode(3);
         }
 
         foreach (var player in _teamB)
@@ -107,13 +107,13 @@ public class SpearShield : Mode
             for (int i = 0; i < 7; i++)
                 player.AddItem(ItemType.SCP500);
 
-            player.ApplyGodMode(5);
+            player.ApplyGodMode(3);
         }
 
         foreach (var player in players)
-            player.AddBroadcast(5, "<size=30><b>5초 후 전투가 시작됩니다.</b></size>");
+            player.AddBroadcast(3, "<size=30><b>3초 후 전투가 시작됩니다.</b></size>");
 
-        yield return Timing.WaitForSeconds(5f);
+        yield return Timing.WaitForSeconds(3f);
 
         if (_matchEnded || Round.IsEnded)
             yield break;
@@ -132,7 +132,7 @@ public class SpearShield : Mode
                 player.AddHint("창과 방패", $"<b>남은 시간: {second}초</b>", 1.05f);
 
             Exiled.API.Features.Map.CleanAllItems();
-            yield return Timing.WaitForSeconds(1f);
+            yield return Timing.WaitForSeconds(1);
         }
 
         if (!_matchEnded)
@@ -187,6 +187,6 @@ public class SpearShield : Mode
         foreach (var player in PlayerManager.List)
             player.AddBroadcast(10, $"<size=30><b>{message}</b></size>");
 
-        Timing.RunCoroutine(Tools.SetWinner(winningTeam, 2));
+        Timing.RunCoroutine(Tools.SetWinner(winningTeam, 1));
     }
 }

@@ -90,7 +90,7 @@ namespace RGM.Modes
                     foreach (var player in PlayerManager.List)
                     {
                         if (player == _monster) continue;
-                        player.Role.Set(RoleTypeId.ClassD);
+                        player.Role.Set(RoleTypeId.NtfPrivate);
                         player.Position = new Vector3(36.61497f, 332.9037f, -69.72147f);
                         for (int i = 1; i < 10; i++)
                             player.AddItem(ItemType.Ammo9x19);
@@ -109,9 +109,9 @@ namespace RGM.Modes
 
         private static IEnumerator<float> Timer()
         {
-            for (int i = 1; i < 120; i++)
+            for (int i = 120; i > 0; i--)
             {
-                PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(1, $"<size=25><color=#2ECCFA>NTF 승리</color>까지</color> {180 - i}초</size>"));
+                PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(1, $"<size=25><color=#2ECCFA>NTF 승리</color>까지</color> {i}초</size>"));
 
                 yield return Timing.WaitForSeconds(1f);
             }

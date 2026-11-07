@@ -4,15 +4,17 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using Exiled.Events.EventArgs.Player;
 using MEC;
 using Mirror;
+using PlayerRoles;
 using RGM.API.Features;
 using UnityEngine;
 
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.BombParty)]
-    class BombParty : Mode
+    internal class BombParty : Mode
     {
         public override string Name => "폭탄 파티";
         public override string Description => "버티면 버틸수록 난이도가 올라갑니다.";
@@ -50,7 +52,7 @@ namespace RGM.Modes
 
             Exiled.Events.Handlers.Player.Died += OnDied;
 
-            Timing.RunCoroutine(OnModeStarted());
+            _onModeStarted = Timing.RunCoroutine(OnModeStarted());
         }
 
         public override void OnDisabled()
@@ -64,109 +66,151 @@ namespace RGM.Modes
             Timing.KillCoroutines(_onModeStarted);
         }
 
+        private static IEnumerator<float> Timer()
+        {
+            for (var i = 0;; i++)
+            {
+                if (Round.IsEnded) yield break;
+
+                PlayerManager.List.ToList()
+                    .ForEach(x => x.AddBroadcast(1, $"<size=32>{i}</size>"));
+
+                switch (i)
+                {
+                    case 0:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 1</size></color>"));
+                        break;
+                    case 30:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 2</size></color>"));
+                        break;
+                    case 60:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 3</size></color>"));
+                        break;
+                    case 90:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 4</size></color>"));
+                        break;
+                    case 120:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 5</size></color>"));
+                        break;
+                    case 150:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>FINAL ROUND</size></color>"));
+                        break;
+                }
+
+                yield return Timing.WaitForSeconds(1);
+            }
+        }
+
+        private static IEnumerator<float> Rounds()
+        {
+            for (var time = 0;; time++)
+            {
+                if (Round.IsEnded) yield break;
+                if (time % 3 == 0)
+                {
+                    var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
+                    g.FuseTime = 3f;
+                    g.SpawnActive(GetRandomPosition(), Server.Host);
+
+                    if (time > 30)
+                        if (Random.Range(1, 4) == 1)
+                        {
+                            var f1 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
+                            f1.FuseTime = 2f;
+                            f1.SpawnActive(GetRandomPosition());
+                        }
+
+                    if (time > 60)
+                        if (Random.Range(1, 4) == 1)
+                        {
+                            var g1 = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
+                            g1.FuseTime = 5f;
+                            g1.SpawnActive(GetRandomPosition(), Server.Host);
+                        }
+
+                    if (time > 90)
+                        if (Random.Range(1, 4) == 1)
+                        {
+                            var scp244 =
+                                (Scp244)Item.Create(
+                                    new List<ItemType> { ItemType.SCP244a, ItemType.SCP244b }.GetRandomValue(),
+                                    Server.Host);
+                            scp244.CreatePickup(GetRandomPosition(), new Quaternion(45, 0, 0, 0));
+                        }
+
+                    if (time > 120)
+                        if (Random.Range(1, 4) == 1)
+                        {
+                            var scp018 = (Scp018)Item.Create(ItemType.SCP018, Server.Host);
+                            scp018.SpawnActive(GetRandomPosition(), Server.Host);
+                        }
+
+                    if (time > 150)
+                    {
+                        var g2 = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
+                        g2.FuseTime = 3f;
+                        do
+                        {
+                            g2.SpawnActive(GetRandomPosition(), Server.Host);
+                        } while (Random.Range(1, 101) <= 40);
+
+                        var f2 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
+                        f2.FuseTime = 2f;
+                        do
+                        {
+                            f2.SpawnActive(GetRandomPosition(), Server.Host);
+                        } while (Random.Range(1, 101) <= 20);
+
+                        var scp244 =
+                            (Scp244)Item.Create(
+                                new List<ItemType> { ItemType.SCP244a, ItemType.SCP244b }.GetRandomValue(),
+                                Server.Host);
+                        do
+                        {
+                            scp244.CreatePickup(GetRandomPosition(), new Quaternion(45, 0, 0, 0));
+                        } while (Random.Range(1, 101) <= 20);
+
+                        var scp018 = (Scp018)Item.Create(ItemType.SCP018, Server.Host);
+                        do
+                        {
+                            scp018.SpawnActive(GetRandomPosition(), Server.Host);
+                        } while (Random.Range(1, 101) <= 30);
+                    }
+                }
+
+                PlayerManager.List.ToList().ForEach(x => x.DisableEffect(EffectType.Flashed));
+                yield return Timing.WaitForSeconds(1);
+            }
+        }
+
         private IEnumerator<float> OnModeStarted()
         {
+            yield return Timing.WaitForOneFrame;
+
             PlayerManager.List.ToList().CopyTo(_pl);
 
             foreach (var player in PlayerManager.List)
             {
-                player.Role.Set(PlayerRoles.RoleTypeId.ClassD);
+                player.Role.Set(RoleTypeId.ClassD);
                 player.Position = new Vector3(-0.3515625f, 300.9572f, -9.261719f);
             }
 
-            int t = 0;
-
-            while (true)
-            {
-                t += 3;
-
-                var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
-                g.FuseTime = 3f;
-                g.SpawnActive(GetRandomPosition(), Server.Host);
-
-                if (t > 30)
-                {
-                    if (Random.Range(1, 4) == 1)
-                    {
-                        var f1 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
-                        f1.FuseTime = 2f;
-                        f1.SpawnActive(GetRandomPosition());
-                    }
-                }
-
-                if (t > 60)
-                {
-                    if (Random.Range(1, 4) == 1)
-                    {
-                        var g1 = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
-                        g1.FuseTime = 5f;
-                        g1.SpawnActive(GetRandomPosition(), Server.Host);
-                    }
-                }
-
-                if (t > 90)
-                {
-                    if (Random.Range(1, 4) == 1)
-                    {
-                        var scp244 =
-                            (Scp244)Item.Create(
-                                new List<ItemType>() { ItemType.SCP244a, ItemType.SCP244b }.GetRandomValue(),
-                                Server.Host);
-                        scp244.CreatePickup(GetRandomPosition(), new Quaternion(45, 0, 0, 0));
-                    }
-                }
-
-                if (t > 120)
-                {
-                    if (Random.Range(1, 4) == 1)
-                    {
-                        var scp018 = (Scp018)Item.Create(ItemType.SCP018, Server.Host);
-                        scp018.SpawnActive(GetRandomPosition(), Server.Host);
-                    }
-                }
-
-                if (t > 150)
-                {
-                    var g2 = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
-                    g2.FuseTime = 3f;
-                    do
-                    {
-                        g2.SpawnActive(GetRandomPosition(), Server.Host);
-                    } while (Random.Range(1, 101) <= 35);
-
-                    var f2 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
-                    f2.FuseTime = 2f;
-                    do
-                    {
-                        f2.SpawnActive(GetRandomPosition(), Server.Host);
-                    } while (Random.Range(1, 101) <= 25);
-
-                    var scp244 =
-                        (Scp244)Item.Create(
-                            new List<ItemType> { ItemType.SCP244a, ItemType.SCP244b }.GetRandomValue(), Server.Host);
-                    do
-                    {
-                        scp244.CreatePickup(GetRandomPosition(), new Quaternion(45, 0, 0, 0));
-                    } while (Random.Range(1, 101) <= 25);
-
-                    var scp018 = (Scp018)Item.Create(ItemType.SCP018, Server.Host);
-                    do
-                    {
-                        scp018.SpawnActive(GetRandomPosition(), Server.Host);
-                    } while (Random.Range(1, 101) <= 35);
-                }
-
-                PlayerManager.List.ToList().ForEach(x => x.DisableEffect(EffectType.Flashed));
-                yield return Timing.WaitForSeconds(3f);
-            }
+            Timing.RunCoroutine(Timer());
+            Timing.RunCoroutine(Rounds());
         }
 
-        private Vector3 GetRandomPosition()
+        private static Vector3 GetRandomPosition()
         {
             return new Vector3(Random.Range(-9.941405f, 10.92998f), 303.9572f, Random.Range(-15.76172f, 2.550781f));
         }
 
-        private void OnDied(Exiled.Events.EventArgs.Player.DiedEventArgs ev)
+        private void OnDied(DiedEventArgs ev)
         {
             if (!_pl.Contains(ev.Player)) return;
             _pl.Remove(ev.Player);

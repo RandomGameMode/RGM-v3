@@ -11,16 +11,18 @@ namespace RGM.Modes
     {
         public override string Name => "그랜절";
         public override string Description => "세상에 돌아간 건가, 아님 내 정신이 돌아간 걸까?";
+
         public override string Detail =>
-"""
-Grand + 절
-""";
+            """
+            Grand + 절
+            """;
+
         public override string Color => "00FF80";
 
 
         public static GrandBow Instance;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -36,7 +38,7 @@ Grand + 절
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
             foreach (var player in PlayerManager.List)
                 Spawned(player);
@@ -44,17 +46,14 @@ Grand + 절
             yield break;
         }
 
-        public void OnSpawned(SpawnedEventArgs ev)
+        private void OnSpawned(SpawnedEventArgs ev)
         {
             Spawned(ev.Player);
         }
 
-        public void Spawned(Player player)
+        private void Spawned(Player player)
         {
-            Timing.CallDelayed(Timing.WaitForOneFrame, () =>
-            {
-                player.Scale = new UnityEngine.Vector3(-1, -1, -1);
-            });
+            Timing.CallDelayed(Timing.WaitForOneFrame, () => { player.Scale = new UnityEngine.Vector3(-1, -1, -1); });
         }
     }
 }

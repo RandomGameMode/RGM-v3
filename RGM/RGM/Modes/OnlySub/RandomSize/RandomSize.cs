@@ -7,21 +7,23 @@ using UnityEngine;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.OnlySub, ModeInfo.Plus, ModeType.RandomSize)]
-    class RandomSize : Mode
+    internal class RandomSize : Mode
     {
         public override string Name => "랜덤사이즈";
         public override string Description => "스폰 시 랜덤한 크기로 조정됩니다.";
+
         public override string Detail =>
-"""
-x: 0.1 ~ 1.2
-y: 0.3 ~ 1.2
-z: 0.1 ~ 1.2
-""";
+            """
+            x: 0.1 ~ 1.2
+            y: 0.3 ~ 1.2
+            z: 0.1 ~ 1.2
+            """;
+
         public override string Color => "BFFF00";
 
         public static RandomSize Instance;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
@@ -37,27 +39,26 @@ z: 0.1 ~ 1.2
             Timing.KillCoroutines(_onModeStarted);
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             yield break;
         }
 
-        public void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
+        private void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
         {
             Spawned(ev.Player);
         }
 
-        public void Spawned(Player player)
+        private void Spawned(Player player)
         {
-            Timing.CallDelayed(1f, () => 
-            {
-                player.Scale = new Vector3(UnityEngine.Random.Range(0.1f, 1.2f), UnityEngine.Random.Range(0.3f, 1.2f), UnityEngine.Random.Range(0.1f, 1.2f));
-            });
+            Timing.CallDelayed(1f,
+                () =>
+                {
+                    player.Scale = new Vector3(Random.Range(0.1f, 1.2f), Random.Range(0.3f, 1.2f),
+                        Random.Range(0.1f, 1.2f));
+                });
         }
     }
 }

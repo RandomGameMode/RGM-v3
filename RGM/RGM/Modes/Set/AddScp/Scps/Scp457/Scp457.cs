@@ -17,6 +17,9 @@ namespace RGM.Modes.Sets.AddScp.Scps
 {
     public static class Scp457
     {
+        private const float ExplosionFuseTime = 0.1f;
+        private const float ExplosionDamageWindow = 0.3f;
+
         private static bool _abilityCooldown;
 
         public static Player Create(Player player)
@@ -181,14 +184,44 @@ namespace RGM.Modes.Sets.AddScp.Scps
                     return;
 
                 Vector3 pos = ev.Player.Position;
+                Team ownerTeam = ev.Player.Role.Team;
 
                 Timing.CallDelayed(Timing.WaitForOneFrame, () =>
                 {
                     if (!ev.Player.IsDead) return;
                     if (ev.Player != player) return;
-                    var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, player);
-                    g.FuseTime = 0.1f;
-                    g.SpawnActive(pos, player);
+
+                    // 사망(관전자) 상태의 플레이어를 투척자로 지정하면 폭발이 피해를 주지 못하므로
+                    // Host가 던지고, 피해는 OnExplosionHurting에서 SCP-457에게 귀속시킨다.
+                    Exiled.Events.Handlers.Player.Hurting += OnExplosionHurting;
+                    Timing.CallDelayed(ExplosionFuseTime + ExplosionDamageWindow,
+                        () => Exiled.Events.Handlers.Player.Hurting -= OnExplosionHurting);
+
+                    var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
+                    g.FuseTime = ExplosionFuseTime;
+                    g.SpawnActive(pos, Server.Host);
+
+                    void OnExplosionHurting(HurtingEventArgs hurtingEv)
+                    {
+                        if (hurtingEv.Player == null ||
+                            hurtingEv.Attacker != Server.Host ||
+                            hurtingEv.DamageHandler.Type != DamageType.Explosion)
+                            return;
+
+                        hurtingEv.IsAllowed = false;
+
+                        Player victim = hurtingEv.Player;
+                        if (victim == player || !victim.IsAlive || !player.IsConnected)
+                            return;
+
+                        if (!Server.FriendlyFire && !HitboxIdentity.IsEnemy(ownerTeam, victim.Role.Team))
+                            return;
+
+                        victim.Hurt(
+                            amount: hurtingEv.DamageHandler.Damage,
+                            damageType: DamageType.Explosion,
+                            attacker: player);
+                    }
 
                     Timing.KillCoroutines(mainCoroutine);
                     Timing.KillCoroutines(makeSoundCoroutine);
