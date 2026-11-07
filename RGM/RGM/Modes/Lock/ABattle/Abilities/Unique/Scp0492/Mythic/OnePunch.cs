@@ -25,7 +25,7 @@ public class OnePunch : Ability
         {
             Owner.AddAbility(AbilityType.LEGEND_SPEEDWAGON);
             Owner.AddAbility(AbilityType.EPIC_TURTLE);
-            Owner.AddAbility(AbilityType.RARE_SCP0492_SHIELD);
+            Owner.AddAbility(AbilityType.RARE_SCPS_SHIELD);
             Owner.AddAbility(AbilityType.RARE_SCP0492_MEALS);
         });
         Exiled.Events.Handlers.Player.Hurting += OnHurting;

@@ -163,6 +163,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp3114\Normal\HalfBlock.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp3114\Normal\Showmanship.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp939\Epic\HeavyInjure.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scps\Rare\Shield.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\DeathPrevention.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\AlephOne.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\AntiMatter.cs" />
@@ -384,7 +385,6 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp0492\Normal\Infection.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp0492\Rare\Hunger.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp0492\Rare\Meals.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp0492\Rare\Shield.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp049\Epic\PlagueCurse.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp049\Epic\MedicalAccident.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp049\Legend\Contagion.cs" />

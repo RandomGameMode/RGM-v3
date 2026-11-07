@@ -48,11 +48,11 @@ public class Operator : Ability
 
         if (ev.Player.IsScp)
         {
-            if (ApplyFixedDamage.Apply(ev.Attacker, ev.Player, FixedDamage)) Owner.ShowHitMarker(1.25f);
+            if (ApplyFixedDamage.Apply(ev.Attacker, ev.Player, FixedDamage)) ev.Attacker.ShowHitMarker(1.25f);
         }
         else
         {
-            if (ApplyLethalDamage.Apply(ev.Attacker, ev.Player)) Owner.ShowHitMarker(1.5f);
+            if (ApplyLethalDamage.Apply(ev.Attacker, ev.Player)) ev.Attacker.ShowHitMarker(1.5f);
         }
     }
 

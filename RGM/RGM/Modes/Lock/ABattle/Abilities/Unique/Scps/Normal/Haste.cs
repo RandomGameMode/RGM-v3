@@ -17,11 +17,11 @@ using Scp049Role = Exiled.API.Features.Roles.Scp049Role;
 
 namespace RGM.Modes.Abilities.Unique.Scps.Normal;
 
-/*[Ability("가속", "SCP 진영의 스킬 쿨타임이 4%p 감소합니다. (최대 60%p까지 적용)",
+/*[Ability("가속", "SCP 진영의 스킬 쿨타임이 10%p 감소합니다. (최대 60%p까지 적용)",
     AbilityCategory.Normal, AbilityType.NORMAL_SCPS_HASTE, RoleAbility.Scps)]*/
 public class Haste : Ability
 {
-    private const float ReductionPerAbility = 0.04f;
+    private const float ReductionPerAbility = 0.1f;
     private const float MaximumReduction = 0.6f;
     private const float PingCooldown = 3f;
     private const string ModeID = "com.RGM.Modes.ABattle.Haste";
