@@ -40,10 +40,17 @@ public class EMP : Ability
         Exiled.Events.Handlers.Player.TogglingRadio += OnTogglingRadio;
         Exiled.Events.Handlers.Scp079.LosingSignal += OnLosingSignal;
     }
+
+    public override void OnDisabled()
+    {
+        Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
+        Exiled.Events.Handlers.Player.TogglingRadio -= OnTogglingRadio;
+        Exiled.Events.Handlers.Scp079.LosingSignal -= OnLosingSignal;
+    }
     
     private void OnChangedItem(ChangedItemEventArgs ev)
     {
-        if (ev.Item?.Serial != _empSerial)
+        if (ev.Player != Owner || ev.Item?.Serial != _empSerial)
             return;
         
         ev.Player.AddHint("EMP", $"<b><color={ABattle.RatingColor["영웅"]}>EMP</color></b> 능력이 있는 <b>무전기</b>입니다!");
