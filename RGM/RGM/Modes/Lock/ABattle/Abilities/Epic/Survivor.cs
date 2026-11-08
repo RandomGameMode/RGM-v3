@@ -11,10 +11,10 @@ using RGM.Modes.Abilities.Synergy;
 
 namespace RGM.Modes.Abilities.Epic;
 
-[Ability("구사일생", "사망 판정을 받을 경우, 『생존』 효과를 2.3초간 부여하며, 체력을 23% 회복합니다. (최대 3번)", AbilityCategory.Epic, AbilityType.EPIC_SURVIVOR)]
+[Ability("구사일생", "사망 판정을 받을 경우, 『생존』 효과를 2.8초간 부여하며, 체력을 20% 회복합니다. (최대 3번)", AbilityCategory.Epic, AbilityType.EPIC_SURVIVOR)]
 public class Survivor : Ability, IDeathPreventionAbility
 {
-    private const float InvincibilityDuration = 2.3f;
+    private const float InvincibilityDuration = 2.8f;
 
     private static bool _isDetonatingState;
 
@@ -148,7 +148,7 @@ public class Survivor : Ability, IDeathPreventionAbility
         Owner.EnableEffect(EffectType.Invisible, 1, InvincibilityDuration);
         Owner.EnableEffect(EffectType.Ghostly, 1, InvincibilityDuration);
         Owner.AddEffect(EffectType.MovementBoost, 40, InvincibilityDuration);
-        Owner.Heal(Owner.MaxHealth * 0.23f);
+        Owner.Heal(Owner.MaxHealth * 0.2f);
 
         int remaining = _power - 1;
         int version = ++_version;

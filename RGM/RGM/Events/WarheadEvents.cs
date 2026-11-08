@@ -44,11 +44,11 @@ namespace RGM.Events
 
             while (!Round.IsEnded)
             {
-                var fx = (float)Math.Tanh(x / 60);
+                var fx = Convert.ToSingle(Math.Pow(Math.PI / Math.E, x / 16) - 1);
                 
                 foreach (var player in PlayerManager.List)
                 {
-                    player.Health -= player.MaxHealth * fx;
+                    player.Health -= player.MaxHealth * Mathf.Min(1, fx);
                     
                     if (player.Health <= 0 && player.IsAlive)
                         player.Kill("게임을 질질 끌어서 죽었습니다.");

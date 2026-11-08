@@ -930,7 +930,10 @@ namespace RGM.API.Features
                 g.SpawnActive(pos.Value, thrower);
 
                 if (!instakill) return;
-                ApplyInstantKill.Apply(player, player);
+                do
+                {
+                    ApplyLethalDamage.Apply(player, player);
+                } while (!ApplyFixedDamage.IsApplying);
             }
         }
     }

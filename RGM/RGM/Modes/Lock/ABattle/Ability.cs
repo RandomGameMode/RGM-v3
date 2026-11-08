@@ -528,6 +528,7 @@ public enum AbilityType
 
     // SCP 공통
     NORMAL_SCPS_HASTE, // [전용 일반] 가속
+    RARE_SCPS_SHIELD, // [전용 희귀] 보호막
     
     // SCP-173
     NORMAL_SCP173_FEAR, // [전용 일반] 공포
@@ -564,7 +565,6 @@ public enum AbilityType
     
     RARE_SCP0492_HUNGER, // [전용 희귀] 허기
     RARE_SCP0492_MEALS, // [전용 희귀] 급식
-    RARE_SCP0492_SHIELD, // [전용 희귀] 보호막
     
     EPIC_SCP0492_MINIPLAGUEDOCTOR, // [전용 영웅] 작은 역병 의사
     
