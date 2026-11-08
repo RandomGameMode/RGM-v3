@@ -50,7 +50,7 @@ namespace RGM.Modes
 
         private readonly List<ItemType> _itemsList = [];
 
-        private bool _isEnd;
+        private bool _isEnd = false;
 
         private CoroutineHandle _onModeStarted;
 
@@ -109,7 +109,8 @@ namespace RGM.Modes
             if (player.Role.Type == RoleTypeId.ChaosConscript)
                 return;
 
-            player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.All);
+            if (player.Role.Type != RoleTypeId.ClassD)
+                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.All);
 
             Timing.CallDelayed(0.1f, () =>
             {
