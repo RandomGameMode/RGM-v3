@@ -13,7 +13,7 @@ using Warhead = Exiled.Events.Handlers.Warhead;
 
 namespace RGM.Modes
 {
-    [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.SpeedRun)]
+    [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.SpeedRun)]
     class SpeedRun : Mode
     {
         public override string Name => "스피드런";
