@@ -310,13 +310,18 @@ namespace RGM.Donator
 
         public IEnumerator<float> OnSpawned(SpawnedEventArgs ev)
         {
+            if (ev.Player == null || ev.Player.IsNPC || string.IsNullOrEmpty(ev.Player.UserId))
+                yield break;
+
             if (ev.Player.IsAlive)
             {
                 if (Physics.Raycast(ev.Player.Position, Vector3.down, out RaycastHit hit, 100, (LayerMask)1))
                 {
                     Vector3 _pos = hit.point;
 
-                    List<string> Data = UsersManager.UsersCache[ev.Player.UserId];
+                    if (!UsersManager.UsersCache.TryGetValue(ev.Player.UserId, out List<string> Data))
+                        yield break;
+
                     string sE = Data[20];
 
                     if (Data[21] == "1" && Data[19] != "0")
