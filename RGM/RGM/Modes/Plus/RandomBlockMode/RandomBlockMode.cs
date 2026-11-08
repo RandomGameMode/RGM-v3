@@ -59,6 +59,7 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Player.OpeningGenerator += OnOpeningGenerator;
             Exiled.Events.Handlers.Player.ChangingItem += OnChangingItem;
             Exiled.Events.Handlers.Player.Escaping += OnEscaping;
+            Exiled.Events.Handlers.Player.Left += OnLeft;
 
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
             _check = Timing.RunCoroutine(Check());
@@ -74,9 +75,31 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Player.OpeningGenerator -= OnOpeningGenerator;
             Exiled.Events.Handlers.Player.ChangingItem -= OnChangingItem;
             Exiled.Events.Handlers.Player.Escaping -= OnEscaping;
+            Exiled.Events.Handlers.Player.Left -= OnLeft;
 
             Timing.KillCoroutines(_onModeStarted);
             Timing.KillCoroutines(_check);
+
+            _dict.Clear();
+            _posDict.Clear();
+        }
+
+        // 퇴장했거나 파괴된 Player 인스턴스에 수류탄을 생성하면 Exiled의 ItemAdded 이벤트에서 NRE가 발생한다.
+        private static bool IsValid(Player player)
+            => player != null && player.IsConnected && player.ReferenceHub != null && player.GameObject != null;
+
+        private void OnLeft(LeftEventArgs ev)
+        {
+            _dict.Remove(ev.Player);
+            _posDict.Remove(ev.Player);
+        }
+
+        private static void Punish(Player player)
+        {
+            if (!IsValid(player) || player.IsDead)
+                return;
+
+            player.ExplodeGrenade(ignore: true);
         }
 
         private IEnumerator<float> OnModeStarted()
@@ -95,7 +118,7 @@ namespace RGM.Modes
 
                 ushort time = (ushort)UnityEngine.Random.Range(5, 121);
 
-                foreach (var player in PlayerManager.List)
+                foreach (var player in PlayerManager.List.Where(IsValid).ToList())
                 {
                     if (!_dict.ContainsKey(player))
                         _dict.Add(player, BlockedActions.Running);
@@ -114,10 +137,20 @@ namespace RGM.Modes
         {
             while (true)
             {
-                foreach (var player in _dict.Keys.Where(x => !x.IsDead))
+                foreach (var player in _dict.Keys.ToList())
                 {
                     try
                     {
+                        if (!IsValid(player))
+                        {
+                            _dict.Remove(player);
+                            _posDict.Remove(player);
+                            continue;
+                        }
+
+                        if (player.IsDead)
+                            continue;
+
                         var blockedAction = _dict[player];
                         FirstPersonMovementModule fpcModule =
                             (player.ReferenceHub.roleManager.CurrentRole as FpcStandardRoleBase)?.FpcModule;
@@ -128,13 +161,13 @@ namespace RGM.Modes
                             case BlockedActions.Running:
                             {
                                 if (fpcModule.CurrentMovementState == PlayerMovementState.Sprinting)
-                                    player.ExplodeGrenade(ignore: true);
+                                    Punish(player);
                                 break;
                             }
                             case BlockedActions.WalkSlowly:
                             {
                                 if (fpcModule.CurrentMovementState == PlayerMovementState.Sneaking)
-                                    player.ExplodeGrenade(ignore: true);
+                                    Punish(player);
                                 break;
                             }
                             case BlockedActions.Moving:
@@ -143,7 +176,7 @@ namespace RGM.Modes
                                     _posDict.Add(player, player.Position);
 
                                 if (_posDict[player] != player.Position)
-                                    player.ExplodeGrenade(ignore: true);
+                                    Punish(player);
 
                                 _posDict[player] = player.Position;
                                 break;
@@ -166,7 +199,7 @@ namespace RGM.Modes
                 return;
 
             if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.Jumping)
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
         }
 
         private void OnHurting(HurtingEventArgs ev)
@@ -175,7 +208,7 @@ namespace RGM.Modes
                 return;
 
             if (ev.Attacker != null && _dict.ContainsKey(ev.Attacker) && _dict[ev.Attacker] == BlockedActions.Attacking)
-                ev.Attacker.ExplodeGrenade(ignore: true);
+                Punish(ev.Attacker);
         }
 
         private void OnVoiceChatting(VoiceChattingEventArgs ev)
@@ -184,7 +217,7 @@ namespace RGM.Modes
                 return;
 
             if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.Speaking && !ev.Player.IsDead)
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
         }
 
         private void OnUsedItem(UsingItemEventArgs ev)
@@ -193,7 +226,7 @@ namespace RGM.Modes
                 return;
 
             if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.UsingItem)
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
         }
 
         private void OnInteractingDoor(InteractingDoorEventArgs ev)
@@ -202,7 +235,7 @@ namespace RGM.Modes
                 return;
 
             if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.InteractingDoor)
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
         }
 
         private void OnOpeningGenerator(OpeningGeneratorEventArgs ev)
@@ -211,7 +244,7 @@ namespace RGM.Modes
                 return;
 
             if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.OpenGenerator)
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
         }
 
         private void OnChangingItem(ChangingItemEventArgs ev)
@@ -219,16 +252,16 @@ namespace RGM.Modes
             if (ev.Player.IsDead)
                 return;
 
-            if (!_dict.ContainsKey(ev.Player)) return;
+            if (ev.Item == null || !_dict.ContainsKey(ev.Player)) return;
             
             if (_dict[ev.Player] == BlockedActions.HeldKeyCard && ev.Item.Type.IsKeycard())
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
             
             if (_dict[ev.Player] == BlockedActions.HeldGun && ev.Item.Type.IsWeapon())
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
             
             if (_dict[ev.Player] == BlockedActions.HeldMedicalItem && ev.Item.Type.IsMedical())
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
         }
 
         private void OnEscaping(EscapingEventArgs ev)
@@ -237,7 +270,7 @@ namespace RGM.Modes
                 return;
 
             if (_dict.ContainsKey(ev.Player) && _dict[ev.Player] == BlockedActions.Escaping)
-                ev.Player.ExplodeGrenade(ignore: true);
+                Punish(ev.Player);
 
             ev.IsAllowed = false;
         }
