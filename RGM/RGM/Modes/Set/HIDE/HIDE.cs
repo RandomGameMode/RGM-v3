@@ -85,7 +85,7 @@ namespace RGM.Modes
                     _monster.HumeShield = _monster.MaxHumeShield;
                     _monster.EnableEffect(EffectType.MovementBoost, 70);
                     _monster.EnableEffect(EffectType.Fade, 204);
-                    _monster.EnableEffect(EffectType.Lightweight, 100);
+                    _monster.EnableEffect(EffectType.Lightweight, 140);
 
                     foreach (var player in PlayerManager.List)
                     {

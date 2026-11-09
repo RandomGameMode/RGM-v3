@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 using MEC;
 using Mirror;
 using PlayerRoles;
@@ -16,40 +17,42 @@ using static RGM.Variables.Variable;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.GGClub)]
-    class GGClub : Mode
+    internal class GGClub : Mode
     {
         public override string Name => "GG 클럽";
         public override string Description => "빠르게 황금색 플랫폼을 사수하세요!";
-        public override string Detail =>
-"""
-<b><color=#F00000>페</color><color=#F54900>이</color><color=#FA9300>즈</color></b>가 총 10개로 이루어져 있습니다!
 
-순발력을 마음껏 뽐내 보세요!
-""";
+        public override string Detail =>
+            """
+            <b><color=#F00000>페</color><color=#F54900>이</color><color=#FA9300>즈</color></b>가 총 10개로 이루어져 있습니다!
+
+            순발력을 마음껏 뽐내 보세요!
+            """;
+
         public override string Color => "C8FE2E";
         public override string Map => "GGClub";
 
         public static GGClub Instance;
 
-        List<Player> pl = new List<Player>();
-        List<Transform> ClubLights = new List<Transform>();
-        List<Transform> Pads = new List<Transform>();
-        List<Transform> goldPads = new List<Transform>();
+        private readonly List<Player> _pl = [];
+        private List<Transform> _clubLights = [];
+        private List<Transform> _pads = [];
+        private readonly List<Transform> _goldPads = [];
 
-        bool IsSongStopped = false;
-        int Phase = 1;
+        private bool _isSongStopped;
+        private int _phase = 1;
 
-        CoroutineHandle _onModeStarted;
-        CoroutineHandle _dj;
-        CoroutineHandle _gingerbreadHint;
-        CoroutineHandle _showPhase;
+        private CoroutineHandle _onModeStarted;
+        private CoroutineHandle _dj;
+        private CoroutineHandle _gingerbreadHint;
+        private CoroutineHandle _showPhase;
 
-        AudioClipPlayback audio;
+        private AudioClipPlayback _audio;
 
         public override void OnEnabled()
         {
             Round.IsLocked = true;
-            Respawn.PauseWaves(); 
+            Respawn.PauseWaves();
             Server.FriendlyFire = true;
 
             Exiled.Events.Handlers.Player.Spawned += OnSpawned;
@@ -60,11 +63,11 @@ namespace RGM.Modes
             Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
 
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
-            _dj = Timing.RunCoroutine(DJ());
-            _gingerbreadHint = Timing.RunCoroutine(gingerbreadHint());
+            _dj = Timing.RunCoroutine(Dj());
+            _gingerbreadHint = Timing.RunCoroutine(GingerbreadHint());
             _showPhase = Timing.RunCoroutine(ShowPhase());
 
-            audio = Tools.PlayGlobalAudio("tothemoon", 1, true);
+            _audio = Tools.PlayGlobalAudio("tothemoon", 1, true);
         }
 
         public override void OnDisabled()
@@ -81,12 +84,12 @@ namespace RGM.Modes
             Timing.KillCoroutines(_gingerbreadHint);
             Timing.KillCoroutines(_showPhase);
 
-            audio.IsPaused = true;
+            _audio.IsPaused = true;
         }
 
         private IEnumerator<float> OnModeStarted()
         {
-            PlayerManager.List.CopyTo(pl);
+            PlayerManager.List.CopyTo(_pl);
 
             yield return Timing.WaitForOneFrame;
 
@@ -99,44 +102,42 @@ namespace RGM.Modes
                 IntercomPlayers.Add(player);
             }
 
-            for (int i = 1; i < 11; i++)
+            for (var i = 1; i < 11; i++)
             {
                 PlayerManager.List.ToList().ForEach(x => x.AddHint("GG클럽 게임 시작 알림", $"게임이 {11 - i}초 후에 시작됩니다.", 1.2f));
 
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            ClubLights = Tools.GetObjectList("ClubLight");
-            Pads = Tools.GetObjectList("Pad");
+            _clubLights = Tools.GetObjectList("ClubLight");
+            _pads = Tools.GetObjectList("Pad");
 
-            while (Phase < 11)
+            while (_phase < 11)
             {
-                yield return Timing.WaitForSeconds(11 - Phase);
+                yield return Timing.WaitForSeconds(11 - _phase);
 
-                IsSongStopped = true;
-                audio.IsPaused = true;
+                _isSongStopped = true;
+                _audio.IsPaused = true;
 
-                for (int i = 1; i < 12 - Phase; i++)
+                for (var i = 1; i < 12 - _phase; i++)
                 {
-                    Transform goldPad = Pads.GetRandomValue();
+                    var goldPad = _pads.GetRandomValue();
 
-                    if (!goldPads.Contains(goldPad))
-                        goldPads.Add(goldPad);
+                    if (!_goldPads.Contains(goldPad))
+                        _goldPads.Add(goldPad);
                 }
 
-                yield return Timing.WaitForSeconds(3 - Phase * 0.2f);
+                yield return Timing.WaitForSeconds(3 - _phase * 0.2f);
 
-                foreach (var player in PlayerManager.List.Where(pl.Contains))
-                {
-                    if (Physics.Raycast(player.Position, Vector3.down, out RaycastHit hit, 3f, (LayerMask)1))
+                foreach (var player in PlayerManager.List.Where(_pl.Contains))
+                    if (Physics.Raycast(player.Position, Vector3.down, out var hit, 3f, (LayerMask)1))
                     {
                         try
                         {
-                            if (hit.transform.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor != UnityEngine.Color.yellow)
-                            {
-                                if (player.IsAlive && !player.IsNPC)
-                                    player.Kill("황금색 발판을 밟지 못한 자여.");
-                            }
+                            if (hit.transform.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor ==
+                                UnityEngine.Color.yellow) continue;
+                            if (player.IsAlive && !player.IsNPC)
+                                player.Kill("황금색 발판을 밟지 못한 자여.");
                         }
                         catch (Exception)
                         {
@@ -149,30 +150,28 @@ namespace RGM.Modes
                         if (player.IsAlive && !player.IsNPC)
                             player.Kill("황금색 발판을 밟지 못한 자여...");
                     }
-                }
 
-                foreach (var Pad in Pads)
-                {
-                    if (Pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor == UnityEngine.Color.white)
-                        Pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor = UnityEngine.Color.red;
-                }
+                foreach (var pad in _pads)
+                    if (pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor ==
+                        UnityEngine.Color.white)
+                        pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor = UnityEngine.Color.red;
 
                 yield return Timing.WaitForSeconds(1.25f);
 
-                IsSongStopped = false;
-                audio.IsPaused = false;
-                goldPads.Clear();
+                _isSongStopped = false;
+                _audio.IsPaused = false;
+                _goldPads.Clear();
 
-                Phase++;
+                _phase++;
             }
 
             Round.IsLocked = false;
 
-            if (pl.Count > 1)
+            if (_pl.Count > 1)
                 PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(3, "게임이 종료되었습니다. 그나저나 어떻게 사셨"));
         }
 
-        private IEnumerator<float> gingerbreadHint()
+        private IEnumerator<float> GingerbreadHint()
         {
             while (true)
             {
@@ -183,81 +182,74 @@ namespace RGM.Modes
             }
         }
 
-        private IEnumerator<float> DJ()
+        private IEnumerator<float> Dj()
         {
             yield return Timing.WaitForSeconds(1f);
 
             while (true)
             {
-
-                if (!IsSongStopped)
+                if (!_isSongStopped)
                 {
-                    foreach (var Pad in Pads)
-                    {
-                        Pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                    }
+                    foreach (var pad in _pads)
+                        pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor =
+                            new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
 
-                    foreach (var ClubLight in ClubLights)
-                    {
-                        ClubLight.GetComponent<AdminToys.LightSourceToy>().NetworkLightColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                    }
+                    foreach (var clubLight in _clubLights)
+                        clubLight.GetComponent<AdminToys.LightSourceToy>().NetworkLightColor =
+                            new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
                 }
                 else
                 {
-                    foreach (var Pad in Pads)
-                    {
-                        Pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor = UnityEngine.Color.white;
-                    }
+                    foreach (var pad in _pads)
+                        pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor = UnityEngine.Color.white;
 
-                    foreach (var Pad in goldPads)
-                    {
-                        Pad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor = UnityEngine.Color.yellow;
-                    }
+                    foreach (var goldPad in _goldPads)
+                        goldPad.GetComponent<AdminToys.PrimitiveObjectToy>().NetworkMaterialColor =
+                            UnityEngine.Color.yellow;
 
-                    foreach (var ClubLight in ClubLights)
-                    {
-                        ClubLight.GetComponent<AdminToys.LightSourceToy>().NetworkLightColor = UnityEngine.Color.white;
-                    }
+                    foreach (var clubLight in _clubLights)
+                        clubLight.GetComponent<AdminToys.LightSourceToy>().NetworkLightColor = UnityEngine.Color.white;
                 }
 
-                yield return Timing.WaitForSeconds(1.1f - Phase * 0.1f);
+                yield return Timing.WaitForSeconds(1.1f - _phase * 0.1f);
             }
         }
 
         private IEnumerator<float> ShowPhase()
         {
-            while (Phase < 11)
+            while (_phase < 11)
             {
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, $"<b><color=#FFF700>P</color><color=#FFC516>h</color><color=#FF942C>a</color><color=#FF6242>s</color><color=#FF3158>e</color></b> {Phase}");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1,
+                    $"<b><color=#FFF700>P</color><color=#FFC516>h</color><color=#FF942C>a</color><color=#FF6242>s</color><color=#FF3158>e</color></b> {_phase}");
 
                 yield return Timing.WaitForSeconds(1f);
             }
         }
 
-        private void OnSpawned(Exiled.Events.EventArgs.Player.SpawnedEventArgs ev)
+        private void OnSpawned(SpawnedEventArgs ev)
         {
             Server.ExecuteCommand($"/speak {ev.Player.Id} 1");
             IntercomPlayers.Add(ev.Player);
         }
 
-        private void OnDied(Exiled.Events.EventArgs.Player.DiedEventArgs ev)
+        private void OnDied(DiedEventArgs ev)
         {
-            if (pl.Contains(ev.Player))
+            if (_pl.Contains(ev.Player))
             {
-                pl.Remove(ev.Player);
+                _pl.Remove(ev.Player);
 
-                if (pl.Count < 3)
+                if (_pl.Count < 3)
                     Round.IsLocked = false;
             }
         }
 
-        private void OnHurting(Exiled.Events.EventArgs.Player.HurtingEventArgs ev)
+        private void OnHurting(HurtingEventArgs ev)
         {
             if (ev.Player.IsNPC)
                 ev.IsAllowed = false;
         }
 
-        private void OnSpawnedRagdoll(Exiled.Events.EventArgs.Player.SpawnedRagdollEventArgs ev)
+        private void OnSpawnedRagdoll(SpawnedRagdollEventArgs ev)
         {
             ev.Ragdoll.Destroy();
         }
@@ -269,10 +261,10 @@ namespace RGM.Modes
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 5));
                     break;
                 case > 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 1));
                     break;
             }
         }

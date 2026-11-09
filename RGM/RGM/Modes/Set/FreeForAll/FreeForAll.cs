@@ -19,11 +19,11 @@ namespace RGM.Modes
         public override string Name => "개인전";
         public override string Description => "가장 먼저 50킬을 달성하세요!";
         public override string Detail =>
-"""
-랜덤한 전투 맵에서 다른 모든 플레이어와 싸우세요.
+            """
+            랜덤한 전투 맵에서 다른 모든 플레이어와 싸우세요.
 
-먼저 50킬을 달성하거나, 3분 후 가장 많은 킬을 기록한 플레이어가 승리합니다.
-""";
+            먼저 50킬을 달성하거나, 3분 후 가장 많은 킬을 기록한 플레이어가 승리합니다.
+            """;
         public override string Color => "FA58F4";
 
         public static FreeForAll Instance;
