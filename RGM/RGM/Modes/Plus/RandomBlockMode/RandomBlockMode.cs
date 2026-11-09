@@ -122,7 +122,9 @@ namespace RGM.Modes
         {
             if (!IsValid(player) || player.IsDead)
                 return;
-
+            
+            player.DisableAllEffects();
+            if (GodModePlayers.Contains(player)) GodModePlayers.Remove(player);
             player.ExplodeGrenade(ignore: true);
         }
 
