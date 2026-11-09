@@ -17,13 +17,15 @@ namespace RGM.Modes
     {
         public override string Name => "랜덤금지모드";
         public override string Description => "절대로 금지된 행동을 해선 안됩니다!";
-        public override string Detail =>
-"""
-5 ~ 120초 사이에 플레이어마다 금지된 행동이 변경됩니다.
-금지된 행동이 고지되기 전에 2초 간 경고 시간이 주어집니다.
 
-금지된 행동을 하면 귀여워질 수 있습니다.
-""";
+        public override string Detail =>
+            """
+            5 ~ 120초 사이에 플레이어마다 금지된 행동이 변경됩니다.
+            금지된 행동이 고지되기 전에 2초 간 경고 시간이 주어집니다.
+
+            금지된 행동을 하면 귀여워질 수 있습니다.
+            """;
+
         public override string Color => "d97053";
 
         private CoroutineHandle _onModeStarted;
@@ -48,6 +50,28 @@ namespace RGM.Modes
             Escaping, // 탈출하기 금지
             Moving, // 움직이기 금지
         }
+
+        // 플레이어에게 보여주는 표시 이름. 동작 로직은 enum 이름을 그대로 사용한다.
+        // 안내 문구가 "당신은 {이름}(을)를 할 수 없습니다."이므로 "금지"는 제외한다.
+        private static readonly Dictionary<BlockedActions, string> DisplayNames = new()
+        {
+            [BlockedActions.Running] = "달리기",
+            [BlockedActions.Jumping] = "점프",
+            [BlockedActions.Attacking] = "공격",
+            [BlockedActions.Speaking] = "말하기",
+            [BlockedActions.UsingItem] = "아이템사용",
+            [BlockedActions.InteractingDoor] = "문 상호작용",
+            [BlockedActions.OpenGenerator] = "발전기 열기",
+            [BlockedActions.HeldKeyCard] = "키카드 들기",
+            [BlockedActions.HeldGun] = "총 들기",
+            [BlockedActions.HeldMedicalItem] = "의료 아이템 들기",
+            [BlockedActions.WalkSlowly] = "천천히 걷기",
+            [BlockedActions.Escaping] = "탈출하기",
+            [BlockedActions.Moving] = "움직이기",
+        };
+
+        private static string GetDisplayName(BlockedActions action)
+            => DisplayNames.TryGetValue(action, out var name) ? name : action.ToString();
 
         public override void OnEnabled()
         {
@@ -126,7 +150,8 @@ namespace RGM.Modes
                     var blockedAction = Tools.EnumToList<BlockedActions>().GetRandomValue();
                     _dict[player] = blockedAction;
 
-                    player.AddBroadcast(time, $"<size=30>당신은 <color=red>{blockedAction.ToString().Replace("_", " ")}</color>(을)를 할 수 없습니다.</size>");
+                    player.AddBroadcast(time,
+                        $"<size=30>당신은 <color=red>{GetDisplayName(blockedAction)}</color>(을)를 할 수 없습니다.</size>");
                 }
 
                 yield return Timing.WaitForSeconds(time);
@@ -204,6 +229,7 @@ namespace RGM.Modes
 
         private void OnHurting(HurtingEventArgs ev)
         {
+            if (ApplyFixedDamage.IsApplying) return;
             if (ev.Player.IsDead)
                 return;
 
@@ -253,13 +279,13 @@ namespace RGM.Modes
                 return;
 
             if (ev.Item == null || !_dict.ContainsKey(ev.Player)) return;
-            
+
             if (_dict[ev.Player] == BlockedActions.HeldKeyCard && ev.Item.Type.IsKeycard())
                 Punish(ev.Player);
-            
+
             if (_dict[ev.Player] == BlockedActions.HeldGun && ev.Item.Type.IsWeapon())
                 Punish(ev.Player);
-            
+
             if (_dict[ev.Player] == BlockedActions.HeldMedicalItem && ev.Item.Type.IsMedical())
                 Punish(ev.Player);
         }
