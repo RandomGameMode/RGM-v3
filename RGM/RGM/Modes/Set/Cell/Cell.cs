@@ -73,33 +73,36 @@ namespace RGM.Modes
 
         private static IEnumerator<float> Timer()
         {
-            for (var time = 0;  ; time++)
+            for (var time = 0;; time++)
             {
                 if (Round.IsEnded) yield break;
-                
+
                 PlayerManager.List.ToList()
                     .ForEach(x => x.AddBroadcast(1, $"<size=32>{time}</size>"));
-                
+
                 yield return Timing.WaitForSeconds(1);
             }
         }
 
         private static IEnumerator<float> AddScp018()
         {
-            var thrower = PlayerManager.List.Where(x => x.IsAlive).ToList().GetRandomValue();
+            while (!Round.IsEnded)
+            {
+                var thrower = PlayerManager.List.Where(x => x.IsAlive).ToList().GetRandomValue();
 
-            var scp018 = (Throwable)thrower.AddItem(ItemType.SCP018);
-            var scp = (Scp018)scp018;
-            scp.ChangeItemOwner(thrower, null);
-            thrower.ThrowItem(scp018);
-            thrower.RemoveItem(scp018);
+                var scp018 = (Throwable)thrower.AddItem(ItemType.SCP018);
+                var scp = (Scp018)scp018;
+                scp.ChangeItemOwner(thrower, null);
+                thrower.ThrowItem(scp018);
+                thrower.RemoveItem(scp018);
 
-            PlayerManager.List.ToList()
-                .ForEach(x => x.AddBroadcast(5, $"<size=40><color=red>새로운 SCP-018이 투하되었습니다.</color></size>"));
-            
-            yield return Timing.WaitForSeconds(Random.Range(30, 61));
+                PlayerManager.List.ToList()
+                    .ForEach(x => x.AddBroadcast(5, $"<size=40><color=red>새로운 SCP-018이 투하되었습니다.</color></size>"));
+
+                yield return Timing.WaitForSeconds(Random.Range(30, 61));
+            }
         }
-        
+
         private void OnDied(DiedEventArgs ev)
         {
             if (!_pl.Contains(ev.Player)) return;
