@@ -31,7 +31,7 @@ namespace RGM.Modes
 
         private Player _scp049;
         private Player _bomb;
-        private const float TimeLimit = 75f;
+        private const float TimeLimit = 80f;
 
         private CoroutineHandle _onModeStarted;
 
@@ -89,8 +89,8 @@ namespace RGM.Modes
                         _bomb = bomb;
                         p.AddHint("해적 룰렛",
                             """
-                            <size=25>당신이 <color=#FA5858>폭탄</color>입니다.</size>
-                            <size=23>술래가 당신을 잡도록 유도해보세요.</size>
+                            <size=26>당신이 <color=#FA5858>폭탄</color>입니다.</size>
+                            <size=24>술래가 당신을 잡도록 유도해보세요.</size>
                             """,
                             TimeLimit + 5f);
                     });
@@ -112,7 +112,7 @@ namespace RGM.Modes
             for (var time = TimeLimit; _scp049.IsAlive; time--)
             {
                 PlayerManager.List.ToList()
-                    .ForEach(x => x.AddBroadcast(1, $"<b><color=#FFBF00><size=32>{time}초 후 049가 패배합니다.</size></color></b>"));
+                    .ForEach(x => x.AddBroadcast(1, $"<b><color=#FFBF00><size=28>{time}초 후 049가 패배합니다.</size></color></b>"));
 
                 _scp049.Hurt((_scp049.MaxHealth + _scp049.MaxArtificialHealth + _scp049.MaxHumeShield) /
                              TimeLimit, "시간 제한으로 체력이 감소합니다."); // 분모 값이 제한 시간(초 단위)이 됨
