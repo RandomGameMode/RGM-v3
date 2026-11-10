@@ -34,7 +34,7 @@ namespace RGM.Modes
 
         public static RedLightGreenLight Instance;
         
-        private bool _isHardMode = Random.Range(1, 101) < 45;
+        private readonly bool _isHardMode = Random.Range(1, 101) < 45;
 
         private string _light = "Green";
         private readonly Dictionary<Player, Vector3> _playerPosition = new();
@@ -125,7 +125,7 @@ namespace RGM.Modes
                 while (_light == "Green")
                     yield return Timing.WaitForSeconds(0.1f);
 
-                yield return Timing.WaitForSeconds(_isHardMode ? 0.55f : 0.99f); // 550ms / 990ms
+                yield return Timing.WaitForSeconds(_isHardMode ? 0.66f : 0.99f); // 660ms / 990ms
 
                 while (_light == "Red")
                 {
