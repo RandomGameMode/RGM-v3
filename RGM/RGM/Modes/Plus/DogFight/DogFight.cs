@@ -20,13 +20,15 @@ namespace RGM.Modes
     {
         public override string Name => "개판 1초전";
         public override string Description => "그냥 개판입니다. 관리자에게 제약이 적용되지 않습니다.";
-        public override string Detail =>
-"""
-리볼버!!!!!!
 
-소환된 SCP-018은 60초 뒤에 사라집니다. 렉 방지를 위해
-팀킬이 허용됩니다.
-""";
+        public override string Detail =>
+            """
+            리볼버!!!!!!
+
+            소환된 SCP-018은 40초 뒤에 사라집니다. 렉 방지를 위해
+            팀킬이 허용됩니다.
+            """;
+
         public override string Color => "DF0101";
 
         public static DogFight Instance;
@@ -69,10 +71,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
-            foreach (var player in PlayerManager.List)
-            {
-                Spawned(player);
-            }
+            foreach (var player in PlayerManager.List) Spawned(player);
 
             yield break;
         }
@@ -86,53 +85,44 @@ namespace RGM.Modes
         private void Spawned(Player player)
         {
             if (HolidayUtils.IsHolidayActive(HolidayType.Halloween))
-            {
                 player.EnableEffect(EffectType.Marshmallow);
-            }
             else
-            {
                 player.AddItem(ItemType.GunRevolver);
-            }
         }
 
         private void OnShooting(ShootingEventArgs ev)
         {
             if (ev.Item.Type == ItemType.GunRevolver)
             {
-                Throwable scp018 = (Throwable)ev.Player.AddItem(ItemType.SCP018);
-                Scp018 scp = (Scp018)scp018;
+                var scp018 = (Throwable)ev.Player.AddItem(ItemType.SCP018);
+                var scp = (Scp018)scp018;
                 scp.ChangeItemOwner(ev.Player, null);
                 ev.Player.ThrowItem(scp018);
                 ev.Player.RemoveItem(scp018);
 
-                Timing.CallDelayed(1, () =>
-                {
-                    ev.Player.CurrentItem.As<Firearm>().MagazineAmmo = 6;
-                });
+                Timing.CallDelayed(1, () => { ev.Player.CurrentItem.As<Firearm>().MagazineAmmo = 6; });
 
-                Timing.CallDelayed(60, scp018.Destroy);
+                Timing.CallDelayed(40, scp018.Destroy);
             }
         }
 
         private void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker != null && ev.Attacker.CurrentItem != null && ev.Attacker.CurrentItem.Type == ItemType.GunRevolver)
-            {
-                ev.IsAllowed = false;
-            }
+            if (ev.Attacker != null && ev.Attacker.CurrentItem != null &&
+                ev.Attacker.CurrentItem.Type == ItemType.GunRevolver) ev.IsAllowed = false;
         }
 
         private void OnPinging(PingingEventArgs ev)
         {
-            Pickup.CreateAndSpawn(ItemType.SCP018, ev.Position, new Quaternion(Random.Range(1, 180), Random.Range(1, 180), Random.Range(1, 180), Random.Range(1, 180)), ev.Player);
+            Pickup.CreateAndSpawn(ItemType.SCP018, ev.Position,
+                new Quaternion(Random.Range(1, 180), Random.Range(1, 180), Random.Range(1, 180), Random.Range(1, 180)),
+                ev.Player);
         }
 
         private void OnRoundEnded(RoundEndedEventArgs ev)
         {
             foreach (var player in PlayerManager.List.Where(x => x.IsAlive))
-            {
                 Server.ExecuteCommand($"/drop {player.Id} 31 1");
-            }
         }
     }
 }

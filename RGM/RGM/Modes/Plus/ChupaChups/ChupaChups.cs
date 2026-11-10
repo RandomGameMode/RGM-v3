@@ -34,7 +34,6 @@ namespace RGM.Modes
         {
             Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
             Exiled.Events.Handlers.Player.Spawned += OnSpawned;
-            // LabApi.Events.Handlers.ServerEvents.WaveRespawned += OnBackup;
             
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
             _autoWarhead.RunCoroutine();
@@ -44,7 +43,6 @@ namespace RGM.Modes
         {
             Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
             Exiled.Events.Handlers.Player.Spawned -= OnSpawned;
-            // LabApi.Events.Handlers.ServerEvents.WaveRespawned -= OnBackup;
 
             Timing.KillCoroutines(_onModeStarted);
             _autoWarhead.KillCoroutine();
@@ -74,14 +72,6 @@ namespace RGM.Modes
         {
             foreach (var player in PlayerManager.List.Where(x => x.IsAlive && x.IsScpRole() && x.Role.Type != RoleTypeId.Scp079))
                 Spawned(player);
-        }
-
-        private void OnBackup(WaveRespawnedEventArgs e)
-        {
-            foreach (var items in PlayerManager.List.Where(x => x.IsAlive && x.IsScpRole()))
-            {
-                items.AddItem(ItemType.Jailbird);
-            }
         }
     }
 }
