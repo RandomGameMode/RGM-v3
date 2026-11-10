@@ -33,6 +33,8 @@ namespace RGM.Modes
         public override string Color => "F7D358";
 
         public static RedLightGreenLight Instance;
+        
+        private bool _isHardMode = Random.Range(1, 101) < 45;
 
         private string _light = "Green";
         private readonly Dictionary<Player, Vector3> _playerPosition = new();
@@ -68,16 +70,18 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
-            PlayerManager.List.ToList().ForEach(x => x.AddHint("불", $"<color=green>초록 불</color>! 움직여도 됩니다.", 250));
+            PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(10,"<color=red><b><size=36>하드 모드 활성화</size></b></color>"));
+            
+            PlayerManager.List.ToList().ForEach(x => x.AddHint("불", "<color=green>초록 불</color>! 움직여도 됩니다.", 250));
 
             while (true)
             {
-                yield return Timing.WaitForSeconds(Random.Range(1, 46));
+                yield return Timing.WaitForSeconds(_isHardMode ? Random.Range(5, 51) : Random.Range(1, 31));
 
                 _light = "Red";
                 PlayerManager.List.ToList().ForEach(x => x.AddHint("불", $"<color=red>빨간 불</color>! 움직이지 마세요!", 250));
 
-                yield return Timing.WaitForSeconds(Random.Range(3, 11));
+                yield return Timing.WaitForSeconds(_isHardMode ? Random.Range(2, 6) : Random.Range(4, 13));
 
                 _light = "Green";
                 PlayerManager.List.ToList().ForEach(x => x.AddHint("불", $"<color=green>초록 불</color>! 움직여도 됩니다.", 250));
@@ -121,7 +125,7 @@ namespace RGM.Modes
                 while (_light == "Green")
                     yield return Timing.WaitForSeconds(0.1f);
 
-                yield return Timing.WaitForSeconds(0.53f); // 530ms
+                yield return Timing.WaitForSeconds(_isHardMode ? 0.55f : 0.99f); // 550ms / 990ms
 
                 while (_light == "Red")
                 {

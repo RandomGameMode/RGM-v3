@@ -84,6 +84,7 @@ namespace RGM.Modes
             if (spirits.Contains(ev.Player) && spirits.Contains(ev.Attacker)) // 스피릿이 스피릿을 공격한 경우 패널티 부여
             {
                 ev.Attacker.Kill("같은 유령을 죽이는 실수를 범해서는 안됬습니다.");
+                ev.Player.Kill("유령은 퇴치당했습니다.");
             }
             else if (spirits.Contains(ev.Player))
             {
