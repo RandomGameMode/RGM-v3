@@ -811,7 +811,9 @@ namespace RGM.Events
             }
             else if (ev.Attacker != null && !ev.Attacker.IsNPC && !ev.Attacker.IsNonePlayer())
             {
-                if (ev.Attacker.IsScpRole() &&
+                // 고정 피해(ApplyFixedDamage/ApplyLethalDamage)는 SCP 피해 보정치를 받지 않는다.
+                if (!ApplyFixedDamage.IsApplying &&
+                    ev.Attacker.IsScpRole() &&
                     (ev.DamageHandler.Type.IsWeapon() ||
                      ev.DamageHandler.Type == DamageType.Scp127 ||
                      ev.DamageHandler.Type == DamageType.Scp1509))
