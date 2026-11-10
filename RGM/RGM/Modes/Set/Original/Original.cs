@@ -34,10 +34,10 @@ namespace RGM.Modes
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], PlayerManager.List.Count / 2));
                     break;
                 case > 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 1));
                     break;
             }
         }

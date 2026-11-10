@@ -14,21 +14,23 @@ using UnityEngine;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.Chess)]
-    class Chess : Mode
+    internal class Chess : Mode
     {
         public override string Name => "체스";
         public override string Description => "자신의 왕을 지키세요.";
-        public override string Detail =>
-"""
-킹(1): 폰과 동일한 스펙을 지닙니다. 죽으면 팀 전체가 패배합니다.
-퀸(1): 룩과 비숍의 능력을 동시에 지닙니다.
-나이트(2): 점프력이 향상됩니다.
-비숍(2): 이동 속도가 빠릅니다.
-룩(2): 제일버드 대신 칼을 받습니다.
-폰: 제일버드를 들고 스폰합니다.
 
-(숫자) -> 각 팀당 스폰되는 수
-""";
+        public override string Detail =>
+            """
+            킹(1): 폰과 동일한 스펙을 지닙니다. 죽으면 팀 전체가 패배합니다.
+            퀸(1): 룩과 비숍의 능력을 동시에 지닙니다.
+            룩(2): 제일버드 대신 칼을 받습니다.
+            나이트(2): 점프력이 향상됩니다.
+            비숍(2): 이동 속도가 빠릅니다.
+            폰: 제일버드를 들고 스폰합니다.
+
+            (숫자) -> 각 팀당 스폰되는 수
+            """;
+
         public override string Color => "637c66";
         public override string Map => "Chess";
 
@@ -84,7 +86,7 @@ namespace RGM.Modes
 
             players.ShuffleList();
 
-            int halfCount = players.Count / 2;
+            var halfCount = players.Count / 2;
             _special = [];
             _teamA = players.Take(halfCount).ToList();
             _teamB = players.Skip(halfCount).ToList();
@@ -101,7 +103,7 @@ namespace RGM.Modes
             _rookA = [];
             _rookB = [];
 
-            bool canSpawnFullPieces = players.Count >= 16;
+            var canSpawnFullPieces = players.Count >= 16;
 
             Tools.PlayGlobalAudio("RankCountdown", 1.5f);
 
@@ -112,12 +114,10 @@ namespace RGM.Modes
 
             Exiled.Events.Handlers.Player.ChangingItem += OnChangingItem;
 
-            Timing.CallDelayed(20, () =>
-            {
-                Exiled.Events.Handlers.Player.ChangingItem -= OnChangingItem;
-            });
+            Timing.CallDelayed(20, () => { Exiled.Events.Handlers.Player.ChangingItem -= OnChangingItem; });
 
-            void SetupTeam(List<Player> team, RoleTypeId roleType, string color, Vector3 pos, Player king, Player queen, List<Player> knights, List<Player> rooks, List<Player> bishops)
+            void SetupTeam(List<Player> team, RoleTypeId roleType, string color, Vector3 pos, Player king, Player queen,
+                List<Player> knights, List<Player> rooks, List<Player> bishops)
             {
                 foreach (var ply in team)
                 {
@@ -180,6 +180,10 @@ namespace RGM.Modes
                 _special.Add(_queenA);
                 _queenB = _teamB.GetRandomValue(x => !_special.Contains(x));
                 _special.Add(_queenB);
+                _rookA = _teamA.Where(x => !_special.Contains(x)).Take(2).ToList();
+                _special.AddRange(_rookA);
+                _rookB = _teamB.Where(x => !_special.Contains(x)).Take(2).ToList();
+                _special.AddRange(_rookB);
                 _knightA = _teamA.Where(x => !_special.Contains(x)).Take(2).ToList();
                 _special.AddRange(_knightA);
                 _knightB = _teamB.Where(x => !_special.Contains(x)).Take(2).ToList();
@@ -188,16 +192,14 @@ namespace RGM.Modes
                 _special.AddRange(_bishopA);
                 _bishopB = _teamB.Where(x => !_special.Contains(x)).Take(2).ToList();
                 _special.AddRange(_bishopB);
-                _rookA = _teamA.Where(x => !_special.Contains(x)).Take(2).ToList();
-                _special.AddRange(_rookA);
-                _rookB = _teamB.Where(x => !_special.Contains(x)).Take(2).ToList();
-                _special.AddRange(_rookB);
             }
 
-            SetupTeam(_teamA, RoleTypeId.Scientist, "red", new Vector3(34.60717f, 381.5809f, -30.17525f), _kingA, _queenA, _knightA, _rookA, _bishopA); // A팀 (과학자)
+            SetupTeam(_teamA, RoleTypeId.Scientist, "red", new Vector3(34.60717f, 381.5809f, -30.17525f), _kingA,
+                _queenA, _knightA, _rookA, _bishopA); // A팀 (과학자)
             Timing.CallDelayed(Timing.WaitForOneFrame, () =>
             {
-                SetupTeam(_teamB, RoleTypeId.ClassD, "cyan", new Vector3(34.64063f, 381.5783f, -1.050781f), _kingB, _queenB, _knightB, _rookB, _bishopB);    // B팀 (죄수)
+                SetupTeam(_teamB, RoleTypeId.ClassD, "cyan", new Vector3(34.64063f, 381.5783f, -1.050781f), _kingB,
+                    _queenB, _knightB, _rookB, _bishopB); // B팀 (죄수)
             });
         }
 

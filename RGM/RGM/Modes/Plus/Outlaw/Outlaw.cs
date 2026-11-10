@@ -20,13 +20,13 @@ namespace RGM.Modes
         public override string Name => "무법자";
         public override string Description => "모두가 총기 하나를 가지고 시작합니다.";
         public override string Detail =>
-"""
-무기 아이템 중에서 랜덤으로 지급받습니다.
+            """
+            무기 아이템 중에서 랜덤으로 지급받습니다.
 
-SCP는 매 지원마다 새로운 무기를 받습니다.
+            SCP는 매 지원마다 새로운 무기를 받습니다.
 
-* 게임 시작 14분 뒤 <color=red>자동핵</color>이 작동됩니다.
-""";
+            * 게임 시작 14분 뒤 <color=red>자동핵</color>이 작동됩니다.
+            """;
         public override string Color => "9F81F7";
 
         public static Outlaw Instance;
