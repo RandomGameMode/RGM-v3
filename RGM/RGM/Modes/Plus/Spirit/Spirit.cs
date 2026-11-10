@@ -14,22 +14,24 @@ using RGM.Patches;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Plus, ModeType.Spirit)]
-    class Spirit : Mode
+    internal class Spirit : Mode
     {
         public override string Name => "스피릿";
         public override string Description => "죽으면 영혼 상태에 돌입합니다!";
-        public override string Detail =>
-"""
-죽으면 영혼 상태로 부활합니다. 이 상태에서 사망하면 성불됩니다.
-또한, 자살로 사망한 경우 곧바로 성불됩니다.
 
-* 게임 시작 10분 뒤 <color=red>자동핵</color>이 작동됩니다.
-""";
+        public override string Detail =>
+            """
+            죽으면 영혼 상태로 부활합니다. 이 상태에서 사망하면 성불됩니다.
+            또한, 자살로 사망한 경우 곧바로 성불됩니다.
+
+            * 게임 시작 10분 뒤 <color=red>자동핵</color>이 작동됩니다.
+            """;
+
         public override string Color => "CED8F6";
 
         public static Spirit Instance;
 
-        List<Player> spirits = new List<Player>();
+        private List<Player> spirits = new();
 
         private CoroutineHandle _onModeStarted;
         private readonly AutoWarhead _autoWarhead = new(10, 1);
@@ -56,51 +58,52 @@ namespace RGM.Modes
             _autoWarhead.KillCoroutine();
         }
 
-        public IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
-            if (Random.Range(1, 101) <= 10) { //10% 확률로 워크스테이션 업그레이드 시작
+            if (Random.Range(1, 101) <= 10) //10% 확률로 워크스테이션 업그레이드 시작
                 Tools.TryInstallMode(ModeType.ABattle);
-            }
             while (true)
             {
                 foreach (var player in PlayerManager.List)
-                {
                     if (spirits.Contains(player))
                     {
                         player.EnableEffect(EffectType.Invisible);
                         if (!HolidayUtils.IsHolidayActive(HolidayType.Halloween))
                             player.EnableEffect(EffectType.Ghostly);
                     }
-                }
 
                 yield return Timing.WaitForSeconds(1.5f);
             }
         }
 
-        public void OnHurting(HurtingEventArgs ev)
+        private void OnHurting(HurtingEventArgs ev)
         {
-            if (spirits.Contains(ev.Player))
-            {
-                if (GodModePlayers.Contains(ev.Player))
-                    GodModePlayers.Remove(ev.Player);
+            if (GodModePlayers.Contains(ev.Player))
+                GodModePlayers.Remove(ev.Player);
 
+            if (spirits.Contains(ev.Player) && spirits.Contains(ev.Attacker)) // 스피릿이 스피릿을 공격한 경우 패널티 부여
+            {
+                ev.Attacker.Kill("같은 유령을 죽이는 실수를 범해서는 안됬습니다.");
+            }
+            else if (spirits.Contains(ev.Player))
+            {
                 ev.Player.Kill("유령은 퇴치당했습니다.");
             }
         }
 
-        public IEnumerator<float> OnDied(DiedEventArgs ev)
+        private IEnumerator<float> OnDied(DiedEventArgs ev)
         {
-            if (spirits.Contains(ev.Player) || 
+            if (spirits.Contains(ev.Player) ||
                 Datas.BlockDamageTypes.Contains(ev.DamageHandler.Type))
             {
-                ev.Player.AddHint("스피릿 성불", $"성불했습니다..", 3);
+                ev.Player.AddHint("스피릿 성불", $"성불했습니다..");
                 spirits.Remove(ev.Player);
             }
             else
             {
-                for (int i = 1; i < 6; i++)
+                for (var i = 1; i < 6; i++)
                 {
-                    ev.Player.ShowHint($"{6 - i}초 뒤 영혼 상태에 돌입합니다.", 1.2f);
+                    ev.Player.ShowHint($"{6 - i}초 뒤 영혼 상태에 돌입합니다.", 1.1f);
 
                     yield return Timing.WaitForSeconds(1f);
                 }
@@ -118,13 +121,13 @@ namespace RGM.Modes
             }
         }
 
-        public void OnShot(ShotEventArgs ev)
+        private void OnShot(ShotEventArgs ev)
         {
             if (spirits.Contains(ev.Player))
                 ev.Player.DisableEffect(EffectType.Invisible);
         }
 
-        public void OnHurt(HurtEventArgs ev)
+        private void OnHurt(HurtEventArgs ev)
         {
             if (ev.Attacker != null && spirits.Contains(ev.Attacker))
                 ev.Attacker.DisableEffect(EffectType.Invisible);
