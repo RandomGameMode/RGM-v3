@@ -4,6 +4,7 @@ using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using PlayerStatsSystem;
 using RGM.API.Features;
+using RGM.Modes.Abilities.Rare;
 
 namespace RGM.Modes.Abilities.Mythic;
 
@@ -18,7 +19,6 @@ namespace RGM.Modes.Abilities.Mythic;
 public class Soldier76 : Ability
 {
     private const float DefaultHeadshotMultiplier = 2f;
-    private const float BullsEyeHeadshotBonus = 0.75f;
 
     private bool _isForcedHit;
     private ushort _serial;
@@ -73,7 +73,7 @@ public class Soldier76 : Ability
                 ? value
                 : DefaultHeadshotMultiplier;
         var headshotIncrease = baseHeadshotMultiplier - 1f
-                               + BullsEyeHeadshotBonus * Owner.AbilityCount(AbilityType.RARE_BULLSEYE);
+                               + BullsEye.HeadshotBonus * Owner.AbilityCount(AbilityType.RARE_BULLSEYE);
 
         return headshotIncrease > 0f ? 1f + headshotIncrease : 1f;
     }
