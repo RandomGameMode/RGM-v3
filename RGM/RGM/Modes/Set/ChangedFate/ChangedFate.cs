@@ -16,14 +16,16 @@ namespace RGM.Modes
     {
         public override string Name => "뒤바뀐 운명";
         public override string Description => "각 진영의 운명이 뒤바뀐다는 예언이 있었습니다.";
-        public override string Detail =>
-$"""
-<b>각 진영의 스폰 위치는 같지만, 역할군이 변경됩니다.</b>
 
-<color={RoleTypeId.ClassD.GetColor().ToHex()}>D계급</color> <-> <color={RoleTypeId.Scientist.GetColor().ToHex()}>과학자</color>
-<color={RoleTypeId.FacilityGuard.GetColor().ToHex()}>시설 경비</color> <-> <color={RoleTypeId.Scp079.GetColor().ToHex()}>SCP</color>
-<color={RoleTypeId.NtfSergeant.GetColor().ToHex()}>NTF</color> <-> <color={RoleTypeId.ChaosMarauder.GetColor().ToHex()}>혼돈의 반란</color>
-""";
+        public override string Detail =>
+            $"""
+             <b>각 진영의 스폰 위치는 같지만, 역할군이 변경됩니다.</b>
+
+             <color={RoleTypeId.ClassD.GetColor().ToHex()}>D계급</color> <-> <color={RoleTypeId.Scientist.GetColor().ToHex()}>과학자</color>
+             <color={RoleTypeId.FacilityGuard.GetColor().ToHex()}>시설 경비</color> <-> <color={RoleTypeId.Scp079.GetColor().ToHex()}>SCP</color>
+             <color={RoleTypeId.NtfSergeant.GetColor().ToHex()}>NTF</color> <-> <color={RoleTypeId.ChaosMarauder.GetColor().ToHex()}>혼돈의 반란</color>
+             """;
+
         public override string Color => "B40486";
         public override string Suggester => "A";
 
@@ -48,21 +50,19 @@ $"""
         {
             { RoleTypeId.ClassD, [RoleTypeId.Scientist] },
             { RoleTypeId.Scientist, [RoleTypeId.ClassD] },
-            { RoleTypeId.FacilityGuard,
+            {
+                RoleTypeId.FacilityGuard,
                 [.. Tools.EnumToList<RoleTypeId>().Where(x => x.IsScpRole() && !IgnoredRoles.Contains(x))]
             }
         };
 
         private RoleTypeId SelectRole(Player player)
         {
-            if (_roleTypeIds.TryGetValue(player.Role.Type, out var roles))
-            {
-                return roles.GetRandomValue();
-            }
+            if (_roleTypeIds.TryGetValue(player.Role.Type, out var roles)) return roles.GetRandomValue();
 
             if (player.IsScpRole())
                 return RoleTypeId.FacilityGuard;
-            
+
             return player.Role.Type switch
             {
                 RoleTypeId.NtfCaptain => RoleTypeId.ChaosRepressor,
@@ -97,7 +97,7 @@ $"""
         {
             foreach (var player in PlayerManager.List)
             {
-                RoleTypeId roleType = SelectRole(player);
+                var roleType = SelectRole(player);
                 player.Role.Set(roleType, SpawnReason.ItemUsage, RoleSpawnFlags.AssignInventory);
             }
 
@@ -108,11 +108,11 @@ $"""
         {
             if (ev.Player.IsAlive && ev.Reason != SpawnReason.ItemUsage)
             {
-                RoleTypeId roleType = SelectRole(ev.Player);
+                var roleType = SelectRole(ev.Player);
                 ev.Player.Role.Set(roleType, SpawnReason.ItemUsage, RoleSpawnFlags.AssignInventory);
             }
         }
-        
+
         private static void OnRoundEnded(RoundEndedEventArgs ev)
         {
             List<Player> players = [.. PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC)];

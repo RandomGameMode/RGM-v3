@@ -7,30 +7,31 @@ using RGM.API.Features;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Private, ModeInfo.Set, ModeType.Develop)]
-    class Develop : Mode
+    internal class Develop : Mode
     {
         public override string Name => "필독";
         public override string Description => "[📃 전체 모드] 드롭다운을 활용하여 모드 설명을 읽어 보세요!";
+
         public override string Detail =>
-"""
-여기는 자세한 설명이 쓰이는 자리입니다.
-""";
+            """
+            여기는 자세한 설명이 쓰이는 자리입니다.
+            """;
+
         public override string Color => "FFFFFF";
 
         public static Develop Instance;
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
             Round.IsLocked = true;
             Respawn.PauseWaves();
             Exiled.API.Features.Map.IsDecontaminationEnabled = false;
-            
 
             Exiled.Events.Handlers.Scp1509.Resurrecting += OnResurrecting;
             Exiled.Events.Handlers.Player.Kicking += OnKicking;
-            
+
             _onModeStarted = Timing.RunCoroutine(OnModeStarted());
             Tools.TryInstallMode(ModeType.SuperStar);
         }
@@ -48,16 +49,17 @@ namespace RGM.Modes
             Tools.UnInstallMode(ModeType.SuperStar);
         }
 
-        IEnumerator<float> OnModeStarted()
+        private IEnumerator<float> OnModeStarted()
         {
             yield return 0f;
         }
 
-        public void OnResurrecting(ResurrectingEventArgs ev)
+        private void OnResurrecting(ResurrectingEventArgs ev)
         {
             ev.IsAllowed = false;
         }
-        public void OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs ev)
+
+        private void OnKicking(Exiled.Events.EventArgs.Player.KickingEventArgs ev)
         {
             if (ev.Reason.ToLower().Contains("afk"))
                 ev.IsAllowed = false;
