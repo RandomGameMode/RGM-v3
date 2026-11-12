@@ -4,7 +4,7 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using MEC;
-
+using Mirror;
 using PlayerRoles;
 using RGM.API.Features;
 using static RGM.Variables.Variable;
@@ -33,7 +33,9 @@ namespace RGM.Modes
         public static LastOne Instance;
 
         private List<ItemType> _startupItems = [];
-
+        private readonly List<Player> _pl = [];
+        private bool _isEnd;
+        
         private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
@@ -42,7 +44,7 @@ namespace RGM.Modes
             Round.IsLocked = true;
             Respawn.PauseWaves();
 
-            Exiled.Events.Handlers.Player.Died += OnDied;
+            Exiled.Events.Handlers.Player.Dying += OnDying;
             Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += OnDroppingAmmo;
             Exiled.Events.Handlers.Player.Shot += OnShot;
@@ -52,7 +54,7 @@ namespace RGM.Modes
 
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Player.Died -= OnDied;
+            Exiled.Events.Handlers.Player.Dying -= OnDying;
             Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= OnDroppingAmmo;
             Exiled.Events.Handlers.Player.Shot -= OnShot;
@@ -62,6 +64,7 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
+            PlayerManager.List.ToList().CopyTo(_pl);
             _startupItems = Items();
 
             foreach (var player in PlayerManager.List)
@@ -117,14 +120,19 @@ namespace RGM.Modes
             return items;
         }
 
-        private void OnDied(DiedEventArgs ev)
+        private void OnDying(DyingEventArgs ev)
         {
-            List<Player> pl = [.. PlayerManager.List.Where(x => x.IsAlive)];
+            if (!_pl.Contains(ev.Player)) return;
+            _pl.Remove(ev.Player);
 
-            if (pl.Count >= 2) return;
+            if (_pl.Count >= 2) return;
+            if (_isEnd) return;
             Round.IsLocked = false;
 
-            Timing.RunCoroutine(Tools.SetWinner([pl[0]], 5));
+            PlayerManager.List.ToList().ForEach(x =>
+                x.AddBroadcast(20, $"<b><size=30><생존자 : {_pl[0].DisplayNickname}></size></b>"));
+            Timing.RunCoroutine(Tools.SetWinner([_pl[0]], 5));
+            _isEnd = true;
         }
 
         private void OnDroppingItem(DroppingItemEventArgs ev)
