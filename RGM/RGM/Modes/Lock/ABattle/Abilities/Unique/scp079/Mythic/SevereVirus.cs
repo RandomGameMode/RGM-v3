@@ -10,8 +10,8 @@ public class SevereVirus : Ability
 {
     public override void OnEnabled()
     {
-        foreach (var p in PlayerManager.List.Where(x => x.LeadingTeam == Owner.LeadingTeam && x.IsAlive && x != Owner))
-            GetRandomAbility(p);
+        foreach (var player in PlayerManager.List.Where(x => x.LeadingTeam == Owner.LeadingTeam && x.IsAlive && x != Owner))
+            GetRandomAbility(player);
     }
 
     private static void GetRandomAbility(Player player)

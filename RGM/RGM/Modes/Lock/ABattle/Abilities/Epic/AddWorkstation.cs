@@ -12,7 +12,7 @@ namespace RGM.Modes.Abilities.Epic;
 public class AddWorkstation : Ability
 {
     private const float ForwardOffset = 1.5f;
-    private const float DownwardOffset = 0.85f;
+    private const float DownwardOffset = 0.65f;
 
     private ushort _coinSerial;
 
@@ -53,7 +53,7 @@ public class AddWorkstation : Ability
             IsInteractable = true,
             Position = hit.point + Vector3.down * DownwardOffset,
             Rotation = new Vector3(0, player.Rotation.eulerAngles.y, 0),
-            Scale = Vector3.one
+            Scale = new Vector3(0.8f, 0.8f, 0.8f)
         }.SpawnOrUpdateObject();
         
         ev.Item.Destroy();
