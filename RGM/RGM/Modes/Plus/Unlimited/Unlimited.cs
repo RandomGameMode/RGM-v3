@@ -9,8 +9,10 @@ using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.MicroHID.Modules;
 using MEC;
 using PlayerRoles;
+using PlayerRoles.PlayableScps.Scp096;
 using RGM.API.Features;
 using UnityEngine;
+using Scp096Role = Exiled.API.Features.Roles.Scp096Role;
 
 namespace RGM.Modes;
 
@@ -322,7 +324,6 @@ internal class Unlimited : Mode
         ev.Scp096.EnrageCooldown = 0;
         ev.Scp096.EnragedTimeLeft = 9999;
         ev.Scp096.SprintingSpeed = 500;
-        ev.Scp096.TotalEnrageTime = 9999;
         ev.Scp096.RageManager.HumeShieldBlocked = false;
     }
 
