@@ -66,7 +66,7 @@ public class SecurityCamera : Ability
 
         if (player.Role is Scp079Role scp079)
         {
-            var cam = scp079.Base.CurrentCamera;
+            var cam = scp079.Base.CurrentCamera; // TryGetCurrentCamera로 변경해야 함.
 
             if (cam != null)
             {

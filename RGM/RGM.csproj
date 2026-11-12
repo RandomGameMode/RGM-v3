@@ -359,7 +359,6 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Rare\IllegalWeapon.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Rare\Trespassing.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Flamingo\MiniFactory.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\Rebirth.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\UrgentSupport.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp008.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp035.cs" />
