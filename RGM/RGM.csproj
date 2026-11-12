@@ -359,7 +359,6 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Rare\IllegalWeapon.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\ClassD\Rare\Trespassing.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Flamingo\MiniFactory.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\Rebirth.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Epic\UrgentSupport.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp008.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Human\Legend\ChangeScp035.cs" />
@@ -404,7 +403,7 @@
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Legend\ExplosionIsArt.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Legend\Virus.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Mythic\BackDoor.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Mythic\FusionBomb.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Mythic\ClusterBomb.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Mythic\SevereVirus.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Mythic\Transendence.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Unique\Scp079\Normal\SpamMessage.cs" />

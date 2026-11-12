@@ -23,14 +23,14 @@ public class TripleAxel : Mode
 
         해당 모드에서는 SCP-173이 등장하지 않으며, Flashlight 아이템이 기본 지급됩니다.
 
-        * 게임 시작 12분 뒤 <color=red>자동핵</color>이 작동됩니다.
+        * 게임 시작 10분 뒤 <color=red>자동핵</color>이 작동됩니다.
         """;
     public override string Color => "DF7401";
 
     public static TripleAxel Instance;
 
     private CoroutineHandle _onModeStarted;
-    private readonly AutoWarhead _autoWarhead = new(12, 1);
+    private readonly AutoWarhead _autoWarhead = new(10, 1);
 
     private static readonly List<RoleTypeId> ChangeRoles = Tools.EnumToList<RoleTypeId>()
         .Where(role => role.IsScp() && role is not RoleTypeId.Scp0492 and not RoleTypeId.Scp079)
@@ -111,7 +111,8 @@ public class TripleAxel : Mode
             {
                 SetRole(player, growthRole);
             });
-            
+
+        if (player.IsScpRole()) return;
         player.ClearAmmo();
         player.AddItem(ItemType.Flashlight);
         player.AddItem(ItemType.Ammo9x19, 30);

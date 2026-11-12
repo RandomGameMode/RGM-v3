@@ -1,5 +1,6 @@
 ﻿using RGM.API.Features;
 using System.Linq;
+using Exiled.API.Features;
 
 namespace RGM.Modes.Abilities.Unique.Scp079.Legend;
 
@@ -11,11 +12,16 @@ public class Virus : Ability
     {
         foreach (var player in PlayerManager.List.Where(x => x.LeadingTeam == Owner.LeadingTeam && x.IsAlive && x != Owner))
         {
-            for (int i = 0; i < 3; i++)
-            {
-                player.AddAbility(ABattle.Instance.GetRandomAbilities(player, AbilityCategory.Epic, 1)[0]);
-            }
+            GetRandomAbility(player);
             player.AddAbility(AbilityType.EPIC_TRANSITION);
         }
+    }
+
+    private static void GetRandomAbility(Player player)
+    {
+        if (player.IsNonePlayer()) return;
+        var randomAbility = ABattle.Instance.GetRandomAbilities(player, AbilityCategory.Epic, 3);
+        
+        foreach (var ability in randomAbility) player.AddAbility(ability);
     }
 }

@@ -39,7 +39,8 @@ public class Debris : Ability
             !ev.IsAllowed ||
             _isCoolingDown ||
             Owner.HumeShield <= 0f ||
-            ev.DamageHandler.Damage < Owner.HumeShield)
+            ev.DamageHandler.Damage < Owner.HumeShield ||
+            ApplyFixedDamage.IsApplying)
             return;
 
         _isCoolingDown = true;

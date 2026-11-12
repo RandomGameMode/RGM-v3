@@ -12,13 +12,18 @@ namespace RGM.Modes.Abilities.Unique.Scp079.Legend;
     AbilityCategory.Legend, AbilityType.LEGEND_SCP079_SECURITYCAMERA, RoleAbility.Scp079)]
 public class SecurityCamera : Ability
 {
-    CoroutineHandle SecurityCameraHandle;
+    private CoroutineHandle SecurityCameraHandle;
+
     public override void OnEnabled()
-        => SecurityCameraHandle = Timing.RunCoroutine(SecurityCameraSystem());
-    
+    {
+        SecurityCameraHandle = Timing.RunCoroutine(SecurityCameraSystem());
+    }
+
 
     public override void OnDisabled()
-        => Timing.KillCoroutines(SecurityCameraHandle);
+    {
+        Timing.KillCoroutines(SecurityCameraHandle);
+    }
 
 
     private IEnumerator<float> SecurityCameraSystem()
@@ -29,7 +34,6 @@ public class SecurityCamera : Ability
             {
                 var Targets = Scan(Owner);
                 if (Targets.Count > 0)
-                {
                     foreach (var player in Targets)
                     {
                         if (player == null) continue;
@@ -42,9 +46,8 @@ public class SecurityCamera : Ability
                         Hitmarker.SendHitmarkerDirectly(Owner.ReferenceHub, 0.5f);
                         player.Hit(Owner, damage);
                     }
-                }
             }
-            
+
             catch (Exception e)
             {
                 Log.Error($"SecurityCamera Error : {e}");
@@ -54,16 +57,16 @@ public class SecurityCamera : Ability
         }
     }
 
-    private List<Player> Scan(Player player) 
+    private List<Player> Scan(Player player)
     {
-        Vector3 pos = new Vector3(0, 0, 0);
-        Vector3 dir = new Vector3(0, 0, 0);
+        var pos = new Vector3(0, 0, 0);
+        var dir = new Vector3(0, 0, 0);
 
         List<Player> TargetPlayers = new();
 
         if (player.Role is Scp079Role scp079)
         {
-            var cam = scp079.Base.CurrentCamera;
+            var cam = scp079.Base.CurrentCamera; // TryGetCurrentCamera로 변경해야 함.
 
             if (cam != null)
             {
@@ -71,11 +74,10 @@ public class SecurityCamera : Ability
                 dir = cam.CameraAnchor.forward;
             }
         }
-        
+
         foreach (var target in PlayerManager.List)
-        {
-            if (Tools.IsLookingAt(dir, pos, target, 100f)) TargetPlayers.Add(target);
-        }
+            if (Tools.IsLookingAt(dir, pos, target, 100f))
+                TargetPlayers.Add(target);
 
         return TargetPlayers;
     }

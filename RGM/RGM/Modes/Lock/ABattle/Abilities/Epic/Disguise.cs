@@ -27,7 +27,8 @@ public class Disguise : Ability
         RoleTypeId.AlphaFlamingo,
         RoleTypeId.ChaosFlamingo,
         RoleTypeId.NtfFlamingo,
-        RoleTypeId.ZombieFlamingo
+        RoleTypeId.ZombieFlamingo,
+        // RoleTypeId.Scp953
     ];
     
     private CoroutineHandle _disguise;
