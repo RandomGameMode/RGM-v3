@@ -138,7 +138,10 @@
     <Compile Include="RGM\Modes\Lock\ABattle\ABattle.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\ABattleEventHandler.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\ABattleSetting.cs" />
-    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\Terminal.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\Terminal\Commands\InnerCommand\Apt.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\Terminal\Commands\InnerCommand\Man.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\Terminal\Commands\Sudo.cs" />
+    <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Ancient\Terminal\Terminal.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\DestroyedReflector.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Dummy\StolenByGhost.cs" />
     <Compile Include="RGM\Modes\Lock\ABattle\Abilities\Legend\Operator.cs" />
@@ -978,6 +981,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Memory">
+      <HintPath>$(EXILED_REFERENCES)\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -986,6 +992,9 @@
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis">
+      <HintPath>NVorbis.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
