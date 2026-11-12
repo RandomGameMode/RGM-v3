@@ -10,4 +10,9 @@ public class Swift : Ability
     {
         Owner.AddEffect(EffectType.MovementBoost, 5);
     }
+
+    public override void OnDisabled()
+    {
+        Owner.RemoveEffect(EffectType.MovementBoost, 5);
+    }
 }

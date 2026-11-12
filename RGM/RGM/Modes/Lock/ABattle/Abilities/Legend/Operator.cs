@@ -46,14 +46,9 @@ public class Operator : Ability
 
         ev.IsAllowed = false;
 
-        if (ev.Player.IsScp)
-        {
-            if (ApplyFixedDamage.Apply(ev.Attacker, ev.Player, FixedDamage)) ev.Attacker.ShowHitMarker(1.25f);
-        }
-        else
-        {
-            if (ApplyLethalDamage.Apply(ev.Attacker, ev.Player)) ev.Attacker.ShowHitMarker(1.5f);
-        }
+        if (ev.Player.IsScp && ApplyFixedDamage.Apply(ev.Attacker, ev.Player, FixedDamage))
+            ev.Attacker.ShowHitMarker(1.25f);
+        else if (ApplyLethalDamage.Apply(ev.Attacker, ev.Player)) ev.Attacker.ShowHitMarker(1.5f);
     }
 
     private static bool HasBuckshotCylinder(Item item) =>
