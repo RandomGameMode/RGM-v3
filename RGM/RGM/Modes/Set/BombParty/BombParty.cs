@@ -31,6 +31,7 @@ namespace RGM.Modes
             60초 후ㅣ<b>고폭 수류탄</b>이 1/3 확률로 떨어집니다.
             90초 후ㅣ<b>SCP-244</b>가 1/3 확률로 떨어집니다.
             120초 후ㅣ<b>SCP-018</b>이 1/3 확률로 떨어집니다.
+            150초 후ㅣ모든 아이템들이 확률 조건을 불만족 할 때 가지 무제한으로 떨어집니다.
 
             3분 이상 버틴다면 스스로를 칭찬해주세요.
             """;
@@ -68,38 +69,36 @@ namespace RGM.Modes
 
         private static IEnumerator<float> Timer()
         {
-            for (var i = 0;; i++)
+            for (var time = 0; !Round.IsEnded; time++)
             {
-                if (Round.IsEnded) yield break;
-
                 PlayerManager.List.ToList()
-                    .ForEach(x => x.AddBroadcast(1, $"<size=32>{i}</size>"));
+                    .ForEach(x => x.AddBroadcast(1, $"<size=30>{time}</size>"));
 
-                switch (i)
+                switch (time)
                 {
                     case 0:
                         PlayerManager.List.ToList()
-                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 1</size></color>"));
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>ROUND 1</size></color></b>"));
                         break;
                     case 30:
                         PlayerManager.List.ToList()
-                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 2</size></color>"));
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>ROUND 2</size></color></b>"));
                         break;
                     case 60:
                         PlayerManager.List.ToList()
-                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 3</size></color>"));
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>ROUND 3</size></color></b>"));
                         break;
                     case 90:
                         PlayerManager.List.ToList()
-                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 4</size></color>"));
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>ROUND 4</size></color></b>"));
                         break;
                     case 120:
                         PlayerManager.List.ToList()
-                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>ROUND 5</size></color>"));
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>ROUND 5</size></color></b>"));
                         break;
                     case 150:
                         PlayerManager.List.ToList()
-                            .ForEach(x => x.AddBroadcast(10, "<color=red><size=40>FINAL ROUND</size></color>"));
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>FINAL ROUND</size></color></b>"));
                         break;
                 }
 
@@ -109,9 +108,8 @@ namespace RGM.Modes
 
         private static IEnumerator<float> Rounds()
         {
-            for (var time = 0;; time++)
+            for (var time = 0; !Round.IsEnded; time++)
             {
-                if (Round.IsEnded) yield break;
                 if (time % 3 == 0)
                 {
                     var g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
@@ -158,7 +156,7 @@ namespace RGM.Modes
                         do
                         {
                             g2.SpawnActive(GetRandomPosition(), Server.Host);
-                        } while (Random.Range(1, 101) <= 40);
+                        } while (Random.Range(1, 101) <= 44);
 
                         var f2 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
                         f2.FuseTime = 2f;
@@ -180,7 +178,7 @@ namespace RGM.Modes
                         do
                         {
                             scp018.SpawnActive(GetRandomPosition(), Server.Host);
-                        } while (Random.Range(1, 101) <= 30);
+                        } while (Random.Range(1, 101) <= 33);
                     }
                 }
 
@@ -192,7 +190,7 @@ namespace RGM.Modes
         private IEnumerator<float> OnModeStarted()
         {
             yield return Timing.WaitForOneFrame;
-
+            
             PlayerManager.List.ToList().CopyTo(_pl);
 
             foreach (var player in PlayerManager.List)
@@ -201,8 +199,14 @@ namespace RGM.Modes
                 player.Position = new Vector3(-0.3515625f, 300.9572f, -9.261719f);
             }
 
-            Timing.RunCoroutine(Timer());
-            Timing.RunCoroutine(Rounds());
+            PlayerManager.List.ToList()
+                .ForEach(x => x.AddBroadcast(10, $"<b><color=green><size=36>10초 후 라운드가 시작됩니다.</size></color></b>"));
+
+            Timing.CallDelayed(10, () =>
+            {
+                Timing.RunCoroutine(Timer());
+                Timing.RunCoroutine(Rounds());
+            });
         }
 
         private static Vector3 GetRandomPosition()
