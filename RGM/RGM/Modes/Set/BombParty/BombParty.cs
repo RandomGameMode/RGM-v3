@@ -189,8 +189,6 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnModeStarted()
         {
-            yield return Timing.WaitForOneFrame;
-            
             PlayerManager.List.ToList().CopyTo(_pl);
 
             foreach (var player in PlayerManager.List)
@@ -200,8 +198,16 @@ namespace RGM.Modes
             }
 
             PlayerManager.List.ToList()
-                .ForEach(x => x.AddBroadcast(10, $"<b><color=green><size=36>10초 후 라운드가 시작됩니다.</size></color></b>"));
+                .ForEach(x => x.AddBroadcast(7, $"<b><color=green><size=36>10초 후 라운드가 시작됩니다.</size></color></b>"));
 
+            for (var i = 3; i > 0; i--)
+            {
+                PlayerManager.List.ToList()
+                    .ForEach(x => x.AddBroadcast(1, $"<b><color=green><size=32>{i}</size></color></b>"));
+
+                yield return Timing.WaitForSeconds(1);
+            }
+            
             Timing.CallDelayed(10, () =>
             {
                 Timing.RunCoroutine(Timer());
