@@ -16,7 +16,7 @@ namespace RGM.Modes.Abilities.Mythic;
                  """, AbilityCategory.Mythic, AbilityType.MYTHIC_BOMBGUN)]
 public class BombGun : Ability
 {
-    private const float OwnerExplosionDamageMultiplier = 0.02f;
+    // private const float OwnerExplosionDamageMultiplier = 0.02f;
     private const float WarMachineGrenadeDamageMultiplier = 0.85f;
 
     private ushort _itemSerial;
@@ -24,7 +24,7 @@ public class BombGun : Ability
 
     public override void OnEnabled()
     {
-        Item item = Owner.AddItem(ItemType.GunCOM15);
+        var item = Owner.AddItem(ItemType.GunCOM15);
 
         _itemSerial = item.Serial;
 
@@ -64,7 +64,7 @@ public class BombGun : Ability
         if (ev.DamageHandler.Type != DamageType.Explosion) return;
 
         if (ABattle.Instance.HasAbility(ev.Player, AbilityType.MYTHIC_BOMBGUN))
-            ev.DamageHandler.Damage *= OwnerExplosionDamageMultiplier;
+            ev.IsAllowed = false;
 
         if (ev.Attacker == Owner &&
             _bombGunGrenadePositions.Values.Any(position => Vector3.Distance(position, ev.Player.Position) <= 10f))
