@@ -27,7 +27,7 @@ namespace RGM.Modes
             """;
 
         private const float RaycastDistance = 5f;
-        
+
         private int _timeLimit;
         private int _seconds;
         private const string TargetObjectName = "Scp999"; // 목표 오브젝트 이름
@@ -79,15 +79,16 @@ namespace RGM.Modes
 
         private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
         {
-            Player player = ev.Player;
+            var player = ev.Player;
             if (!_scores.ContainsKey(player))
                 return;
             if (!_gameStarted) return;
 
-            Transform cam = player.ReferenceHub.PlayerCameraReference;
-            Vector3 origin = cam.position;
+            var cam = player.ReferenceHub.PlayerCameraReference;
+            var origin = cam.position;
 
-            if (!Physics.Raycast(origin, cam.forward, out RaycastHit hit, RaycastDistance, RaycastMask, QueryTriggerInteraction.Collide))
+            if (!Physics.Raycast(origin, cam.forward, out var hit, RaycastDistance, RaycastMask,
+                    QueryTriggerInteraction.Collide))
                 return;
 
             if (!IsTargetObject(hit.collider.gameObject))
@@ -125,16 +126,17 @@ namespace RGM.Modes
             {
                 player.Role.Set(RoleTypeId.Tutorial);
                 player.Position = Tools.GetObjectList("SpawnSpot").GetRandomValue().position;
-                player.EnableEffect(EffectType.Fade, intensity: 100);
+                player.EnableEffect(EffectType.Fade, 100);
             }
 
-            for (int countdown = 10; countdown > 0; countdown--)
+            for (var countdown = 10; countdown > 0; countdown--)
             {
                 foreach (var player in PlayerManager.List.Where(p => p != null))
                     player.AddBroadcast(1, $"게임이 {countdown}초 후 시작됩니다!\n<size=25>alt를 눌러 999를 쓰다듬을 수 있습니다.</size>");
 
                 yield return Timing.WaitForSeconds(1);
             }
+
             _gameStarted = true;
 
             for (_time = 0; _time < _timeLimit; _time++)
@@ -142,7 +144,7 @@ namespace RGM.Modes
                 CheckIsIllegal();
 
                 Player leader = null;
-                int leaderScore = 0;
+                var leaderScore = 0;
 
                 foreach (var entry in _scores)
                 {
@@ -156,17 +158,18 @@ namespace RGM.Modes
                     }
                 }
 
-                string leaderText = leader != null
+                var leaderText = leader != null
                     ? $"현재 1위: {leader.DisplayNickname} ({leaderScore}회)"
                     : "현재 1위: 아직 기록 없음";
 
-                int remain = (_timeLimit - _time) / 5;
+                var remain = (_timeLimit - _time) / 5;
 
                 foreach (var player in PlayerManager.List.Where(p => p != null))
                 {
-                    int score = _scores.TryGetValue(player, out int value) ? value : 0;
-                    float cps = GetCps(player, Time.realtimeSinceStartup);
-                    player.AddHint("점수", $" <size=20>{remain}초 남음 | 클릭 수: {score}회\n{leaderText}\n당신의 초당 클릭 수: {cps:F2}</size>", 0.2f);
+                    var score = _scores.TryGetValue(player, out var value) ? value : 0;
+                    var cps = GetCps(player, Time.realtimeSinceStartup);
+                    player.AddHint("점수",
+                        $" <size=20>{remain}초 남음 | 클릭 수: {score}회\n{leaderText}\n당신의 초당 클릭 수: {cps:0.##}</size>", 0.2f);
                 }
 
                 yield return Timing.WaitForSeconds(0.2f);
@@ -177,22 +180,22 @@ namespace RGM.Modes
 
         private void CheckIsIllegal()
         {
-            float now = Time.realtimeSinceStartup;
+            var now = Time.realtimeSinceStartup;
 
             foreach (var entry in _strokeTimes)
             {
-                Player player = entry.Key;
+                var player = entry.Key;
                 if (_disqualifiedPlayers.Contains(player) || !player.IsAlive)
                     continue;
 
-                float cps = GetCps(player, now);
+                var cps = GetCps(player, now);
                 if (cps < IllegalCpsThreshold)
                 {
                     _highCpsStartedAt.Remove(player);
                     continue;
                 }
 
-                if (!_highCpsStartedAt.TryGetValue(player, out float startedAt))
+                if (!_highCpsStartedAt.TryGetValue(player, out var startedAt))
                 {
                     _highCpsStartedAt[player] = now;
                     continue;
@@ -209,7 +212,7 @@ namespace RGM.Modes
 
         private float GetCps(Player player, float now)
         {
-            if (!_strokeTimes.TryGetValue(player, out Queue<float> strokeTimes))
+            if (!_strokeTimes.TryGetValue(player, out var strokeTimes))
                 return 0f;
 
             while (strokeTimes.Count > 0 && now - strokeTimes.Peek() > CpsWindowSeconds)
@@ -221,7 +224,7 @@ namespace RGM.Modes
         private void AnnounceWinner()
         {
             _gameEnded = true;
-            int maxScore = int.MinValue;
+            var maxScore = int.MinValue;
             var tops = new List<Player>();
 
             foreach (var entry in _scores)
@@ -242,16 +245,19 @@ namespace RGM.Modes
             }
 
             foreach (var player in _scores.Keys.Where(p => p != null && !tops.Contains(p) && p.IsAlive))
-            {
-                player.Kill($"당신은 999에게 선택받지 못했습니다.\n당신의 평균 초당 클릭 수:{_scores[player] / (float)_seconds:F2}");
-            }
+                player.Kill($"당신은 999에게 선택받지 못했습니다.\n당신의 평균 초당 클릭 수:{_scores[player] / (float)_seconds:0.##}");
 
             Round.IsLocked = false;
 
-            if (tops.Count == 1)
-                Timing.RunCoroutine(Tools.SetWinner(tops, PlayerManager.List.Count / 3));
-            else if (tops.Count > 1)
-                Timing.RunCoroutine(Tools.SetWinner(tops, 3));
+            switch (tops.Count)
+            {
+                case 1:
+                    Timing.RunCoroutine(Tools.SetWinner(tops, PlayerManager.List.Count / 3));
+                    break;
+                case > 1:
+                    Timing.RunCoroutine(Tools.SetWinner(tops, 3));
+                    break;
+            }
         }
     }
 }
