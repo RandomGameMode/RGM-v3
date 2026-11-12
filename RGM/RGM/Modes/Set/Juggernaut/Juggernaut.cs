@@ -237,7 +237,7 @@ namespace RGM.Modes
             _juggernaut.EnableEffect(EffectType.BodyshotReduction, 4);
             _juggernaut.AddBroadcast(10,
                 "<b><size=30>당신은 <color=#298A08>저거너트</color>입니다.</size></b>\n<size=25>본인을 제외한 모두를 사살하십시오.</size>");
-            _juggernaut.Position = new Vector3(123.3271f, 288.7908f, 27.01838f);
+            _juggernaut.Position = Door.Get(DoorType.EscapeFinal).Position + Vector3.up * 1.5f;
 
             List<ItemType> items =
             [
@@ -261,7 +261,7 @@ namespace RGM.Modes
             _juggernaut.DisableAllEffects();
             _juggernaut.EnableEffect(EffectType.BodyshotReduction, 4);
             _juggernaut.EnableEffect(EffectType.Lightweight, 10);
-            _juggernaut.EnableEffect(EffectType.NightVision, 70);
+            _juggernaut.EnableEffect(EffectType.NightVision, 10);
             _juggernaut.EnableEffect(EffectType.Scp1344, 1);
             _juggernaut.EnableEffect(EffectType.Scp1853, 1);
             _juggernaut.EnableEffect(EffectType.Scp207, 3);

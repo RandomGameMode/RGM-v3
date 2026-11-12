@@ -164,9 +164,9 @@ namespace RGM.Modes
                     player.AddHint("에러", $"Error: {ex}");
                 }
 
-            for (var i = 0; i < 540; i++)
+            for (var i = 540; i > 0; i--)
             {
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, $"<b><size=25>{540 - i}초 뒤 인류가 승리합니다.</size></b>");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, $"<b><size=25>{i}초 뒤 인류가 승리합니다.</size></b>");
 
                 yield return Timing.WaitForSeconds(1);
             }
@@ -263,9 +263,9 @@ namespace RGM.Modes
 
         private IEnumerator<float> OnDied(DiedEventArgs ev)
         {
-            for (var i = 0; i < 5; i++)
+            for (var i = 5; i > 0; i--)
             {
-                ev.Player.ShowHint($"<size=25>{5 - i}초 뒤 <color=red>동료</color> 근처에서 부활합니다.</size>", 1.2f);
+                ev.Player.ShowHint($"<size=25>{i}초 뒤 <color=red>동료</color> 근처에서 부활합니다.</size>", 1.2f);
 
                 yield return Timing.WaitForSeconds(1f);
             }

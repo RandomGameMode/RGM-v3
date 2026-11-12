@@ -11,6 +11,7 @@ using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Extensions;
+using Exiled.API.Features.Items;
 using UnityEngine;
 
 namespace RGM.Modes
@@ -74,7 +75,7 @@ namespace RGM.Modes
 
             Exiled.API.Features.Map.CleanAllItems();
 
-            for (int i = 1; i < PlayerManager.List.Count / 6 + 2; i++)
+            for (int i = 0; i < Mathf.Max(1, PlayerManager.List.Count / 5); i++)
                 _finders.Add(PlayerManager.List.Where(x => !_finders.Contains(x)).ToList().GetRandomValue());
 
             foreach (var finder in _finders)
@@ -95,10 +96,10 @@ namespace RGM.Modes
                 Server.ExecuteCommand($"/speak {player.Id} 1");
             }
 
-            for (var i = 1; i < 60; i++)
+            for (var i = 60; i > 0; i--)
             {
                 MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1,
-                    $"<size=25><b><color=red>{60 - i}초 뒤 술래가 출몰합니다. 빨리 숨으세요!</color></b></size>");
+                    $"<size=25><b><color=red>{i}초 뒤 술래가 출몰합니다. 빨리 숨으세요!</color></b></size>");
 
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -140,12 +141,12 @@ namespace RGM.Modes
 
             Round.IsLocked = false;
 
-            for (var i = 1; i < remaining; i++)
+            for (var i = remaining; i > 0; i--)
             {
                 MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1,
-                    $"<size=25><b><color=#2EFEF7>{remaining - i}초 뒤 술래가 패배합니다.</color></b></size>");
+                    $"<size=25><b><color=#2EFEF7>{remaining}초 뒤 술래가 패배합니다.</color></b></size>");
 
-                if (i == remaining - 60)
+                if (i == 60)
                 {
                     foreach (var finder in _finders)
                     {
