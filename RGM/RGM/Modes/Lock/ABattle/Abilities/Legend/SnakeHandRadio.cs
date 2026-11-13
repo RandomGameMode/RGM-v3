@@ -35,14 +35,7 @@ public class SnakeHandRadio : Ability
     private void OnTogglingRadio(TogglingRadioEventArgs ev)
     {
         if (_callSnakeHandsSerial != ev.Item.Serial) return;
-        ev.Item.Destroy();
-
-        ev.Player.RemoveAbility(this);
-        ev.Player.AddAbility(AbilityType.DUMMY_USEDSNAKEHANDRADIO);
-
-        if (ev.Player.Role.Type != RoleTypeId.Tutorial)
-            ev.Player.Role.Set(RoleTypeId.Tutorial, SpawnReason.ForceClass, RoleSpawnFlags.None);
-
+        
         List<Player> deadPlayers = PlayerManager.List.Where(x => x.IsDead).ToList();
         Tools.CallSnakeHand(ev.Player, deadPlayers);
 
@@ -50,6 +43,13 @@ public class SnakeHandRadio : Ability
         {
             ev.Player.Position = deadPlayers.FirstOrDefault()!.Position;
         });
+        
+        ev.Item.Destroy();
+        ev.Player.AddAbility(AbilityType.DUMMY_USEDSNAKEHANDRADIO);
+        ev.Player.RemoveAbility(this);
+
+        if (ev.Player.Role.Type != RoleTypeId.Tutorial)
+            ev.Player.Role.Set(RoleTypeId.Tutorial, SpawnReason.ForceClass, RoleSpawnFlags.None);
 
         ev.Player.AddAbility(AbilityType.EPIC_LUCKYVIKEY);
     }

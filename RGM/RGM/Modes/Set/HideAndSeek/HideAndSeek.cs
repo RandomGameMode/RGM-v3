@@ -144,7 +144,7 @@ namespace RGM.Modes
             for (var i = remaining; i > 0; i--)
             {
                 MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1,
-                    $"<size=25><b><color=#2EFEF7>{remaining}초 뒤 술래가 패배합니다.</color></b></size>");
+                    $"<size=25><b><color=#2EFEF7>{i}초 뒤 술래가 패배합니다.</color></b></size>");
 
                 if (i == 60)
                 {

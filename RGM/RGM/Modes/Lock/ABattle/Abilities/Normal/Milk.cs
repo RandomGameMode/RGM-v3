@@ -30,9 +30,7 @@ public class Milk : Ability
 
     private void OnChangedItem(ChangedItemEventArgs ev)
     {
-        if (_isConsumed || ev.Player == null || ev.Item?.Serial != _coinSerial)
-            return;
-        
+        if (ev.Player == null || ev.Player.IsNPC || _isConsumed || ev.Item?.Serial != _coinSerial) return;
         ev.Player.AddHint("동전 사용 설명", $"이 동전을 튕기면 <b><color={ABattle.RatingColor["일반"]}>우유</color></b> 능력을 사용할 수 있습니다.");
     }
 
