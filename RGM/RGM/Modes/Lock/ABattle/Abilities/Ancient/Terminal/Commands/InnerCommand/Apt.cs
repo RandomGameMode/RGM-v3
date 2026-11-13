@@ -38,6 +38,9 @@ public class Apt : ICommand
             response = $"Mode {arguments.At(1)} Has been disabled!";
             return true;
         }
+
+        response = "";
+        return false;
     }
 
     public string Command { get; } = "apt";
