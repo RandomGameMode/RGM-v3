@@ -22,8 +22,7 @@ public class Rush : Ability
 
     private void OnChangedItem(ChangedItemEventArgs ev)
     {
-        if (ev.Item?.Serial != _serial)
-            return;
+        if (ev.Item?.Serial != _serial) return;
         
         ev.Player.AddHint("동전 사용 설명", $"이 동전을 튕기면 <b><color={ABattle.RatingColor["일반"]}>황소</color></b> 능력을 사용할 수 있습니다.");
     }

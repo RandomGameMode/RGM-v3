@@ -34,8 +34,7 @@ public class Adrenaline : Ability
     
     private void OnFlippingCoin(FlippingCoinEventArgs ev)
     {
-        if (ev.Item.Serial != _coinSerial)
-            return;
+        if (ev.Item.Serial != _coinSerial) return;
         
         if (_cooldown > 0)
         {
