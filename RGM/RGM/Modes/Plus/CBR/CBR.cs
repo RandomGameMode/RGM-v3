@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Features.Doors;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using PlayerRoles;
@@ -25,6 +27,7 @@ public class CBR : Mode
         
         Exiled.Events.Handlers.Player.Died += OnDied;
         Exiled.Events.Handlers.Player.Hurting += OnHurting;
+        foreach (var door in Door.List.Where(x => x.IsCheckpoint)) door.Lock(DoorLockType.NoPower);
         
         if (PlayerManager.List.Count >= 2) return;
         Round.IsLocked = false;

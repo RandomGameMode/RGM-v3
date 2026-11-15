@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Exiled.API.Features;
 
 namespace RGM.API.Features
