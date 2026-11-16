@@ -158,7 +158,7 @@ namespace RGM.API.Features
                 });
             }
 
-            // TODO: 내일 아침에 일어나자마자 테스트할 것.
+            // TODO: 내일 아침에 일어나자마자 테스트할 것. (모야, 벌써 밤이네, 혼잣말...을 해)
             // player.UserId.AutoExpClear();
         }
 
