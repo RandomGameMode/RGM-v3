@@ -158,7 +158,7 @@ namespace RGM.API.Features
                 });
             }
 
-            // 모야모야? 벌써 밤이잖아. 해야해 잠 자는 것을 말이야..!
+            // TODO: 내일 아침에 일어나자마자 테스트할 것.
             // player.UserId.AutoExpClear();
         }
 
@@ -518,8 +518,13 @@ namespace RGM.API.Features
             response = $"{uc[0]}";
             return false;
         }
-
-        private static bool AutoExpClear(this string userId)
+        
+        /// <summary>
+        /// 해당 유저의 EXP를 초기화합니다. 단, 안전 기능이 적용됩니다.
+        /// </summary>
+        /// <param name="userId">해당 유저의 Steam ID입니다.</param>
+        /// <returns>성공할 경우 <c>true</c>를, 실패할 경우 <c>false</c>를 반환합니다.</returns>
+        public static bool SafeExpClear(this string userId)
         {
             var uc = UsersManager.UsersCache[userId];
 
@@ -541,7 +546,11 @@ namespace RGM.API.Features
             return true;
         }
         
-        public static bool ExpClear(this string userId)
+        /// <summary>
+        /// 해당 유저의 EXP를 초기화합니다. 
+        /// </summary>
+        /// <param name="userId">해당 유저의 Steam ID입니다.</param>
+        public static void ExpClear(this string userId)
         {
             var uc = UsersManager.UsersCache[userId];
             uc[0] = "0";
@@ -555,8 +564,6 @@ namespace RGM.API.Features
 
             UsersManager.UsersCache[userId] = uc;
             UsersManager.SaveUsers();
-            
-            return true;
         }
 
         public static bool AddProduct(this string userId, string args, out string response,
