@@ -112,7 +112,7 @@ namespace RGM.API.Features
         }
 
         ///<summary>
-        /// <c>Player</c>의 확장 메서드로서 플레이어를 세팅하는 메서드를 추가합니다
+        /// <c>Player</c>의 확장 메서드로서 플레이어를 설정하는 메서드를 추가합니다
         /// </summary>
         ///<param name="player">대상 플레이어입니다.</param>
         ///
@@ -157,6 +157,9 @@ namespace RGM.API.Features
                     LastDeath = DateTime.MinValue
                 });
             }
+
+            // 모야모야? 벌써 밤이잖아. 해야해 잠 자는 것을 말이야..!
+            // player.UserId.AutoExpClear();
         }
 
         /// <summary>
@@ -514,6 +517,46 @@ namespace RGM.API.Features
 
             response = $"{uc[0]}";
             return false;
+        }
+
+        private static bool AutoExpClear(this string userId)
+        {
+            var uc = UsersManager.UsersCache[userId];
+
+            if (uc[31] == null)
+            {
+                uc[31] = Main.Instance.Config.Season.ToString();
+                UsersManager.UsersCache[userId] = uc;
+                UsersManager.SaveUsers();
+
+                if (!Main.Instance.Config.ForceSeasonClear) return true;
+            }
+
+            if (uc[31] == Main.Instance.Config.Season.ToString()) return false;
+            uc[0] = "0";
+
+            UsersManager.UsersCache[userId] = uc;
+            UsersManager.SaveUsers();
+            
+            return true;
+        }
+        
+        public static bool ExpClear(this string userId)
+        {
+            var uc = UsersManager.UsersCache[userId];
+            uc[0] = "0";
+            
+            if (uc[31] == null)
+            {
+                uc[31] = Main.Instance.Config.Season.ToString();
+                UsersManager.UsersCache[userId] = uc;
+                UsersManager.SaveUsers();
+            }
+
+            UsersManager.UsersCache[userId] = uc;
+            UsersManager.SaveUsers();
+            
+            return true;
         }
 
         public static bool AddProduct(this string userId, string args, out string response,
