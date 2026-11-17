@@ -157,8 +157,9 @@ namespace RGM.API.Features
                     LastDeath = DateTime.MinValue
                 });
             }
-            
-            player.UserId.SafeExpClear();
+         
+            // BUG: 버그 발생 가능성 있어 베타서버에서 한번 더 테스트 후 실행 바람
+            // player.UserId.SafeExpClear();
         }
 
         /// <summary>
