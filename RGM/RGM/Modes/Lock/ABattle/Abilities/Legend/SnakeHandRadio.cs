@@ -26,8 +26,7 @@ public class SnakeHandRadio : Ability
     }
     private void OnChangedItem(ChangedItemEventArgs ev)
     {
-        if (ev.Item?.Serial != _callSnakeHandsSerial)
-            return;
+        if (ev.Item?.Serial != _callSnakeHandsSerial) return;
         
         ev.Player.AddHint("뱀의 손 무전기", $"<b><color={ABattle.RatingColor["전설"]}>뱀의 손 무전기</color></b> 능력이 있는 <b>무전기</b>입니다!");
     }
@@ -39,10 +38,7 @@ public class SnakeHandRadio : Ability
         List<Player> deadPlayers = PlayerManager.List.Where(x => x.IsDead).ToList();
         Tools.CallSnakeHand(ev.Player, deadPlayers);
 
-        Timing.CallDelayed(1, () =>
-        {
-            ev.Player.Position = deadPlayers.FirstOrDefault()!.Position;
-        });
+        Timing.CallDelayed(1, () => ev.Player.Position = deadPlayers.FirstOrDefault()!.Position);
         
         ev.Item.Destroy();
         ev.Player.AddAbility(AbilityType.DUMMY_USEDSNAKEHANDRADIO);
