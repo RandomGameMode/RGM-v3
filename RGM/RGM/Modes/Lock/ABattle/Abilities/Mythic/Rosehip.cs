@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
-using MEC;
 using PlayerRoles;
 using PlayerStatsSystem;
 using RGM.API.Features;
@@ -39,19 +38,15 @@ public class Rosehip : Ability
     
     private void OnChangedItem(ChangedItemEventArgs ev)
     {
-        if (ev.Item?.Serial != _serial)
-            return;
-            
+        if (ev.Item?.Serial != _serial) return;
         ev.Player.AddHint("장미칼", $"<b><color={ABattle.RatingColor["신화"]}>장미칼</color></b> 능력이 있는 <b>SCP-1509</b>입니다!");
     }
 
     private void OnHurting(HurtingEventArgs ev)
     {
-        if (ev.Attacker != Owner ||
-            ev.Player == null ||
+        if (ev.Player == null ||
             ev.Player == ev.Attacker ||
-            ev.Attacker.CurrentItem == null ||
-            ev.Attacker.CurrentItem.Serial != _serial) return;
+            ev.Attacker.CurrentItem?.Serial != _serial) return;
 
         // SCP-1509 의 근접 공격만 판정한다.
         // 장미칼을 들고 있는 동안 발생하는 다른 모든 피해(폭발, 지속 피해, 다른 능력의 피해 등)와
@@ -60,8 +55,7 @@ public class Rosehip : Ability
 
         // 이미 다른 효과로 취소된 공격이나 아군에 대한 공격은 판정하지 않는다.
         if (!ev.IsAllowed ||
-            (!HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub) && !Server.FriendlyFire))
-            return;
+            (!HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub) && !Server.FriendlyFire)) return;
 
         float now = UnityEngine.Time.realtimeSinceStartup;
 
@@ -78,10 +72,12 @@ public class Rosehip : Ability
         ev.IsAllowed = false;
         if (Random.Range(0, 100) < SideChangeChance)
         {
-            Side attackerSide = ev.Attacker.Role.Type.GetSide();
-            ev.Player.Role.Set(
-                Tools.EnumToList<RoleTypeId>().GetRandomValue(x => x.GetSide() == attackerSide),
-                RoleSpawnFlags.None);
+            ev.Player.RoleManager.ServerSetRole(
+                Tools.EnumToList<RoleTypeId>().GetRandomValue(x => x.GetSide() == ev.Attacker.Role.Type.GetSide()),
+                RoleChangeReason.None);
+
+            if (ev.Player.Role.Type is RoleTypeId.None)
+                ev.Player.RoleManager.ServerSetRole(RoleTypeId.Spectator, RoleChangeReason.None);
             return;
         }
 
@@ -91,23 +87,8 @@ public class Rosehip : Ability
 
     private void PruneResolved(float now)
     {
-        if (_resolvedUntil.Count == 0)
-            return;
-
-        List<Player> expired = null;
-        foreach (KeyValuePair<Player, float> pair in _resolvedUntil)
-        {
-            if (pair.Value > now)
-                continue;
-
-            expired ??= [];
-            expired.Add(pair.Key);
-        }
-
-        if (expired == null)
-            return;
-
-        foreach (Player player in expired)
-            _resolvedUntil.Remove(player);
+        if (_resolvedUntil.Count == 0) return;
+        List<Player> expired = [.. _resolvedUntil.Where(pair => !(pair.Value > now)).Select(pair => pair.Key)];
+        expired.ForEach(x => _resolvedUntil.Remove(x));
     }
 }
