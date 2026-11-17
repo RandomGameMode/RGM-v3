@@ -527,18 +527,19 @@ namespace RGM.API.Features
         {
             var uc = UsersManager.UsersCache[userId];
 
-            if (uc[31] == null)
+            if (uc[(int) UserDataStructure.CurrentSeason] == null)
             {
-                uc[31] = Main.Instance.Config.Season.ToString();
+                uc[(int) UserDataStructure.CurrentSeason] = Main.Instance.Config.Season.ToString();
                 UsersManager.UsersCache[userId] = uc;
                 UsersManager.SaveUsers();
 
                 if (!Main.Instance.Config.ForceSeasonClear) return true;
-            }
+            } else if (uc[(int)UserDataStructure.CurrentSeason] == Main.Instance.Config.Season.ToString()) return false;
 
-            if (uc[31] == Main.Instance.Config.Season.ToString() || uc[0] == "0") return false;
-            Log.Info($"플레이어 ID: {userId} 에 대하여 시즌형 EXP 초기화를 실행, \n 시즌 {uc[31]}에서 해당 플레이어가 가졌던 EXP의 개수: {uc[0]}");
-            uc[0] = "0";
+            if (uc[(int) UserDataStructure.CurrentSeason] == Main.Instance.Config.Season.ToString() || uc[0] == "0") return false;
+            Log.Info($"플레이어 ID: {userId} 에 대하여 시즌형 EXP 초기화를 실행, \n 시즌 {uc[(int) UserDataStructure.CurrentSeason]}에서 해당 플레이어가 가졌던 EXP의 개수: {uc[(int)UserDataStructure.Exp]}");
+            uc[(int)UserDataStructure.Exp] = "0";
+            uc[(int) UserDataStructure.CurrentSeason] = Main.Instance.Config.Season.ToString();
 
             UsersManager.UsersCache[userId] = uc;
             UsersManager.SaveUsers();
@@ -553,14 +554,14 @@ namespace RGM.API.Features
         public static void ExpClear(this string userId)
         {
             var uc = UsersManager.UsersCache[userId];
-            if (uc[0] == "0") return;
+            if (uc[(int)UserDataStructure.Exp] == "0") return;
             
-            Log.Info($"플레이어 ID: {userId} 에 대하여 EXP 초기화를 실행,\n 시즌 {uc[31]}에서 해당 플레이어가 가졌던 EXP의 개수: {uc[0]}");
-            uc[0] = "0";
+            Log.Info($"플레이어 ID: {userId} 에 대하여 EXP 초기화를 실행,\n 시즌 {uc[(int)UserDataStructure.CurrentSeason]}에서 해당 플레이어가 가졌던 EXP의 개수: {uc[(int)UserDataStructure.Exp]}");
+            uc[(int)UserDataStructure.Exp] = "0";
             
-            if (uc[31] == null)
+            if (uc[(int)UserDataStructure.CurrentSeason] == null)
             {
-                uc[31] = Main.Instance.Config.Season.ToString();
+                uc[(int)UserDataStructure.CurrentSeason] = Main.Instance.Config.Season.ToString();
                 UsersManager.UsersCache[userId] = uc;
                 UsersManager.SaveUsers();
             }

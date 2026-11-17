@@ -193,7 +193,8 @@ namespace RGM.API.Features
         DayStreak = 27,
         MaxDayStreak = 28,
         TodayAttend = 29,
-        NowDayStreak = 30
+        NowDayStreak = 30,
+        CurrentSeason = 31
     }
 
     /**
