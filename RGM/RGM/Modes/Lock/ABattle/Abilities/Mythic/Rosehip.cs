@@ -44,14 +44,16 @@ public class Rosehip : Ability
 
     private void OnHurting(HurtingEventArgs ev)
     {
+        // 낙하/출혈/환경 피해 등 공격자가 없는 피해에서는 ev.Attacker 가 null 이다.
         if (ev.Player == null ||
+            ev.Attacker == null ||
             ev.Player == ev.Attacker ||
             ev.Attacker.CurrentItem?.Serial != _serial) return;
 
         // SCP-1509 의 근접 공격만 판정한다.
         // 장미칼을 들고 있는 동안 발생하는 다른 모든 피해(폭발, 지속 피해, 다른 능력의 피해 등)와
         // ApplyInstantKill 이 내부적으로 일으키는 Crushed 피해에도 확률 판정이 반복되던 문제를 막는다.
-        if (ev.DamageHandler.Type != DamageType.Scp1509) return;
+        if (ev.DamageHandler?.Type != DamageType.Scp1509) return;
 
         // 이미 다른 효과로 취소된 공격이나 아군에 대한 공격은 판정하지 않는다.
         if (!ev.IsAllowed ||

@@ -23,6 +23,7 @@ using Exiled.API.Features.Doors;
 using Mirror;
 using NetworkManagerUtils.Dummies;
 using PlayerRoles.FirstPersonControl.Thirdperson.Subcontrollers;
+using RGM.Modes.Abilities.Normal;
 using UnityEngine;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
@@ -1257,7 +1258,8 @@ public class ABattle : Mode
             player.RemoveAbility(AbilityType.RARE_TRANSITION);
 
             var transition = Convert.ToByte(Random.Range(1, 101)) <= Mathf.Min(80,
-                4 * player.AbilityCount(AbilityType.NORMAL_HEREDITY) + (CurrentExtraModes.Contains("잔칫상") ? 35 : 25));
+                Heredity.GetPercent * player.AbilityCount(AbilityType.NORMAL_HEREDITY) +
+                (CurrentExtraModes.Contains("잔칫상") ? 35 : 25));
 
             if (transition)
             {
@@ -1266,7 +1268,9 @@ public class ABattle : Mode
                 player.AddAbility(AbilityType.DUMMY_RARETRANSITIONSUCCESS);
             }
             else
+            {
                 player.AddAbility(AbilityType.DUMMY_RARETRANSITIONFAILURE);
+            }
         }
 
         if (player.HasAbility(AbilityType.EPIC_TRANSITION))
@@ -1274,7 +1278,8 @@ public class ABattle : Mode
             player.RemoveAbility(AbilityType.EPIC_TRANSITION);
 
             var transition = Convert.ToByte(Random.Range(1, 101)) <= Mathf.Min(80,
-                4 * player.AbilityCount(AbilityType.NORMAL_HEREDITY) + (CurrentExtraModes.Contains("잔칫상") ? 40 : 30));
+                Heredity.GetPercent * player.AbilityCount(AbilityType.NORMAL_HEREDITY) +
+                (CurrentExtraModes.Contains("잔칫상") ? 40 : 30));
 
             if (transition)
             {
@@ -1283,7 +1288,9 @@ public class ABattle : Mode
                 player.AddAbility(AbilityType.DUMMY_EPICTRANSITIONSUCCESS);
             }
             else
+            {
                 player.AddAbility(AbilityType.DUMMY_EPICTRANSITIONFAILURE);
+            }
         }
 
         if (player.HasAbility(AbilityType.LEGEND_TRANSITION))
@@ -1291,7 +1298,8 @@ public class ABattle : Mode
             player.RemoveAbility(AbilityType.LEGEND_TRANSITION);
 
             var transition = Convert.ToByte(Random.Range(1, 101)) <= Mathf.Min(80,
-                4 * player.AbilityCount(AbilityType.NORMAL_HEREDITY) + (CurrentExtraModes.Contains("잔칫상") ? 45 : 35));
+                Heredity.GetPercent * player.AbilityCount(AbilityType.NORMAL_HEREDITY) +
+                (CurrentExtraModes.Contains("잔칫상") ? 45 : 35));
 
             if (transition)
             {
@@ -1300,7 +1308,9 @@ public class ABattle : Mode
                 player.AddAbility(AbilityType.DUMMY_LEGENDTRANSITIONSUCCESS);
             }
             else
+            {
                 player.AddAbility(AbilityType.DUMMY_LEGENDTRANSITIONFAILURE);
+            }
         }
 
         lock (_selectionLock)

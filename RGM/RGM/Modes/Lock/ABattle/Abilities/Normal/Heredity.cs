@@ -1,6 +1,9 @@
 ﻿namespace RGM.Modes.Abilities.Normal;
 
-[Ability("유전", "변이류 능력의 성공 확률이 영구적으로 4%p 증가합니다.", 
-    AbilityCategory.Normal, AbilityType.NORMAL_HEREDITY, _79Allowed:true)]
+[Ability("유전", "변이류 능력의 성공 확률이 영구적으로 4%p 증가합니다.",
+    AbilityCategory.Normal, AbilityType.NORMAL_HEREDITY, _79Allowed: true)]
 
-public class Heredity : Ability;
+public class Heredity : Ability
+{
+    public const byte GetPercent = 4;
+}

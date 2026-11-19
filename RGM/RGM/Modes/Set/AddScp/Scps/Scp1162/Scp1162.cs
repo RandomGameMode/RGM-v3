@@ -18,35 +18,34 @@ namespace RGM.Modes.Sets.AddScp.Scps
             Timing.RunCoroutine(OnStarted());
         }
 
-        public static IEnumerator<float> OnStarted()
+        private static IEnumerator<float> OnStarted()
         {
             Tools.LoadMap("Scp1162");
 
             yield return 0;
         }
 
-        public static void OnDroppedItem(DroppedItemEventArgs ev)
+        private static void OnDroppedItem(DroppedItemEventArgs ev)
         {
-            if (Physics.Raycast(ev.Player.ReferenceHub.PlayerCameraReference.position + ev.Player.ReferenceHub.PlayerCameraReference.forward * 0.2f, ev.Player.ReferenceHub.PlayerCameraReference.forward, out RaycastHit hit, 2))
+            if (!Physics.Raycast(
+                    ev.Player.ReferenceHub.PlayerCameraReference.position +
+                    ev.Player.ReferenceHub.PlayerCameraReference.forward * 0.2f,
+                    ev.Player.ReferenceHub.PlayerCameraReference.forward, out var hit, 2)) return;
+            if (hit.transform.name != "Scp1162") return;
+            var itemList = Tools.EnumToList<ItemType>();
+            var item = itemList.GetRandomValue();
+
+            var rand = Random.Range(1, 101);
+
+            if (rand == 77)
             {
-                if (hit.transform.name == "Scp1162")
-                {
-                    List<ItemType> ItemList = Tools.EnumToList<ItemType>();
-                    ItemType Item = ItemList.GetRandomValue();
-
-                    int rand = UnityEngine.Random.Range(1, 101);
-
-                    if (0 < rand && rand < 3)
-                    {
-                        ev.Player.EnableEffect(EffectType.SeveredHands, 1, 50);
-                    }
-                    else
-                    {
-                        ev.Pickup.Destroy();
-                        Item CurrentItem = ev.Player.AddItem(Item);
-                        ev.Player.DropItem(CurrentItem);
-                    }
-                }
+                ev.Player.Kill("탕진했습니다...");
+            }
+            else
+            {
+                ev.Pickup.Destroy();
+                var currentItem = ev.Player.AddItem(item);
+                ev.Player.DropItem(currentItem);
             }
         }
     }

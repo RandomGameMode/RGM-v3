@@ -14,15 +14,17 @@ using RGM.API.Features;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.Alone)]
-    class Alone : Mode
+    internal class Alone : Mode
     {
         public override string Name => "나 홀로 집에";
         public override string Description => "한명을 제외한 나머지는 모두 SCP가 됩니다.";
+
         public override string Detail =>
-$"""
-한명은 반드시 <color={RoleTypeId.ClassD.GetColor().ToHex()}>D계급</color>으로 스폰하며, 탈출하는 것이 목표입니다.
-나머지는 모두 <color=red>SCP</color>가 됩니다. (<color={RoleTypeId.Scp079.GetColor().ToHex()}>SCP-079</color> 제외)
-""";
+            $"""
+             한명은 반드시 <color={RoleTypeId.ClassD.GetColor().ToHex()}>D계급</color>으로 스폰하며, 탈출하는 것이 목표입니다.
+             나머지는 모두 <color=red>SCP</color>가 됩니다. (<color={RoleTypeId.Scp079.GetColor().ToHex()}>SCP-079</color> 제외)
+             """;
+
         public override string Color => "F781BE";
 
         public static Alone Instance;
@@ -48,16 +50,15 @@ $"""
             RoleTypeId.None
         ];
 
-        private readonly List<ItemType> _humanitems =
+        private readonly List<ItemType> _humanItems =
         [
             ItemType.KeycardO5,
             ItemType.SCP500,
             ItemType.SCP268,
             ItemType.AntiSCP207,
             ItemType.SCP2176,
-            ItemType.Jailbird,
-            ItemType.MicroHID,
-            ItemType.SCP207
+            ItemType.SCP207,
+            ItemType.SCP1344
         ];
 
         public override void OnEnabled()
@@ -84,15 +85,15 @@ $"""
         private IEnumerator<float> OnModeStarted()
         {
             _alone = PlayerManager.List.Where(x => !x.IsNPC).GetRandomValue();
-            
-            List<RoleTypeId> scpRoles = Tools.EnumToList<RoleTypeId>()
+
+            var scpRoles = Tools.EnumToList<RoleTypeId>()
                 .Where(x => x.IsScp() && !_ignoredRoles.Contains(x))
                 .ToList();
 
             _alone.Role.Set(RoleTypeId.ClassD);
-            _alone.AddEffect(EffectType.MovementBoost, Math.Min(20 * PlayerManager.List.Count, 255));
+            _alone.AddEffect(EffectType.MovementBoost, Math.Min(15 * PlayerManager.List.Count, 255));
 
-            foreach (var item in _humanitems)
+            foreach (var item in _humanItems)
                 _alone.AddItem(item);
 
             foreach (var player in PlayerManager.List.Where(x => x != _alone))
@@ -117,10 +118,10 @@ $"""
             switch (players.Count)
             {
                 case 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 5));
                     break;
                 case > 1:
-                    Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));
+                    Timing.RunCoroutine(Tools.SetWinner([.. players], 1));
                     break;
             }
         }
