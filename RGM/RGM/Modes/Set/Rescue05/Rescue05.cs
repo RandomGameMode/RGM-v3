@@ -37,6 +37,9 @@ namespace RGM.Modes
         private Player _level05;
         private Player _assassin;
 
+        private List<Player> _teamA = [];
+        private List<Player> _teamB = [];
+        
         private CoroutineHandle _onModeStarted;
         private readonly AutoWarhead _autoWarhead = new(8, 1);
 
@@ -64,8 +67,15 @@ namespace RGM.Modes
         {
             if (Random.Range(1, 101) <= 10) //10% 확률로 워크스테이션 업그레이드 시작
                 Tools.TryInstallMode(ModeType.ABattle);
+            _teamA.Clear();
+            _teamB.Clear();
+
             _level05 = PlayerManager.List.ToList().GetRandomValue();
             _assassin = PlayerManager.List.Where(x => x != _level05).ToList().GetRandomValue();
+
+            // TeamA: 05 평의회 + NTF / TeamB: 암살자 + 혼돈의 반란
+            _teamA.Add(_level05);
+            _teamB.Add(_assassin);
 
             List<ItemType> level05Items =
             [
@@ -85,28 +95,33 @@ namespace RGM.Modes
             _level05.AddBroadcast(10,
                 "<size=25>당신은 <color=#000000><b>05 평의회</b></color>, <color=#A4A4A4>시설 경비</color>들의 도움을 받아 시설에서 탈출하십시오.</size>");
 
-            var assanssinItems = new List<ItemType>
+            var assassinItems = new List<ItemType>
             {
                 ItemType.GunCOM15,
                 ItemType.Ammo9x19
             };
 
             _assassin.Role.Set(RoleTypeId.ClassD);
-            foreach (var item in assanssinItems) _assassin.AddItem(item);
+            foreach (var item in assassinItems) _assassin.AddItem(item);
             _assassin.AddBroadcast(10,
                 "<size=25>당신은 <color=#FE9A2E><b>암살자</b></color>, <color=#04B404>혼돈의 반란</color>들과 함께 <color=#000000><b>05 평의회</b></color>를 사살하십시오.</size>");
 
-            for (var i = 0; i < PlayerManager.List.Count / 1.5f; i++)
+            for (var i = 0; i < PlayerManager.List.Count / 2; i++)
             {
-                var player = PlayerManager.List.Where(x => x != _level05 && x != _assassin).ToList().GetRandomValue();
+                var player = PlayerManager.List.Where(x => x != _level05 && x != _assassin && !_teamB.Contains(x))
+                    .ToList().GetRandomValue();
+                if (player == null) break;
+
+                _teamB.Add(player);
                 player.Role.Set(RoleTypeId.ChaosRifleman);
 
                 player.AddBroadcast(10,
                     "<size=25>당신은 <color=#04B404><b>혼돈의 반란</b></color>, <color=#FE9A2E><b>암살자</b></color>에 협조하여 <color=#000000><b>05 평의회</b></color>를 사살하십시오.</size>");
             }
 
-            foreach (var player in PlayerManager.List.Where(x => x != _level05 && x != _assassin && !x.IsCHI))
+            foreach (var player in PlayerManager.List.Where(x => !_teamA.Contains(x) && !_teamB.Contains(x)).ToList())
             {
+                _teamA.Add(player);
                 player.Role.Set(RoleTypeId.FacilityGuard);
                 player.Role.Set(RoleTypeId.NtfPrivate, RoleSpawnFlags.AssignInventory);
 
@@ -122,14 +137,14 @@ namespace RGM.Modes
             if (ev.Player != _level05 || ev.Player.Role.Type != RoleTypeId.Scientist) return;
             Round.IsLocked = false;
             Timing.RunCoroutine(Tools.SetWinner(
-                [.. PlayerManager.List.Where(x => x == _level05 || x.IsNTF)], 2));
+                [.. _teamA.Where(x => x != null && x.IsConnected)], 2));
 
             foreach (var player in Player.List)
             {
                 player.AddBroadcast(20,
                     $"<size=30><b><color=#000000>05 평의회</color>({_level05.DisplayNickname})</b>가 탈출하여 <u>강화제 제작 방법을 재단에 넘기는 데 성공하였습니다.</u></size>");
 
-                if (player.IsCHI || player.Role.Type == RoleTypeId.ClassD)
+                if (_teamB.Contains(player) && player.IsAlive)
                     player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
             }
         }
@@ -139,14 +154,14 @@ namespace RGM.Modes
             if (ev.Player != _level05 || ev.Player.Role.Type != RoleTypeId.Scientist) return;
             Round.IsLocked = false;
             Timing.RunCoroutine(Tools.SetWinner(
-                [.. PlayerManager.List.Where(x => x == _assassin || x.IsCHI)], 2));
+                [.. _teamB.Where(x => x != null && x.IsConnected)], 2));
 
             foreach (var player in PlayerManager.List)
             {
                 player.AddBroadcast(20,
                     $"<size=30><b><color=#000000>05 평의회</color>({_level05.DisplayNickname})</b>가 <color=red>사살당하였습니다.</color></size>");
 
-                if (player.IsNTF)
+                if (player != _level05 && _teamA.Contains(player) && player.IsAlive)
                     player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
             }
         }
