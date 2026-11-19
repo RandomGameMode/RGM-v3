@@ -89,19 +89,14 @@ namespace RGM.Modes.Sets.AddScp.Scps
                         yield return Timing.WaitForSeconds(1);
                     }
 
-                    yield return Timing.WaitForSeconds(60);
+                    yield return Timing.WaitForSeconds(40);
                 }
             }
 
             void OnHurting(HurtingEventArgs ev)
             {
-                if (ev.Player != player)
-                    return;
-
-                if (ev.DamageHandler.Type == DamageType.Explosion)
-                {
-                    ev.DamageHandler.Damage /= 5;
-                }
+                if (ev.Player == player && ev.DamageHandler.Type == DamageType.Explosion)
+                    ev.IsAllowed = false;
             }
 
             IEnumerator<float> OnTogglingNoClip(TogglingNoClipEventArgs ev)

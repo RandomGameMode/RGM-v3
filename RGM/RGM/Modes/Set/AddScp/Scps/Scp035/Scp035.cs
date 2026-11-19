@@ -22,23 +22,66 @@ namespace RGM.Modes.Sets.AddScp.Scps
             player.Health = player.MaxHealth;
             player.EnableEffect(EffectType.MovementBoost, 25);
             player.AddHint("SCP-035 설명",
-"""
-<size=25>
-당신은 <color=red>SCP-035</color>(<color=red>Keter</color>)입니다.
-</size>
-<size=20>
-인간의 뇌를 지배한 가면입니다.
-• 뱀의 손 역할군으로 지정되며, 모든 진영에 중립입니다.
-• 점액질로 인해 체력이 3초당 1씩 감소합니다. 주의하세요!
-• 당신이 사망한 후, 누군가가 <color=red>SCP-035</color>를 회수하면 그 유저가 <color=red>SCP-035</color>가 됩니다.
-</size>
-""", 20);
-            SchematicObject schematic = ObjectSpawner.SpawnSchematic("SCP_035", new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), new Vector3(0.7f, 0.7f, 0.7f));
+                """
+                <size=25>
+                당신은 <color=red>SCP-035</color>(<color=red>Keter</color>)입니다.
+                </size>
+                <size=20>
+                인간의 뇌를 지배한 가면입니다.
+                • 뱀의 손 역할군으로 지정되며, 모든 진영에 중립입니다.
+                • 점액질로 인해 체력이 3초당 1씩 감소합니다. 주의하세요!
+                • 당신이 사망한 후, 누군가가 <color=red>SCP-035</color>를 회수하면 그 유저가 <color=red>SCP-035</color>가 됩니다.
+                </size>
+                """, 20);
+            var schematic = ObjectSpawner.SpawnSchematic("SCP_035", new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0),
+                new Vector3(0.7f, 0.7f, 0.7f));
             schematic.transform.parent = player.Transform;
             schematic.transform.localPosition = new Vector3(-0.007f, 0.585f, 0.15f);
             schematic.transform.localRotation = new Quaternion(0, -45, 0, 0);
 
-            IEnumerator<float> main()
+            var mainCoroutine = Timing.RunCoroutine(Main());
+
+            Exiled.Events.Handlers.Player.Dying += OnDying;
+            return player;
+
+            void OnDying(DyingEventArgs ev)
+            {
+                if (ev.Player != player) return;
+                var pos = ev.Player.Position;
+
+                Timing.CallDelayed(Timing.WaitForOneFrame, () =>
+                {
+                    if (!ev.Player.IsDead) return;
+                    if (ev.Player != player) return;
+                    var pickup = Pickup.CreateAndSpawn(ItemType.KeycardO5, pos);
+
+                    var scp035 = ObjectSpawner.SpawnSchematic("SCP_035", new Vector3(0, 0, 0),
+                        Quaternion.Euler(90, 90, 0), new Vector3(0.9f, 0.9f, 0.9f));
+                    scp035.transform.parent = pickup.Transform;
+                    scp035.transform.localPosition = Vector3.zero;
+
+                    Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+
+                    schematic.Destroy();
+                    Timing.KillCoroutines(mainCoroutine);
+
+                    Exiled.Events.Handlers.Player.Dying -= OnDying;
+                    return;
+
+                    void OnPickingUpItem(PickingUpItemEventArgs e)
+                    {
+                        if (e.Pickup != pickup) return;
+                        e.IsAllowed = false;
+                        e.Pickup.Destroy();
+
+                        Create(e.Player);
+
+                        Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+                    }
+                });
+            }
+
+            IEnumerator<float> Main()
             {
                 while (true)
                 {
@@ -50,48 +93,6 @@ namespace RGM.Modes.Sets.AddScp.Scps
                     yield return Timing.WaitForSeconds(3);
                 }
             }
-
-            var main_c = Timing.RunCoroutine(main());
-
-            void OnDying(DyingEventArgs ev)
-            {
-                if (ev.Player != player) return;
-                Vector3 pos = ev.Player.Position;
-
-                Timing.CallDelayed(Timing.WaitForOneFrame, () =>
-                {
-                    if (!ev.Player.IsDead) return;
-                    if (ev.Player != player) return;
-                    Pickup pickup = Pickup.CreateAndSpawn(ItemType.KeycardO5, pos);
-
-                    SchematicObject scp035 = ObjectSpawner.SpawnSchematic("SCP_035", new Vector3(0, 0, 0), Quaternion.Euler(90, 90, 0), new Vector3(0.9f, 0.9f, 0.9f));
-                    scp035.transform.parent = pickup.Transform;
-                    scp035.transform.localPosition = Vector3.zero;
-
-                    void OnPickingUpItem(PickingUpItemEventArgs e)
-                    {
-                        if (e.Pickup == pickup)
-                        {
-                            e.IsAllowed = false;
-                            e.Pickup.Destroy();
-
-                            Create(e.Player);
-
-                            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
-                        }
-                    }
-
-                    Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
-
-                    schematic.Destroy();
-                    Timing.KillCoroutines(main_c);
-
-                    Exiled.Events.Handlers.Player.Dying -= OnDying;
-                });
-            }
-
-            Exiled.Events.Handlers.Player.Dying += OnDying;
-            return player;
         }
     }
 }
