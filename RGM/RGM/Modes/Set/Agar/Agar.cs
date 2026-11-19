@@ -18,7 +18,7 @@ using Decals;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.Agar)]
-    class Agar : Mode
+    internal class Agar : Mode
     {
         public override string Name => "세력 키우기";
         public override string Description => "SCP-1509를 사용하여 아군을 늘리고 적군을 몰살하세요!";
@@ -27,13 +27,16 @@ namespace RGM.Modes
 
         public static Agar Instance;
 
-        private List<Player> _teamA = [];
-        private List<Player> _teamB = [];
+        private readonly List<Player> _teamA = [];
+        private readonly List<Player> _teamB = [];
 
         private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
+            _teamA.Clear();
+            _teamB.Clear();
+
             Respawn.PauseWaves();
             Door.List.ToList().ForEach(x => x.Lock(1205, DoorLockType.Lockdown079));
 
@@ -69,10 +72,10 @@ namespace RGM.Modes
             var players = PlayerManager.List.ToList();
             players.ShuffleList();
 
-            int halfCount = players.Count / 2;
+            var halfCount = players.Count / 2;
 
-            _teamA = players.Take(halfCount).ToList();
-            _teamB = players.Skip(halfCount).ToList();
+            _teamA.AddRange(players.Take(halfCount));
+            _teamB.AddRange(players.Skip(halfCount));
 
             foreach (var player in _teamA)
             {
@@ -92,9 +95,8 @@ namespace RGM.Modes
             while (!Round.IsEnded)
             {
                 foreach (var player in PlayerManager.List)
-                {
-                    player.AddBroadcast(1, $"<size=30><b><color={RoleTypeId.ClassD.GetColor().ToHex()}>{PlayerManager.List.Count(x => x.Role.Type.GetSide() == Side.ChaosInsurgency)}</color> vs <color={RoleTypeId.Scientist.GetColor().ToHex()}>{PlayerManager.List.Count(x => x.Role.Type.GetSide() == Side.Mtf)}</color></b></size>");
-                }
+                    player.AddBroadcast(1,
+                        $"<size=30><b><color={RoleTypeId.ClassD.GetColor().ToHex()}>{PlayerManager.List.Count(x => x.Role.Type.GetSide() == Side.ChaosInsurgency)}</color> vs <color={RoleTypeId.Scientist.GetColor().ToHex()}>{PlayerManager.List.Count(x => x.Role.Type.GetSide() == Side.Mtf)}</color></b></size>");
 
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -102,10 +104,10 @@ namespace RGM.Modes
 
         private void OnRoundEnded(RoundEndedEventArgs ev)
         {
-            Player winner = PlayerManager.List.First(x => x.UserId == PlayersReport
-                    .OrderByDescending(kv => kv.Value.Damage)
-                    .Take(1)
-                    .ToList().First().Key);
+            var winner = PlayerManager.List.First(x => x.UserId == PlayersReport
+                .OrderByDescending(kv => kv.Value.Damage)
+                .Take(1)
+                .ToList().First().Key);
 
             Timing.RunCoroutine(Tools.SetWinner([winner], 5));
         }
@@ -114,26 +116,27 @@ namespace RGM.Modes
         {
             if (ev.Attacker != null)
             {
-                Player reviver = PlayerManager.List.GetRandomValue(x => x.Role.Type == RoleTypeId.Spectator);
-                reviver.Role.Set(Tools.EnumToList<RoleTypeId>().GetRandomValue(x => x.GetSide() == ev.Attacker.Role.Type.GetSide()), RoleSpawnFlags.None);
+                var reviver = PlayerManager.List.GetRandomValue(x => x.Role.Type == RoleTypeId.Spectator);
+                reviver.Role.Set(
+                    Tools.EnumToList<RoleTypeId>().GetRandomValue(x => x.GetSide() == ev.Attacker.Role.Type.GetSide()),
+                    RoleSpawnFlags.None);
                 if (reviver.Role.Team == Team.Dead)
-                    reviver.Role.Set(Random.Range(1, 3) == 1 ? RoleTypeId.ClassD : RoleTypeId.Scientist, RoleSpawnFlags.None);
-                Item item = reviver.AddItem(ItemType.SCP1509);
+                    reviver.Role.Set(Random.Range(1, 3) == 1 ? RoleTypeId.ClassD : RoleTypeId.Scientist,
+                        RoleSpawnFlags.None);
+                var item = reviver.AddItem(ItemType.SCP1509);
                 reviver.CurrentItem = item;
             }
 
             Exiled.API.Features.Map.CleanAllItems();
             Exiled.API.Features.Map.CleanAllRagdolls();
-            foreach (var decal in new List<DecalPoolType> 
-            { 
-                DecalPoolType.Bullet,
-                DecalPoolType.GlassCrack,
-                DecalPoolType.Buckshot,
-                DecalPoolType.Blood,
-            })
-            {
+            foreach (var decal in new List<DecalPoolType>
+                     {
+                         DecalPoolType.Bullet,
+                         DecalPoolType.GlassCrack,
+                         DecalPoolType.Buckshot,
+                         DecalPoolType.Blood
+                     })
                 Exiled.API.Features.Map.Clean(decal);
-            }
         }
 
         private void OnDroppingItem(DroppingItemEventArgs ev)
