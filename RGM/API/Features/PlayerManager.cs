@@ -112,7 +112,7 @@ namespace RGM.API.Features
         }
 
         ///<summary>
-        /// <c>Player</c>의 확장 메서드로서 플레이어를 세팅하는 메서드를 추가합니다
+        /// <c>Player</c>의 확장 메서드로서 플레이어를 설정하는 메서드를 추가합니다
         /// </summary>
         ///<param name="player">대상 플레이어입니다.</param>
         ///
@@ -157,6 +157,9 @@ namespace RGM.API.Features
                     LastDeath = DateTime.MinValue
                 });
             }
+         
+            // BUG: 버그 발생 가능성 있어 베타서버에서 한번 더 테스트 후 실행 바람
+            // player.UserId.SafeExpClear();
         }
 
         /// <summary>
@@ -514,6 +517,58 @@ namespace RGM.API.Features
 
             response = $"{uc[0]}";
             return false;
+        }
+        
+        /// <summary>
+        /// 해당 유저의 EXP를 초기화합니다. 단, 안전 기능이 적용됩니다.
+        /// </summary>
+        /// <param name="userId">해당 유저의 Steam ID입니다.</param>
+        /// <returns>성공할 경우 <c>true</c>를, 실패할 경우 <c>false</c>를 반환합니다.</returns>
+        public static bool SafeExpClear(this string userId)
+        {
+            var uc = UsersManager.UsersCache[userId];
+
+            if (uc[(int) UserDataStructure.CurrentSeason] == null)
+            {
+                uc[(int) UserDataStructure.CurrentSeason] = Main.Instance.Config.Season.ToString();
+                UsersManager.UsersCache[userId] = uc;
+                UsersManager.SaveUsers();
+
+                if (!Main.Instance.Config.ForceSeasonClear) return true;
+            } else if (uc[(int)UserDataStructure.CurrentSeason] == Main.Instance.Config.Season.ToString()) return false;
+
+            if (uc[(int) UserDataStructure.CurrentSeason] == Main.Instance.Config.Season.ToString() || uc[0] == "0") return false;
+            Log.Info($"플레이어 ID: {userId} 에 대하여 시즌형 EXP 초기화를 실행, \n 시즌 {uc[(int) UserDataStructure.CurrentSeason]}에서 해당 플레이어가 가졌던 EXP의 개수: {uc[(int)UserDataStructure.Exp]}");
+            uc[(int)UserDataStructure.Exp] = "0";
+            uc[(int) UserDataStructure.CurrentSeason] = Main.Instance.Config.Season.ToString();
+
+            UsersManager.UsersCache[userId] = uc;
+            UsersManager.SaveUsers();
+
+            return true;
+        }
+        
+        /// <summary>
+        /// 해당 유저의 EXP를 초기화합니다. 
+        /// </summary>
+        /// <param name="userId">해당 유저의 Steam ID입니다.</param>
+        public static void ExpClear(this string userId)
+        {
+            var uc = UsersManager.UsersCache[userId];
+            if (uc[(int)UserDataStructure.Exp] == "0") return;
+            
+            Log.Info($"플레이어 ID: {userId} 에 대하여 EXP 초기화를 실행,\n 시즌 {uc[(int)UserDataStructure.CurrentSeason]}에서 해당 플레이어가 가졌던 EXP의 개수: {uc[(int)UserDataStructure.Exp]}");
+            uc[(int)UserDataStructure.Exp] = "0";
+            
+            if (uc[(int)UserDataStructure.CurrentSeason] == null)
+            {
+                uc[(int)UserDataStructure.CurrentSeason] = Main.Instance.Config.Season.ToString();
+                UsersManager.UsersCache[userId] = uc;
+                UsersManager.SaveUsers();
+            }
+
+            UsersManager.UsersCache[userId] = uc;
+            UsersManager.SaveUsers();
         }
 
         public static bool AddProduct(this string userId, string args, out string response,

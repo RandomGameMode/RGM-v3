@@ -18,5 +18,11 @@ namespace RGM
 
         [Description("제재 시간을 설정합니다. (HH:MM:SS, D.HH:MM:SS)")]
         public string BanTime { get; set; } = "00:30:00";
+
+        [Description("서버의 시즌을 설정합니다.")] 
+        public ushort Season { get; set; } = 2;
+        
+        [Description("플레이어의 시즌을 설정하지 않았을 때 시즌을 초기화를 허용합니다.")] 
+        public bool ForceSeasonClear { get; set; } = false;
     }
 }

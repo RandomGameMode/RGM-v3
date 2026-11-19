@@ -160,6 +160,7 @@ namespace RGM.API.Features
         최대 연속 출석 일수 - 28
         출석 여부 (오늘) - 29
         현재 연속 출석 일수 - 30
+        유저의 지정된 시즌 - 31
         */
 
         Exp = 0,
@@ -192,7 +193,8 @@ namespace RGM.API.Features
         DayStreak = 27,
         MaxDayStreak = 28,
         TodayAttend = 29,
-        NowDayStreak = 30
+        NowDayStreak = 30,
+        CurrentSeason = 31
     }
 
     /**
