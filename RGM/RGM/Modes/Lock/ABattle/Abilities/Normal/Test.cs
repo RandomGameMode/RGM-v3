@@ -30,7 +30,7 @@ public class Test : Ability
         {
             if (!Owner.IsAlive) return;
             if (Convert.ToByte(Random.Range(1, 101)) <= Mathf.Min(80,
-                    4 * Owner.AbilityCount(AbilityType.NORMAL_STUDY) +
+                    Study.GetPercent * Owner.AbilityCount(AbilityType.NORMAL_STUDY) +
                     (ABattle.CurrentExtraModes.Contains("잔칫상") ? 50 : 35)))
             {
                 Owner.AddHint("시험 성공", "<b>능력을 3개 더 얻었습니다!</b>");
