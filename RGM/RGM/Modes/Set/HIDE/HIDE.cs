@@ -15,18 +15,20 @@ using static RGM.Variables.Variable;
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Set, ModeType.HIDE)]
-    class HIDE : Mode
+    internal class HIDE : Mode
     {
         public override string Name => "HIDE";
         public override string Description => "숨 죽이는 그를 사살하십시오.";
-        public override string Detail =>
-"""
-<color=red>SCP-3114</color>는 피격당하거나 공격하면 투명이 해제됩니다.
-또한, 평상시에도 반투명 상태로 존재합니다. 이 점을 잘 이용해보세요!
 
-<b>[Map Credit]</b>
-@vlrpfrjs
-""";
+        public override string Detail =>
+            """
+            <color=red>SCP-3114</color>는 피격당하거나 공격하면 투명이 해제됩니다.
+            또한, 평상시에도 반투명 상태로 존재합니다. 이 점을 잘 이용해보세요!
+
+            <b>[Map Credit]</b>
+            @vlrpfrjs
+            """;
+
         public override string Color => "0489B1";
         public override string Map => "container";
 
@@ -40,7 +42,7 @@ namespace RGM.Modes
 
         public override void OnEnabled()
         {
-            Respawn.PauseWaves(); 
+            Respawn.PauseWaves();
             Server.ExecuteCommand($"/el l all");
             Server.ExecuteCommand($"/close **");
             Server.ExecuteCommand($"/lock **");
@@ -92,11 +94,9 @@ namespace RGM.Modes
                         if (player == _monster) continue;
                         player.Role.Set(RoleTypeId.NtfPrivate);
                         player.Position = new Vector3(36.61497f, 332.9037f, -69.72147f);
-                        for (int i = 1; i < 10; i++)
+                        for (var i = 1; i < 10; i++)
                             player.AddItem(ItemType.Ammo9x19);
                     }
-
-
                 });
             }
             catch (Exception e)
@@ -109,9 +109,10 @@ namespace RGM.Modes
 
         private static IEnumerator<float> Timer()
         {
-            for (int i = 120; i > 0; i--)
+            for (var i = 120; i > 0; i--)
             {
-                PlayerManager.List.ToList().ForEach(x => x.AddBroadcast(1, $"<size=25><color=#2ECCFA>NTF 승리</color>까지</color> {i}초</size>"));
+                PlayerManager.List.ToList().ForEach(x =>
+                    x.AddBroadcast(1, $"<size=25><color=#2ECCFA>NTF 승리</color>까지</color> {i}초</size>"));
 
                 yield return Timing.WaitForSeconds(1f);
             }
