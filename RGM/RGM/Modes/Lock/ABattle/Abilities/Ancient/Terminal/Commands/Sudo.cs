@@ -30,7 +30,8 @@ public class Sudo : ParentCommand
 
     public override void LoadGeneratedCommands()
     {
+        RegisterCommand(new Apt());
         RegisterCommand(new Man());
-        
+
     }
 }
