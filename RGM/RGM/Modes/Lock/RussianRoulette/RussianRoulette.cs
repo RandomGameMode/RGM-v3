@@ -10,43 +10,45 @@ using UnityEngine;
 using Exiled.API.Enums;
 using RGM.API.Features;
 using Exiled.API.Features.Items;
+using Random = UnityEngine.Random;
 
 using static RGM.Variables.Variable;
 
 namespace RGM.Modes
 {
     [Mode(ModeCategory.Public, ModeInfo.Lock, ModeType.RussianRoulette)]
-    class RussianRoulette : Mode
+    internal class RussianRoulette : Mode
     {
         public override string Name => "러시안 룰렛";
         public override string Description => "정치질이 난무하는 운과 심리전의 싸움입니다.";
+
         public override string Detail =>
-"""
-최대 7개의 그룹으로 나뉘어 각 5명씩 예선전을 치릅니다.
+            """
+            그룹 당 6명씩 배정되며, 각 그룹 마다 예선전을 치릅니다.
 
-각 그룹의 우승자는 최대 7명으로 결승전을 치르게 됩니다.
+            예선전에서 통과한 사람은 결선으로 이동하며, 결선에서 최종 승자를 가립니다.
 
-<size=25>* 자신을 쏘는 경우(허공에 발사하거나 10초를 버틴 경우) 격발 기회를 한번 더 얻습니다.</size>
-<size=25>* 다른 플레이어를 사망에 이르게 할 경우 격발 기회를 한번 더 얻습니다.</size>
-""";
+            <size=25>* 자신을 쏘는 경우(허공에 발사하거나 10초를 버틴 경우) 격발 기회를 한번 더 얻습니다.</size>
+            <size=25>* 리볼버는 6발을 기준으로 합니다.</size>
+            """;
+
         public override string Color => "F5ECCE";
         public override string Map => "ru";
 
         public static RussianRoulette Instance;
 
-        int RequiredFinals;
-        List<Player> pl = new();
-        List<Player> Finals = new();
+        private readonly List<Player> _pl = [];
+        private readonly List<Player> _finals = [];
 
-        Dictionary<Vector3, List<Player>> TablePositions = new();
-        Dictionary<Player, Player> ShotChecks = new();
+        private readonly Dictionary<Vector3, List<Player>> _tablePositions = new();
+        private readonly Dictionary<Player, Player> _shotChecks = new();
 
-        CoroutineHandle _onModeStarted;
+        private CoroutineHandle _onModeStarted;
 
         public override void OnEnabled()
         {
             Round.IsLocked = true;
-            Respawn.PauseWaves(); 
+            Respawn.PauseWaves();
 
             Exiled.Events.Handlers.Player.Shot += OnShot;
             Exiled.Events.Handlers.Player.SearchingPickup += OnSearchingPickup;
@@ -76,215 +78,193 @@ namespace RGM.Modes
                 ply.Kill("예선전을 치를 준비가 되셨나요?");
             }
 
-            for (int i = 1; i < 11; i++)
+            for (var i = 10; i > 0; i--)
             {
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, $"{11 - i}초 뒤 <b><color=#F2F5A9>예선전</color></b>이 시작됩니다.");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1,
+                    $"{i}초 뒤 <b><color=#F2F5A9>예선전</color></b>이 시작됩니다.");
 
-                yield return Timing.WaitForSeconds(1f);
+                yield return Timing.WaitForSeconds(1);
             }
 
-            PlayerManager.List.ToList().CopyTo(pl);
-            pl.ShuffleList();
+            PlayerManager.List.ToList().CopyTo(_pl);
+            _pl.ShuffleList();
 
-            foreach (Transform table in Tools.GetObjectList("RussianRouletteTable"))
-                TablePositions.Add(table.position, new List<Player>());
+            foreach (var table in Tools.GetObjectList("RussianRouletteTable"))
+                _tablePositions.Add(table.position, []);
 
-            RequiredFinals = TablePositions.Count;
-
-            foreach (var table in TablePositions)
+            foreach (var table in _tablePositions)
             {
-                if (pl.Count < 1)
+                if (_pl.Count < 1)
                     break;
 
                 while (table.Value.Count < 6)
                 {
-                    if (pl.Count < 1)
+                    if (_pl.Count < 1)
                         break;
 
-                    table.Value.Add(pl[0]);
-                    pl.RemoveAt(0);
+                    table.Value.Add(_pl[0]);
+                    _pl.RemoveAt(0);
                 }
 
-                if (table.Value.Count > 0)
+                if (table.Value.Count <= 0) continue;
+                var players = table.Value;
+                var seats = Tools.GetCirclePoints(table.Key, 2, table.Value.Count);
+
+                foreach (var player in players)
                 {
-                    List<Player> players = table.Value;
-                    List<Vector3> seats = Tools.GetCirclePoints(table.Key, 2, table.Value.Count);
-
-                    foreach (var player in players)
-                    {
-                        player.Role.Set(RoleTypeId.ClassD);
-                        player.Position = seats[players.IndexOf(player)];
-                        player.EnableEffect(EffectType.Ensnared);
-                    }
-
-                    Timing.RunCoroutine(Process("예선전", table.Key));
+                    player.Role.Set(RoleTypeId.ClassD);
+                    player.Position = seats[players.IndexOf(player)];
+                    player.EnableEffect(EffectType.Ensnared);
                 }
+
+                Timing.RunCoroutine(Process("예선전", table.Key));
             }
 
             while (PlayerManager.List.Where(x => x.IsAlive).ToList().Count > 0)
                 yield return Timing.WaitForSeconds(1f);
 
-            for (int i = 1; i < 11; i++)
+            for (var i = 10; i > 0; i--)
             {
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, $"{11 - i}초 뒤 <b><color=#F7D358>결승전</color></b>이 시작됩니다.");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1,
+                    $"{i}초 뒤 <b><color=#F7D358>결승전</color></b>이 시작됩니다.");
 
-                yield return Timing.WaitForSeconds(1f);
+                yield return Timing.WaitForSeconds(1);
             }
 
-            List<Vector3> seats1 = Tools.GetCirclePoints(TablePositions.Keys.ToList()[0], 2, Finals.Where(x => x != null).ToList().Count);
+            var seats1 = Tools.GetCirclePoints(_tablePositions.Keys.ToList()[0], 2,
+                _finals.Where(x => x != null).ToList().Count);
 
-            foreach (var player in Finals.Where(x => x != null))
-            {
+            foreach (var player in _finals.Where(x => x != null))
                 try
                 {
                     player.Role.Set(RoleTypeId.ClassD);
-                    player.Position = seats1[Finals.Where(x => x != null).ToList().IndexOf(player)];
+                    player.Position = seats1[_finals.Where(x => x != null).ToList().IndexOf(player)];
                     player.EnableEffect(EffectType.Ensnared);
                 }
                 catch (Exception e)
                 {
                     Log.Error(e);
                 }
-            }
 
-            foreach (var player in Finals)
-            {
+            foreach (var player in _finals.ToList())
                 if (!player.IsConnected)
-                    Finals.Remove(player);
-            }
+                    _finals.Remove(player);
 
             Timing.RunCoroutine(Process("결승전", Vector3.zero));
-
-            yield break;
         }
 
         private IEnumerator<float> Process(string roundName, Vector3 key)
         {
-            List<Player> Players = roundName == "예선전" ? TablePositions[key] : Finals;
+            var players = roundName == "예선전" ? _tablePositions[key] : _finals;
 
-            int currentPlayerIndex = 0;
+            var currentPlayerIndex = 0;
 
-            while (Players.Count > 1)
+            while (players.Count > 1)
             {
-                int trueIndex = UnityEngine.Random.Range(0, 6);
+                var trueIndex = Random.Range(0, 6);
 
-                List<bool> Bullets = Enumerable.Repeat(false, 6).ToList();
-                Bullets[trueIndex] = true;
+                var bullets = Enumerable.Repeat(false, 6).ToList();
+                bullets[trueIndex] = true;
 
-                int Count = 0;
-                Player Target = null;
+                var count = 0;
+                Player target = null;
 
-                foreach (var bullet in Bullets)
+                foreach (var bullet in bullets)
                 {
-                    Firearm Revolver = (Firearm)Players[currentPlayerIndex].AddItem(ItemType.GunRevolver);
-                    Revolver.BarrelAmmo = 1;
+                    var revolver = (Firearm)players[currentPlayerIndex].AddItem(ItemType.GunRevolver);
+                    revolver.BarrelAmmo = 1;
 
-                    Players[currentPlayerIndex].CurrentItem = Revolver;
-                    Players[currentPlayerIndex].AddHint("러시안 룰렛", $"""
+                    players[currentPlayerIndex].CurrentItem = revolver;
+                    players[currentPlayerIndex].AddHint("러시안 룰렛", $"""
                                                                    <size=25>당신의 차례입니다.
                                                                    다른 유저를 사살하거나, 자신을 공격함으로써 공격 기회를 한번 더 얻을 수 있습니다.</size>
                                                                    """);
 
-                    for (int i = 1; i < 11; i++)
+                    for (var i = 10; i > 0; i--)
                     {
-                        foreach (var player in Players) player.AddBroadcast(1, $"{11 - i}");
+                        foreach (var player in players) player.AddBroadcast(1, $"{i}");
 
-                        if (ShotChecks.ContainsKey(Players[currentPlayerIndex]))
+                        if (_shotChecks.ContainsKey(players[currentPlayerIndex]))
                         {
-                            Target = ShotChecks[Players[currentPlayerIndex]];
-                            ShotChecks.Remove(Players[currentPlayerIndex]);
+                            target = _shotChecks[players[currentPlayerIndex]];
+                            _shotChecks.Remove(players[currentPlayerIndex]);
                             break;
                         }
 
                         yield return Timing.WaitForSeconds(1f);
                     }
 
-                    Count++;
-                    Players[currentPlayerIndex].RemoveItem(Revolver);
+                    count++;
+                    players[currentPlayerIndex].RemoveItem(revolver);
 
-                    bool IsSelfShot = false;
-                    bool IsRoundEnd = false;
+                    var isSelfShot = false;
 
-                    void SendAlert(string Message)
+                    var isRoundEnd = ShotEvent(players[currentPlayerIndex], target);
+
+                    if (isRoundEnd)
+                        break;
+
+                    if (!isSelfShot) currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+                    continue;
+
+                    void SendAlert(string message)
                     {
                         if (roundName == "결승전")
-                        {
-                            MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, Message);
-                        }
+                            MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(1, message);
                         else
-                        {
-                            foreach (var player in Players) 
-                                player.AddBroadcast(1, Message);
-                        }
+                            foreach (var player in players)
+                                player.AddBroadcast(1, message);
                     }
 
-                    bool ShotEvent(Player Attacker, Player Player)
+                    bool ShotEvent(Player attacker, Player player)
                     {
                         if (bullet)
                         {
-                            Player = (Player == null || Attacker == Player) ? Attacker : Player;
+                            player = player == null || attacker == player ? attacker : player;
 
-                            Player.Kill("리볼버의 탄약이 당신을 꿰뚫었습니다.");
+                            player.Kill("리볼버의 탄약이 당신을 꿰뚫었습니다.");
 
-                            if (Players.Contains(Player))
-                                Players.Remove(Player);
+                            if (players.Contains(player))
+                                players.Remove(player);
 
-                            SendAlert($"누군가가 사망하였습니다. ({6 - Count}/6)");
+                            SendAlert($"누군가가 사망하였습니다. ({6 - count}/6)");
 
                             return true;
                         }
-                        else
-                        {
-                            SendAlert($"아무 일도 일어나지 않았습니다. ({6 - Count}/6)");
 
-                            if (Player == null || Attacker == Player)
-                            {
-                                SendAlert("<size=25>자신을 쏘고 살아남았으므로 격발 기회를 한번 더 얻습니다.</size>");
-                                IsSelfShot = true;
-                            }
+                        SendAlert($"아무 일도 일어나지 않았습니다. ({6 - count}/6)");
 
-                            return false;
-                        }
-                    }
+                        if (player != null && attacker != player) return false;
+                        SendAlert("<size=25>자신을 쏘고 살아남았으므로 격발 기회를 한번 더 얻습니다.</size>");
+                        isSelfShot = true;
 
-                    IsRoundEnd = ShotEvent(Players[currentPlayerIndex], Target);
-
-                    if (IsRoundEnd)
-                        break;
-
-                    if (!IsSelfShot)
-                    {
-                        currentPlayerIndex = (currentPlayerIndex + 1) % Players.Count;
+                        return false;
                     }
                 }
 
-                if (currentPlayerIndex >= Players.Count)
-                {
-                    currentPlayerIndex = 0;
-                }
+                if (currentPlayerIndex >= players.Count) currentPlayerIndex = 0;
             }
 
             if (roundName == "결승전")
             {
                 Round.IsLocked = false;
 
-                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(20, $"<size=25>🎉 축하합니다, <b><color=yellow>{Finals[0].DisplayNickname}</color></b>(이)가 <b><color=#{ModeType.RussianRoulette.GetModeData().Color}>러시안 룰렛</color></b>에서 우승하였습니다! 🎉</size>");
+                MultiBroadcast.API.MultiBroadcast.AddMapBroadcast(20,
+                    $"<size=25>🎉 축하합니다, <b><color=yellow>{_finals[0].DisplayNickname}</color></b>(이)가 <b><color=#{ModeType.RussianRoulette.GetModeData().Color}>러시안 룰렛</color></b>에서 우승하였습니다! 🎉</size>");
 
-                Finals[0].DisableEffect(EffectType.Ensnared);
-                Timing.RunCoroutine(Tools.SetWinner(new List<Player>() { Finals[0] }, 5));
+                _finals[0].DisableEffect(EffectType.Ensnared);
+                Timing.RunCoroutine(Tools.SetWinner([_finals[0]], 5));
             }
             else
             {
-                Players[0].Kill("결승전에 진출했습니다! 다른 그룹의 게임이 종료될 때까지 기다려주세요.");
-                Finals.Add(Players[0]);
+                players[0].Kill("결승전에 진출했습니다! 다른 그룹의 게임이 종료될 때까지 기다려주세요.");
+                _finals.Add(players[0]);
             }
-
-            yield break;
         }
 
         private void OnShot(ShotEventArgs ev)
         {
-            ShotChecks.Add(ev.Player, ev.Target);
+            _shotChecks.Add(ev.Player, ev.Target);
         }
 
         private void OnSearchingPickup(SearchingPickupEventArgs ev)

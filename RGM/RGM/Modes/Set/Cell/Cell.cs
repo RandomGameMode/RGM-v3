@@ -32,6 +32,7 @@ namespace RGM.Modes
         public static Cell Instance;
 
         private readonly List<Player> _pl = [];
+        private readonly bool _isChaosMode = Random.Range(1, 101) <= 15;
 
         private CoroutineHandle _onModeStarted;
 
@@ -84,20 +85,36 @@ namespace RGM.Modes
             }
         }
 
-        private static IEnumerator<float> AddScp018()
+        private IEnumerator<float> AddScp018()
         {
             while (!Round.IsEnded)
             {
-                var thrower = PlayerManager.List.Where(x => x.IsAlive).ToList().GetRandomValue();
+                if (_isChaosMode)
+                {
+                    foreach (var player in PlayerManager.List)
+                    {
+                        player.AddBroadcast(5, $"<size=40><color=red><b>난장판 모드 활성화</b></color></size>");
 
-                var scp018 = (Throwable)thrower.AddItem(ItemType.SCP018);
-                var scp = (Scp018)scp018;
-                scp.ChangeItemOwner(thrower, null);
-                thrower.ThrowItem(scp018);
-                thrower.RemoveItem(scp018);
+                        var scp018 = (Throwable)player.AddItem(ItemType.SCP018);
+                        var scp = (Scp018)scp018;
+                        scp.ChangeItemOwner(player, null);
+                        player.ThrowItem(scp018);
+                        player.RemoveItem(scp018);
+                    }
+                }
+                else
+                {
+                    var thrower = PlayerManager.List.Where(x => x.IsAlive).ToList().GetRandomValue();
+
+                    var scp018 = (Throwable)thrower.AddItem(ItemType.SCP018);
+                    var scp = (Scp018)scp018;
+                    scp.ChangeItemOwner(thrower, null);
+                    thrower.ThrowItem(scp018);
+                    thrower.RemoveItem(scp018);
+                }
 
                 PlayerManager.List.ToList()
-                    .ForEach(x => x.AddBroadcast(5, $"<size=40><color=red>새로운 SCP-018이 투하되었습니다.</color></size>"));
+                    .ForEach(x => x.AddBroadcast(5, $"<size=36><color=red>새로운 SCP-018이 투하되었습니다.</color></size>"));
 
                 yield return Timing.WaitForSeconds(Random.Range(30, 61));
             }

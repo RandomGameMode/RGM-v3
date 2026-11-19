@@ -6,7 +6,7 @@ namespace RGM.Modes.Abilities.Ancient.Commands.InnerCommand;
 
 
 // 기습 고대 유출
-[CommandHandler(typeof(Sudo))]
+//[CommandHandler(typeof(Sudo))]
 public class Man : ICommand
 {
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)

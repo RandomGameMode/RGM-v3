@@ -7,7 +7,7 @@ using RGM.Variables;
 
 namespace RGM.Modes.Abilities.Ancient.Commands.InnerCommand;
 
-[CommandHandler(typeof(Sudo))]
+//[CommandHandler(typeof(Sudo))]
 public class Apt : ICommand
 {
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
