@@ -32,8 +32,7 @@ namespace RGM.Modes
             90초 후ㅣ<b>SCP-244</b>가 1/3 확률로 떨어집니다.
             120초 후ㅣ<b>SCP-018</b>이 1/3 확률로 떨어집니다.
             150초 후ㅣ모든 아이템들이 확률 조건을 불만족 할 때 가지 무제한으로 떨어집니다.
-
-            3분 이상 버틴다면 스스로를 칭찬해주세요.
+            또한, 150초 이후 10초가 지날 때 마다 OVERDRIVE 단계가 1씩 증가합니다.
             """;
 
         public override string Color => "FAAC58";
@@ -42,6 +41,7 @@ namespace RGM.Modes
         public static BombParty Instance;
 
         private readonly List<Player> _pl = [];
+        private static int _overDrive = 0;
 
         private CoroutineHandle _onModeStarted;
 
@@ -100,6 +100,26 @@ namespace RGM.Modes
                         PlayerManager.List.ToList()
                             .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>FINAL ROUND</size></color></b>"));
                         break;
+                    case 160:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>OVERDRIVE 1</size></color></b>"));
+                        break;
+                    case 170:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>OVERDRIVE 2</size></color></b>"));
+                        break;
+                    case 180:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>OVERDRIVE 3</size></color></b>"));
+                        break;
+                    case 190:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>OVERDRIVE 4</size></color></b>"));
+                        break;
+                    case 200:
+                        PlayerManager.List.ToList()
+                            .ForEach(x => x.AddBroadcast(10, "<b><color=red><size=36>OVERDRIVE 5</size></color></b>"));
+                        break;
                 }
 
                 yield return Timing.WaitForSeconds(1);
@@ -116,7 +136,7 @@ namespace RGM.Modes
                     g.FuseTime = 3f;
                     g.SpawnActive(GetRandomPosition(), Server.Host);
 
-                    if (time > 30)
+                    if (time >= 30)
                         if (Random.Range(1, 4) == 1)
                         {
                             var f1 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
@@ -124,7 +144,7 @@ namespace RGM.Modes
                             f1.SpawnActive(GetRandomPosition());
                         }
 
-                    if (time > 60)
+                    if (time >= 60)
                         if (Random.Range(1, 4) == 1)
                         {
                             var g1 = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
@@ -132,7 +152,7 @@ namespace RGM.Modes
                             g1.SpawnActive(GetRandomPosition(), Server.Host);
                         }
 
-                    if (time > 90)
+                    if (time >= 90)
                         if (Random.Range(1, 4) == 1)
                         {
                             var scp244 =
@@ -142,28 +162,30 @@ namespace RGM.Modes
                             scp244.CreatePickup(GetRandomPosition(), new Quaternion(45, 0, 0, 0));
                         }
 
-                    if (time > 120)
+                    if (time >= 120)
                         if (Random.Range(1, 4) == 1)
                         {
                             var scp018 = (Scp018)Item.Create(ItemType.SCP018, Server.Host);
                             scp018.SpawnActive(GetRandomPosition(), Server.Host);
                         }
 
-                    if (time > 150)
+                    if (time >= 150)
                     {
+                        if (time >= 160 && time % 10 == 0) _overDrive++;
+                        
                         var g2 = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE, Server.Host);
                         g2.FuseTime = 3f;
                         do
                         {
                             g2.SpawnActive(GetRandomPosition(), Server.Host);
-                        } while (Random.Range(1, 101) <= 44);
+                        } while (Random.Range(1, 101) <= 40 + 10 * _overDrive);
 
                         var f2 = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
                         f2.FuseTime = 2f;
                         do
                         {
                             f2.SpawnActive(GetRandomPosition(), Server.Host);
-                        } while (Random.Range(1, 101) <= 20);
+                        } while (Random.Range(1, 101) <= 20 + 10 * _overDrive);
 
                         var scp244 =
                             (Scp244)Item.Create(
@@ -172,13 +194,13 @@ namespace RGM.Modes
                         do
                         {
                             scp244.CreatePickup(GetRandomPosition(), new Quaternion(45, 0, 0, 0));
-                        } while (Random.Range(1, 101) <= 20);
+                        } while (Random.Range(1, 101) <= 20 + 10 * _overDrive);
 
                         var scp018 = (Scp018)Item.Create(ItemType.SCP018, Server.Host);
                         do
                         {
                             scp018.SpawnActive(GetRandomPosition(), Server.Host);
-                        } while (Random.Range(1, 101) <= 33);
+                        } while (Random.Range(1, 101) <= 30 + 10 * _overDrive);
                     }
                 }
 
