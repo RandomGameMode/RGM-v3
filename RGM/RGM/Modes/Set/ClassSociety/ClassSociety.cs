@@ -128,14 +128,7 @@ namespace RGM.Modes
                     break;
                 default:
                 {
-                    if (attackerLevel >= playerLevel)
-                    {
-                    }
-                    else
-                    {
-                        ev.IsAllowed = false;
-                    }
-
+                    if (attackerLevel < playerLevel) ev.IsAllowed = false;
                     break;
                 }
             }
@@ -168,6 +161,9 @@ namespace RGM.Modes
 
                     break;
                 }
+                case 0:
+                    Round.IsLocked = false;
+                    break;
                 case < 2:
                     Round.IsLocked = false;
 
