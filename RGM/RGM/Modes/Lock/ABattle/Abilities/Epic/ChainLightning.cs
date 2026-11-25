@@ -12,7 +12,7 @@ namespace RGM.Modes.Abilities.Epic;
                   전이 시 마다 최종 데미지가 20%p씩 감소하고 최대 80%p까지 적용되며, 최대 6명까지만 전이 가능합니다.
                   또한, 전이되는 데미지는 100을 초과할 수 없습니다.
                   """,
-    AbilityCategory.Epic, AbilityType.EPIC_CHAINLIGHTNING)]
+    AbilityCategory.Epic, AbilityType.EPIC_CHAINLIGHTNING, isUnique:true)]
 
 public class ChainLightning : Ability
 {
