@@ -16,7 +16,7 @@ public class AddTFTAbility : ICommand
             var player = Player.Get(arguments.At(0));
             var args = string.Join(" ", arguments.Skip(1));
 
-            var ability = TFTBattle.FindTFTAbility(args);
+            var ability = TFTBattle.FindTftAbility(args);
 
             if (ability == TFTAbilityType.None)
             {
@@ -24,7 +24,7 @@ public class AddTFTAbility : ICommand
                 return false;
             }
 
-            TFTBattle.AddTFTAbility(player, ability);
+            TFTBattle.AddTftAbility(player, ability);
 
             response = "AddAbility Complete!";
             return true;

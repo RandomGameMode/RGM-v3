@@ -25,12 +25,14 @@ public class TFT : Mode
 {
     public override string Name => "전략적 팀 전투";
     public override string Description => "전략적인 빌드를 구성하여 팀원을 승리로 이끄십시오.";
+
     public override string Detail =>
-"""
-증강은 한 사람당 총 3개를 확보할 수 있으며,
-처음 라운드 시작시 40초 후에,
-그 다음 120초마다 지급됩니다.
-""";
+        """
+        증강은 한 사람당 총 3개를 확보할 수 있으며,
+        처음 라운드 시작시 40초 후에,
+        그 다음 120초마다 지급됩니다.
+        """;
+
     public override string Color => "ffd700";
 
     private CoroutineHandle _onModeStarted;
@@ -72,7 +74,7 @@ public class TFT : Mode
         _isUpgradeTimerReady = false;
     }
 
-    public IEnumerator<float> OnModeStarted()
+    private IEnumerator<float> OnModeStarted()
     {
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
         {
@@ -93,14 +95,18 @@ public class TFT : Mode
                 Level = abilityAttribute.Level,
                 Category = abilityAttribute.Category,
                 Point = abilityAttribute.Point,
-                TFTAbilityType = abilityAttribute.Type,
+                TFTAbilityType = abilityAttribute.Type
             });
         }
 
-        QueryProcessor.DotCommandHandler.RegisterCommand(new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTFirst());
-        QueryProcessor.DotCommandHandler.RegisterCommand(new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTSecond());
-        QueryProcessor.DotCommandHandler.RegisterCommand(new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTFirst());
-        QueryProcessor.DotCommandHandler.RegisterCommand(new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTSecond());
+        QueryProcessor.DotCommandHandler.RegisterCommand(
+            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTFirst());
+        QueryProcessor.DotCommandHandler.RegisterCommand(
+            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTSecond());
+        QueryProcessor.DotCommandHandler.RegisterCommand(
+            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTFirst());
+        QueryProcessor.DotCommandHandler.RegisterCommand(
+            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTSecond());
 
         foreach (var player in PlayerManager.List)
             DAONTFT.Core.EventArgs.PlayerEvents.Verified(player);
@@ -124,16 +130,13 @@ public class TFT : Mode
 
         if (encounter.Value.Item1 != RoleTypeId.None)
         {
-            Player dummy = Player.Get(DummyUtils.SpawnDummy(encounter.Key));
+            var dummy = Player.Get(DummyUtils.SpawnDummy(encounter.Key));
             dummy.Role.Set(encounter.Value.Item1);
             dummy.Health = 99999;
             dummy.Scale = new Vector3(5, 5, 5);
             dummy.Position = new Vector3(139.8427f, 335.6814f, 67.04181f);
 
-            Timing.CallDelayed(11, () =>
-            {
-                NetworkServer.Destroy(dummy.GameObject);
-            });
+            Timing.CallDelayed(11, () => { NetworkServer.Destroy(dummy.GameObject); });
         }
 
         foreach (var player in PlayerManager.List)
@@ -144,18 +147,13 @@ public class TFT : Mode
             player.Position = new Vector3(137.8167f, 304.3213f, 71.88593f);
             player.AddEffect(EffectType.NightVision, 50);
 
-            Timing.CallDelayed(1, () =>
-            {
-                player.AddBroadcast(10, $"<size=25>{encounter.Value.Item2}</size>");
-            });
+            Timing.CallDelayed(1, () => { player.AddBroadcast(10, $"<size=25>{encounter.Value.Item2}</size>"); });
         }
 
         Timing.CallDelayed(11, () =>
         {
             foreach (var player in Player.List)
-            {
                 player.Role.Set(role.TryGetValue(player, out var value) ? value : RoleTypeId.ClassD);
-            }
 
             try
             {
@@ -176,7 +174,8 @@ public class TFT : Mode
                     case RoleTypeId.ChaosConscript:
                     {
                         foreach (var player in Player.List)
-                            player.AddItem(Tools.EnumToList<ItemType>().Where(x => x.ToString().Contains("SCP")).GetRandomValue());
+                            player.AddItem(Tools.EnumToList<ItemType>().Where(x => x.ToString().Contains("SCP"))
+                                .GetRandomValue());
                         break;
                     }
                     case RoleTypeId.ChaosRifleman:
@@ -187,10 +186,22 @@ public class TFT : Mode
                     }
                 }
             }
-            catch { }
+            catch
+            {
+            }
 
             Round.IsLocked = false;
         });
+
+        _upgradeWaitTime = GetTime();
+        _isUpgradeTimerReady = true;
+        _upgradeTimerLoop = Timing.RunCoroutine(UpgradeTimerLoop());
+        DebugBroadcast($"타이머 루프 시작 / 간격: {_upgradeWaitTime}초 / 대상: {PlayerManager.List.Count()}명");
+
+        foreach (var player in PlayerManager.List)
+            StartUpgradeTimer(player);
+
+        yield break;
 
         // --------------------------------------------------
         /*
@@ -202,7 +213,7 @@ public class TFT : Mode
          * 기존 유저는 시작 40초 후 획득, 이후 120(또는 다른 시간)초마다 획득
          * 중간에 리스폰 한 유저는 리스폰 한 시점 부터 40초 후 획득, 이후 120(또는 다른 시간)초마다 획득
          */
-        int getTime()
+        int GetTime()
         {
             return DAONTFT.Core.Variables.Base.Encounter switch
             {
@@ -212,21 +223,11 @@ public class TFT : Mode
                 _ => 120
             };
         }
-
-        _upgradeWaitTime = getTime();
-        _isUpgradeTimerReady = true;
-        _upgradeTimerLoop = Timing.RunCoroutine(UpgradeTimerLoop());
-        DebugBroadcast($"타이머 루프 시작 / 간격: {_upgradeWaitTime}초 / 대상: {PlayerManager.List.Count()}명");
-
-        foreach (var player in PlayerManager.List)
-            StartUpgradeTimer(player);
-
-        yield break;
     }
 
-    void StartUpgradeTimer(Player player)
+    private void StartUpgradeTimer(Player player)
     {
-        string key = GetPlayerKey(player);
+        var key = GetPlayerKey(player);
         if (key == null)
         {
             DebugBroadcast($"타이머 시작 실패 / key null / player: {player?.Nickname ?? "null"}");
@@ -238,9 +239,9 @@ public class TFT : Mode
         DebugBroadcast($"타이머 시작 / {player.Nickname} / 40초", player);
     }
 
-    void StopUpgradeTimer(Player player)
+    private void StopUpgradeTimer(Player player)
     {
-        string key = GetPlayerKey(player);
+        var key = GetPlayerKey(player);
         if (key == null)
         {
             DebugBroadcast($"타이머 중지 실패 / key null / player: {player?.Nickname ?? "null"}");
@@ -251,7 +252,7 @@ public class TFT : Mode
         DebugBroadcast($"타이머 중지 / {player.Nickname}", player);
     }
 
-    IEnumerator<float> UpgradeTimerLoop()
+    private IEnumerator<float> UpgradeTimerLoop()
     {
         while (_isUpgradeTimerReady)
         {
@@ -259,11 +260,10 @@ public class TFT : Mode
             DebugBroadcast($"루프 tick / 등록 타이머: {_upgradeRemainingTimes.Count}명");
 
             foreach (var key in _upgradeRemainingTimes.Keys.ToList())
-            {
                 // 한 플레이어 처리 중 예외가 발생해도 루프(=전원 지급)가 멈추지 않도록 개별 보호
                 try
                 {
-                    Player player = GetPlayerByKey(key);
+                    var player = GetPlayerByKey(key);
 
                     if (!CanReceiveUpgrade(player))
                     {
@@ -273,7 +273,7 @@ public class TFT : Mode
                     }
 
                     _upgradeRemainingTimes[key] -= 1;
-                    int remaining = Mathf.CeilToInt(_upgradeRemainingTimes[key]);
+                    var remaining = Mathf.CeilToInt(_upgradeRemainingTimes[key]);
 
                     if (remaining % 10 == 0 || remaining <= 5)
                         DebugBroadcast($"타이머 진행 / {player.Nickname} / 남은 시간: {remaining}초", player);
@@ -281,11 +281,11 @@ public class TFT : Mode
                     if (_upgradeRemainingTimes[key] > 0)
                         continue;
 
-                    int abilityCount = TFTBattle.GetAbilities(player).Count();
-                    TFTAbilityLevel level = GetUpgradeLevel(abilityCount);
+                    var abilityCount = TFTBattle.GetAbilities(player).Count();
+                    var level = GetUpgradeLevel(abilityCount);
                     DebugBroadcast($"증강 지급 시도 / {player.Nickname} / 차수: {abilityCount + 1} / 등급: {level}", player);
 
-                    bool isUpgradeStarted = TFTBattle.StartUpgrade(new List<Player> { player }, level);
+                    var isUpgradeStarted = TFTBattle.StartUpgrade(new List<Player> { player }, level);
 
                     if (isUpgradeStarted)
                     {
@@ -307,11 +307,10 @@ public class TFT : Mode
                     DebugBroadcast($"타이머 처리 예외 / {key} / {e.GetType().Name}: {e.Message}");
                     Log.Error($"[TFT] UpgradeTimerLoop 처리 중 예외 / key: {key}\n{e}");
                 }
-            }
         }
     }
 
-    TFTAbilityLevel GetUpgradeLevel(int upgradeIndex)
+    private TFTAbilityLevel GetUpgradeLevel(int upgradeIndex)
     {
         while (_upgradeLevelSequence.Count <= upgradeIndex)
             _upgradeLevelSequence.Add(TFTBattle.GetRandomAbilityLevel());
@@ -319,15 +318,16 @@ public class TFT : Mode
         return _upgradeLevelSequence[upgradeIndex];
     }
 
-    bool CanReceiveUpgrade(Player player)
+    private bool CanReceiveUpgrade(Player player)
     {
         return player != null &&
                player.IsAlive &&
                !player.IsNPC &&
-               TFTBattle.GetAbilities(player).Count() < (DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
+               TFTBattle.GetAbilities(player).Count() <
+               (DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
     }
 
-    string GetCannotReceiveReason(Player player)
+    private string GetCannotReceiveReason(Player player)
     {
         if (player == null)
             return "player null";
@@ -338,7 +338,7 @@ public class TFT : Mode
         if (player.IsNPC)
             return "npc";
 
-        int maxAbilityCount = DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
+        var maxAbilityCount = DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
 
         if (TFTBattle.GetAbilities(player).Count >= maxAbilityCount)
             return $"max abilities ({TFTBattle.GetAbilities(player).Count}/{maxAbilityCount})";
@@ -346,7 +346,7 @@ public class TFT : Mode
         return "unknown";
     }
 
-    string GetPlayerKey(Player player)
+    private string GetPlayerKey(Player player)
     {
         if (player == null || player.IsNPC || string.IsNullOrEmpty(player.UserId))
             return null;
@@ -354,45 +354,45 @@ public class TFT : Mode
         return player.UserId;
     }
 
-    Player GetPlayerByKey(string key)
+    private Player GetPlayerByKey(string key)
     {
         return PlayerManager.List.FirstOrDefault(x => !x.IsNPC && x.UserId == key);
     }
 
-    void OnVerified(VerifiedEventArgs ev)
+    private void OnVerified(VerifiedEventArgs ev)
     {
         DAONTFT.Core.EventArgs.PlayerEvents.Verified(ev.Player);
-        DebugBroadcast($"Verified / {ev.Player.Nickname} / ready: {_isUpgradeTimerReady} / alive: {ev.Player.IsAlive}", ev.Player);
+        DebugBroadcast($"Verified / {ev.Player.Nickname} / ready: {_isUpgradeTimerReady} / alive: {ev.Player.IsAlive}",
+            ev.Player);
 
         if (_isUpgradeTimerReady && ev.Player.IsAlive)
             StartUpgradeTimer(ev.Player);
     }
 
-    void OnChangingRole(ChangingRoleEventArgs ev)
+    private void OnChangingRole(ChangingRoleEventArgs ev)
     {
-        DebugBroadcast($"ChangingRole / {ev.Player.Nickname} / oldDead: {ev.Player.IsDead} / new: {ev.NewRole} / newDead: {ev.NewRole.IsDead()}", ev.Player);
+        DebugBroadcast(
+            $"ChangingRole / {ev.Player.Nickname} / oldDead: {ev.Player.IsDead} / new: {ev.NewRole} / newDead: {ev.NewRole.IsDead()}",
+            ev.Player);
 
         if (ev.Player.IsDead || ev.NewRole.IsDead() || TFTBattle.GetAbilities(ev.Player).Count == 0)
         {
             if (ev.NewRole.IsDead())
             {
-                string key = GetPlayerKey(ev.Player);
+                var key = GetPlayerKey(ev.Player);
                 if (key != null)
                     _playersWaitingRespawn.Add(key);
 
                 StopUpgradeTimer(ev.Player);
             }
 
-            Timing.CallDelayed(Timing.WaitForOneFrame, () =>
-            {
-                TFTBattle.Reset(ev.Player);
-            });
+            Timing.CallDelayed(Timing.WaitForOneFrame, () => { TFTBattle.Reset(ev.Player); });
         }
     }
 
-    void OnDied(DiedEventArgs ev)
+    private void OnDied(DiedEventArgs ev)
     {
-        string key = GetPlayerKey(ev.Player);
+        var key = GetPlayerKey(ev.Player);
         if (key == null)
         {
             DebugBroadcast($"Died / key null / {ev.Player.Nickname}", ev.Player);
@@ -404,10 +404,12 @@ public class TFT : Mode
         StopUpgradeTimer(ev.Player);
     }
 
-    void OnSpawned(SpawnedEventArgs ev)
+    private void OnSpawned(SpawnedEventArgs ev)
     {
-        string key = GetPlayerKey(ev.Player);
-        DebugBroadcast($"Spawned / {ev.Player.Nickname} / key: {key ?? "null"} / ready: {_isUpgradeTimerReady} / locked: {Round.IsLocked} / waiting: {(key != null && _playersWaitingRespawn.Contains(key))} / hasTimer: {(key != null && _upgradeRemainingTimes.ContainsKey(key))}", ev.Player);
+        var key = GetPlayerKey(ev.Player);
+        DebugBroadcast(
+            $"Spawned / {ev.Player.Nickname} / key: {key ?? "null"} / ready: {_isUpgradeTimerReady} / locked: {Round.IsLocked} / waiting: {key != null && _playersWaitingRespawn.Contains(key)} / hasTimer: {key != null && _upgradeRemainingTimes.ContainsKey(key)}",
+            ev.Player);
 
         // Round.IsLocked 로 게이팅하지 않는다.
         // (테스트 등으로 라운드가 계속 잠겨 있어도 리스폰 시 타이머가 재등록되어야 함)
@@ -419,13 +421,10 @@ public class TFT : Mode
         if (!_playersWaitingRespawn.Remove(key) && _upgradeRemainingTimes.ContainsKey(key))
             return;
 
-        Timing.CallDelayed(Timing.WaitForOneFrame, () =>
-        {
-            StartUpgradeTimer(ev.Player);
-        });
+        Timing.CallDelayed(Timing.WaitForOneFrame, () => { StartUpgradeTimer(ev.Player); });
     }
 
-    void DebugBroadcast(string message, Player player = null)
+    private void DebugBroadcast(string message, Player player = null)
     {
         if (!DebugUpgradeTimer) return;
 
@@ -445,14 +444,18 @@ public class TFT : Mode
         catch { }*/
     }
 
-    void OnRoundEnded(RoundEndedEventArgs ev)
+    private static void OnRoundEnded(RoundEndedEventArgs ev)
     {
-        IEnumerable<Player> players = PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC);
+        List<Player> players = [.. PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC)];
 
-        if (players.Count() == 1)
-            Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 5));
-
-        else if (players.Count() > 1)
-            Timing.RunCoroutine(Tools.SetWinner(players.ToList(), 1));
+        switch (players.Count)
+        {
+            case 1:
+                Timing.RunCoroutine(Tools.SetWinner([.. players], PlayerManager.List.Count / 2));
+                break;
+            case > 1:
+                Timing.RunCoroutine(Tools.SetWinner([.. players], 1));
+                break;
+        }
     }
 }
