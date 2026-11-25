@@ -27,10 +27,9 @@ public class CandyAddict : TFTAbility
     {
         Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
-        while (true)
+        while (Owner.IsAlive)
         {
-            if (Owner.IsAlive)
-                Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
+            Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
             for (int i = 12; i > 0; i--)
             {
