@@ -22,24 +22,21 @@ public class IllegalWeapon : TFTAbility
         Exiled.Events.Handlers.Player.ThrownProjectile -= OnThrownProjectile;
     }
 
-    public IEnumerator<float> OnThrownProjectile(ThrownProjectileEventArgs ev)
+    private IEnumerator<float> OnThrownProjectile(ThrownProjectileEventArgs ev)
     {
-        if (ev.Player == Owner)
+        if (ev.Player != Owner) yield break;
+        yield return Timing.WaitForSeconds(0.3f);
+
+        if (ev.Projectile is not ExplosionGrenadeProjectile grenade ||
+            ev.Player.Role.Type == PlayerRoles.RoleTypeId.Scp079) yield break;
+        while (!grenade.IsAlreadyDetonated)
         {
-            yield return Timing.WaitForSeconds(0.3f);
-
-            if (ev.Projectile is ExplosionGrenadeProjectile grenade && ev.Player.Role.Type != PlayerRoles.RoleTypeId.Scp079)
+            if (Physics.OverlapSphere(grenade.Position, 0.3f).Length > 4)
             {
-                while (!grenade.IsAlreadyDetonated)
-                {
-                    if (Physics.OverlapSphere(grenade.Position, 0.3f).Count() > 4)
-                    {
-                        grenade.Base.Network_syncTargetTime = 0.1f;
-                    }
-
-                    yield return Timing.WaitForOneFrame;
-                }
+                grenade.Base.Network_syncTargetTime = 0.1f;
             }
+
+            yield return Timing.WaitForOneFrame;
         }
     }
 }

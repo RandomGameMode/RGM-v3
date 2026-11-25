@@ -1,6 +1,6 @@
 ﻿using Exiled.Events.EventArgs.Player;
 using MEC;
-
+using RGM.API.Features;
 using static DAONTFT.Core.Variables.Base;
 
 namespace DAONTFT.Core.TFT.Euclid.All;
@@ -10,12 +10,7 @@ public class QuickJudgement : TFTAbility
 {
     public override void OnEnabled()
     {
-        GodModePlayers.Add(Owner);
-
-        Timing.CallDelayed(60, () =>
-        {
-            GodModePlayers.Remove(Owner);
-        });
+        Owner.ApplyGodMode(60);
 
         Owner.Cuffer = null;
 
@@ -27,7 +22,7 @@ public class QuickJudgement : TFTAbility
         Exiled.Events.Handlers.Player.Handcuffing -= OnHandcuffing;
     }
 
-    void OnHandcuffing(HandcuffingEventArgs ev)
+    private void OnHandcuffing(HandcuffingEventArgs ev)
     {
         if (ev.Target == Owner)
             ev.IsAllowed = false;

@@ -7,18 +7,18 @@ using RGM.API.Features;
 
 namespace DAONTFT.Core.TFT.Euclid.Human;
 
-[TFTAbility("생존 전문가", "죽음에 이르는 피해를 받았을 때, 3초 간 살아남습니다. (쿨타임 2분)", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Survivor, "💝")]
+[TFTAbility("생존 전문가", "죽음에 이르는 피해를 받았을 때, 5초 간 생존 효과를 부여하며, 체력을 50% 회복합니다. (쿨타임 2분)", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Survivor, "💝")]
 public class Survivor : TFTAbility
 {
-    bool isEnabled = false;
-    int cooldown = 0;
-    CoroutineHandle _cooldownProcess;
+    private bool _isEnabled;
+    private int _cooldown;
+    private CoroutineHandle _cooldownProcess;
 
     public override void OnEnabled()
     {
         Exiled.Events.Handlers.Player.Dying += OnDying;
 
-        _cooldownProcess = Timing.RunCoroutine(cooldownProcess());
+        _cooldownProcess = Timing.RunCoroutine(CooldownProcess());
     }
 
     public override void OnDisabled()
@@ -28,54 +28,42 @@ public class Survivor : TFTAbility
         Timing.KillCoroutines(_cooldownProcess);
     }
 
-    IEnumerator<float> cooldownProcess()
+    private IEnumerator<float> CooldownProcess()
     {
-        while (true)
+        while (Owner.IsAlive)
         {
-            if (cooldown > 0)
-                cooldown--;
+            if (_cooldown > 0)
+                _cooldown--;
 
-            Data.Description = $"죽음에 이르는 피해를 받았을 때, 3초 간 살아남습니다. ({(cooldown == 0 ? "사용 가능" : $"재사용까지 { cooldown}초")})";
+            Data.Description = $"죽음에 이르는 피해를 받았을 때, 3초 간 살아남습니다. ({(_cooldown == 0 ? "사용 가능" : $"재사용까지 {_cooldown}초")})";
 
             yield return Timing.WaitForSeconds(1f);
         }
     }
 
-    public void OnDying(DyingEventArgs ev)
+    private void OnDying(DyingEventArgs ev)
     {
         if (ev.Player != Owner || IsLifeUsed[Owner] || BlockDamageTypes.Contains(ev.DamageHandler.Type))
             return;
 
-        if (cooldown <= 0)
-        {
-            if (!isEnabled)
-            {
-                isEnabled = true;
+        if (_cooldown > 0) return;
+        if (_isEnabled) return;
+        _isEnabled = true;
 
-                ev.IsAllowed = false;
+        ev.IsAllowed = false;
 
-                ev.Player.EnableEffect(EffectType.Blinded, 1, 3);
-                ev.Player.AddEffect(EffectType.MovementBoost, 10, 3);
+        ev.Player.EnableEffect(EffectType.Invisible, 1, 5);
+        ev.Player.AddEffect(EffectType.Ghostly, 1, 5);
+        ev.Player.AddEffect(EffectType.MovementBoost, 40, 5);
+        ev.Player.ApplyGodMode(5);
+        ev.Player.Heal(ev.Player.MaxHealth * 0.5f);
 
-                GodModePlayers.Add(ev.Player);
+        Timing.CallDelayed(5f, () => { _isEnabled = false; });
 
-                Timing.CallDelayed(4f, () =>
-                {
-                    if (GodModePlayers.Contains(ev.Player))
-                        GodModePlayers.Remove(ev.Player);
+        IsLifeUsed[Owner] = true;
 
-                    isEnabled = false;
-                });
+        Timing.CallDelayed(Timing.WaitForOneFrame, () => { IsLifeUsed[Owner] = false; });
 
-                IsLifeUsed[Owner] = true;
-
-                Timing.CallDelayed(Timing.WaitForOneFrame, () =>
-                {
-                    IsLifeUsed[Owner] = false;
-                });
-
-                cooldown = 120;
-            }
-        }
+        _cooldown = 120;
     }
 }
