@@ -303,7 +303,7 @@ public enum TFTAbilityType
     Armory2, // 무기고+
     Adventure, // 고귀한 모험
     BULLSEYETFT, // 불스아이
-    Pandora, // 판도라의 인벤토리
+    InfiniteAmmo, // 판도라의 인벤토리
     Miniaturization3, // 소인화 · 통달
     // Scp
     TestSubject, // 실험체
