@@ -14,8 +14,4 @@ public class BomberMan : TFTAbility
         g.FuseTime = 3f;
         g.SpawnActive(Player.List.Where(x => x.IsAlive && x.Role.Team != Owner.Role.Team && Owner != x).GetRandomValue().Position, Owner);
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

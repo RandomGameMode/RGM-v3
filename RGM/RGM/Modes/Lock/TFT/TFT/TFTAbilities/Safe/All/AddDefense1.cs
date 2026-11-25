@@ -10,8 +10,4 @@ public class AddDefense1 : TFTAbility
     {
         Owner.AddEffect(EffectType.DamageReduction, 20);
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

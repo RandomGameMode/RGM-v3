@@ -5,15 +5,11 @@ using PlayerRoles;
 
 namespace DAONTFT.Core.TFT.Safe.Human;
 
-[TFTAbility("꿈나무", "자신의 진영의 지원 영향력을 6 추가합니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.Seed1, "🌳")]
+[TFTAbility("꿈나무", "자신의 진영의 지원 영향력을 20 추가합니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.Seed1, "🌳")]
 public class Seed1 : TFTAbility
 {
     public override void OnEnabled()
     {
-        Respawn.GrantInfluence(Owner.Role.Team.GetFaction(), 6);
-    }
-
-    public override void OnDisabled()
-    {
+        Respawn.GrantInfluence(Owner.Role.Team.GetFaction(), 20);
     }
 }

@@ -14,8 +14,4 @@ public class InventoryUpgrade : TFTAbility
                 processor.UpgradeInventoryItem(Scp914KnobSetting.VeryFine, Owner.CurrentItem.Base);
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

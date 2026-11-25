@@ -9,8 +9,4 @@ public class TransparentCloak : TFTAbility
     {
         Owner.EnableEffect(EffectType.Invisible, 1, 25);
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

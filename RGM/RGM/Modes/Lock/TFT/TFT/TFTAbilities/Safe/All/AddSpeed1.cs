@@ -10,8 +10,4 @@ public class AddSpeed1 : TFTAbility
     {
         Owner.AddEffect(EffectType.MovementBoost, 10);
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

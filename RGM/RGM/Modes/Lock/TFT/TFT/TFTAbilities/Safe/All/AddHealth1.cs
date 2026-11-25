@@ -10,8 +10,4 @@ public class AddHealth1 : TFTAbility
         Owner.MaxHealth += health;
         Owner.Health += health;
     }
-
-    public override void OnDisabled()
-    {
-    }
 }
