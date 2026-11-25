@@ -67,10 +67,12 @@ namespace RGM.Modes
             {
                 RoleTypeId.NtfCaptain => RoleTypeId.ChaosRepressor,
                 RoleTypeId.NtfSergeant => RoleTypeId.ChaosMarauder,
+                RoleTypeId.NtfSpecialist => RoleTypeId.ChaosConscript,
                 RoleTypeId.NtfPrivate => RoleTypeId.ChaosRifleman,
                 RoleTypeId.ChaosRepressor => RoleTypeId.NtfCaptain,
                 RoleTypeId.ChaosMarauder => RoleTypeId.NtfSergeant,
                 RoleTypeId.ChaosRifleman => RoleTypeId.NtfPrivate,
+                RoleTypeId.ChaosConscript => RoleTypeId.NtfSpecialist,
                 _ => RoleTypeId.Tutorial
             };
         }
