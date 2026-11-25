@@ -1,5 +1,4 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
 using UnityEngine;
@@ -19,7 +18,7 @@ public class Gambler : TFTAbility
         Exiled.Events.Handlers.Player.TogglingNoClip -= OnTogglingNoClip;
     }
 
-    public void OnTogglingNoClip(TogglingNoClipEventArgs ev)
+    private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
     {
         if (Owner != ev.Player || ev.Player.CurrentItem == null) return;
         ev.Player.RemoveHeldItem();

@@ -7,11 +7,34 @@ using System.Linq;
 
 namespace DAONTFT.Core.TFT.Keter.Human;
 
-[TFTAbility("고귀한 모험", "500 데미지를 가하는 데 성공하면 큰 보상을 획득합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Adventure, "🚩")]
+[TFTAbility("고귀한 모험", "500 데미지를 가할 때 마다 보상을 획득합니다.",
+    TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Adventure, "🚩")]
 public class Adventure : TFTAbility
 {
-    float damage = 0;
-    bool isGiven = false;
+    private float _damage;
+
+    private readonly List<ItemType> _weapons =
+    [
+        ItemType.Jailbird,
+        ItemType.MicroHID,
+        ItemType.ParticleDisruptor,
+        ItemType.GunLogicer,
+        ItemType.GunFRMG0
+    ];
+
+    private readonly List<ItemType> _items =
+    [
+        ItemType.ArmorHeavy,
+        ItemType.SCP500,
+        ItemType.GrenadeFlash,
+        ItemType.GrenadeHE,
+        ItemType.KeycardO5,
+        ItemType.AntiSCP207,
+        ItemType.SCP207,
+        ItemType.SCP1853,
+        ItemType.SCP1344,
+        ItemType.SCP268
+    ];
 
     public override void OnEnabled()
     {
@@ -23,55 +46,19 @@ public class Adventure : TFTAbility
         Exiled.Events.Handlers.Player.Hurting -= OnHurting;
     }
 
-    void OnHurting(HurtingEventArgs ev)
+    private void OnHurting(HurtingEventArgs ev)
     {
-        if (ev.Attacker != null && ev.Attacker == Owner)
-        {
-            damage += ev.Amount;
+        if (ev.Attacker == null || ev.Attacker != Owner) return;
+        _damage += ev.Amount;
 
-            Data.Description = $"500 데미지를 가하는 데 성공하면 큰 보상을 획득합니다. (현재: {damage} / 500)";
+        Data.Description = $"500 데미지를 가할 때 마다 보상을 획득합니다. (현재: {_damage} / 500)";
 
-            if (damage > 500 && !isGiven)
-            {
-                isGiven = true;
+        if (_damage >= 500) _damage -= 500;
 
-                List<ItemType> weapons = new()
-                {
-                    ItemType.Jailbird,
-                    ItemType.MicroHID,
-                    ItemType.ParticleDisruptor
-                };
+        Pickup.CreateAndSpawn(_weapons.GetRandomValue(), Owner.Position);
 
-                List<ItemType> items = new()
-                {
-                    ItemType.ArmorHeavy,
-                    ItemType.Adrenaline,
-                    ItemType.Adrenaline,
-                    ItemType.GrenadeFlash,
-                    ItemType.GrenadeHE,
-                    ItemType.KeycardO5,
-                    ItemType.GunLogicer,
-                    ItemType.GunFRMG0,
-                    ItemType.AntiSCP207,
-                    ItemType.SCP207,
-                    ItemType.SCP1853,
-                    ItemType.SCP1344,
-                    ItemType.SCP018,
-                    ItemType.SCP268
-                };
+        for (var i = 0; i < 5; i++) Pickup.CreateAndSpawn(_items.GetRandomValue(), Owner.Position);
 
-                Pickup.CreateAndSpawn(weapons.GetRandomValue(), Owner.Position);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    Pickup.CreateAndSpawn(items.GetRandomValue(), Owner.Position);
-                }
-
-                foreach (var item in Item.List.Where(x => x.IsAmmo))
-                {
-                    Owner.AddItem(item.Type, 3);
-                }
-            }
-        }
+        foreach (var item in Item.List.Where(x => x.IsAmmo)) Owner.AddItem(item.Type, 3);
     }
 }

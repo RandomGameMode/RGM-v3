@@ -12,8 +12,4 @@ public class AddHealth3 : TFTAbility
         Owner.MaxHealth = (Owner.MaxHealth + health) * bonus;
         Owner.Health = (Owner.Health + health) * bonus;
     }
-    
-    public override void OnDisabled()
-    {
-    }
 }

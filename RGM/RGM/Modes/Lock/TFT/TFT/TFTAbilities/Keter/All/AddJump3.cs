@@ -10,8 +10,4 @@ public class AddJump3 : TFTAbility
     {
         Owner.AddEffect(EffectType.Lightweight, 50);
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

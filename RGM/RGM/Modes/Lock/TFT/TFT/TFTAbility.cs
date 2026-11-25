@@ -333,7 +333,7 @@ public enum TFTAbilityType
     Gambler, // 도박꾼
     Armory2, // 무기고+
     Adventure, // 고귀한 모험
-    BULLSEYETFT, // 불스아이
+    Bullseye, // 불스아이
     InfiniteAmmo, // 판도라의 인벤토리
     Miniaturization3, // 소인화 · 통달
     // Scp
