@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 namespace DAONTFT.Core.TFT.Keter.Human;
 
-[TFTAbility("마약 중독자", "20초마다 랜덤한 사탕을 획득합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.CandyAddict, "🍭")]
+[TFTAbility("마약 중독자", "12초마다 랜덤한 사탕을 획득합니다.", 
+    TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.CandyAddict, "🍭")]
 public class CandyAddict : TFTAbility
 {
     private CoroutineHandle _candyParty;
@@ -14,7 +15,7 @@ public class CandyAddict : TFTAbility
     public override void OnEnabled()
     {
         if (!Timing.IsRunning(_candyParty))
-            _candyParty = Timing.RunCoroutine(candyParty());
+            _candyParty = Timing.RunCoroutine(CandyParty());
     }
 
     public override void OnDisabled()
@@ -22,7 +23,7 @@ public class CandyAddict : TFTAbility
         Timing.KillCoroutines(_candyParty);
     }
 
-    IEnumerator<float> candyParty()
+    private IEnumerator<float> CandyParty()
     {
         Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
@@ -31,9 +32,9 @@ public class CandyAddict : TFTAbility
             if (Owner.IsAlive)
                 Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 12; i > 0; i--)
             {
-                Data.Description = $"다음 사탕 획득까지: {20 - i}초";
+                Data.Description = $"다음 사탕 획득까지: {i}초";
 
                 yield return Timing.WaitForSeconds(1f);
             }

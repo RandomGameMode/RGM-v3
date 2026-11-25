@@ -29,7 +29,7 @@ public class TestSubject : TFTAbility
         {
             if (Owner.TryGetNearestPlayer(out Player player, out float radius))
             {
-                if (player.HasTFTAbility(TFTAbilityType.TestSubject))
+                if (player.HasTftAbility(TFTAbilityType.TestSubject))
                 {
                     Owner.Heal(16);
                 }

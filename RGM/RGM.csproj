@@ -659,7 +659,7 @@
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\CandyAddict.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\DevilContract.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Gambler.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Pandora.cs" />
+    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\InfiniteAmmo.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\BullsEyeTFT.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Scp\TestSubject.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Special\Scp049\BestDoctor.cs" />
