@@ -21,6 +21,13 @@ namespace DAONTFT.Core.IEnumerators
 
             while (true)
             {
+                // 라운드 종료 후에는 SetWinner 결과 화면이 가려지지 않도록 힌트 표시를 중단한다.
+                if (Round.IsEnded)
+                {
+                    yield return Timing.WaitForOneFrame;
+                    continue;
+                }
+
                 if (Owner.IsAlive && PlayerShowTFTs.ContainsKey(Owner) && PlayerShowTFTs[Owner])
                 {
                     List<string> queue = new();

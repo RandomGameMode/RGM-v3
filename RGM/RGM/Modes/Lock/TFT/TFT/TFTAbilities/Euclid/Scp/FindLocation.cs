@@ -32,7 +32,7 @@ public class FindLocation : TFTAbility
             Text = $"",
         };
 
-        while (Owner.IsScp)
+        while (Owner.IsScp && !Round.IsEnded)
         {
             if (Owner.TryGetNearestPlayer(out Player player, out float radius, Player.List.Where(x => x.IsScp).ToList()))
             {

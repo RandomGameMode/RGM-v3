@@ -86,8 +86,45 @@ public static class TFTBattle
         }
     }
 
+    // 라운드 종료 시 모든 플레이어의 증강 선택창 힌트/효과를 정리한다.
+    public static void ClearAllHints()
+    {
+        foreach (var player in Selections.Keys.ToList())
+        {
+            try
+            {
+                Selections.Remove(player);
+                SelectionCursor.Remove(player);
+                IsSelecting[player] = false;
+                ClearSelectionPresentation(player);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"[TFT] 힌트 정리 중 예외\n{e}");
+            }
+        }
+
+        foreach (var pair in PlayerHints.ToList())
+        {
+            try
+            {
+                foreach (var hint in pair.Value.ToList())
+                    pair.Key.RemoveHint(hint);
+
+                pair.Value.Clear();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"[TFT] 힌트 정리 중 예외\n{e}");
+            }
+        }
+    }
+
     public static bool StartUpgrade(List<Player> players = null, TFTAbilityLevel? levelOverride = null)
     {
+        if (Round.IsEnded)
+            return false;
+
         var level = levelOverride ?? GetRandomAbilityLevel();
         var started = false;
 
@@ -320,7 +357,7 @@ public static class TFTBattle
 
         for (var i = 0; i < 120; i++) // 증강 선택창 유지 시간 (30초)
         {
-            if (player.IsDead || !Selections.ContainsKey(player))
+            if (player.IsDead || !Selections.ContainsKey(player) || Round.IsEnded)
             {
                 Selections.Remove(player);
 

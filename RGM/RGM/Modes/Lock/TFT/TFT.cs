@@ -254,7 +254,7 @@ public class TFT : Mode
 
     private IEnumerator<float> UpgradeTimerLoop()
     {
-        while (_isUpgradeTimerReady)
+        while (_isUpgradeTimerReady && !Round.IsEnded)
         {
             yield return Timing.WaitForSeconds(1);
             DebugBroadcast($"루프 tick / 등록 타이머: {_upgradeRemainingTimes.Count}명");
@@ -444,8 +444,15 @@ public class TFT : Mode
         catch { }*/
     }
 
-    private static void OnRoundEnded(RoundEndedEventArgs ev)
+    private void OnRoundEnded(RoundEndedEventArgs ev)
     {
+        // 라운드 종료 시 증강 지급 타이머 및 모든 TFT 힌트 표시(증강 리스트/선택창)를 중단하여
+        // SetWinner 결과 화면이 가려지지 않도록 한다. (각 힌트 코루틴은 Round.IsEnded 를 감지해 정리됨)
+        _isUpgradeTimerReady = false;
+        Timing.KillCoroutines(_upgradeTimerLoop);
+        _upgradeRemainingTimes.Clear();
+        TFTBattle.ClearAllHints();
+
         List<Player> players = [.. PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC)];
 
         switch (players.Count)
