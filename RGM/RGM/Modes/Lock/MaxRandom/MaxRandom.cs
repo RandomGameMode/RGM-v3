@@ -86,7 +86,7 @@ public class MaxRandom : Mode
     private CoroutineHandle _randomBox;
     private CoroutineHandle _randomFactionSpawn;
     private CoroutineHandle _onModeStarted;
-    private readonly AutoWarhead _autoWarhead = new(Random.Range(8, 21), 1);
+    private readonly AutoWarhead _autoWarhead = new(Random.Range(2, 21), 1);
     
     public override void OnEnabled()
     {
@@ -257,7 +257,7 @@ public class MaxRandom : Mode
         if (ev.Attacker.Role.Type == RoleTypeId.Scp173)
         {
             ev.IsAllowed = false;
-            if (ApplyFixedDamage.Apply(ev.Attacker, ev.Player, Random.Range(1, 128))) 
+            if (ApplyFixedDamage.Apply(ev.Attacker, ev.Player, Random.Range(1, 256))) 
                 ev.Attacker.ShowHitMarker();
         }
         else
@@ -388,8 +388,8 @@ public class MaxRandom : Mode
         while (_isEnabled)
         {
             // 이전 구현은 매 프레임마다 지연 호출을 예약해 60초 후부터 지원이 연속 발생했습니다.
-            // 지원을 생성한 뒤 다음 지원까지 60~300초를 실제로 대기합니다.
-            yield return Timing.WaitForSeconds(Random.Range(60, 301));
+            // 지원을 생성한 뒤 다음 지원까지 60~180초를 실제로 대기합니다.
+            yield return Timing.WaitForSeconds(Random.Range(60, 181));
 
             if (!_isEnabled)
                 yield break;
