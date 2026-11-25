@@ -14,6 +14,7 @@ using static RGM.Variables.Variable;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Doors;
 using Exiled.Events.EventArgs.Warhead;
+using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using Random = UnityEngine.Random;
 using Warhead = Exiled.Events.Handlers.Warhead;
 
@@ -62,19 +63,28 @@ namespace RGM.Modes
         [
             ItemType.KeycardFacilityManager,
             ItemType.GunLogicer,
-            ItemType.SCP1509,
+            ItemType.SCP500,
             ItemType.SCP500,
             ItemType.Radio,
             ItemType.Adrenaline,
-            ItemType.GrenadeHE,
-            ItemType.SCP500
+            ItemType.GrenadeHE
         ];
 
+        private static readonly List<ItemType> SpecialItem =
+        [
+            ItemType.GunFSP9,
+            ItemType.GunSCP127,
+            ItemType.SCP1509,
+            ItemType.Jailbird,
+            ItemType.ParticleDisruptor
+        ];
+        
         public override void OnEnabled()
         {
             Respawn.PauseWaves();
             Round.IsLocked = true;
 
+            Warhead.Starting += OnStarting;
             Warhead.Detonating += OnDetonating;
             Warhead.Stopping += OnStopping;
 
@@ -90,6 +100,7 @@ namespace RGM.Modes
 
         public override void OnDisabled()
         {
+            Warhead.Starting -= OnStarting;
             Warhead.Detonating -= OnDetonating;
             Warhead.Stopping -= OnStopping;
 
@@ -142,21 +153,26 @@ namespace RGM.Modes
                         player.Role.Set(RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                         player.ClearInventory();
                         foreach (var heroitems in HeroItem) player.AddItem(heroitems);
+                        if (Random.Range(1, 101) <= 10) player.AddItem(SpecialItem.GetRandomValue());
                         player.AddItem(ItemType.Ammo762x39, 30);
+                        player.AddItem(ItemType.Ammo9x19, 8);
 
                         player.MaxHealth += 100;
                         player.Health = player.MaxHealth;
                         player.EnableEffect(EffectType.MovementBoost, 10);
                         player.EnableEffect(EffectType.Lightweight, 10);
                         player.EnableEffect(EffectType.Scp1344);
-                        player.Scale = new Vector3(0.92f, 0.92f, 0.92f);
+                        player.EnableEffect(EffectType.Scp1853);
+                        player.Scale = new Vector3(0.9f, 0.9f, 0.9f);
                     }
                     else
                     {
                         player.Role.Set(RoleTypeId.FacilityGuard, RoleSpawnFlags.None);
                         player.ClearInventory();
                         foreach (var humanitems in HumanItem) player.AddItem(humanitems);
+                        if (Random.Range(1, 101) <= 10) player.AddItem(SpecialItem.GetRandomValue());
                         player.AddItem(ItemType.Ammo556x45, 15);
+                        player.AddItem(ItemType.Ammo9x19, 8);
                     }
                 }
                 catch (Exception ex)
@@ -211,7 +227,7 @@ namespace RGM.Modes
             }
         }
 
-        private void OnDetonating(DetonatingEventArgs ev)
+        private static void OnDetonating(DetonatingEventArgs ev)
         {
             var door = Door.Get(DoorType.NukeSurface);
 
@@ -233,12 +249,12 @@ namespace RGM.Modes
                 if (_hostZombies.Contains(ev.Player))
                 {
                     ev.Player.MaxHealth = 666;
-                    ev.Player.MaxHumeShield = 166;
+                    ev.Player.MaxHumeShield = 222;
                     ev.Player.Health = ev.Player.MaxHealth;
                     ev.Player.HumeShield = ev.Player.MaxHumeShield;
                     ev.Player.AddEffect(EffectType.MovementBoost, 5);
                     ev.Player.AddEffect(EffectType.Lightweight, 10);
-                    ev.Player.Scale = new Vector3(0.9f, 0.9f, 0.9f);
+                    ev.Player.Scale = new Vector3(0.86f, 0.86f, 0.86f);
                     ev.Player.IsBypassModeEnabled = true;
                 }
 
@@ -273,8 +289,8 @@ namespace RGM.Modes
             if (!_isHumanEnd)
             {
                 ev.Player.Role.Set(RoleTypeId.Scp0492);
-                ev.Player.MaxHealth = 444;
-                ev.Player.MaxHumeShield = 111;
+                ev.Player.MaxHealth = 456;
+                ev.Player.MaxHumeShield = 152;
                 ev.Player.Health = ev.Player.MaxHealth;
                 ev.Player.HumeShield = ev.Player.MaxHumeShield;
 
@@ -308,6 +324,12 @@ namespace RGM.Modes
                 ev.DamageHandler.Damage += 30;
         }
 
+        private static void OnStarting(StartingEventArgs ev)
+        {
+            ev.IsAllowed = false;
+            Timing.CallDelayed(180f, () => ev.IsAllowed = true);
+        }
+        
         private static void OnStopping(StoppingEventArgs ev)
         {
             if (ev.Player.Role != RoleTypeId.Scp0492 || ev.Player.IsNPC) return;
