@@ -2,7 +2,7 @@
 using Exiled.API.Features.Roles;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
 [TFTAbility("과부화", "1분 동안 전력이 무제한이 됩니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Once, TFTAbilityType.Overload, "🔮")]
 public class Overload : TFTAbility
@@ -23,9 +23,5 @@ public class Overload : TFTAbility
         }
 
         Timing.RunCoroutine(_overload());
-    }
-
-    public override void OnDisabled()
-    {
     }
 }

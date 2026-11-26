@@ -3,9 +3,10 @@ using System.Linq;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 
-namespace DAONTFT.Core.TFT.Safe.Human;
+namespace RGM.Modes.Lock.TFT.Safe.Human;
 
-[TFTAbility("슬쩍하기", "무작위 유저가 가진 아이템을 하나 복사하여 획득합니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.RemoteSteal)]
+[TFTAbility("슬쩍하기", "무작위 유저가 가진 아이템을 하나 복사하여 획득합니다.", 
+    TFTAbilityLevel.Safe, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.RemoteSteal)]
 public class RemoteSteal : TFTAbility
 {
     public override void OnEnabled()
@@ -24,9 +25,5 @@ public class RemoteSteal : TFTAbility
             items.Add(ItemType.DebugRagdollMover);
 
         Owner.AddItem(items.GetRandomValue());
-    }
-
-    public override void OnDisabled()
-    {
     }
 }

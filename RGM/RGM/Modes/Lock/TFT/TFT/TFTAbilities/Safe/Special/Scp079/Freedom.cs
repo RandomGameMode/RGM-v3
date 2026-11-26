@@ -3,7 +3,7 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
 [TFTAbility("자유", "이미 작동된 발전기를 제외한 나머지 발전기들은 2분 간 잠깁니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Once, TFTAbilityType.Freedom, "🔒")]
 public class Freedom : TFTAbility
@@ -25,9 +25,5 @@ public class Freedom : TFTAbility
         }
 
         Timing.RunCoroutine(enumerator());
-    }
-
-    public override void OnDisabled()
-    {
     }
 }

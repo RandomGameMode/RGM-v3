@@ -2,7 +2,7 @@
 using Exiled.Events.EventArgs.Item;
 using Exiled.Events.EventArgs.Player;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("무한 탄환", "탄약이 무제한이 되며, 탄약을 소모하는 무기의 최종 데미지가 30% 증가합니다.",
     TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.InfiniteAmmo, "❓")]

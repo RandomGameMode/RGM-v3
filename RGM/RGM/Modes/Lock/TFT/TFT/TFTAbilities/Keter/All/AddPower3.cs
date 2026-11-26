@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using MEC;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.All;
+namespace RGM.Modes.Lock.TFT.Keter.All;
 
-[TFTAbility("단련 · 통달", "피해 증폭이 50% 증가되고, 일정 확률로 치명타가 발생합니다.", 
+[TFTAbility("단련 · 통달", "피해 증폭이 60% 증가되고, 일정 확률로 치명타가 발생합니다.", 
     TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.AddPower3, "💪")]
 public class AddPower3 : TFTAbility
 {
@@ -29,7 +29,7 @@ public class AddPower3 : TFTAbility
 
         var chance = Random.Range(1, 101);
         
-        ev.DamageHandler.Damage *= chance < 50 ? 1.5f : Mathf.Pow(1.5f , 2);
+        ev.DamageHandler.Damage *= chance < 50 ? 1.6f : Mathf.Pow(1.5f , 2);
         
         if (chance < 50) return;
         ev.Attacker.ShowHitMarker(1.5f);

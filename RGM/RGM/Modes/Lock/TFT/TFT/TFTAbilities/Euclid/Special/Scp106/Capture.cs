@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Features.Roles;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp106;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp106;
 
 [TFTAbility("잡았다 요놈", "포착ㅣ능력의 쿨타임이 25% 감소합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp106, TFTAbilityPoint.Once, TFTAbilityType.Capture, "📷")]
 public class Capture : TFTAbility
@@ -11,9 +11,5 @@ public class Capture : TFTAbility
         {
             scp106.CaptureCooldown *= 0.75f;
         }
-    }
-
-    public override void OnDisabled()
-    {
     }
 }

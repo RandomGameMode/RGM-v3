@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using CommandSystem;
-using DAONTFT.Core.TFT;
 using Exiled.API.Features;
+using RGM.Modes.Lock.TFT;
 
-namespace DAONTFT.Core.Commands.ClientCommands.basicfeatures;
+namespace RGM.Modes.Lock.TFT.Commands.ClientCommands.basicfeatures;
 
 public class RerollTFTFirst : ICommand
 {

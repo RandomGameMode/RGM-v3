@@ -2,36 +2,51 @@
 using MEC;
 using System.Collections.Generic;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
-[TFTAbility("무기고+", "1분 뒤 특수 무기(제일버드, 입자분열기) 중 하나를 얻습니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.Armory2, "📦")]
+[TFTAbility("무기고+", "30초마다 고가치 아이템을 얻습니다.", 
+    TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.Armory2, "📦")]
 public class Armory2 : TFTAbility
 {
-    CoroutineHandle _waiting;
-
+    private readonly List<ItemType> _highvalueitems =
+    [
+        ItemType.ParticleDisruptor,
+        ItemType.Jailbird,
+        ItemType.MicroHID,
+        ItemType.SCP1509,
+        ItemType.SCP1853,
+        ItemType.AntiSCP207,
+        ItemType.SCP268,
+        ItemType.SCP500,
+        ItemType.KeycardO5,
+        ItemType.SCP1344,
+        ItemType.GunLogicer,
+        ItemType.GunFRMG0,
+        ItemType.ArmorHeavy
+    ];   
+    
+    private CoroutineHandle _randomitem;
+    
     public override void OnEnabled()
     {
-        _waiting = Timing.RunCoroutine(waiting());
+        _randomitem = Timing.RunCoroutine(RandomItem());
     }
 
     public override void OnDisabled()
     {
-        Timing.KillCoroutines(_waiting);
+        Timing.KillCoroutines(_randomitem);
     }
-
-    IEnumerator<float> waiting()
+    
+    private IEnumerator<float> RandomItem()
     {
-        Timing.CallDelayed(60, () =>
+        while (Owner.IsAlive)
         {
-            List<ItemType> items = new()
+            Owner.AddItem(_highvalueitems.GetRandomValue());
+            for (int i = 30; i > 0; i--)
             {
-                ItemType.ParticleDisruptor,
-                ItemType.Jailbird
-            };
-
-            Owner.AddItem(items.GetRandomValue());
-        });
-
-        yield break;
+                Data.Description = $"다음 아이템 획득까지: {i}초";
+                yield return Timing.WaitForSeconds(1f);
+            }
+        }
     }
 }

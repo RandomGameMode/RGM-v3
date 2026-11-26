@@ -2,9 +2,9 @@
 using Exiled.API.Features.Roles;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
-[TFTAbility("발전기Ⅰ", "초당 전력이 0.3만큼 충전됩니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.Generator1, "🔌")]
+[TFTAbility("발전기Ⅰ", "초당 전력이 1만큼 충전됩니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.Generator1, "🔌")]
 public class Generator1 : TFTAbility
 {
     CoroutineHandle _generatorLoop;
@@ -24,7 +24,7 @@ public class Generator1 : TFTAbility
         {
             if (Owner.Role is Scp079Role scp079Role)
             {
-                scp079Role.Energy += 0.3f;
+                scp079Role.Energy += 1f;
             }
 
             yield return Timing.WaitForSeconds(1);

@@ -1,5 +1,4 @@
-﻿using DAONTFT.Core.TFT;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
@@ -14,6 +13,8 @@ using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using RGM.Modes.Lock.TFT.Variables;
+using RGM.Modes.Lock.TFT;
 using UnityEngine;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
@@ -86,7 +87,7 @@ public class TFT : Mode
             if (!typeof(TFTAbility).IsAssignableFrom(type))
                 continue;
 
-            DAONTFT.Core.Variables.Base.TFTAbilities.Add(abilityAttribute.Type, new TFTAbilityData
+            Base.TFTAbilities.Add(abilityAttribute.Type, new TFTAbilityData
             {
                 Type = type,
                 Name = abilityAttribute.Name,
@@ -100,16 +101,16 @@ public class TFT : Mode
         }
 
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTFirst());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.SelectTFTFirst());
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTSecond());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.SelectTFTSecond());
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTFirst());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.RerollTFTFirst());
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTSecond());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.RerollTFTSecond());
 
         foreach (var player in PlayerManager.List)
-            DAONTFT.Core.EventArgs.PlayerEvents.Verified(player);
+            Lock.TFT.EventArgs.PlayerEvents.Verified(player);
 
         TFTSetting.Init();
 
@@ -125,8 +126,8 @@ public class TFT : Mode
 
         Dictionary<Player, RoleTypeId> role = new();
 
-        var encounter = DAONTFT.Core.Variables.Base.Encounters.GetRandomValue();
-        DAONTFT.Core.Variables.Base.Encounter = encounter.Value.Item1;
+        var encounter = Base.Encounters.GetRandomValue();
+        Base.Encounter = encounter.Value.Item1;
 
         if (encounter.Value.Item1 != RoleTypeId.None)
         {
@@ -157,7 +158,7 @@ public class TFT : Mode
 
             try
             {
-                switch (DAONTFT.Core.Variables.Base.Encounter)
+                switch (Base.Encounter)
                 {
                     case RoleTypeId.ChaosRepressor:
                     {
@@ -215,7 +216,7 @@ public class TFT : Mode
          */
         int GetTime()
         {
-            return DAONTFT.Core.Variables.Base.Encounter switch
+            return Base.Encounter switch
             {
                 RoleTypeId.ClassD => 80,
                 RoleTypeId.Scientist => 60,
@@ -254,7 +255,7 @@ public class TFT : Mode
 
     private IEnumerator<float> UpgradeTimerLoop()
     {
-        while (_isUpgradeTimerReady)
+        while (_isUpgradeTimerReady && !Round.IsEnded)
         {
             yield return Timing.WaitForSeconds(1);
             DebugBroadcast($"루프 tick / 등록 타이머: {_upgradeRemainingTimes.Count}명");
@@ -324,7 +325,7 @@ public class TFT : Mode
                player.IsAlive &&
                !player.IsNPC &&
                TFTBattle.GetAbilities(player).Count() <
-               (DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
+               (Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
     }
 
     private string GetCannotReceiveReason(Player player)
@@ -338,7 +339,7 @@ public class TFT : Mode
         if (player.IsNPC)
             return "npc";
 
-        var maxAbilityCount = DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
+        var maxAbilityCount = Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
 
         if (TFTBattle.GetAbilities(player).Count >= maxAbilityCount)
             return $"max abilities ({TFTBattle.GetAbilities(player).Count}/{maxAbilityCount})";
@@ -361,7 +362,7 @@ public class TFT : Mode
 
     private void OnVerified(VerifiedEventArgs ev)
     {
-        DAONTFT.Core.EventArgs.PlayerEvents.Verified(ev.Player);
+        Lock.TFT.EventArgs.PlayerEvents.Verified(ev.Player);
         DebugBroadcast($"Verified / {ev.Player.Nickname} / ready: {_isUpgradeTimerReady} / alive: {ev.Player.IsAlive}",
             ev.Player);
 
@@ -444,8 +445,15 @@ public class TFT : Mode
         catch { }*/
     }
 
-    private static void OnRoundEnded(RoundEndedEventArgs ev)
+    private void OnRoundEnded(RoundEndedEventArgs ev)
     {
+        // 라운드 종료 시 증강 지급 타이머 및 모든 TFT 힌트 표시(증강 리스트/선택창)를 중단하여
+        // SetWinner 결과 화면이 가려지지 않도록 한다. (각 힌트 코루틴은 Round.IsEnded 를 감지해 정리됨)
+        _isUpgradeTimerReady = false;
+        Timing.KillCoroutines(_upgradeTimerLoop);
+        _upgradeRemainingTimes.Clear();
+        TFTBattle.ClearAllHints();
+
         List<Player> players = [.. PlayerManager.List.Where(x => x.IsAlive && !x.IsNPC)];
 
         switch (players.Count)

@@ -1,4 +1,4 @@
-﻿namespace DAONTFT.Core.TFT.Keter.All;
+﻿namespace RGM.Modes.Lock.TFT.Keter.All;
 
 [TFTAbility("운동 · 통달", "HP +200️p, +50% 증가 (SCP 진영 6배수, 25%로 적용)", TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Once, TFTAbilityType.AddHealth3, "❤️")]
 public class AddHealth3 : TFTAbility
@@ -11,9 +11,5 @@ public class AddHealth3 : TFTAbility
         
         Owner.MaxHealth = (Owner.MaxHealth + health) * bonus;
         Owner.Health = (Owner.Health + health) * bonus;
-    }
-    
-    public override void OnDisabled()
-    {
     }
 }

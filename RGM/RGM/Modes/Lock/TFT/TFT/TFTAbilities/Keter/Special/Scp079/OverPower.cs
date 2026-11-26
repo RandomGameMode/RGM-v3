@@ -2,9 +2,10 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp079;
 
-namespace DAONTFT.Core.TFT.Keter.Scp079;
+namespace RGM.Modes.Lock.TFT.Keter.Scp079;
 
-[TFTAbility("랜덤 함수", "정전ㅣ다른 10개의 방을 추가로 정전합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.RandomFunction, "🔗")]
+[TFTAbility("랜덤 함수", "정전ㅣ다른 10개의 방을 추가로 정전합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079,
+    TFTAbilityPoint.Continuous, TFTAbilityType.RandomFunction, "🔗")]
 public class RandomFunction : TFTAbility
 {
     public override void OnEnabled()
@@ -17,14 +18,14 @@ public class RandomFunction : TFTAbility
         Exiled.Events.Handlers.Scp079.RoomBlackout -= OnRoomBlackout;
     }
 
-    public void OnRoomBlackout(RoomBlackoutEventArgs ev)
+    private void OnRoomBlackout(RoomBlackoutEventArgs ev)
     {
         if (ev.Player != Owner)
             return;
 
-        for (int i = 1; i < 11; i++)
+        for (var i = 1; i < 11; i++)
         {
-            Room SelectedRoom = Room.List.GetRandomValue();
+            var SelectedRoom = Room.List.GetRandomValue();
 
             SelectedRoom.TurnOffLights(10);
         }

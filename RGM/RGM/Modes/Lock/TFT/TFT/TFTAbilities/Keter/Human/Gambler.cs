@@ -1,10 +1,9 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("도박꾼", "능력 키(ALT)를 누르면 들고 있는 아이템이 랜덤하게 변경됩니다. (1% 확률로 모든 아이템을 잃습니다.)", TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.ALT, TFTAbilityType.Gambler, "🎰")]
 public class Gambler : TFTAbility
@@ -19,7 +18,7 @@ public class Gambler : TFTAbility
         Exiled.Events.Handlers.Player.TogglingNoClip -= OnTogglingNoClip;
     }
 
-    public void OnTogglingNoClip(TogglingNoClipEventArgs ev)
+    private void OnTogglingNoClip(TogglingNoClipEventArgs ev)
     {
         if (Owner != ev.Player || ev.Player.CurrentItem == null) return;
         ev.Player.RemoveHeldItem();

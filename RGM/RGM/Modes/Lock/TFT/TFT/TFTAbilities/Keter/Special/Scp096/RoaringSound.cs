@@ -6,7 +6,7 @@ using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DAONTFT.Core.TFT.Keter.Scp096;
+namespace RGM.Modes.Lock.TFT.Keter.Scp096;
 
 [TFTAbility("괴성", "능력 키(ALT)를 눌러 모든 적들을 잠시 패닉 상태에 빠지게 만듭니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp096, TFTAbilityPoint.ALT, TFTAbilityType.RoaringSound, "😱")]
 public class RoaringSound : TFTAbility

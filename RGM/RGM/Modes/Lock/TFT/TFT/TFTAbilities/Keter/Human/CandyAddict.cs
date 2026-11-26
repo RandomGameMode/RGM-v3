@@ -4,7 +4,7 @@ using MEC;
 using RGM.API.Features;
 using System.Collections.Generic;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("마약 중독자", "12초마다 랜덤한 사탕을 획득합니다.", 
     TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.CandyAddict, "🍭")]
@@ -27,10 +27,9 @@ public class CandyAddict : TFTAbility
     {
         Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
-        while (true)
+        while (Owner.IsAlive)
         {
-            if (Owner.IsAlive)
-                Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
+            Owner.AddCandy(Tools.EnumToList<CandyKindID>().GetRandomValue());
 
             for (int i = 12; i > 0; i--)
             {

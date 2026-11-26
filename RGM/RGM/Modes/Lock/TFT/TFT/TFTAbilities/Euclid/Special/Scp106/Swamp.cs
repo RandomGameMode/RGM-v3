@@ -6,7 +6,7 @@ using MEC;
 using UnityEngine;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp106;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp106;
 
 [TFTAbility("끈적이는 늪", "가까이 있는 인간들의 이동 속도를 느리게 만듭니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp106, TFTAbilityPoint.Once, TFTAbilityType.Swamp, "💧")]
 public class Swamp : TFTAbility

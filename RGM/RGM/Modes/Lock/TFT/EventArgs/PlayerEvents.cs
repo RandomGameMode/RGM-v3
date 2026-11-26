@@ -1,12 +1,11 @@
-﻿using DAONTFT.Core.IEnumerators;
-using DAONTFT.Core.TFT;
+﻿using RGM.Modes.Lock.TFT.IEnumerators;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using System.Collections.Generic;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 
-namespace DAONTFT.Core.EventArgs
+namespace RGM.Modes.Lock.TFT.EventArgs
 {
     public static class PlayerEvents
     {

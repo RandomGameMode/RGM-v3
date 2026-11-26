@@ -2,7 +2,7 @@
 using MEC;
 using PlayerRoles;
 
-namespace DAONTFT.Core.TFT.Keter.Scp049;
+namespace RGM.Modes.Lock.TFT.Keter.Scp049;
 
 [TFTAbility("명의", "적을 처치하면 그 대상을 049-2로 만들고, 대상의 최대 HP를 50% 증가시킵니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp049, TFTAbilityPoint.Continuous, TFTAbilityType.BestDoctor, "💉")]
 public class BestDoctor : TFTAbility

@@ -648,8 +648,7 @@ public class ABattle : Mode
             foreach (var player in PlayerWorkstations.Keys)
             {
                 PlayerWorkstations[player].Clear();
-                if (//player != null && // 이렇게 하고 문제 없으면 완전 제거
-                    player.IsConnected)
+                if (player.IsConnected)
                     player.AddBroadcast(10,
                         $"<b><size=25>캐시 청소가 완료되었습니다. 이전에 방문한 워크스테이션에서 능력을 다시 얻을 수 있습니다.</size></b>");
             }

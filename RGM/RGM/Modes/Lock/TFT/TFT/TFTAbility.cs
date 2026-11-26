@@ -3,15 +3,15 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 
-namespace DAONTFT.Core.TFT;
+namespace RGM.Modes.Lock.TFT;
 
 public abstract class TFTAbility
 {
-    public abstract void OnEnabled();
+    public virtual void OnEnabled() { } // 뭐... 여기에 이상한거 넣으면 호출되니... 하면.. 안되겠... 안되겠죠...?
 
-    public abstract void OnDisabled();
+    public virtual void OnDisabled() { } // 뭐... 여기에 이상한거 넣으면 호출되니... 하면.. 안되겠... 안되겠죠...?
 
     public TFTAbilityData Data { get; set; }
     public Player Owner { get; set; }
@@ -35,7 +35,14 @@ public class TFTAbilityData
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public class TFTAbilityAttribute(string name, string description, TFTAbilityLevel level, TFTAbilityCategory category, TFTAbilityPoint point, TFTAbilityType type, string emoji = "🎲") : Attribute
+public class TFTAbilityAttribute(
+    string name,
+    string description,
+    TFTAbilityLevel level,
+    TFTAbilityCategory category,
+    TFTAbilityPoint point,
+    TFTAbilityType type,
+    string emoji = "🎲") : Attribute
 {
     public string Name { get; } = name;
     public string Description { get; } = description;
@@ -90,11 +97,16 @@ public static class PlayerExtensions
 
         void add(TFTAbilityCategory TFTAbilityCategory)
         {
-            foreach (var TFTAbility in TFTAbilities.Values.Where(x => x.Level == TFTAbilityLevel && x.Category == TFTAbilityCategory))
+            foreach (var TFTAbility in TFTAbilities.Values.Where(x =>
+                         x.Level == TFTAbilityLevel && x.Category == TFTAbilityCategory))
             {
-                if (player.GetAbilities().Count(x => x.Data != null && x.Data.Type == TFTAbility.Type) > 0 || // 중복되는 증강은 얻을 수 없습니다.
-                    (TFTAbility.Point == TFTAbilityPoint.ALT && player.GetAbilities().Count(x => x.Data != null && x.Data.Point == TFTAbilityPoint.ALT) > 0) || // ALT를 사용하는 증강은 중복이 불가합니다.
-                    (Selections.ContainsKey(player) && Selections[player].ContainsKey(TFTAbility.TFTAbilityType))) // 선택지에 있는 증강은 나타나지 않습니다.
+                if (player.GetAbilities().Count(x => x.Data != null && x.Data.Type == TFTAbility.Type) >
+                    0 || // 중복되는 증강은 얻을 수 없습니다.
+                    (TFTAbility.Point == TFTAbilityPoint.ALT && player.GetAbilities()
+                            .Count(x => x.Data != null && x.Data.Point == TFTAbilityPoint.ALT) >
+                        0) || // ALT를 사용하는 증강은 중복이 불가합니다.
+                    (Selections.ContainsKey(player) &&
+                     Selections[player].ContainsKey(TFTAbility.TFTAbilityType))) // 선택지에 있는 증강은 나타나지 않습니다.
                     continue;
 
                 abilities.Add(TFTAbility, 1);
@@ -111,36 +123,55 @@ public static class PlayerExtensions
         {
             add(TFTAbilityCategory.All);
 
-            if (player.IsScp)
-            {
-                add(TFTAbilityCategory.Scp);
-            }
-            else
-            {
-                add(TFTAbilityCategory.Human);
-            }
+            add(player.IsScp ? TFTAbilityCategory.Scp : TFTAbilityCategory.Human);
 
             switch (player.Role.Type)
             {
-                case RoleTypeId.ClassD: add(TFTAbilityCategory.ClassD); return abilities;
-                case RoleTypeId.Scientist: add(TFTAbilityCategory.Scientist); return abilities;
-                case RoleTypeId.FacilityGuard: add(TFTAbilityCategory.FacilityGuard); return abilities;
+                case RoleTypeId.ClassD:
+                    add(TFTAbilityCategory.ClassD);
+                    return abilities;
+                case RoleTypeId.Scientist:
+                    add(TFTAbilityCategory.Scientist);
+                    return abilities;
+                case RoleTypeId.FacilityGuard:
+                    add(TFTAbilityCategory.FacilityGuard);
+                    return abilities;
                 case RoleTypeId.NtfPrivate:
                 case RoleTypeId.NtfSergeant:
                 case RoleTypeId.NtfSpecialist:
-                case RoleTypeId.NtfCaptain: add(TFTAbilityCategory.NTF); return abilities;
+                case RoleTypeId.NtfCaptain:
+                    add(TFTAbilityCategory.NTF);
+                    return abilities;
                 case RoleTypeId.ChaosConscript:
                 case RoleTypeId.ChaosMarauder:
                 case RoleTypeId.ChaosRepressor:
-                case RoleTypeId.ChaosRifleman: add(TFTAbilityCategory.CHI); return abilities;
-                case RoleTypeId.Tutorial: add(TFTAbilityCategory.Tutorial); return abilities;
-                case RoleTypeId.Scp173: add(TFTAbilityCategory.Scp173); return abilities;
-                case RoleTypeId.Scp049: add(TFTAbilityCategory.Scp049); return abilities;
-                case RoleTypeId.Scp0492: add(TFTAbilityCategory.Scp0492); return abilities;
-                case RoleTypeId.Scp096: add(TFTAbilityCategory.Scp096); return abilities;
-                case RoleTypeId.Scp106: add(TFTAbilityCategory.Scp106); return abilities;
-                case RoleTypeId.Scp939: add(TFTAbilityCategory.Scp939); return abilities;
-                case RoleTypeId.Scp3114: add(TFTAbilityCategory.Scp3114); return abilities;
+                case RoleTypeId.ChaosRifleman:
+                    add(TFTAbilityCategory.CHI);
+                    return abilities;
+                case RoleTypeId.Tutorial:
+                    add(TFTAbilityCategory.Tutorial);
+                    return abilities;
+                case RoleTypeId.Scp173:
+                    add(TFTAbilityCategory.Scp173);
+                    return abilities;
+                case RoleTypeId.Scp049:
+                    add(TFTAbilityCategory.Scp049);
+                    return abilities;
+                case RoleTypeId.Scp0492:
+                    add(TFTAbilityCategory.Scp0492);
+                    return abilities;
+                case RoleTypeId.Scp096:
+                    add(TFTAbilityCategory.Scp096);
+                    return abilities;
+                case RoleTypeId.Scp106:
+                    add(TFTAbilityCategory.Scp106);
+                    return abilities;
+                case RoleTypeId.Scp939:
+                    add(TFTAbilityCategory.Scp939);
+                    return abilities;
+                case RoleTypeId.Scp3114:
+                    add(TFTAbilityCategory.Scp3114);
+                    return abilities;
                 default: return abilities;
             }
         }
@@ -193,7 +224,7 @@ public enum TFTAbilityPoint
     None,
     Once, // 일회성 능력
     Continuous, // 지속적인 적용되는 능력
-    ALT, // [ALT] 키를 눌렀을 때 발동되는 능력 (쿨타운 있음)
+    ALT // [ALT] 키를 눌렀을 때 발동되는 능력 (쿨타운 있음)
 }
 
 public enum TFTAbilityType
@@ -302,7 +333,7 @@ public enum TFTAbilityType
     Gambler, // 도박꾼
     Armory2, // 무기고+
     Adventure, // 고귀한 모험
-    BULLSEYETFT, // 불스아이
+    Bullseye, // 불스아이
     InfiniteAmmo, // 판도라의 인벤토리
     Miniaturization3, // 소인화 · 통달
     // Scp

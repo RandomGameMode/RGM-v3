@@ -4,7 +4,7 @@ using Exiled.API.Enums;
 using MEC;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Keter.All;
+namespace RGM.Modes.Lock.TFT.Keter.All;
 
 [TFTAbility("유령화", "문을 뚫고 다닐 수 있으며, 투명도가 45% 증가합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.Ghost, "👻")]
 public class Ghost : TFTAbility

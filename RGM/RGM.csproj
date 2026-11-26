@@ -596,6 +596,7 @@
     <Compile Include="RGM\Modes\Lock\TFT\Commands\RemoteadminCommands\adminfeatures\StartSelect.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\EventArgs\PlayerEvents.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\IEnumerators\Base.cs" />
+    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\Fortunate.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Miniaturization2.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Miniaturization3.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTInputSetting.cs" />
@@ -652,7 +653,6 @@
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddQuick3.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\AddSpeed3.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Diver.cs" />
-    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Fortunate.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\All\Ghost.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Adventure.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Armory2.cs" />

@@ -4,7 +4,7 @@ using LabApi.Features.Wrappers;
 using MEC;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
 [TFTAbility("폭격", "핑ㅣ해당 위치에 고폭 수류탄을 투척합니다. (1회)", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Once, TFTAbilityType.AirStrike, "💣")]
 public class AirStrike : TFTAbility
@@ -19,7 +19,7 @@ public class AirStrike : TFTAbility
         Exiled.Events.Handlers.Scp079.Pinging -= OnPinging;
     }
 
-    public void OnPinging(PingingEventArgs ev)
+    private void OnPinging(PingingEventArgs ev)
     {
         if (ev.Player != Owner)
             return;
@@ -36,10 +36,7 @@ public class AirStrike : TFTAbility
             light.Rotation = Quaternion.Euler(0, 0, 0);
 
 
-            Timing.CallDelayed(3, () =>
-            {
-                light.Destroy();
-            });
+            Timing.CallDelayed(3, light.Destroy);
 
             OnDisabled();
         });
