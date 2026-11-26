@@ -12,11 +12,10 @@ namespace RGM.Modes.Abilities.Mythic;
 
 [Ability("워 머신", """
                  발사할 때마다 최종 데미지가 15% 감소된 고폭 수류탄을 투하하는, 탄약이 무제한인 Com15를 얻습니다.
-                 능력 획득 시 자신이 받는 폭발 데미지가 98% 감소합니다.
+                 능력 획득 시 폭발 데미지에 면역이 됩니다.
                  """, AbilityCategory.Mythic, AbilityType.MYTHIC_BOMBGUN)]
 public class BombGun : Ability
 {
-    // private const float OwnerExplosionDamageMultiplier = 0.02f;
     private const float WarMachineGrenadeDamageMultiplier = 0.85f;
 
     private ushort _itemSerial;
@@ -43,7 +42,7 @@ public class BombGun : Ability
         if (ev.Item?.Serial != _itemSerial)
             return;
         
-        ev.Player.AddHint("워 머신", $"<b><color={ABattle.RatingColor["신화"]}>워 머신</color></b> 능력이 있는 <b>리볼버</b>입니다!");
+        ev.Player.AddHint("워 머신", $"<b><color={ABattle.RatingColor["신화"]}>워 머신</color></b> 능력이 있는 <b>Com15</b>입니다!");
     }
 
     private void OnShooting(ShootingEventArgs ev)

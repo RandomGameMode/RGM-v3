@@ -36,7 +36,7 @@ public class Joker : Ability
         ev.Player.AddEffect(EffectType.MovementBoost,40,10);
         ev.Player.ApplyGodMode(10);
 
-        ev.Player.MaxHealth *= 3;
+        ev.Player.MaxHealth *= 4;
         ev.Player.Heal(ev.Player.MaxHealth);
         
         for (int i = 0; i < 5; i++)
