@@ -19,7 +19,7 @@ public class Adventure : TFTAbility
     private ushort _itemCount;
     private float _totalHealth;
     private float _totalDamage;
-    private float _totalSpeed;
+    private ushort _totalSpeed;
 
     private readonly List<ItemType> _items =
     [
@@ -91,7 +91,7 @@ public class Adventure : TFTAbility
                 break;
 
             case 4:
-                var addSpeed = Random.Range(1, 101) <= 40 ? Random.Range(1, 101) <= 25 ? 20 : 12 : 5;
+                var addSpeed = Convert.ToUInt16(Random.Range(1, 101) <= 40 ? Random.Range(1, 101) <= 25 ? 20 : 12 : 5);
                 Owner.AddEffect(EffectType.MovementBoost, addSpeed);
                 _totalSpeed += addSpeed;
                 break;
