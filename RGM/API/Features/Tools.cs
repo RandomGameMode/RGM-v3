@@ -1079,7 +1079,7 @@ namespace RGM.API.Features
 
         public static IEnumerator<float> DoRocket(Player attacker, Player player, float speed = 1f)
         {
-            float elapsed = 0f;
+            var elapsed = 0f;
             while (player.Role != RoleTypeId.Spectator)
             {
                 player.Position += Vector3.up * speed;
@@ -1095,7 +1095,7 @@ namespace RGM.API.Features
                     // 3초가 지나도 죽지 않았다면 강제로 관전자로 전환
                     const float damageInterval = 0.1f;
                     const float forceSpectatorDelay = 3f;
-                    float attackElapsed = 0f;
+                    var attackElapsed = 0f;
 
                     while (player.IsAlive)
                     {
