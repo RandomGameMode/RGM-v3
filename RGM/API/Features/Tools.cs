@@ -1079,7 +1079,7 @@ namespace RGM.API.Features
 
         public static IEnumerator<float> DoRocket(Player attacker, Player player, float speed = 1f)
         {
-            float elapsed = 0f;
+            var elapsed = 0f;
             while (player.Role != RoleTypeId.Spectator)
             {
                 player.Position += Vector3.up * speed;
@@ -1090,11 +1090,25 @@ namespace RGM.API.Features
                     grenade.FuseTime = 0.2f;
                     grenade.SpawnActive(player.Position, attacker);
                     GodModePlayers.Remove(player);
+
+                    // 첫 공격 개시 이후 지속적으로 치명 피해를 적용하고,
+                    // 3초가 지나도 죽지 않았다면 강제로 관전자로 전환
+                    const float damageInterval = 0.1f;
+                    const float forceSpectatorDelay = 3f;
+                    var attackElapsed = 0f;
+
                     while (player.IsAlive)
                     {
+                        if (attackElapsed >= forceSpectatorDelay)
+                        {
+                            player.Role.Set(RoleTypeId.Spectator);
+                            break;
+                        }
+
                         ApplyLethalDamage.Apply(attacker, player);
-                        player.Role.Set(RoleTypeId.Spectator);
-                        yield return Timing.WaitForSeconds(0.1f);
+
+                        yield return Timing.WaitForSeconds(damageInterval);
+                        attackElapsed += damageInterval;
                     }
 
                     yield break;
