@@ -1,11 +1,11 @@
+using System.Collections.Generic;
 using DAONTFT.Core.TFT;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using PlayerRoles;
-using System.Collections.Generic;
 using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 
-namespace DAONTFT.Core.Variables
+namespace RGM.Modes.Lock.TFT.Variables
 {
     public static class Base
     {

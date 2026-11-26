@@ -14,6 +14,7 @@ using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using RGM.Modes.Lock.TFT.Variables;
 using UnityEngine;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
@@ -86,7 +87,7 @@ public class TFT : Mode
             if (!typeof(TFTAbility).IsAssignableFrom(type))
                 continue;
 
-            DAONTFT.Core.Variables.Base.TFTAbilities.Add(abilityAttribute.Type, new TFTAbilityData
+            Base.TFTAbilities.Add(abilityAttribute.Type, new TFTAbilityData
             {
                 Type = type,
                 Name = abilityAttribute.Name,
@@ -125,8 +126,8 @@ public class TFT : Mode
 
         Dictionary<Player, RoleTypeId> role = new();
 
-        var encounter = DAONTFT.Core.Variables.Base.Encounters.GetRandomValue();
-        DAONTFT.Core.Variables.Base.Encounter = encounter.Value.Item1;
+        var encounter = Base.Encounters.GetRandomValue();
+        Base.Encounter = encounter.Value.Item1;
 
         if (encounter.Value.Item1 != RoleTypeId.None)
         {
@@ -157,7 +158,7 @@ public class TFT : Mode
 
             try
             {
-                switch (DAONTFT.Core.Variables.Base.Encounter)
+                switch (Base.Encounter)
                 {
                     case RoleTypeId.ChaosRepressor:
                     {
@@ -215,7 +216,7 @@ public class TFT : Mode
          */
         int GetTime()
         {
-            return DAONTFT.Core.Variables.Base.Encounter switch
+            return Base.Encounter switch
             {
                 RoleTypeId.ClassD => 80,
                 RoleTypeId.Scientist => 60,
@@ -324,7 +325,7 @@ public class TFT : Mode
                player.IsAlive &&
                !player.IsNPC &&
                TFTBattle.GetAbilities(player).Count() <
-               (DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
+               (Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
     }
 
     private string GetCannotReceiveReason(Player player)
@@ -338,7 +339,7 @@ public class TFT : Mode
         if (player.IsNPC)
             return "npc";
 
-        var maxAbilityCount = DAONTFT.Core.Variables.Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
+        var maxAbilityCount = Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
 
         if (TFTBattle.GetAbilities(player).Count >= maxAbilityCount)
             return $"max abilities ({TFTBattle.GetAbilities(player).Count}/{maxAbilityCount})";

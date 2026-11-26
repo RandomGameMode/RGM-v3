@@ -152,7 +152,7 @@ namespace RGM.Modes
                     {
                         player.Role.Set(RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                         player.ClearInventory();
-                        foreach (var heroitems in HeroItem) player.AddItem(heroitems);
+                        foreach (var heroItems in HeroItem) player.AddItem(heroItems);
                         if (Random.Range(1, 101) <= 10) player.AddItem(SpecialItem.GetRandomValue());
                         player.AddItem(ItemType.Ammo762x39, 30);
                         player.AddItem(ItemType.Ammo9x19, 8);
@@ -169,7 +169,7 @@ namespace RGM.Modes
                     {
                         player.Role.Set(RoleTypeId.FacilityGuard, RoleSpawnFlags.None);
                         player.ClearInventory();
-                        foreach (var humanitems in HumanItem) player.AddItem(humanitems);
+                        foreach (var humanItems in HumanItem) player.AddItem(humanItems);
                         if (Random.Range(1, 101) <= 10) player.AddItem(SpecialItem.GetRandomValue());
                         player.AddItem(ItemType.Ammo556x45, 15);
                         player.AddItem(ItemType.Ammo9x19, 8);

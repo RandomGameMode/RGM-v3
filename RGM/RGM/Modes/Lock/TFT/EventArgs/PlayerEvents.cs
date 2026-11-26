@@ -4,7 +4,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using System.Collections.Generic;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 
 namespace DAONTFT.Core.EventArgs
 {

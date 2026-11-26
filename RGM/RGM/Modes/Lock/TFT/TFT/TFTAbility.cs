@@ -3,7 +3,7 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 
 namespace DAONTFT.Core.TFT;
 

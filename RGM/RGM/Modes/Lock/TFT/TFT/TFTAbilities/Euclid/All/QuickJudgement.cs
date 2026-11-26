@@ -1,7 +1,5 @@
 ﻿using Exiled.Events.EventArgs.Player;
-using MEC;
 using RGM.API.Features;
-using static DAONTFT.Core.Variables.Base;
 
 namespace DAONTFT.Core.TFT.Euclid.All;
 

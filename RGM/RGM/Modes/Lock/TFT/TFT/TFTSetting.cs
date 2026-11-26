@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Features.Core.UserSettings;
 using UserSettings.ServerSpecific;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 
 namespace DAONTFT.Core.TFT
 {

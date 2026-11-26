@@ -1,4 +1,5 @@
 using Exiled.API.Features;
+using RGM.Modes.Lock.TFT.Variables;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
 
@@ -16,7 +17,7 @@ namespace DAONTFT.Core.TFT
             if (CurrentMode != RGM.ModeType.TFT)
                 return;
 
-            if (!Variables.Base.IsSelecting.TryGetValue(player, out bool isSelecting) || !isSelecting)
+            if (!Base.IsSelecting.TryGetValue(player, out bool isSelecting) || !isSelecting)
                 return;
 
             if (setting.SettingId == 12057)

@@ -9,7 +9,7 @@ using RGM.API.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 using static RGM.Variables.Variable;
 using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 using Random = UnityEngine.Random;

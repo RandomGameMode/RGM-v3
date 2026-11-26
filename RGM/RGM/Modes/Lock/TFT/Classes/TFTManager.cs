@@ -4,7 +4,7 @@ using HintServiceMeow.Core.Enum;
 using RGM.API.Features;
 using System.Collections.Generic;
 using System.Linq;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 
 namespace DAONTFT.Core.Classes

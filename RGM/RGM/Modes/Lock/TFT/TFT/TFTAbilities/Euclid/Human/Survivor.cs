@@ -3,7 +3,7 @@ using Exiled.Events.EventArgs.Player;
 using MEC;
 using System.Collections.Generic;
 using RGM.API.DataBases;
-using static DAONTFT.Core.Variables.Base;
+using static RGM.Modes.Lock.TFT.Variables.Base;
 using RGM.API.Features;
 
 namespace DAONTFT.Core.TFT.Euclid.Human;
