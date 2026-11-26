@@ -31,7 +31,6 @@ namespace RGM.Variables
         public static readonly byte StartupRandom = Convert.ToByte(Random.Range(1, 31));
         public static string WinMessage = "";
         public static bool FreezeGameStart = false;
-        public static bool ShootingTargetSignal = false;
         public static bool IsBugVoteProcessing = false;
         public static bool IsUsersFileLoaded = false;
         public static bool IsWinnerSelected = false;

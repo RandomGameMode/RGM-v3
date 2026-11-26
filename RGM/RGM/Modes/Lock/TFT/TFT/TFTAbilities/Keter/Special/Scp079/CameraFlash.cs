@@ -7,11 +7,12 @@ using UnityEngine;
 
 namespace DAONTFT.Core.TFT.Keter.Scp079;
 
-[TFTAbility("카메라 플래시", "핑ㅣ해당 위치에 섬광탄을 떨굽니다. (쿨타임 24초)", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.CameraFlash, "📷")]
+[TFTAbility("카메라 플래시", "핑ㅣ해당 위치에 섬광탄을 떨굽니다. (쿨타임 24초)", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079,
+    TFTAbilityPoint.Continuous, TFTAbilityType.CameraFlash, "📷")]
 public class CameraFlash : TFTAbility
 {
-    float cooldown = 0;
-    CoroutineHandle _flashCooldown;
+    private float _cooldown;
+    private CoroutineHandle _flashCooldown;
 
     public override void OnEnabled()
     {
@@ -27,46 +28,41 @@ public class CameraFlash : TFTAbility
         Timing.KillCoroutines(_flashCooldown);
     }
 
-    IEnumerator<float> flashCooldown()
+    private IEnumerator<float> flashCooldown()
     {
         while (true)
         {
-            if (cooldown > 0)
-                cooldown--;
+            if (_cooldown > 0)
+                _cooldown--;
 
-            Data.Description = $"핑ㅣ해당 위치에 섬광탄을 떨굽니다. ({(cooldown == 0 ? "사용 가능" : $"{cooldown}초 남음")})";
+            Data.Description = $"핑ㅣ해당 위치에 섬광탄을 떨굽니다. ({(_cooldown == 0 ? "사용 가능" : $"{_cooldown}초 남음")})";
 
             yield return Timing.WaitForSeconds(1f);
         }
     }
 
-    public void OnPinging(PingingEventArgs ev)
+    private void OnPinging(PingingEventArgs ev)
     {
         if (ev.Player != Owner)
             return;
 
-        if (cooldown <= 0)
-        {
+        if (_cooldown <= 0)
             Timing.CallDelayed(0.1f, () =>
             {
                 var g = (FlashGrenade)Exiled.API.Features.Items.Item.Create(ItemType.GrenadeFlash, ev.Player);
                 g.FuseTime = 4f;
                 g.SpawnActive(ev.Position, ev.Player);
 
-                LightSourceToy light = LightSourceToy.Create(ev.Position);
+                var light = LightSourceToy.Create(ev.Position);
                 light.Position = ev.Position;
                 light.Range = 5;
                 light.Color = new Color(1, 1, 0, 1);
                 light.Rotation = Quaternion.Euler(0, 0, 0);
 
 
-                Timing.CallDelayed(5, () =>
-                {
-                    light.Destroy();
-                });
+                Timing.CallDelayed(5, light.Destroy);
 
-                cooldown = 24;
+                _cooldown = 24;
             });
-        }
     }
 }

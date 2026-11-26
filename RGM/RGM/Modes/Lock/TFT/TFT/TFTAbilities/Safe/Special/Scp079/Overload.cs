@@ -24,8 +24,4 @@ public class Overload : TFTAbility
 
         Timing.RunCoroutine(_overload());
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

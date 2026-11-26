@@ -26,8 +26,4 @@ public class Freedom : TFTAbility
 
         Timing.RunCoroutine(enumerator());
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

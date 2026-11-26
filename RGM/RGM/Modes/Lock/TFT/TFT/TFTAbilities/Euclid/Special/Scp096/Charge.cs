@@ -12,8 +12,4 @@ public class Charge : TFTAbility
             scp096.ChargeCooldown *= 0.75f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

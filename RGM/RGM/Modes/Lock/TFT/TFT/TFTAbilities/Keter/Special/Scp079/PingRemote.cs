@@ -15,7 +15,7 @@ public class PingRemote : TFTAbility
         Exiled.Events.Handlers.Scp079.Pinging -= OnPinging;
     }
 
-    public void OnPinging(PingingEventArgs ev)
+    private void OnPinging(PingingEventArgs ev)
     {
         if (ev.Player != Owner)
             return;

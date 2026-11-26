@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace RGM.Modes.Abilities.Normal;
 
-[Ability("행운", "10%p 확률로 잠긴 문 또는 락커를 열 수 있습니다.", 
+[Ability("행운", "10% 확률로 잠긴 문 또는 락커를 열 수 있습니다.", 
     AbilityCategory.Normal, AbilityType.NORMAL_LUCKY, isUnique:true)]
 public class Lucky : Ability
 {

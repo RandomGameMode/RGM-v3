@@ -12,8 +12,4 @@ public class Call : TFTAbility
             scp049.CallCooldown *= 0.7f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

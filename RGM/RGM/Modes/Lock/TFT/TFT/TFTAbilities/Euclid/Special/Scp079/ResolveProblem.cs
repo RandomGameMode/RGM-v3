@@ -20,8 +20,4 @@ public class ResolveProblem : TFTAbility
             generator.State = GeneratorState.Unlocked;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

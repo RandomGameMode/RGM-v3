@@ -10,8 +10,4 @@ public class OutSider : TFTAbility
     {
         Owner.AddEffect(EffectType.Fade, 102);
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

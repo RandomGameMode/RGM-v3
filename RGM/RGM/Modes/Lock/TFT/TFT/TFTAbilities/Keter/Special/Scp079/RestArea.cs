@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace DAONTFT.Core.TFT.Keter.Scp079;
 
-[TFTAbility("휴게소", "[경험치 획득]ㅣ생존한 SCP의 체력이 획득한 경험치의 50%만큼 회복됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.RestArea, "🛄")]
+[TFTAbility("휴게소", "[경험치 획득]ㅣ생존한 SCP의 체력이 획득한 경험치의 50%만큼 회복됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079,
+    TFTAbilityPoint.Continuous, TFTAbilityType.RestArea, "🛄")]
 public class RestArea : TFTAbility
 {
     public override void OnEnabled()
@@ -17,7 +18,7 @@ public class RestArea : TFTAbility
         Exiled.Events.Handlers.Scp079.GainingExperience -= OnGainingExperience;
     }
 
-    public void OnGainingExperience(GainingExperienceEventArgs ev)
+    private void OnGainingExperience(GainingExperienceEventArgs ev)
     {
         if (Owner != ev.Player)
             return;

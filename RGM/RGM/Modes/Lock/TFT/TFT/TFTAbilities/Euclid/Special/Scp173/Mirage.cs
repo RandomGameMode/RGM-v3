@@ -4,7 +4,8 @@ using RGM.API.Features;
 
 namespace DAONTFT.Core.TFT.Euclid.Scp173;
 
-[TFTAbility("신기루", "공격에 성공할 경우, 2초 동안 투명화 상태가 됩니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp173, TFTAbilityPoint.Continuous, TFTAbilityType.Mirage, "😧")]
+[TFTAbility("신기루", "공격에 성공할 경우, 2초 동안 투명화 상태가 됩니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp173,
+    TFTAbilityPoint.Continuous, TFTAbilityType.Mirage, "😧")]
 public class Mirage : TFTAbility
 {
     public override void OnEnabled()
@@ -17,11 +18,8 @@ public class Mirage : TFTAbility
         Exiled.Events.Handlers.Player.Died -= OnDied;
     }
 
-    void OnDied(DiedEventArgs ev)
+    private void OnDied(DiedEventArgs ev)
     {
-        if (ev.Attacker != null && ev.Attacker == Owner)
-        {
-            Owner.AddEffect(EffectType.Invisible, 1, 2);
-        }
+        if (ev.Attacker != null && ev.Attacker == Owner) Owner.AddEffect(EffectType.Invisible, 1, 2);
     }
 }

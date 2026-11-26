@@ -12,8 +12,4 @@ public class Mimicry : TFTAbility
             scp939.MimicryCooldown *= 0.25f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

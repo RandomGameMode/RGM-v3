@@ -12,8 +12,4 @@ public class AmnesticCloud : TFTAbility
             scp939.AmnesticCloudCooldown *= 0.75f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

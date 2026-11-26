@@ -9,10 +9,11 @@ using System.Linq;
 
 namespace DAONTFT.Core.TFT.Euclid.Scp;
 
-[TFTAbility("본능", "가장 가까운 인간의 위치를 확인합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp, TFTAbilityPoint.Continuous, TFTAbilityType.FindLocation, "📥")]
+[TFTAbility("본능", "가장 가까운 인간의 위치를 확인합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp, TFTAbilityPoint.Continuous,
+    TFTAbilityType.FindLocation, "📥")]
 public class FindLocation : TFTAbility
 {
-    CoroutineHandle _findLocation;
+    private CoroutineHandle _findLocation;
 
     public override void OnEnabled()
     {
@@ -24,17 +25,16 @@ public class FindLocation : TFTAbility
         Timing.KillCoroutines(_findLocation);
     }
 
-    IEnumerator<float> findLocation()
+    private IEnumerator<float> findLocation()
     {
-        string id = "FInd Location";
-        HintServiceMeow.Core.Models.Hints.Hint hint = new HintServiceMeow.Core.Models.Hints.Hint
+        var id = "FInd Location";
+        var hint = new HintServiceMeow.Core.Models.Hints.Hint
         {
-            Text = $"",
+            Text = $""
         };
 
         while (Owner.IsScp && !Round.IsEnded)
-        {
-            if (Owner.TryGetNearestPlayer(out Player player, out float radius, Player.List.Where(x => x.IsScp).ToList()))
+            if (Owner.TryGetNearestPlayer(out var player, out var radius, Player.List.Where(x => x.IsScp).ToList()))
             {
                 hint = new HintServiceMeow.Core.Models.Hints.Hint
                 {
@@ -42,7 +42,7 @@ public class FindLocation : TFTAbility
                     Id = id,
                     XCoordinate = 0,
                     YCoordinate = 900,
-                    Alignment = HintAlignment.Right,
+                    Alignment = HintAlignment.Right
                 };
 
                 Owner.AddCustomHint(hint);
@@ -55,6 +55,5 @@ public class FindLocation : TFTAbility
             {
                 yield return Timing.WaitForSeconds(1);
             }
-        }
     }
 }

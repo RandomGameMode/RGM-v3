@@ -12,8 +12,4 @@ public class Capture : TFTAbility
             scp106.CaptureCooldown *= 0.75f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

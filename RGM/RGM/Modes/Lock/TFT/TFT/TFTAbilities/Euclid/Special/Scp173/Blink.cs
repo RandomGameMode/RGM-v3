@@ -12,8 +12,4 @@ public class Blink : TFTAbility
             scp173.BlinkCooldown *= 0.75f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

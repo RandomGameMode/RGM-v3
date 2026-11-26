@@ -12,8 +12,4 @@ public class GoodSense : TFTAbility
             scp049.GoodSenseCooldown *= 0.7f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

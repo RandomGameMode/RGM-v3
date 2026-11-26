@@ -12,8 +12,4 @@ public class Disguise : TFTAbility
             scp3114.DisguiseDuration *= 1.25f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

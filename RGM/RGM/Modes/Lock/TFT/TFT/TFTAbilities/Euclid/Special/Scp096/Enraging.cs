@@ -2,7 +2,8 @@
 
 namespace DAONTFT.Core.TFT.Euclid.Scp096;
 
-[TFTAbility("지구력", "돌격ㅣ능력의 지속 시간이 50% 증가합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp096, TFTAbilityPoint.Continuous, TFTAbilityType.Enraging, "📶")]
+[TFTAbility("지구력", "돌격ㅣ능력의 지속 시간이 50% 증가합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp096,
+    TFTAbilityPoint.Continuous, TFTAbilityType.Enraging, "📶")]
 public class Enraging : TFTAbility
 {
     public override void OnEnabled()
@@ -15,7 +16,7 @@ public class Enraging : TFTAbility
         Exiled.Events.Handlers.Scp096.Enraging -= OnEnraging;
     }
 
-    void OnEnraging(EnragingEventArgs ev)
+    private static void OnEnraging(EnragingEventArgs ev)
     {
         ev.InitialDuration *= 1.5f;
     }

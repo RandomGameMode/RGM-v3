@@ -2,6 +2,7 @@
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using System.Collections.Generic;
+using RGM.API.DataBases;
 using static DAONTFT.Core.Variables.Base;
 using RGM.API.Features;
 
@@ -43,7 +44,7 @@ public class Survivor : TFTAbility
 
     private void OnDying(DyingEventArgs ev)
     {
-        if (ev.Player != Owner || IsLifeUsed[Owner] || BlockDamageTypes.Contains(ev.DamageHandler.Type))
+        if (ev.Player != Owner || IsLifeUsed[Owner] || Datas.BlockDamageTypes.Contains(ev.DamageHandler.Type))
             return;
 
         if (_cooldown > 0) return;

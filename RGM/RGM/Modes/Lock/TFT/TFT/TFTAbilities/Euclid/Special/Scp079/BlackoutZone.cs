@@ -12,8 +12,4 @@ public class BlackoutZone : TFTAbility
             scp079.BlackoutZoneCooldown *= 0.5f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

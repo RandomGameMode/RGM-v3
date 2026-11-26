@@ -12,8 +12,4 @@ public class RoomLockdown : TFTAbility
             scp079.RoomLockdownCooldown *= 0.75f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

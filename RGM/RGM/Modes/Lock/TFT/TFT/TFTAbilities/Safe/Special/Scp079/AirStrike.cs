@@ -19,7 +19,7 @@ public class AirStrike : TFTAbility
         Exiled.Events.Handlers.Scp079.Pinging -= OnPinging;
     }
 
-    public void OnPinging(PingingEventArgs ev)
+    private void OnPinging(PingingEventArgs ev)
     {
         if (ev.Player != Owner)
             return;
@@ -36,10 +36,7 @@ public class AirStrike : TFTAbility
             light.Rotation = Quaternion.Euler(0, 0, 0);
 
 
-            Timing.CallDelayed(3, () =>
-            {
-                light.Destroy();
-            });
+            Timing.CallDelayed(3, light.Destroy);
 
             OnDisabled();
         });

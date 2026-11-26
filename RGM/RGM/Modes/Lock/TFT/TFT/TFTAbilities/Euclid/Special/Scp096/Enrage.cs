@@ -12,8 +12,4 @@ public class Enrage : TFTAbility
             scp096.EnrageCooldown *= 0.5f;
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }

@@ -13,8 +13,4 @@ public class Repair : TFTAbility
                 breakableDoor.Repair();
         }
     }
-
-    public override void OnDisabled()
-    {
-    }
 }
