@@ -3,7 +3,7 @@ using Exiled.Events.EventArgs.Scp096;
 using System.Linq;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp096;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp096;
 
 [TFTAbility("천리안", "분노 시 인근에 있는 인간들을 목격자에 포함시킵니다. (최대 20명)", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp096,
     TFTAbilityPoint.Continuous, TFTAbilityType.Seer, "🔭")]

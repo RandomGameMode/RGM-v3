@@ -1,7 +1,7 @@
 ﻿using Exiled.Events.EventArgs.Player;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Euclid.All;
+namespace RGM.Modes.Lock.TFT.Euclid.All;
 
 [TFTAbility("순발력 · 숙련", "10% 확률로 공격을 회피합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.AddQuick2, "🍃")]
 public class AddQuick2 : TFTAbility

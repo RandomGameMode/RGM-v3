@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("소인화 · 숙련", "몸의 크기가 20% 줄어듭니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.Miniaturization2, "👤")]
 public class Miniaturization2 : TFTAbility

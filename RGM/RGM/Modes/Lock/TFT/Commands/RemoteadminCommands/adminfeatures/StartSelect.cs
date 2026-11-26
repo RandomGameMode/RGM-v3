@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-using DAONTFT.Core.TFT;
+using RGM.Modes.Lock.TFT;
 using Exiled.API.Features;
 using System;
 using System.Collections.Generic;

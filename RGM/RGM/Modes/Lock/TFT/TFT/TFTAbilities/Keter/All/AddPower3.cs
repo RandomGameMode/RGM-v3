@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MEC;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.All;
+namespace RGM.Modes.Lock.TFT.Keter.All;
 
 [TFTAbility("단련 · 통달", "피해 증폭이 60% 증가되고, 일정 확률로 치명타가 발생합니다.", 
     TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.AddPower3, "💪")]

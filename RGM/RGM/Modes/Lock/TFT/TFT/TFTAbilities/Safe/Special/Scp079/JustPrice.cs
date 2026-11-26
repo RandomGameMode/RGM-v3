@@ -2,7 +2,7 @@
 using Exiled.API.Features.Roles;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
 [TFTAbility("응당한 대가", "레벨이 1 증가합니다. 20초 간 전력이 0이 됩니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Once, TFTAbilityType.JustPrice, "💸")]
 public class JustPrice : TFTAbility

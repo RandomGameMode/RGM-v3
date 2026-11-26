@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Enums;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("악마와의 계약", "죽기 전까지 투명해지는 대신 최대 체력이 60% 감소합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.DevilContract, "👿")]
 public class DevilContract : TFTAbility

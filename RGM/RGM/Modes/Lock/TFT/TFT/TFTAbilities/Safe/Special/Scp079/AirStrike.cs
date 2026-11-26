@@ -4,7 +4,7 @@ using LabApi.Features.Wrappers;
 using MEC;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
 [TFTAbility("폭격", "핑ㅣ해당 위치에 고폭 수류탄을 투척합니다. (1회)", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Once, TFTAbilityType.AirStrike, "💣")]
 public class AirStrike : TFTAbility

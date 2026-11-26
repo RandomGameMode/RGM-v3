@@ -2,7 +2,7 @@
 using RGM.API.Features;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Safe.Human;
+namespace RGM.Modes.Lock.TFT.Safe.Human;
 
 [TFTAbility("트릭 오어 트릿", "무작위 사탕을 받습니다(20% 확률로 Pink, 5% 확률로 Evil 획득).", TFTAbilityLevel.Safe, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.TrickOrTreat, "🍬")]
 public class TrickorTreat : TFTAbility

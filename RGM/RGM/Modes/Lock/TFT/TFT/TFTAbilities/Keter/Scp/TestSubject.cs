@@ -1,10 +1,9 @@
-﻿using Exiled.API.Features;
-using MEC;
+﻿using MEC;
 using RGM.API.Features;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.Scp;
+namespace RGM.Modes.Lock.TFT.Keter.Scp;
 
 [TFTAbility("실험체", "크기가 32% 작아집니다. 다른 실험체와 가까이 있으면 5초당 16의 체력을 회복합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp, TFTAbilityPoint.Continuous, TFTAbilityType.TestSubject, "😡")]
 public class TestSubject : TFTAbility

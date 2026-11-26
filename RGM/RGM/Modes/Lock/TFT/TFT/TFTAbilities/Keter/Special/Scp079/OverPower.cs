@@ -2,7 +2,7 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Scp079;
 
-namespace DAONTFT.Core.TFT.Keter.Scp079;
+namespace RGM.Modes.Lock.TFT.Keter.Scp079;
 
 [TFTAbility("랜덤 함수", "정전ㅣ다른 10개의 방을 추가로 정전합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079,
     TFTAbilityPoint.Continuous, TFTAbilityType.RandomFunction, "🔗")]

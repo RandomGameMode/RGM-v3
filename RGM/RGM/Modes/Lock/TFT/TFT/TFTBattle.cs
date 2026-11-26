@@ -1,4 +1,8 @@
-﻿using DAONTFT.Core.Classes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using RGM.Modes.Lock.TFT.Classes;
+using RGM.Modes.Lock.TFT;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
@@ -6,15 +10,12 @@ using HintServiceMeow.Core.Extension;
 using MEC;
 using PlayerRoles;
 using RGM.API.Features;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using static RGM.Modes.Lock.TFT.Variables.Base;
 using static RGM.Variables.Variable;
 using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 using Random = UnityEngine.Random;
 
-namespace DAONTFT.Core.TFT;
+namespace RGM.Modes.Lock.TFT;
 
 public static class TFTBattle
 {

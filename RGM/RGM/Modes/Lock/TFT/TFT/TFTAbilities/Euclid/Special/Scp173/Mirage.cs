@@ -2,7 +2,7 @@
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp173;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp173;
 
 [TFTAbility("신기루", "공격에 성공할 경우, 2초 동안 투명화 상태가 됩니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp173,
     TFTAbilityPoint.Continuous, TFTAbilityType.Mirage, "😧")]

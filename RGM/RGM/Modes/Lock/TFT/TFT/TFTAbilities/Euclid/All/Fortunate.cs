@@ -3,7 +3,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Euclid.All;
+namespace RGM.Modes.Lock.TFT.Euclid.All;
 
 [TFTAbility("행운아", "대부분의 문에 엑세스할 수 있습니다.", 
     TFTAbilityLevel.Euclid, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.Fortunate, "🍀")]

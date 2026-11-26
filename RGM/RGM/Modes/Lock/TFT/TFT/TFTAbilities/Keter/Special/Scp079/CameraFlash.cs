@@ -5,7 +5,7 @@ using MEC;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.Scp079;
+namespace RGM.Modes.Lock.TFT.Keter.Scp079;
 
 [TFTAbility("카메라 플래시", "핑ㅣ해당 위치에 섬광탄을 떨굽니다. (쿨타임 24초)", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079,
     TFTAbilityPoint.Continuous, TFTAbilityType.CameraFlash, "📷")]

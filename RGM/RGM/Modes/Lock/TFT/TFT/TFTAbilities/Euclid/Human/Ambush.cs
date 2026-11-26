@@ -1,7 +1,7 @@
 ﻿using Exiled.Events.EventArgs.Player;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("매복자", "40% 확률로 100% 추가 피해를 줍니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Ambush, "🌿")]
 public class Ambush : TFTAbility

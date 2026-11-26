@@ -1,7 +1,7 @@
 ﻿using Exiled.Events.EventArgs.Player;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Safe.All;
+namespace RGM.Modes.Lock.TFT.Safe.All;
 
 [TFTAbility("순발력 · 입문", "5% 확률로 공격을 회피합니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.AddQuick1, "🍃")]
 public class AddQuick1 : TFTAbility

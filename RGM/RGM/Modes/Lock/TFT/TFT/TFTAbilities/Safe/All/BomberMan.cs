@@ -3,7 +3,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using System.Linq;
 
-namespace DAONTFT.Core.TFT.Safe.All;
+namespace RGM.Modes.Lock.TFT.Safe.All;
 
 [TFTAbility("봄버맨", "랜덤한 유저의 위치에 고폭 수류탄을 투척합니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.All, TFTAbilityPoint.Once, TFTAbilityType.BomberMan, "💣")]
 public class BomberMan : TFTAbility

@@ -1,6 +1,6 @@
 ﻿using Exiled.Events.EventArgs.Player;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("흡혈귀", "남에게 가한 피해량의 70%만큼 회복합니다.", 
     TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Vampire, "🔱")]

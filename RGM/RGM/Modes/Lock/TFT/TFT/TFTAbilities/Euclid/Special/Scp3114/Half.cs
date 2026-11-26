@@ -2,7 +2,7 @@
 using Exiled.Events.EventArgs.Player;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp3114;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp3114;
 
 [TFTAbility("반블럭", "공격에 맞으면 이동 속도가 2초 동안 1% 증가합니다. (중첩 가능)", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp3114,
     TFTAbilityPoint.Continuous, TFTAbilityType.Half, "📘")]

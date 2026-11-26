@@ -2,7 +2,7 @@
 using PlayerRoles;
 using System.Collections.Generic;
 
-namespace DAONTFT.Core.TFT.Safe.All;
+namespace RGM.Modes.Lock.TFT.Safe.All;
 
 [TFTAbility("단련 · 입문", "피해 증폭을 얻습니다. (+15%)", TFTAbilityLevel.Safe, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.AddPower1, "💪")]
 public class AddPower1 : TFTAbility

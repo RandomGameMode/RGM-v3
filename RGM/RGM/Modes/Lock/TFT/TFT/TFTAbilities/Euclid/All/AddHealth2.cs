@@ -1,4 +1,4 @@
-﻿namespace DAONTFT.Core.TFT.Euclid.All;
+﻿namespace RGM.Modes.Lock.TFT.Euclid.All;
 
 [TFTAbility("운동 · 숙련", "최대 체력 + 체력 -> +100❤️ (SCP x6)", 
     TFTAbilityLevel.Euclid, TFTAbilityCategory.All, TFTAbilityPoint.Once, TFTAbilityType.AddHealth2, "❤️")]

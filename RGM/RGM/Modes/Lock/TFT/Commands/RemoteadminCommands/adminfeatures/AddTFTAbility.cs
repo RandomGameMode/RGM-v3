@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
-using DAONTFT.Core.TFT;
+using RGM.Modes.Lock.TFT;
 using Exiled.API.Features;
 
 namespace RGM.Modes.Commands;

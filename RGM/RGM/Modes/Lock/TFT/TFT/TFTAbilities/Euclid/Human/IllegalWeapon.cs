@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("폭탄병", "고폭 수류탄이 지면에 닿으면 즉시 폭발합니다. 고폭 수류탄을 획득합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.IllegalWeapon, "💢")]
 public class IllegalWeapon : TFTAbility

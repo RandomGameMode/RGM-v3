@@ -5,7 +5,7 @@ using Exiled.Events.EventArgs.Player;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("고귀한 모험", "500 데미지를 가할 때 마다 보상을 획득합니다.",
     TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Adventure, "🚩")]

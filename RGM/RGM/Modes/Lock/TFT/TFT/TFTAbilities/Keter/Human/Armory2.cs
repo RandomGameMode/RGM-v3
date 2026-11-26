@@ -2,7 +2,7 @@
 using MEC;
 using System.Collections.Generic;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("무기고+", "30초마다 고가치 아이템을 얻습니다.", 
     TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.Armory2, "📦")]

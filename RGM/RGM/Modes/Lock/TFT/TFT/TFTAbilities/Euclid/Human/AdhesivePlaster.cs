@@ -1,6 +1,6 @@
 ﻿using Exiled.Events.EventArgs.Player;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("반창고", "체력이 절반 이하로 줄어들었을 경우 180만큼 즉시 회복합니다. (최대 체력 무시)", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.AdhesivePlaster, "😙")]
 public class AdhesivePlaster : TFTAbility

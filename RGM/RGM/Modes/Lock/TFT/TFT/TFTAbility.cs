@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static RGM.Modes.Lock.TFT.Variables.Base;
 
-namespace DAONTFT.Core.TFT;
+namespace RGM.Modes.Lock.TFT;
 
 public abstract class TFTAbility
 {

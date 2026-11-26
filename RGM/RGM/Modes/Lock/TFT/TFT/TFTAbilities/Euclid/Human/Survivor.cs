@@ -6,7 +6,7 @@ using RGM.API.DataBases;
 using static RGM.Modes.Lock.TFT.Variables.Base;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("생존 전문가", "죽음에 이르는 피해를 받았을 때, 5초 간 생존 효과를 부여하며, 체력을 50% 회복합니다. (쿨타임 2분)", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Survivor, "💝")]
 public class Survivor : TFTAbility

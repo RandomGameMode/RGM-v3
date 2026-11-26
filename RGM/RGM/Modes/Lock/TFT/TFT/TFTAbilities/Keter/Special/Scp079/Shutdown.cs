@@ -3,7 +3,7 @@ using Exiled.Events.EventArgs.Scp079;
 using MEC;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.Scp079;
+namespace RGM.Modes.Lock.TFT.Keter.Scp079;
 
 [TFTAbility("셧다운제", "정전ㅣ해당 방들의 문들은 각각 50% 확률로 닫히고 잠기게 됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079,
     TFTAbilityPoint.Continuous, TFTAbilityType.Shutdown, "🛃")]

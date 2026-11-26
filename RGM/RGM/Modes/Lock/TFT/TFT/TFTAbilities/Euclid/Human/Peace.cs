@@ -5,7 +5,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("평화주의자", "무기를 소지할 수 없게 됩니다. 대신 초당 최대 체력이 1씩 증가합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human,
     TFTAbilityPoint.Continuous, TFTAbilityType.Peace, "💞")]

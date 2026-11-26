@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Features.Roles;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp079;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp079;
 
 [TFTAbility("폐소공포증", "폐쇄ㅣ능력의 쿨타임이 25% 감소합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp079, TFTAbilityPoint.Once, TFTAbilityType.RoomLockdown, "🔒")]
 public class RoomLockdown : TFTAbility

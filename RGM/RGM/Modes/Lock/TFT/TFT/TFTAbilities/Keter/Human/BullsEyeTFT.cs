@@ -2,7 +2,7 @@ using Exiled.API.Features.DamageHandlers;
 using Exiled.Events.EventArgs.Player;
 using PlayerRoles;
 
-namespace DAONTFT.Core.TFT.Keter.Human;
+namespace RGM.Modes.Lock.TFT.Keter.Human;
 
 [TFTAbility("불스아이", "헤드샷 단 한발로 적을 처치할 수 있습니다. 049-2를 제외한 SCP가 상대일 경우, 상대의 약점을 파악하여 최종 데미지가 100% 증가합니다.", 
     TFTAbilityLevel.Keter, TFTAbilityCategory.Human, TFTAbilityPoint.Continuous, TFTAbilityType.Bullseye, "🚩")]

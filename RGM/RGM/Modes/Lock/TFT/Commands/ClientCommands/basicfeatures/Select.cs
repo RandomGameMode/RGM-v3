@@ -1,9 +1,9 @@
 ﻿using System;
 using CommandSystem;
-using DAONTFT.Core.TFT;
+using RGM.Modes.Lock.TFT;
 using Exiled.API.Features;
 
-namespace DAONTFT.Core.Commands.ClientCommands.basicfeatures;
+namespace RGM.Modes.Lock.TFT.Commands.ClientCommands.basicfeatures;
 
 public class SelectTFTFirst : ICommand
 {

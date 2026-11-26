@@ -2,7 +2,7 @@
 using Exiled.API.Extensions;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Euclid.Human;
+namespace RGM.Modes.Lock.TFT.Euclid.Human;
 
 [TFTAbility("탄약고", "모든 종류의 탄약을 각각 8세트씩 받습니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Human, TFTAbilityPoint.Once, TFTAbilityType.AmmoBox, "🔫")]
 public class CandyAddict : TFTAbility

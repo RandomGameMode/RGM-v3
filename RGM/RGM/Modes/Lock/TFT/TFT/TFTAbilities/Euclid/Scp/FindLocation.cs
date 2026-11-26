@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp;
 
 [TFTAbility("본능", "가장 가까운 인간의 위치를 확인합니다.", TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp, TFTAbilityPoint.Continuous,
     TFTAbilityType.FindLocation, "📥")]

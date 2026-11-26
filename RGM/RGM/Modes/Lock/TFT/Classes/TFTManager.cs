@@ -1,5 +1,4 @@
-﻿using DAONTFT.Core.TFT;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using HintServiceMeow.Core.Enum;
 using RGM.API.Features;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using static RGM.Modes.Lock.TFT.Variables.Base;
 using Hint = HintServiceMeow.Core.Models.Hints.Hint;
 
-namespace DAONTFT.Core.Classes
+namespace RGM.Modes.Lock.TFT.Classes
 {
     public class Upgrade
     {

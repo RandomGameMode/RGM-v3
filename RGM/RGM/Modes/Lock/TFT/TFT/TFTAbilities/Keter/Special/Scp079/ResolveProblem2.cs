@@ -4,7 +4,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Keter.Scp079;
+namespace RGM.Modes.Lock.TFT.Keter.Scp079;
 
 [TFTAbility("문제 해결사+", "발전기들을 초기 상태로 되돌립니다. 5분마다 문들이 원상복구됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.ResolveProblem2, "✅")]
 public class ResolveProblem2 : TFTAbility

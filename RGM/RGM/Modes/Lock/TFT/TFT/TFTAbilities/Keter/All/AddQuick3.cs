@@ -1,7 +1,7 @@
 ﻿using Exiled.Events.EventArgs.Player;
 using UnityEngine;
 
-namespace DAONTFT.Core.TFT.Keter.All;
+namespace RGM.Modes.Lock.TFT.Keter.All;
 
 [TFTAbility("순발력 · 통달", "25% 확률로 공격을 회피합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Continuous, TFTAbilityType.AddQuick3, "🍃")]
 public class AddQuick3 : TFTAbility

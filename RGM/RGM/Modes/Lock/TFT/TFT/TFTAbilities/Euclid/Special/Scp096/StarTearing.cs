@@ -2,7 +2,7 @@
 using RGM.API.Features;
 using static RGM.Variables.Variable;
 
-namespace DAONTFT.Core.TFT.Euclid.Scp096;
+namespace RGM.Modes.Lock.TFT.Euclid.Scp096;
 
 [TFTAbility("별자리 찢기", "공격 시 30% 확률로 대상을 즉시 사망시킵니다.", 
     TFTAbilityLevel.Euclid, TFTAbilityCategory.Scp096, TFTAbilityPoint.Continuous, TFTAbilityType.StarTearing, "🌟")]

@@ -4,7 +4,7 @@ using MEC;
 using RGM.API.Features;
 using static RGM.Variables.Variable;
 
-namespace DAONTFT.Core.TFT.Keter.All;
+namespace RGM.Modes.Lock.TFT.Keter.All;
 
 [TFTAbility("방어 · 통달", "방어력을 30% 얻습니다. 추가로, 모든 받는 데미지가 최대 38까지만 적용됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Once, TFTAbilityType.AddDefense3, "⛔")]
 public class AddDefense3 : TFTAbility

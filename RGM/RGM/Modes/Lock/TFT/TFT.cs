@@ -1,5 +1,4 @@
-﻿using DAONTFT.Core.TFT;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
@@ -15,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using RGM.Modes.Lock.TFT.Variables;
+using RGM.Modes.Lock.TFT;
 using UnityEngine;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
@@ -101,16 +101,16 @@ public class TFT : Mode
         }
 
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTFirst());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.SelectTFTFirst());
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.SelectTFTSecond());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.SelectTFTSecond());
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTFirst());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.RerollTFTFirst());
         QueryProcessor.DotCommandHandler.RegisterCommand(
-            new DAONTFT.Core.Commands.ClientCommands.basicfeatures.RerollTFTSecond());
+            new Lock.TFT.Commands.ClientCommands.basicfeatures.RerollTFTSecond());
 
         foreach (var player in PlayerManager.List)
-            DAONTFT.Core.EventArgs.PlayerEvents.Verified(player);
+            Lock.TFT.EventArgs.PlayerEvents.Verified(player);
 
         TFTSetting.Init();
 
@@ -362,7 +362,7 @@ public class TFT : Mode
 
     private void OnVerified(VerifiedEventArgs ev)
     {
-        DAONTFT.Core.EventArgs.PlayerEvents.Verified(ev.Player);
+        Lock.TFT.EventArgs.PlayerEvents.Verified(ev.Player);
         DebugBroadcast($"Verified / {ev.Player.Nickname} / ready: {_isUpgradeTimerReady} / alive: {ev.Player.IsAlive}",
             ev.Player);
 

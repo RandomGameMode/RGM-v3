@@ -2,7 +2,7 @@
 using Exiled.API.Features.Roles;
 using MEC;
 
-namespace DAONTFT.Core.TFT.Safe.Scp079;
+namespace RGM.Modes.Lock.TFT.Safe.Scp079;
 
 [TFTAbility("발전기Ⅰ", "초당 전력이 1만큼 충전됩니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Scp079, TFTAbilityPoint.Continuous, TFTAbilityType.Generator1, "🔌")]
 public class Generator1 : TFTAbility

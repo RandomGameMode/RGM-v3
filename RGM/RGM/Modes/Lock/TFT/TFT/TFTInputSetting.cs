@@ -1,9 +1,10 @@
+using RGM.Modes.Lock.TFT;
 using Exiled.API.Features;
 using RGM.Modes.Lock.TFT.Variables;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
 
-namespace DAONTFT.Core.TFT
+namespace RGM.Modes.Lock.TFT
 {
     public static class TFTInputSetting
     {
@@ -14,7 +15,7 @@ namespace DAONTFT.Core.TFT
 
             Player player = Player.Get(sender);
 
-            if (CurrentMode != RGM.ModeType.TFT)
+            if (CurrentMode != global::RGM.ModeType.TFT)
                 return;
 
             if (!Base.IsSelecting.TryGetValue(player, out bool isSelecting) || !isSelecting)

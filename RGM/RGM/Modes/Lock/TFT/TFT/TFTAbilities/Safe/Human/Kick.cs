@@ -2,7 +2,7 @@
 using MEC;
 using RGM.API.Features;
 
-namespace DAONTFT.Core.TFT.Safe.Human;
+namespace RGM.Modes.Lock.TFT.Safe.Human;
 
 [TFTAbility("태권도", "능력 키(ALT)를 눌러 발차기를 할 수 있습니다. 부위별로 데미지가 다르게 적용됩니다.", TFTAbilityLevel.Safe, TFTAbilityCategory.Human, TFTAbilityPoint.ALT, TFTAbilityType.Kick, "💫")]
 public class Kick : TFTAbility
