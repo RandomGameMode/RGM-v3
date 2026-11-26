@@ -17,11 +17,13 @@ public class AddPower2 : TFTAbility
         Exiled.Events.Handlers.Player.Hurting -= OnHurting;
     }
 
-    public void OnHurting(HurtingEventArgs ev)
+    private void OnHurting(HurtingEventArgs ev)
     {
-        if (ev.Attacker != Owner )
+        if (ev.Attacker != Owner ||
+            ev.Attacker == null || 
+            !HitboxIdentity.IsEnemy(ev.Attacker.ReferenceHub, ev.Player.ReferenceHub))
             return;
 
-        ev.DamageHandler.Damage += ev.DamageHandler.Damage * 0.3f;
+        ev.DamageHandler.Damage *= 1.3f;
     }
 }

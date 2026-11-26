@@ -1,36 +1,33 @@
 ﻿using MEC;
-using RGM.API.Features;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace RGM.Modes.Lock.TFT.Keter.Scp;
 
-[TFTAbility("실험체", "크기가 32% 작아집니다. 다른 실험체와 가까이 있으면 5초당 16의 체력을 회복합니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.Scp, TFTAbilityPoint.Continuous, TFTAbilityType.TestSubject, "😡")]
+[TFTAbility("실험체", "크기가 35% 작아집니다. 추가로 3초당 5의 체력을 회복합니다.", 
+    TFTAbilityLevel.Keter, TFTAbilityCategory.Scp, TFTAbilityPoint.Continuous, TFTAbilityType.TestSubject, "😡")]
 public class TestSubject : TFTAbility
 {
-    private CoroutineHandle _test;
+    private CoroutineHandle _regen;
 
     public override void OnEnabled()
     {
-        Owner.Scale = new Vector3(0.68f, 0.68f, 0.68f);
+        Owner.Scale = new Vector3(0.65f, 0.65f, 0.65f);
 
-        _test = Timing.RunCoroutine(test());
+        _regen = Timing.RunCoroutine(Regen());
     }
 
     public override void OnDisabled()
     {
-        Timing.KillCoroutines(_test);
+        Timing.KillCoroutines(_regen);
     }
 
-    private IEnumerator<float> test()
+    private IEnumerator<float> Regen()
     {
-        while (true)
+        while (Owner.IsAlive)
         {
-            if (Owner.TryGetNearestPlayer(out var player, out var radius))
-                if (player.HasTftAbility(TFTAbilityType.TestSubject))
-                    Owner.Heal(16);
-
-            yield return Timing.WaitForSeconds(5);
+            Owner.Heal(5);
+            yield return Timing.WaitForSeconds(3);
         }
     }
 }

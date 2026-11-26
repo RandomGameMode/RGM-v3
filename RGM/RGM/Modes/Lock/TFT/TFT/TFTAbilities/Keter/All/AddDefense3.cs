@@ -6,16 +6,16 @@ using static RGM.Variables.Variable;
 
 namespace RGM.Modes.Lock.TFT.Keter.All;
 
-[TFTAbility("방어 · 통달", "방어력을 30% 얻습니다. 추가로, 모든 받는 데미지가 최대 38까지만 적용됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Once, TFTAbilityType.AddDefense3, "⛔")]
+[TFTAbility("방어 · 통달", "방어력을 35% 얻습니다. 추가로, 모든 받는 데미지가 최대 35까지만 적용됩니다.", TFTAbilityLevel.Keter, TFTAbilityCategory.All, TFTAbilityPoint.Once, TFTAbilityType.AddDefense3, "⛔")]
 public class AddDefense3 : TFTAbility
 {
-    private const float MaxDamage = 38f;
+    private const float MaxDamage = 35f;
 
     public override void OnEnabled()
     {
         Exiled.Events.Handlers.Player.Hurting += OnHurting;
 
-        Owner.AddEffect(EffectType.DamageReduction, 60);
+        Owner.AddEffect(EffectType.DamageReduction, 70);
     }
 
     public override void OnDisabled()
