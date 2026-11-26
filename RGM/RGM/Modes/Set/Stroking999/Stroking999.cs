@@ -167,9 +167,13 @@ namespace RGM.Modes
                 foreach (var player in PlayerManager.List.Where(p => p != null))
                 {
                     var score = _scores.TryGetValue(player, out var value) ? value : 0;
-                    var cps = GetCps(player, Time.realtimeSinceStartup);
+                    float cps = GetCps(player, Time.realtimeSinceStartup);
                     player.AddHint("점수",
-                        $" <size=20>{remain}초 남음 | 클릭 수: {score}회\n{leaderText}\n당신의 초당 클릭 수: {cps:0.##}</size>", 0.2f);
+                        $"""
+                          <size=20>{remain}초 남음 | 클릭 수: {score}회
+                         {leaderText}
+                         당신의 초당 클릭 수: {cps:F2}</size>
+                         """, 0.2f);
                 }
 
                 yield return Timing.WaitForSeconds(0.2f);

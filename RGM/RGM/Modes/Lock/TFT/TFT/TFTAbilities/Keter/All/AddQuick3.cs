@@ -27,6 +27,6 @@ public class AddQuick3 : TFTAbility
         _count++;
         _damage += ev.Amount;
 
-        Data.Description = $"20% 확률로 공격을 회피합니다. (피한 횟수: {_count}, 피한 데미지: {(int)_damage})";
+        Data.Description = $"20% 확률로 공격을 회피합니다. (피한 횟수: {_count}, 피한 데미지: {_damage:F2})";
     }
 }

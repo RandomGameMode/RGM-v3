@@ -282,6 +282,7 @@ public enum TFTAbilityType
     Scp1853, // 무기 전문가
     Scp207, // 스피드왜건
     Miniaturization2, // 소인화 · 숙련
+    Breach, // 침입
     // Scp
     FindLocation, // 본능
     // SCP-049
@@ -336,6 +337,9 @@ public enum TFTAbilityType
     Bullseye, // 불스아이
     InfiniteAmmo, // 판도라의 인벤토리
     Miniaturization3, // 소인화 · 통달
+    DefenseBreak, // 디펜스 브레이크
+    FallenSword, // 몰락한 왕의 검
+    
     // Scp
     TestSubject, // 실험체
     // SCP-049

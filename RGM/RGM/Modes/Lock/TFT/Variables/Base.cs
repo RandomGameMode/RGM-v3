@@ -24,17 +24,17 @@ public static class Base
         {
             "D계급",
             (RoleTypeId.ClassD,
-                $"<color={RoleTypeId.ClassD.GetColor().ToHex()}>D계급</color>이 모두에게 죄수의 손길 기술을 알려주었군요..\n증강 간격이 더 짧아집니다. (120초 -> 80초)")
+                $"<color={RoleTypeId.ClassD.GetColor().ToHex()}>D계급</color>이 모두에게 죄수의 손길 기술을 알려주었군요..\n증강 간격이 40% 짧아집니다.")
         },
         {
             "과학자",
             (RoleTypeId.Scientist,
-                $"<color={RoleTypeId.Scientist.GetColor().ToHex()}>과학자</color>가 탈모약을 개발하다가 실수로 엄청난 걸 개발했습니다.\n증강 간격이 엄청 짧아집니다. (120초 -> 60초)")
+                $"<color={RoleTypeId.Scientist.GetColor().ToHex()}>과학자</color>가 탈모약을 개발하다가 실수로 엄청난 걸 개발했습니다.\n증강 간격이 55% 짧아집니다.")
         },
         {
             "시설 경비",
             (RoleTypeId.FacilityGuard,
-                $"<color={RoleTypeId.FacilityGuard.GetColor().ToHex()}>시설 경비</color>는 복면을 그리워하는군요.\n증강 간격이 짧아집니다. (120초 -> 90초)")
+                $"<color={RoleTypeId.FacilityGuard.GetColor().ToHex()}>시설 경비</color>는 복면을 그리워하는군요.\n증강 간격이 20% 짧아집니다.")
         },
         {
             "구미호 대위",

@@ -1,4 +1,5 @@
-﻿using Exiled.API.Enums;
+﻿using System;
+using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
@@ -18,6 +19,7 @@ using RGM.Modes.Lock.TFT;
 using UnityEngine;
 using UserSettings.ServerSpecific;
 using static RGM.Variables.Variable;
+using Random = UnityEngine.Random;
 
 namespace RGM.Modes;
 
@@ -29,9 +31,9 @@ public class TFT : Mode
 
     public override string Detail =>
         """
-        증강은 한 사람당 총 3개를 확보할 수 있으며,
+        증강은 한 사람당 총 5개를 확보할 수 있으며,
         처음 라운드 시작시 40초 후에,
-        그 다음 120초마다 지급됩니다.
+        그 다음 100초마다 지급됩니다.
         """;
 
     public override string Color => "ffd700";
@@ -41,7 +43,7 @@ public class TFT : Mode
     private readonly Dictionary<string, float> _upgradeRemainingTimes = new();
     private readonly HashSet<string> _playersWaitingRespawn = new();
     private readonly List<TFTAbilityLevel> _upgradeLevelSequence = new();
-    private int _upgradeWaitTime = 120;
+    private int _upgradeWaitTime = 100;
     private bool _isUpgradeTimerReady;
     private const bool DebugUpgradeTimer = false;
 
@@ -187,8 +189,9 @@ public class TFT : Mode
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error($"Encounter Exception: {e}");
             }
 
             Round.IsLocked = false;
@@ -211,17 +214,17 @@ public class TFT : Mode
          * 새로 리스폰하는 유저들은 지급 시간을 초기화하도록 변경.
          * 즉, 유저마다 증강 지급 시간을 개별로 적용함.
          *
-         * 기존 유저는 시작 40초 후 획득, 이후 120(또는 다른 시간)초마다 획득
-         * 중간에 리스폰 한 유저는 리스폰 한 시점 부터 40초 후 획득, 이후 120(또는 다른 시간)초마다 획득
+         * 기존 유저는 시작 40초 후 획득, 이후 100(또는 다른 시간)초마다 획득
+         * 중간에 리스폰 한 유저는 리스폰 한 시점 부터 40초 후 획득, 이후 100(또는 다른 시간)초마다 획득
          */
         int GetTime()
         {
             return Base.Encounter switch
             {
-                RoleTypeId.ClassD => 80,
-                RoleTypeId.Scientist => 60,
-                RoleTypeId.FacilityGuard => 90,
-                _ => 120
+                RoleTypeId.ClassD => 60, // 0.6
+                RoleTypeId.Scientist => 45, // 0.4
+                RoleTypeId.FacilityGuard => 80, // 0.8
+                _ => 100
             };
         }
     }
@@ -324,7 +327,7 @@ public class TFT : Mode
         return player != null &&
                player.IsAlive &&
                !player.IsNPC &&
-               TFTBattle.GetAbilities(player).Count() <
+               TFTBattle.GetAbilities(player).Count <
                (Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5);
     }
 
@@ -341,10 +344,7 @@ public class TFT : Mode
 
         var maxAbilityCount = Base.Encounter == RoleTypeId.Scp0492 ? 8 : 5;
 
-        if (TFTBattle.GetAbilities(player).Count >= maxAbilityCount)
-            return $"max abilities ({TFTBattle.GetAbilities(player).Count}/{maxAbilityCount})";
-
-        return "unknown";
+        return TFTBattle.GetAbilities(player).Count >= maxAbilityCount ? $"max abilities ({TFTBattle.GetAbilities(player).Count}/{maxAbilityCount})" : "unknown";
     }
 
     private string GetPlayerKey(Player player)

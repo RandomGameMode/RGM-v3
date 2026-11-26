@@ -5,6 +5,6 @@ public class Scp207 : TFTAbility
 {
     public override void OnEnabled()
     {
-        Owner.AddItem(ItemType.SCP1853, 2);
+        Owner.AddItem(ItemType.SCP207, 2);
     }
 }
