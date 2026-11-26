@@ -338,6 +338,7 @@ public enum TFTAbilityType
     InfiniteAmmo, // 판도라의 인벤토리
     Miniaturization3, // 소인화 · 통달
     DefenseBreak, // 디펜스 브레이크
+    FallenSword, // 몰락한 왕의 검
     
     // Scp
     TestSubject, // 실험체
