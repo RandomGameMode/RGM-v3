@@ -597,6 +597,7 @@
     <Compile Include="RGM\Modes\Lock\TFT\EventArgs\PlayerEvents.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\IEnumerators\Base.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\All\Fortunate.cs" />
+    <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Breach.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Euclid\Human\Miniaturization2.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\DefenseBreak.cs" />
     <Compile Include="RGM\Modes\Lock\TFT\TFT\TFTAbilities\Keter\Human\Miniaturization3.cs" />

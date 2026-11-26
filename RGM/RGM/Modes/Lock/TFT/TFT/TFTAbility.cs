@@ -282,6 +282,7 @@ public enum TFTAbilityType
     Scp1853, // 무기 전문가
     Scp207, // 스피드왜건
     Miniaturization2, // 소인화 · 숙련
+    Breach, // 침입
     // Scp
     FindLocation, // 본능
     // SCP-049
