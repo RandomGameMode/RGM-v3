@@ -1093,8 +1093,8 @@ namespace RGM.API.Features
                     while (player.IsAlive)
                     {
                         ApplyLethalDamage.Apply(attacker, player);
+                        yield return Timing.WaitForSeconds(3f);
                         player.Role.Set(RoleTypeId.Spectator);
-                        yield return Timing.WaitForSeconds(0.1f);
                     }
 
                     yield break;
