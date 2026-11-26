@@ -336,6 +336,8 @@ public enum TFTAbilityType
     Bullseye, // 불스아이
     InfiniteAmmo, // 판도라의 인벤토리
     Miniaturization3, // 소인화 · 통달
+    DefenseBreak, // 디펜스 브레이크
+    
     // Scp
     TestSubject, // 실험체
     // SCP-049
